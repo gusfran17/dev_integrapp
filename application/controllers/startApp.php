@@ -4,21 +4,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class startApp extends CI_Controller {
 
 	public function index(){
-
 		$this->load->view('templates/template_header');
-
 		if($this->session->userdata("role")){ 
 			$this->showLoginHome();
 		} else { 
 			$this->showUserHome();
 		}
-
 		$this->load->view('templates/template_footer');
 	}
 
 
 	private function showUserHome(){
-		//$data["categorias"] = $this->menus_model->get_menus();
 		$this->load->view('templates/template_nav');
 		$this->load->view('templates/template_home');
 	}
