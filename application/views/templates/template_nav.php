@@ -15,10 +15,10 @@
 			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			      <ul class="nav navbar-nav">
 			        <li><a href="<?php echo base_url(); ?>index.php/startApp/routedHome/integrapp">INTEGRAPP</a></li>
-			        <li><a href="<?php echo base_url(); ?>index.php/startApp/routedHome/catalogo">CATALOGO</a></li>
-			        <li><a href="<?php echo base_url(); ?>index.php/startApp/routedHome/servicios">SERVICIOS</a></li>
+			        <li><a href="<?php echo base_url(); ?>index.php/startApp/routedHome/catalog">CATALOGO</a></li>
+			        <li><a href="<?php echo base_url(); ?>index.php/startApp/routedHome/services">SERVICIOS</a></li>
 			        <li><a href="<?php echo base_url(); ?>index.php/startApp/routedHome/faq">F.A.Q</a></li>
-			        <li><a href="<?php echo base_url(); ?>index.php/startApp/routedHome/contacto">CONTACTO</a></li>
+			        <li><a href="<?php echo base_url(); ?>index.php/startApp/routedHome/contact">CONTACTO</a></li>
 			        <li><a href="<?php echo base_url(); ?>index.php/startApp/routedHome/login">LOGIN</a></li>			      
 			      </ul>
 			    </div>
