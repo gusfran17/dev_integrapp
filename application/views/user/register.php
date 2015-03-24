@@ -5,7 +5,7 @@
 
 <?php echo validation_errors(); ?>
 
-		<form action="<?php echo base_url(); ?>index.php/register/register" method="POST">
+		<form action="<?php echo base_url(); ?>register/register" method="POST">
 			<label for="">Nombre de Usuario</label>
 			<input type="text" name="username" placeholder="Ingrese su usuario">
 			<br>
