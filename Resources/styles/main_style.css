@@ -1,0 +1,153 @@
+
+
+
+
+/*!!!!!!!!BARRA DE NAVEGACIÓN!!!!!!!!!!*/
+/*Esto me resetea el estilo principal de la barra de navegacion*/
+.navbar{background-color: #4784ff;	height: 80px;	margin-bottom: 0;	padding: 0 40px; box-shadow: 0px 1px 50px 5px rgba(0,0,0,0.5);}
+/*end*/
+
+/*Esto me resetea la altura del contenedor que engloba todo lo de adentro del nav*/
+nav>.container-fluid{height: 100%; padding: 0;}
+/*end*/
+
+/*Esto me resetea la posicion de la barra de navegacion a la derecha y la altura*/
+ul.nav{float: right;padding: 15px 0;}
+/*end*/
+
+/*Esto me resetea el color de los links de la barra de navegacion*/
+ul.nav a{color: white; transition:all 0.3s ease;}
+/*end*/
+
+/*Esto resetea la altura del div donde está el logo*/
+.navbar-brand{height: 100%;}
+/*end*/
+
+/*Esto me resetea la altura del navbar para que las opciones bajen justo abajo de donde termina*/
+.navbar-header{height: 100%;}
+/*end*/
+
+/*Esto me resetea el color del boton de la barra responsive*/
+.icon-bar{color: white;	background-color: white;}
+/*end*/
+
+
+/*EFECTOS TYMPANUS*/
+/* Effect 1: Brackets */
+/* URL: http://tympanus.net/Development/CreativeLinkEffects/ */
+.cl-effect-1 li a::before,.cl-effect-1 li a::after {display: inline-block;opacity: 0; font-size:20px; -webkit-transition: -webkit-transform 0.3s, opacity 0.2s;-moz-transition: -moz-transform 0.3s, opacity 0.2s;transition: transform 0.3s, opacity 0.2s;}
+.cl-effect-1 li a::before {margin-right: 5px;content: '[';	-webkit-transform: translateX(20px);-moz-transform: translateX(20px);transform: translateX(20px);}
+.cl-effect-1 li a::after { margin-left: 5px; content: ']';	-webkit-transform: translateX(-20px); -moz-transform: translateX(-20px);transform: translateX(-20px);}
+.cl-effect-1 a:hover::before,.cl-effect-1 a:hover::after,.cl-effect-1 a:focus::before,.cl-effect-1 a:focus::after {opacity: 1;-webkit-transform: translateX(0px);-moz-transform: translateX(0px);transform: translateX(0px);}
+/*end*/
+
+
+
+
+
+
+
+
+/*!!!!!!!!HOME!!!!!!!!*/
+/*Esto POR AHORA funciona re bien y me da el estilo del carrousel de fondo*/
+.carousel{	position: fixed;opacity: 0.35;width: 100%;height: 100%;}
+/*end*/
+
+/*esto me da las reglas de medicion para el contenido del centro del home*/
+section#home{margin-top:90px;padding-left: 40px;padding-right: 40px;padding-bottom: 50px;}
+/*end*/
+
+/*Esto me da el hack para el responsive imagen del banner*/
+#home>header #banner figure, #home>header #banner figure img{width: 100%;}
+/*end*/
+
+/*Esto me separa para arriba y abajo cajas de catalogo del home*/
+.item-catalogo{	margin: 20px 0;}
+/*end*/
+
+/*Esto me da la dimension de cada caja en el catalogo del home*/
+.producto-container{ cursor: pointer; background-color: #999;  height: 200px;  width: 200px;  margin: auto;  position: relative;  overflow: hidden;}
+/*end*/
+
+/*Esto me da el estilo de las cajas de descripcion que suben en hover*/
+.jquery-description{width: 100%; height: 100%;	position: absolute;	background-color: black;	left: 0;	transform: translateY(100%); transition: all 0.3s ease;	color: white; padding: 10px;}
+/*end*/
+
+/*Esto me da el efecto para la descripcion que sube en hover*/
+.item-catalogo:hover .jquery-description{	transform:translateY(70%);}
+/*end*/
+
+
+
+
+
+/*!!!!!!!INTEGRAPP!!!!!!!*/
+#integrapp{	margin-top: 50px;}
+#integrapp .row{ margin-top: 0px;}
+.row>div{ margin: 45px 0;}
+/*end*/
+
+
+
+
+
+
+/*!!!!!!!CATALOGO!!!!!!!*/
+
+#catalogo{
+	margin-top: 50px;
+}
+
+#catalogo h3{
+	text-decoration: underline;
+}
+
+
+#categoria-select select{
+	width: 200px;
+	margin: auto;
+	display: block;
+	height: 40px;
+}
+
+#categoria-select select optgroup{
+	font-size: 16px;
+	
+}
+
+#categoria-select select optgroup option{
+	margin-top: 5px;
+}
+
+/*end*/
+
+
+
+/*!!!!!!!FAQ!!!!!!!*/
+
+#faq ol>li{
+	margin: 30px 0;
+}
+/*end*/
+
+
+
+
+
+
+
+
+
+/*!!!!!!!!!FOOTER!!!!!!!!!*/
+/*Esto me da el estilo del footer*/
+#main-container>footer{	padding:0 60px;	background-color: #4784ff;	color: #444;box-shadow: 0px 1px 50px 5px rgba(0,0,0,0.5);color: white;}
+/*end*/
+
+
+/*Esto centra todo el texto en el footer*/
+#main-container>footer .row div{text-align: center;}
+/*end*/
+
+/*Esto es el hack para que todo aparezca gris en el footer*/
+#main-container>footer figure img{-webkit-filter: grayscale(1);	filter: grayscale(1);}
+/*end*/
