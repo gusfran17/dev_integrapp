@@ -14,7 +14,7 @@
 			    </div>
 			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			      <ul class="nav navbar-nav">
-			        <li><a href="<?php echo base_url(); ?>index.php/startApp/routedHome/integrapp">INTEGRAPP</a></li>
+			        <li><a href="<?php echo base_url(); ?>startApp/routedHome/integrapp">INTEGRAPP</a></li>
 			        <li><a href="<?php echo base_url(); ?>index.php/startApp/routedHome/catalog">CATALOGO</a></li>
 			        <li><a href="<?php echo base_url(); ?>index.php/startApp/routedHome/services">SERVICIOS</a></li>
 			        <li><a href="<?php echo base_url(); ?>index.php/startApp/routedHome/faq">F.A.Q</a></li>
