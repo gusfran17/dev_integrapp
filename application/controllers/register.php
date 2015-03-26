@@ -29,7 +29,7 @@ class Register extends CI_Controller {
 			//$insert['newsletter'] = "testregistronewsletter";//$this->input->post("newsletter");
 			$insert['register_date'] = date("Y-m-d H:i:s");
 			$id = $this->register_model->register_user($insert);
-			redirect('startApp/routedHome/login');
+			redirect('home/routedHome/login');
 		}else{
 			$this->load->view('templates/template_header');
 			$this->load->view('templates/template_nav');
