@@ -18,6 +18,13 @@ class Register extends CI_Controller {
 		$this->form_validation->set_rules('password', 'Contraseña', 'required');
 		$this->form_validation->set_rules('repassword', 'Repetir contraseña', 'required|matches[password]');
 		$this->form_validation->set_rules('terms', 'Términos y condiciones', 'required');
+
+		$this->form_validation->set_message('required', 'El campo %s es requerido');
+		$this->form_validation->set_message('valid_email', 'Esto no parece ser un email');
+		$this->form_validation->set_message('matches', 'Los campos de contraseña deben ser iguales');
+		$this->form_validation->set_message('usernamecheck', 'Ops, el nombre de usuario ya esta en uso');
+		$this->form_validation->set_message('emailcheck', 'Ops, el mail ya esta en uso');
+
 		if ($this->form_validation->run()){
 			$insert = array();
 			$insert['email'] = $this->input->post("email");
@@ -33,7 +40,8 @@ class Register extends CI_Controller {
 		}else{
 			$this->load->view('templates/template_header');
 			$this->load->view('templates/template_nav');
-			$this->load->view('user/register');
+			$this->load->view('navs/nav_home');
+			$this->load->view('home/register');
 			$this->load->view('templates/template_footer');
 		}
 	}

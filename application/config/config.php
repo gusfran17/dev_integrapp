@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | environments.
 |
 */
-$config['base_url'] = 'http://localhost/dev_integrapp';
+$config['base_url'] = 'http://localhost:3307/dev_integrapp';
 
 /*
 |--------------------------------------------------------------------------
