@@ -21,7 +21,8 @@ class Login_model extends CI_Model {
             $passwordDB_decoded = $this->encrypt->decode($passwordDB, $this->config->item('encryption_key'));
 
             if ($password==$passwordDB_decoded) {
-                $this->session->set_userdata(array('user'=>$user_result[0], 'role'=>'user', 'logged_in'=>true));
+
+                $this->session->set_userdata(array('user'=>$user_result[0], 'role'=>$user_result[0]->role, 'logged_in'=>true));
                 return TRUE;
             }else{
                     return FALSE;
@@ -44,7 +45,7 @@ class Login_model extends CI_Model {
             $passwordDB_decoded = $this->CI->encrypt->decode($passwordDB, $this->CI->config->item('encryption_key'));
 
             if ($password==$passwordDB_decoded) {
-                $this->CI->session->set_userdata(array('user'=>$user_result[0], 'role'=>'user', 'logged_in'=>true));
+                $this->CI->session->set_userdata(array('user'=>$user_result[0], 'role'=>$user_result[0]->role, 'logged_in'=>true));
                 return TRUE;
             }else{
                     return FALSE;

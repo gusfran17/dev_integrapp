@@ -28,7 +28,7 @@ class Register extends CI_Controller {
 			$insert['lastname'] = $this->input->post("lastname");
 			$insert['newsletter'] = $this->input->post("newsletter");
 			$insert['register_date'] = date("Y-m-d H:i:s");
-			$id = $this->register_model->register_user($insert);
+			$id = $this->user_model->register_user($insert);
 			redirect('home/routedHome/login');
 		}else{
 			$this->load->view('templates/template_header');
@@ -41,14 +41,14 @@ class Register extends CI_Controller {
 	
 	public function usernamecheck(){
 		$username = $this->input->post("username");
-		return $this->register_model->username_check($username);
+		return $this->user_model->username_check($username);
 	}
 
 
 
 	public function emailcheck(){
 		$email = $this->input->post("email");
-		return 	$this->register_model->email_check($email); 
+		return 	$this->user_model->email_check($email); 
 	}
 
 
