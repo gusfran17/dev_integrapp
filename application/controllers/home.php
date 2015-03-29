@@ -16,6 +16,7 @@ class Home extends CI_Controller {
 
 	private function showUserHome(){
 		$this->load->view('templates/template_nav');
+		$this->load->view('navs/nav_home');
 		$this->load->view('templates/template_home');
 	}
 
@@ -29,6 +30,7 @@ class Home extends CI_Controller {
 	public function showLoginHome()
 	{
 		$this->load->view('templates/template_nav');
+		$this->load->view('navs/nav_'.$this->session->userdata("role"));
 		$this->load->view('test/login');
 		
 	}
