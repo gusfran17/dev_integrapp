@@ -1,3 +1,3 @@
 <section id="home">
-	<h1>CATALOGO GENERAL</h1>
+	<h1>CARGA DE PRODUCTOS</h1>
 </section>

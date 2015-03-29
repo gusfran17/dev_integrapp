@@ -1,8 +1,8 @@
-<li><a href="<?php echo base_url(); ?>home/routedHome/integrapp">MI CUENTA</a></li>
-			        <li><a href="<?php echo base_url(); ?>home/routedHome/catalog">CATALOGO</a></li>
-			        <li><a href="<?php echo base_url(); ?>home/routedHome/services">SUBASTA</a></li>
-			        <li><a href="<?php echo base_url(); ?>home/routedHome/faq">OFERTAS</a></li>
-			        <li><a href="<?php echo base_url(); ?>home/routedHome/contact">CARGA</a></li>
+<li><a href="<?php echo base_url(); ?><?php echo $userdata; ?>/routedHome/profile">MI CUENTA</a></li>
+			        <li><a href="<?php echo base_url(); ?><?php echo $userdata; ?>/routedHome/products">PRODUCTOS</a></li>
+			        <li><a href="<?php echo base_url(); ?><?php echo $userdata; ?>/routedHome/request">SOLICITUDES</a></li>
+			        <li><a href="<?php echo base_url(); ?><?php echo $userdata; ?>/routedHome/auction">SUBASTA</a></li>
+			        <li><a href="<?php echo base_url(); ?><?php echo $userdata; ?>/routedHome/offers">OFERTAS</a></li>
 			        <li><a href="<?php echo base_url(); ?>login/logout">LOGOUT</a></li>			      
 			      </ul>
 			    </div>
