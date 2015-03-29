@@ -24,8 +24,9 @@ class Register extends CI_Controller {
 			$insert['username'] = $this->input->post("username");
 			$insert['password'] = $this->encrypt->encode($this->input->post("password"), $this->config->item('encryption_key'));
 			$insert['name'] = $this->input->post("name");
+			$insert['role'] = $this->input->post("role");
 			$insert['lastname'] = $this->input->post("lastname");
-			//$insert['newsletter'] = "testregistronewsletter";//$this->input->post("newsletter");
+			$insert['newsletter'] = $this->input->post("newsletter");
 			$insert['register_date'] = date("Y-m-d H:i:s");
 			$id = $this->register_model->register_user($insert);
 			redirect('home/routedHome/login');

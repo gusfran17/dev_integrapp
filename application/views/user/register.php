@@ -31,10 +31,10 @@
 				<option value="supplier">Proveedor</option>
 			</select>
 			<br>
-			<input type="checkbox" value="repeatpassword" name="terms">Acepto los terminos y condiciones de integrapp
+			<input type="checkbox" name="terms">Acepto los terminos y condiciones de integrapp
 			<br>
-			<!--<input type="checkbox" value="repeatpassword" name="newsletter">Envíenme informacion de ofertas y capacitaciones por mail
-			<br>-->  
+			<input type="checkbox" name="newsletter">Envíenme informacion de ofertas y capacitaciones por mail
+			<br>  
 			<input type="submit">
 		</form>
 	</article>
