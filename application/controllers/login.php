@@ -33,7 +33,7 @@ class Login extends CI_Controller {
 	public function passwordAuthenticate(){
 		$data = $this->input->post("username");
 		$password = $this->input->post("password");
-		return $this->login_model->passwordAuthenticate($password, $data);
+		return $this->user_model->passwordAuthenticate($password, $data);
 	}
 
 	public function logout(){

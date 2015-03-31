@@ -1,6 +1,5 @@
 <section id="home">
 	<h1>Registrarse</h1>
-	<h2>Subtitulo o Slogan</h2>
 	<article class="registro">
 
 <?php echo validation_errors(); ?>

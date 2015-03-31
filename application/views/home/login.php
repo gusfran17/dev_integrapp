@@ -1,6 +1,5 @@
 <section id="home">
-	<h1>Integrapp</h1>
-	<h2>Primer sitio de ventas de artefactos ortopedicos que centraliza el mercado</h2>
+	<h1>Ingresar a mi cuenta</h1>
 	<article>
 		<?php echo validation_errors(); ?>
 		<h3>Login:</h3>

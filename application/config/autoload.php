@@ -138,7 +138,6 @@ $autoload['language'] = array();
 */
 
 $autoload['model'] =  array(
-	"user_model", 
-	"login_model"
+	"user_model"
 	
 	);
