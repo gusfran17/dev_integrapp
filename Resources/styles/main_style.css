@@ -1,5 +1,11 @@
 
 
+/*!!!!!!!!FUENTES!!!!!!!!*/
+@font-face { font-family: OpenSans; src: url(../fonts/Open_Sans/OpenSans-Regular.ttf);}
+@font-face {font-family: OpenSans; src: url(../fonts/Open_Sans/OpenSans-Bold.ttf); font-weight: bold;}
+@font-face {font-family: OpenSans;src: url(../fonts/Open_Sans/OpenSans-Italic.ttf);font-style: italic;}
+html, body{font-family: OpenSans}
+/*end*/
 
 
 /*!!!!!!!!BARRA DE NAVEGACIÓN!!!!!!!!!!*/
