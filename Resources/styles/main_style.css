@@ -168,7 +168,7 @@ section#home{margin-top:110px;padding-left: 40px;padding-right: 40px;padding-bot
 /*!!!!!FORM!!!!!!!!!!*/
 form{/*width: 40%; */position: relative; top: 50px; padding-bottom: 50px;}
 .btn:hover{background-color: #4784ff; color: white; transition: all 0.3s ease;}
-#description-user{position: relative; top:100px; right: 0; border-left: #ccc solid 1px; padding-left: }
+#description-user{position: relative; top:100px; right: 0; border-left: #ccc solid 1px; padding-left: 15px; transition: all 0.3s ease;}
 #registration{position: relative; padding-bottom: 30px;}
 /*end*/
 
