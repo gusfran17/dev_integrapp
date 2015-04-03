@@ -8,7 +8,12 @@ $texts = array('user' => "<h3>USUARIO</h3><p> normal Lorem ipsum dolor sit amet,
 
 $getText= $_POST['option'];
 
-echo $texts[$getText];
+if ($getText=='noselect') {
+	echo "<p>Seleccione un rol para saber mas sobre las caracteristicas particulares del mismo</p>";
+}else{
+	echo $texts[$getText];
+}
+
 
 
  ?>

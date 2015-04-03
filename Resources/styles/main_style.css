@@ -10,7 +10,7 @@ html, body{font-family: OpenSans}
 
 /*!!!!!!!!BARRA DE NAVEGACIÓN!!!!!!!!!!*/
 /*Esto me resetea el estilo principal de la barra de navegacion*/
-.navbar{background-color: #4784ff;	height: 80px;	margin-bottom: 0;	padding: 0 40px; box-shadow: 0px 1px 50px 5px rgba(0,0,0,0.5);}
+.navbar{background-color: #4784ff;	height: 80px; transition:all 0.3s ease	;margin-bottom: 0;	padding: 0 40px; box-shadow: 0px 1px 50px 5px rgba(0,0,0,0.5);}
 /*end*/
 
 /*Esto me resetea la altura del contenedor que engloba todo lo de adentro del nav*/
@@ -18,15 +18,20 @@ nav>.container-fluid{height: 100%; padding: 0;}
 /*end*/
 
 /*Esto me resetea la posicion de la barra de navegacion a la derecha y la altura*/
-ul.nav{float: right;padding: 15px 0;}
+ul.nav{float: right;padding: 15px 0; height: 100%}
+.navbar-collapse.collapse{height: 100%;}
+.nav > li{height: 100%}
 /*end*/
 
 /*Esto me resetea el color de los links de la barra de navegacion*/
 ul.nav a{color: white; transition:all 0.3s ease;}
 /*end*/
 
-/*Esto resetea la altura del div donde está el logo*/
+/*Esto resetea la altura del div donde está el logo y el cambio de altura del mismo y de la barra de navegación*/
 .navbar-brand{height: 100%;}
+.navbar-brand figure{height: 100% !important;}
+.navbar-brand figure img{transition: all 0.3s ease;}
+.navbar-collapse{height: 100%;}
 /*end*/
 
 /*Esto me resetea la altura del navbar para que las opciones bajen justo abajo de donde termina*/
