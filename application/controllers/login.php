@@ -17,7 +17,8 @@ class Login extends CI_Controller {
 		}else{
 			$this->load->view('templates/template_header');
 			$this->load->view('templates/template_nav');
-			$this->load->view('user/login');
+			$this->load->view('navs/nav_home');
+			$this->load->view('home/login');
 			$this->load->view('templates/template_footer');
    	}
 

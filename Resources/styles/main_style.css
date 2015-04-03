@@ -1,5 +1,11 @@
 
 
+/*!!!!!!!!FUENTES!!!!!!!!*/
+@font-face { font-family: OpenSans; src: url(../fonts/Open_Sans/OpenSans-Regular.ttf);}
+@font-face {font-family: OpenSans; src: url(../fonts/Open_Sans/OpenSans-Bold.ttf); font-weight: bold;}
+@font-face {font-family: OpenSans;src: url(../fonts/Open_Sans/OpenSans-Italic.ttf);font-style: italic;}
+html, body{font-family: OpenSans}
+/*end*/
 
 
 /*!!!!!!!!BARRA DE NAVEGACIÓN!!!!!!!!!!*/
@@ -54,7 +60,7 @@ ul.nav a{color: white; transition:all 0.3s ease;}
 /*end*/
 
 /*esto me da las reglas de medicion para el contenido del centro del home*/
-section#home{margin-top:90px;padding-left: 40px;padding-right: 40px;padding-bottom: 50px;}
+section#home{margin-top:110px;padding-left: 40px;padding-right: 40px;padding-bottom: 50px;}
 /*end*/
 
 /*Esto me da el hack para el responsive imagen del banner*/
@@ -151,3 +157,26 @@ section#home{margin-top:90px;padding-left: 40px;padding-right: 40px;padding-bott
 /*Esto es el hack para que todo aparezca gris en el footer*/
 #main-container>footer figure img{-webkit-filter: grayscale(1);	filter: grayscale(1);}
 /*end*/
+
+
+
+
+
+
+
+
+/*!!!!!FORM!!!!!!!!!!*/
+form{/*width: 40%; */position: relative; padding-bottom: 50px;}
+.btn:hover{background-color: #4784ff; color: white; transition: all 0.3s ease;}
+#description-user{position: relative; top:100px; right: 0; border-left: #ccc solid 1px; padding-left: 15px; transition: all 0.3s ease;}
+#registration{position: relative; padding-bottom: 30px;}
+/*end*/
+
+#login-form{
+	position: relative;
+	top: 10px;
+}
+
+@media (max-width: 768px) { 
+	#description-user{top: 0px; border: none;}
+ }

@@ -17,6 +17,7 @@ class Register extends CI_Controller {
 		$this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_emailcheck');
 		$this->form_validation->set_rules('password', 'Contraseña', 'required');
 		$this->form_validation->set_rules('repassword', 'Repetir contraseña', 'required|matches[password]');
+		$this->form_validation->set_rules('role', 'Rol', 'required|callback_selectCheck');
 		$this->form_validation->set_rules('terms', 'Términos y condiciones', 'required');
 		if ($this->form_validation->run()){
 			$insert = array();
@@ -33,7 +34,8 @@ class Register extends CI_Controller {
 		}else{
 			$this->load->view('templates/template_header');
 			$this->load->view('templates/template_nav');
-			$this->load->view('user/register');
+			$this->load->view('navs/nav_home');
+			$this->load->view('home/register');
 			$this->load->view('templates/template_footer');
 		}
 	}
@@ -51,5 +53,13 @@ class Register extends CI_Controller {
 		return 	$this->user_model->email_check($email); 
 	}
 
+	public function selectCheck(){
+		$option= $this->input->post("role");
+			if ($option=="noselect") {
+				return FALSE;
+		} else{
+			return TRUE;
+		}
+	}
 
  }
