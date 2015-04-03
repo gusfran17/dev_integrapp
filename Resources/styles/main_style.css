@@ -60,7 +60,7 @@ ul.nav a{color: white; transition:all 0.3s ease;}
 /*end*/
 
 /*esto me da las reglas de medicion para el contenido del centro del home*/
-section#home{margin-top:90px;padding-left: 40px;padding-right: 40px;padding-bottom: 50px;}
+section#home{margin-top:110px;padding-left: 40px;padding-right: 40px;padding-bottom: 50px;}
 /*end*/
 
 /*Esto me da el hack para el responsive imagen del banner*/
@@ -156,4 +156,16 @@ section#home{margin-top:90px;padding-left: 40px;padding-right: 40px;padding-bott
 
 /*Esto es el hack para que todo aparezca gris en el footer*/
 #main-container>footer figure img{-webkit-filter: grayscale(1);	filter: grayscale(1);}
+/*end*/
+
+
+
+
+
+
+
+
+/*!!!!!FORM!!!!!!!!!!*/
+form{width: 40%; position: relative; top: 50px; padding-bottom: 50px;}
+.btn:hover{background-color: #4784ff; color: white; transition: all 0.3s ease;}
 /*end*/
