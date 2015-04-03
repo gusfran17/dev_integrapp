@@ -1,9 +1,8 @@
 <section id="home">
-	<h1>Acceso Usuarios</h1>
-	<h2>Subtitulo o Slogan</h2>
-	<br>
+	<h1>Ingresar a mi cuenta</h1>
 	<article>
 		<?php echo validation_errors(); ?>
+<<<<<<< HEAD
 		<div class="container-fluid">
 			<div class="row" id="login-form">
 				<div class="col-md-5 col-sm-7 col-xs-12">
@@ -35,6 +34,22 @@
 			</div> 
 		</div> 
 		
+=======
+		<h3>Login:</h3>
+		<br>
+		<form action="<?php echo base_url(); ?>login/authenticate" method="POST">
+			<label for="">Usuario</label>
+			<input type="text" name="username" placeholder="Ingrese usuario o email">
+			<br>
+			<label for="">Contraseña</label>
+			<input type="password" name="password" placeholder="Ingrese su contraseña">
+			<br>
+			<input type="submit">
+		</form>
+		<br>
+		<p>Si aun no es usuario usted puede <a href="<?php echo base_url(); ?>home/routedHome/register">Registrarse</a></p>
+		<a href="<?php echo base_url(); ?>home/routedHome/register">Olvide mi contraseña</a>
+>>>>>>> 64847266ed9d26046efcc37fd5c6292963184d62
 
 	</article>
 </section>
