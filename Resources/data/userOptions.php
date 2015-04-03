@@ -1,0 +1,14 @@
+<?php 
+
+$texts = array('user' => "usuario normal Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex voluptatum nulla incidunt enim assumenda iste voluptatem repudiandae optio aut praesentium quod, in consequuntur, vitae rem facilis expedita. Possimus, culpa, ad. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex voluptatum nulla incidunt enim assumenda iste voluptatem repudiandae optio aut praesentium quod, in consequuntur, vitae rem facilis expedita. Possimus, culpa, ad. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex voluptatum nulla incidunt enim assumenda iste voluptatem repudiandae optio aut praesentium quod, in consequuntur, vitae rem facilis expedita. Possimus, culpa, ad. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex voluptatum nulla incidunt enim assumenda iste voluptatem repudiandae optio aut praesentium quod, in consequuntur, vitae rem facilis expedita. Possimus, culpa, ad.",
+               'distributor' => "Ortopedista Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex voluptatum nulla incidunt enim assumenda iste voluptatem repudiandae optio aut praesentium quod, in consequuntur, vitae rem facilis expedita. Possimus, culpa, ad. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex voluptatum nulla incidunt enim assumenda iste voluptatem repudiandae optio aut praesentium quod, in consequuntur, vitae rem facilis expedita. Possimus, culpa, ad. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex voluptatum nulla incidunt enim assumenda iste voluptatem repudiandae optio aut praesentium quod, in consequuntur, vitae rem facilis expedita. Possimus, culpa, ad. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex voluptatum nulla incidunt enim assumenda iste voluptatem repudiandae optio aut praesentium quod, in consequuntur, vitae rem facilis expedita. Possimus, culpa, ad.",
+               'supplier' => "Proveedor Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex voluptatum nulla incidunt enim assumenda iste voluptatem repudiandae optio aut praesentium quod, in consequuntur, vitae rem facilis expedita. Possimus, culpa, ad. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex voluptatum nulla incidunt enim assumenda iste voluptatem repudiandae optio aut praesentium quod, in consequuntur, vitae rem facilis expedita. Possimus, culpa, ad. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex voluptatum nulla incidunt enim assumenda iste voluptatem repudiandae optio aut praesentium quod, in consequuntur, vitae rem facilis expedita. Possimus, culpa, ad. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex voluptatum nulla incidunt enim assumenda iste voluptatem repudiandae optio aut praesentium quod, in consequuntur, vitae rem facilis expedita. Possimus, culpa, ad."
+			 );
+
+
+$getText= $_POST['option'];
+
+echo $texts[$getText];
+
+
+ ?>
