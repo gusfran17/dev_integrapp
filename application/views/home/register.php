@@ -2,33 +2,39 @@
 	<h1>Registrarse</h1>
 	<article class="registro">
 
-<?php echo validation_errors(); ?>
+
 	<div class="container-fluid">
 		<div class="row" id="registration">
 			<div class="col-md-5 col-sm-7">
 				<form action="<?php echo base_url(); ?>register/register" method="POST">
 					<div class="form-group">
 						<label for="username">Nombre de Usuario</label>
+						<?php echo form_error('username', '<span class="label label-danger">', '</span>'); ?>
 						<input type="text" id="username" class="form-control" name="username" value="<?php echo set_value('username'); ?>" placeholder="Ingrese su usuario">
 					</div>
 					<div class="form-group">
 						<label for="name">Nombre</label>
+						<?php echo form_error('name', '<span class="label label-danger">', '</span>'); ?>
 						<input type="text" id="name" class="form-control" name="name" value="<?php echo set_value('name'); ?>" placeholder="Ingrese su Nombre">
 					</div>
 					<div class="form-group">
 						<label for="lastname">Apellido</label>
+						<?php echo form_error('lastname', '<span class="label label-danger">', '</span>'); ?>
 						<input type="text" id="lastname" class="form-control" name="lastname" value="<?php echo set_value('lastname'); ?>" placeholder="Ingrese su Apellido">
 					</div>
 					<div class="form-group">
 						<label for="email">Email</label>
+						<?php echo form_error('email', '<span class="label label-danger">', '</span>'); ?>
 						<input type="mail" id="email" class="form-control" name="email" value="<?php echo set_value('email'); ?>" placeholder="Ingrese su E-Mail">
 					</div>
 					<div class="form-group">
 						<label for="pswd">Contraseña</label>
+						<?php echo form_error('password', '<span class="label label-danger">', '</span>'); ?>
 						<input type="password" id="pswd" class="form-control" name="password" placeholder="Ingrese su Contraseña">
 					</div>
 					<div class="form-group">
 						<label for="repswd">Confirmar Contraseña</label>
+						<?php echo form_error('repassword', '<span class="label label-danger">', '</span>'); ?>
 						<input type="password" id="repswd" class="form-control" name="repassword" placeholder="Repita su Contraseña">
 					</div>
 					<div class="form-group">
@@ -42,6 +48,7 @@
 					</div>
 					<div class="form-group">
 						<input type="checkbox" name="terms">Acepto los terminos y condiciones de integrapp
+						<?php echo form_error('terms', '<span class="label label-danger">', '</span>'); ?>
 					</div>
 					<div class="form-group">
 						<input type="checkbox" name="newsletter">Envíenme informacion de ofertas y capacitaciones por mail
@@ -54,14 +61,29 @@
 			</div>
 			<div class="col-md-7 col-sm-5" id="description-user">
 				<div>
-					<h3>USUARIO</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex voluptatum nulla incidunt enim assumenda iste voluptatem repudiandae optio aut praesentium quod, in consequuntur, vitae rem facilis expedita. Possimus, culpa, ad.</p>
+					<h3>COMO USUARIO PUEDE:</h3>
+					<ul>
+						<li>Tener un registro de las ultimas compras realizadas</li>
+						<li>Acceder a descuentos</li>
+					</ul>
 					<hr>
-					<h3>PROVEEDOR</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim cupiditate voluptas amet, illo, voluptate tempora rerum obcaecati maiores, eum dolorem natus. Saepe vitae quasi sed placeat ab dolor ipsa beatae.</p>
+					<h3>COMO PROVEEDOR PUEDE:</h3>
+					<ul>
+						<li>Tener los datos de tus productos y listas de precios actualizadas</li>
+						<li>Contactarte directo con los ortopedistas y puntos de venta</li>
+						<li>Tener alcance nacional</li>
+						<li>Acceder a contactarte con ortopedistas</li>
+						<li>Participar de capacitaciones</li>
+					</ul>
 					<hr>
-					<h3>ORTOPEDISTA</h3>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus ullam magni totam aspernatur illo perferendis quasi delectus debitis, distinctio animi adipisci eaque laudantium recusandae inventore doloribus accusamus at, dolore asperiores.</p>
+					<h3>COMO ORTOPEDISTA PUEDE:</h3>
+					<ul>
+						<li>Tener los datos de tu ortopedia publicada en nuestro sitio</li>
+						<li>Crear tu pagina institucional dentro de integrapp</li>
+						<li>Ofrecer tus servicios a todos los usuarios de integrapp</li>
+						<li>Acceder a contactarte con fabricantes</li>
+						<li>Participar de capacitaciones
+					</ul>
 				</div>
 			</div>
 		</div>
