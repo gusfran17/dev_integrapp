@@ -6,6 +6,8 @@
 			<div class="row" id="login-form">
 				<div class="col-md-5 col-sm-7 col-xs-12">
 					<form action="<?php echo base_url(); ?>login/authenticate" method="POST">
+					<p> <strong>  <?php if($this->session->flashdata('register_user')):echo $this->session->flashdata('register_user');endif; ?></strong> </p>
+					
 						<div class="form-group">
 							<label for="username">Usuario</label>
 							<?php echo form_error('username', '<span class="label label-danger">', '</span>'); ?>

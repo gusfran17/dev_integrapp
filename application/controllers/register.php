@@ -43,6 +43,7 @@ class Register extends CI_Controller {
 			}
 			$insert['register_date'] = date("Y-m-d H:i:s");
 			$id = $this->user_model->register_user($insert);
+			$this->session->set_flashdata('register_user', 'Su cuenta ha sido creada y le hemos enviado un e-mail de confirmación.');
 			redirect('home/routedHome/login');
 		}else{
 			$this->load->view('templates/template_header');
