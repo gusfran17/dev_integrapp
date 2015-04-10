@@ -1,3 +1,3 @@
 <section id="home">
-	<h1>HOME</h1>
+	<h1>Bienvenido <?php echo($userdata)?> !</h1>
 </section>
