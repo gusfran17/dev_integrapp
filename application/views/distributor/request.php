@@ -1,3 +1,3 @@
 <section id="home">
-	<h1>MIS OFERTAS</h1>
+	<h1>MIS SOLICITUDES</h1>
 </section>

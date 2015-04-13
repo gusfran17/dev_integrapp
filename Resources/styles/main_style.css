@@ -10,7 +10,7 @@ html, body{font-family: OpenSans}
 
 /*!!!!!!!!BARRA DE NAVEGACIÓN!!!!!!!!!!*/
 /*Esto me resetea el estilo principal de la barra de navegacion*/
-.navbar{background-color: #4784ff;	height: 80px; transition:all 0.3s ease	;margin-bottom: 0;	padding: 0 40px; box-shadow: 0px 1px 50px 5px rgba(0,0,0,0.5);}
+.navbar{background-color: #4784ff;	height: 80px; transition:all 0.3s ease	;margin-bottom: 0;	padding: 0 40px;}
 /*end*/
 
 /*Esto me resetea la altura del contenedor que engloba todo lo de adentro del nav*/
@@ -151,7 +151,7 @@ section#home{margin-top:110px;padding-left: 40px;padding-right: 40px;padding-bot
 
 /*!!!!!!!!!FOOTER!!!!!!!!!*/
 /*Esto me da el estilo del footer*/
-#main-container>footer{	padding:0 60px;	background-color: #4784ff;	color: #444;box-shadow: 0px 1px 50px 5px rgba(0,0,0,0.5);color: white;}
+#main-container>footer{	padding:0 60px;	background-color: #4784ff;	color: #444;color: white;}
 /*end*/
 
 
