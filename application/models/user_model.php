@@ -5,6 +5,21 @@
 class User_model extends CI_Model {
 
 
+
+
+    function get_user($id)
+    {
+        $query = $this->db->get_where('user', array("id"=>$id));
+        if ($query->num_rows() == 1){
+            return $query->row(0);
+        } else {
+            return false;
+        }
+     }
+
+
+
+
     function username_not_exist($username){
 
         $query = $this->db->get_where("user", array("username"=>$username));
@@ -49,7 +64,7 @@ class User_model extends CI_Model {
 
             if ($password==$passwordDB_decoded) {
 
-                $this->session->set_userdata(array('user'=>$user_result[0]->username, 'role'=>$user_result[0]->role, 'logged_in'=>true));
+                $this->session->set_userdata(array('id'=>$user_result[0]->id,'user'=>$user_result[0]->username, 'role'=>$user_result[0]->role, 'logged_in'=>true));
                 return TRUE;
             }else{
                     return FALSE;
@@ -72,7 +87,7 @@ class User_model extends CI_Model {
             $passwordDB_decoded = $this->encrypt->decode($passwordDB, $this->config->item('encryption_key'));
 
             if ($password==$passwordDB_decoded) {
-                $this->session->set_userdata(array('user'=>$user_result[0]->username, 'role'=>$user_result[0]->role, 'logged_in'=>true));
+                $this->session->set_userdata(array('id'=>$user_result[0]->id, 'user'=>$user_result[0]->username, 'role'=>$user_result[0]->role, 'logged_in'=>true));
                 return TRUE;
             }else{
                     return FALSE;

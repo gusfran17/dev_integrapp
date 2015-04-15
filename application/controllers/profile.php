@@ -13,8 +13,7 @@ class Profile extends CI_Controller {
     }
 	
 	
-    
-
+   
 	public function index(){
 		$data["userdata"]=$this->session->userdata("user");
 		$this->load->view('templates/template_header');
@@ -26,8 +25,7 @@ class Profile extends CI_Controller {
 
 
 
-	public function routedHome($section){
-		$data["userdata"]=$this->session->userdata("user");
+	public function routedHome($section, $data){
 		$this->load->view('templates/template_header');
 		$this->load->view('templates/template_nav');
 		$this->load->view('navs/nav_'.$this->session->userdata("role"));
@@ -37,27 +35,51 @@ class Profile extends CI_Controller {
 
 
 	public function account(){
-		$this->routedHome($this->section);
+
+		$userid = $this->session->userdata("id");
+
+		$role = $this->session->userdata("role");
+
+		$data['user'] = $this->user_model->get_user($userid);
+
+		if($role == "supplier"){
+
+			$data['supplier'] = $this->supplier_model->get_supplier($userid);
+
+		}else if($role == "distributor"){
+
+			$data['distributor'] = $this->distributor_model->get_distributor($userid);
+
+		}
+
+
+		// if(!$this->fabricante_model->is_verified($data['user']->id)){
+
+		// 	$data["mensaje_verificacion"] = "Su usuario no ha sido verificado por administrador todavia, para facilitar el proceso complete todos los datos a continuacion. Una vez verificado podra acceder a todas las funciones. Si el proceso de verificacion demora mas de 48hs <strong><a href='/contacto'>Contacte con un administrador</a></strong>";
+
+		// }
+		$this->routedHome($this->section, $data);
+
 	}
 
 	public function product(){
-		$this->routedHome($this->section);
+		$this->routedHome($this->section, $data);
 	}
 
 	public function request(){
-		$this->routedHome($this->section);
+		$this->routedHome($this->section, $data);
 	}
 
 	public function auction(){
-		$this->routedHome($this->section);
+		$this->routedHome($this->section, $data);
 	}
 
 	public function credit(){
-		$this->routedHome($this->section);
+		$this->routedHome($this->section, $data);
 	}
 
 	public function suppliers(){
-		$this->routedHome($this->section);
+		$this->routedHome($this->section, $data);
 	}
 
 
