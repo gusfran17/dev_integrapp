@@ -63,22 +63,27 @@ class Profile extends CI_Controller {
 	}
 
 	public function product(){
+		$data['user'] = $this->session->userdata("user");
 		$this->routedHome($this->section, $data);
 	}
 
 	public function request(){
+		$data['user'] = $this->session->userdata("user");
 		$this->routedHome($this->section, $data);
 	}
 
 	public function auction(){
+		$data['user'] = $this->session->userdata("user");
 		$this->routedHome($this->section, $data);
 	}
 
 	public function credit(){
+		$data['user'] = $this->session->userdata("user");
 		$this->routedHome($this->section, $data);
 	}
 
 	public function suppliers(){
+		$data['user'] = $this->session->userdata("user");
 		$this->routedHome($this->section, $data);
 	}
 
