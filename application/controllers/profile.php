@@ -34,21 +34,23 @@ class Profile extends CI_Controller {
 	}
 
 
+
+
 	public function account(){
 
 		$userid = $this->session->userdata("id");
 
 		$role = $this->session->userdata("role");
 
-		$data['user'] = $this->user_model->get_user($userid);
+		$data['user'] = $this->User_model->get_user($userid);
 
 		if($role == "supplier"){
 
-			$data['supplier'] = $this->supplier_model->get_supplier($userid);
+			$data['supplier'] = $this->Supplier_model->get_supplier($userid);
 
 		}else if($role == "distributor"){
 
-			$data['distributor'] = $this->distributor_model->get_distributor($userid);
+			$data['distributor'] = $this->Distributor_model->get_distributor($userid);
 
 		}
 
@@ -95,7 +97,10 @@ class Profile extends CI_Controller {
 	   	$this->form_validation->set_message('required', 'El campo %s es necesario');
 	   	$this->form_validation->set_message('valid_email', 'El campo %s debe ser una dirección de email válida');
 
-		if(($role == "distributor") or ($role == "distributor")){
+   		$this->form_validation->set_rules('name', 'Nombre', 'trim|required');
+   		$this->form_validation->set_rules('lastname', 'Apellido', 'trim|required');
+
+		if(($role == "distributor") or ($role == "supplier")){
 
 
 	   		$this->form_validation->set_rules('comercial_email', 'Email comercial', 'trim|valid_email');
@@ -119,7 +124,11 @@ class Profile extends CI_Controller {
 
    		if ($this->form_validation->run() == FALSE){
 
-			$this->routedHome('account',$data);
+			$this->load->view('templates/template_header');
+			$this->load->view('templates/template_nav');
+			$this->load->view('navs/nav_'.$this->session->userdata("role"));
+			$this->load->view($this->session->userdata("role").'/account');
+			$this->load->view('templates/template_footer');
 
 		} else {
 
@@ -129,7 +138,7 @@ class Profile extends CI_Controller {
 
 	   		$data['lastname'] = $this->input->post("lastname");
 
-	   		$resultado = $this->user_model->save($id, $data);
+	   		$resultado = $this->User_model->save($id, $data);
 
 	   		if ($resultado){
 
@@ -167,13 +176,13 @@ class Profile extends CI_Controller {
 
 			   		$data['bank_account_name'] = $this->input->post("bank_account_name");
 
-		   			$resultado = $this->supplier_model->save($id, $data);
+		   			$resultado = $this->Supplier_model->save($id, $data);
 
 
 
 		   		}else if($role == "distributor"){
 
-			   		$data['commercial_address'] = $this->input->post("comercial_address");
+			   		$data['commercial_address'] = $this->input->post("commercial_address");
 
 			   		//$data['phone'] = $this->input->post("phone");
 
@@ -193,7 +202,7 @@ class Profile extends CI_Controller {
 
 			   		$data['longLocation'] = $this->input->post("longLocation");
 
-		   			$resultado = $this->distributor_model->save($id, $data);
+		   			$resultado = $this->Distributor_model->save($id, $data);
 
 				}
 
@@ -202,9 +211,17 @@ class Profile extends CI_Controller {
 
 	  		$data = '';
 
-	   		$data['success'] = "Sus datos de perfil se guardaron correctamente";
+	   		$data['success'] = "Sus datos de perfil se guardaron correctamente.";
 
-			$this->routedHome('account',$data);
+			$this->load->view('templates/template_header');
+			$this->load->view('templates/template_nav');
+			$this->load->view('navs/nav_'.$this->session->userdata("role"));
+			$this->load->view($this->session->userdata("role").'/account');
+			$this->load->view('templates/template_footer');
+
+	   		//redirect('profile/account',$data);
+
+			//$this->routedHome2('account');
 
 			//$data['user'] = $this->session->userdata("user");
 

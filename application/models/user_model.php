@@ -11,6 +11,7 @@ class User_model extends CI_Model {
     {
         $query = $this->db->get_where('user', array("id"=>$id));
         if ($query->num_rows() == 1){
+            $query->row(0)->password = '';
             return $query->row(0);
         } else {
             return false;
