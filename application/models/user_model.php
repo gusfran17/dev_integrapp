@@ -53,6 +53,15 @@ class User_model extends CI_Model {
     }
 
 
+    function save($id, $data){
+
+        $this->db->where('id', $id);
+
+        return $this->db->update('user', $data);
+
+    }
+
+
     public function usernameCheck($password, $username){
         
         $query = $this->db->get_where("user", array("username"=>$username));

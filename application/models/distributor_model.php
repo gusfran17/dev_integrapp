@@ -16,7 +16,13 @@ class Distributor_model extends CI_Model {
      }
 
 
+    function save($userid, $data){
 
+        $this->db->where('userid', $userid);
+
+        return $this->db->update('distributor', $data);
+
+    }
 
 
 }
