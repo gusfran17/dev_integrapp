@@ -240,7 +240,7 @@ class Profile extends CI_Controller {
 
 		if ($this->form_validation->run() == FALSE){
 
-			$this->routedHome('password_change',$this->session->userdata("role"));
+			$this->routedHome('templates/template_password_change','');
 
 		}else{
 
