@@ -3,6 +3,12 @@
 	<form class="region size1of2" action="<?php echo base_url(); ?>profile/save" method="post" id="frm-login">
 		<div class="container">
 			<h1>MI CUENTA</h1>
+			<?php if(isset($success)):?>
+				<div class="alert alert-dismissable alert-success">
+			      <button type="button" class="close" data-dismiss="alert">×</button>
+			      <strong>Bien!</strong> <?php echo $success; ?></a>
+			    </div>
+			<?php endif;?>
 			<div class="alert alert-dismissable alert-info">
 				  <button type="button" class="close" data-dismiss="alert">×</button>
 				  <strong>Atencion!</strong> Debes completar la informacion con presición. Esta información sera compartida unicamente con los ortopedistas que usted autorice.

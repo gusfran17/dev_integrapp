@@ -3,6 +3,19 @@
 	<form class="region size1of2" action="<?php echo base_url(); ?>profile/save" method="post" id="frm-login">
 		<div class="container">
 			<h1>MI CUENTA</h1>
+
+				<?php if(isset($success)):?>
+					<div class="alert alert-dismissable alert-success">
+				      <button type="button" class="close" data-dismiss="alert">×</button>
+				      <strong>Bien!</strong> <?php echo $success; ?></a>
+				    </div>
+				<?php endif;?>
+
+				<div class="alert alert-dismissable alert-success">
+				      <button type="button" class="close" data-dismiss="alert">×</button>
+				      <strong>Bien!</strong> <?php echo $exito; ?></a>
+				    </div>
+				<?php endif;?>
 			<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 
 				<div class="form-group">

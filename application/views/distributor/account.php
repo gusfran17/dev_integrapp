@@ -5,6 +5,14 @@
 		
 		<div class="container">
 			<h1>MI CUENTA</h1>
+
+				<?php if(isset($success)):?>
+					<div class="alert alert-dismissable alert-success">
+				      <button type="button" class="close" data-dismiss="alert">×</button>
+				      <strong>Bien!</strong> <?php echo $success; ?></a>
+				    </div>
+				<?php endif;?>
+
 				<div class="panel panel-success">
 					<div class="panel-heading">
 						<h3 class="panel-title">Datos del perfil</h3>
@@ -35,9 +43,9 @@
 					<div class="form-group ">
 						<h4>Opciones de Cuenta</h4>
 						<ul>
-							<li><a href="/perfil/cambiar_contrasena">Cambiar la contraseña</a></li>
-							<li><a href="/perfil/cambiar_email">Cambiar email de registro</a></li>
-							<li><a href="/perfil/cambiar_logo">Editar el logo de mi empresa</a></li>
+							<li><a href="<?php echo base_url(); ?>profile/change_password">Cambiar la contraseña</a></li>
+							<li><a href="<?php echo base_url(); ?>profile/change_email">Cambiar email de registro</a></li>
+							<li><a href="<?php echo base_url(); ?>profile/change_logo">Editar el logo de mi empresa</a></li>
 						</ul>
 					</div>
 				</div>

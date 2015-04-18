@@ -54,13 +54,14 @@ class Profile extends CI_Controller {
 
 		}
 
+		$data['success'] = $this->session->flashdata('success');
 
 		// if(!$this->fabricante_model->is_verified($data['user']->id)){
 
 		// 	$data["mensaje_verificacion"] = "Su usuario no ha sido verificado por administrador todavia, para facilitar el proceso complete todos los datos a continuacion. Una vez verificado podra acceder a todas las funciones. Si el proceso de verificacion demora mas de 48hs <strong><a href='/contacto'>Contacte con un administrador</a></strong>";
 
 		// }
-		$this->routedHome($this->section, $data);
+		$this->routedHome('account', $data);
 
 	}
 
@@ -124,11 +125,6 @@ class Profile extends CI_Controller {
 
    		if ($this->form_validation->run() == FALSE){
 
-			// $this->load->view('templates/template_header');
-			// $this->load->view('templates/template_nav');
-			// $this->load->view('navs/nav_'.$this->session->userdata("role"));
-			// $this->load->view($this->session->userdata("role").'/account');
-			// $this->load->view('templates/template_footer');
 			$this->routedHome('account');
 
 		} else {
@@ -212,26 +208,58 @@ class Profile extends CI_Controller {
 
 	  		$data = '';
 
-	   		$data['success'] = "Sus datos de perfil se guardaron correctamente.";
+	   		$this->session->set_flashdata('success', "Sus datos de perfil se guardaron correctamente.");
 
-	   		$this->routedHome('account');
+	   		$this->account();
 
-			// $this->load->view('templates/template_header');
-			// $this->load->view('templates/template_nav');
-			// $this->load->view('navs/nav_'.$this->session->userdata("role"));
-			// $this->load->view($this->session->userdata("role").'/account');
-			// $this->load->view('templates/template_footer');
-
-	   		//redirect('profile/account',$data);
-
-			//$this->routedHome2('account');
-
-			//$data['user'] = $this->session->userdata("user");
-
-			//$this->routedHome($this->section, $data);
 		}
 
  
+	}
+
+	public function change_password(){
+			$this->routedHome('password_change');
+	}
+
+
+   	public function save_password() {
+
+		$id = $this->session->userdata("id");
+
+		$this->form_validation->set_rules('password', 'Password', 'callback_passwordAuthenticate');
+
+		$this->form_validation->set_rules('new_password', 'Nueva contraseña', 'required');
+
+		$this->form_validation->set_rules('new_repassword', 'Nueva contraseña (otra vez)', 'required|matches[new_password]');
+
+		$this->form_validation->set_message('passwordAuthenticate', 'Password actual inválido');
+
+		$this->form_validation->set_message('required', 'Este campo es necesario para cambiar la contraseña');
+
+		$this->form_validation->set_message('matches', 'Los campos de la nueva contraseña deben ser iguales');
+
+
+
+		if ($this->form_validation->run() == FALSE){
+
+			$this->routedHome('password_change');
+
+		}else{
+
+			$this->User_model->password_change($id, $this->input->post("new_password"));
+
+			$this->session->set_flashdata('success', 'La contraseña se ha cambiado!'); 
+
+			$this->account();
+
+		}
+
+   	}
+
+   	public function passwordAuthenticate(){
+		$data = $this->session->userdata("user");
+		$password = $this->input->post("password");
+		return $this->User_model->passwordAuthenticate($password, $data);
 	}
 
 

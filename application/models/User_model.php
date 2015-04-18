@@ -117,4 +117,12 @@ class User_model extends CI_Model {
     }
 
 
+   public function password_change($id, $newpassword){
+
+        $this->db->where('id', $id);
+        return $this->db->update('user', array('password'=>$this->encrypt->encode($newpassword, $this->config->item('encryption_key'))));
+
+    }
+
+
  }
