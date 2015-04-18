@@ -25,7 +25,7 @@ class Profile extends CI_Controller {
 
 
 
-	public function routedHome($section, $data){
+	public function routedHome($section, $data = null){
 		$this->load->view('templates/template_header');
 		$this->load->view('templates/template_nav');
 		$this->load->view('navs/nav_'.$this->session->userdata("role"));
@@ -124,11 +124,12 @@ class Profile extends CI_Controller {
 
    		if ($this->form_validation->run() == FALSE){
 
-			$this->load->view('templates/template_header');
-			$this->load->view('templates/template_nav');
-			$this->load->view('navs/nav_'.$this->session->userdata("role"));
-			$this->load->view($this->session->userdata("role").'/account');
-			$this->load->view('templates/template_footer');
+			// $this->load->view('templates/template_header');
+			// $this->load->view('templates/template_nav');
+			// $this->load->view('navs/nav_'.$this->session->userdata("role"));
+			// $this->load->view($this->session->userdata("role").'/account');
+			// $this->load->view('templates/template_footer');
+			$this->routedHome('account');
 
 		} else {
 
@@ -213,11 +214,13 @@ class Profile extends CI_Controller {
 
 	   		$data['success'] = "Sus datos de perfil se guardaron correctamente.";
 
-			$this->load->view('templates/template_header');
-			$this->load->view('templates/template_nav');
-			$this->load->view('navs/nav_'.$this->session->userdata("role"));
-			$this->load->view($this->session->userdata("role").'/account');
-			$this->load->view('templates/template_footer');
+	   		$this->routedHome('account');
+
+			// $this->load->view('templates/template_header');
+			// $this->load->view('templates/template_nav');
+			// $this->load->view('navs/nav_'.$this->session->userdata("role"));
+			// $this->load->view($this->session->userdata("role").'/account');
+			// $this->load->view('templates/template_footer');
 
 	   		//redirect('profile/account',$data);
 
