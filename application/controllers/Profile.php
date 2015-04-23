@@ -63,10 +63,16 @@ class Profile extends CI_Controller {
 
 	}
 
-	public function product(){
+	public function product($id=NULL){
 		$role = $this->session->userdata("role");
-		$data['category'] = $this->Product_model->get_category();
-
+		
+		if (isset($id)) {
+			$data['2-category'] = $this->Product_model->get_category($id);
+			echo json_encode($data);
+			die();
+		}else{
+			$data['category'] = $this->Product_model->get_category();
+		}
 		/*if($role == "supplier"){
 
 			$data['supplier'] = $this->Supplier_model->get_supplier($userid);

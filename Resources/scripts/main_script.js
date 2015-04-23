@@ -29,6 +29,26 @@ $(window).scroll(function(){
 	}
 });
 
+$('#1-category').change(function () {
+    var str = "";
+    $( "select option:selected" ).each(function() {
+      str += $( this ).attr('id') + " ";
+    });
+    
+    console.log(str);
+  	$.ajax({
+  		url:'/dev_integrapp/profile/product/'+str,
+  		type:'POST',
+  		dataType:'json',
+  		data:{parent:str},
+  		success:function(data){
+  			
+  			console.log(data)
+  		}
+  	});
+
+  })
+  .change();
 
 
 });

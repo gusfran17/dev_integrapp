@@ -19,14 +19,15 @@
 		    	<h3>Por favor, seleccione una categoria para comenzar...</h3>
 		    	<div class="panel panel-success">
 				<div class="panel-heading">
-					<select name="" id="">
+					<select name="" id="1-category">
 						<option value="">Seleccione una categoria...</option>
 						<?php foreach ($category as $option) {
-							echo "<option>".$option->name."</option>";
+							echo "<option id='".$option->id."'>".$option->id." - ".$option->name."</option>";
 						} ?>
-						<option value=""></option>
 					</select>
+					<div id="2-cat"></div>
 				</div>
+
 		    </div>
 		    <div role="tabpanel" class="tab-pane fade" id="settings">...</div>
 		  </div>
