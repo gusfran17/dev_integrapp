@@ -64,9 +64,25 @@ class Profile extends CI_Controller {
 	}
 
 	public function product(){
-		$data['user'] = $this->session->userdata("user");
-		$this->routedHome($this->section, $this->session->userdata("role"), $data);
+		$role = $this->session->userdata("role");
+		$data['category'] = $this->Product_model->get_category();
+
+		/*if($role == "supplier"){
+
+			$data['supplier'] = $this->Supplier_model->get_supplier($userid);
+
+		}else if($role == "distributor"){
+
+			$data['distributor'] = $this->Distributor_model->get_distributor($userid);
+
+		}*/
+
+		$this->routedHome('product',$role, $data);
+
+		
+		
 	}
+
 
 	public function request(){
 		$data['user'] = $this->session->userdata("user");

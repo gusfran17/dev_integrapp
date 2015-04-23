@@ -140,6 +140,7 @@ $autoload['language'] = array();
 $autoload['model'] =  array(
 	"User_model",
 	"Supplier_model",
-	"Distributor_model"
+	"Distributor_model",
+	"Product_model"
 	
 	);

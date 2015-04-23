@@ -42,7 +42,7 @@ class Register extends CI_Controller {
 				$insert['status'] = 'pending';
 			}
 			$insert['register_date'] = date("Y-m-d H:i:s");
-			$id = $this->user_model->register_user($insert);
+			$id = $this->User_model->register_user($insert);
 			$this->session->set_flashdata('register_user', 'Su cuenta ha sido creada y le hemos enviado un e-mail de confirmación.');
 			redirect('home/routedHome/login');
 		}else{
@@ -57,14 +57,14 @@ class Register extends CI_Controller {
 	
 	public function usernamecheck(){
 		$username = $this->input->post("username");
-		return $this->user_model->username_not_exist($username);
+		return $this->User_model->username_not_exist($username);
 	}
 
 
 
 	public function emailcheck(){
 		$email = $this->input->post("email");
-		return 	$this->user_model->email_not_exist($email); 
+		return 	$this->User_model->email_not_exist($email); 
 	}
 
 	public function selectCheck(){

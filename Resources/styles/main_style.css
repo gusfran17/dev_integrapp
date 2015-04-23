@@ -18,13 +18,13 @@ nav>.container-fluid{height: 100%; padding: 0;}
 /*end*/
 
 /*Esto me resetea la posicion de la barra de navegacion a la derecha y la altura*/
-ul.nav{float: right;padding: 15px 0; height: 100%}
+#bs-example-navbar-collapse-1>ul.nav{float: right;padding: 15px 0; height: 100%}
 .navbar-collapse.collapse{height: 100%;}
 .nav > li{height: 100%}
 /*end*/
 
 /*Esto me resetea el color de los links de la barra de navegacion*/
-ul.nav a{color: white; transition:all 0.3s ease;}
+#bs-example-navbar-collapse-1>ul.nav a{color: white; transition:all 0.3s ease;}
 /*end*/
 
 /*Esto resetea la altura del div donde está el logo y el cambio de altura del mismo y de la barra de navegación*/
@@ -184,4 +184,11 @@ form{/*width: 40%; */position: relative; padding-bottom: 50px;}
 
 @media (max-width: 768px) { 
 	#description-user{top: 0px; border: none;}
+ }
+
+
+
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
+ 	color: black;
  }
