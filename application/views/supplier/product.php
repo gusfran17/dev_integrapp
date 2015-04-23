@@ -17,6 +17,16 @@
 		    <div role="tabpanel" class="tab-pane fade" id="my-products">...</div>
 		    <div role="tabpanel" class="tab-pane fade" id="load-products">
 		    	<h3>Por favor, seleccione una categoria para comenzar...</h3>
+		    	<div class="panel panel-success">
+				<div class="panel-heading">
+					<select name="" id="">
+						<option value="">Seleccione una categoria...</option>
+						<?php foreach ($category as $option) {
+							echo "<option>".$option->name."</option>";
+						} ?>
+						<option value=""></option>
+					</select>
+				</div>
 		    </div>
 		    <div role="tabpanel" class="tab-pane fade" id="settings">...</div>
 		  </div>
