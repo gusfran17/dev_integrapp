@@ -19,13 +19,13 @@
 		    	<h3>Por favor, seleccione una categoria para comenzar...</h3>
 		    	<div class="panel panel-success">
 				<div class="panel-heading">
-					<select name="" id="1-category">
+					<select name="" id="FirstCategory">
 						<option value="">Seleccione una categoria...</option>
 						<?php foreach ($category as $option) {
 							echo "<option id='".$option->id."'>".$option->id." - ".$option->name."</option>";
 						} ?>
 					</select>
-					<div id="2-cat"></div>
+					<div id='result'></div>
 				</div>
 
 		    </div>

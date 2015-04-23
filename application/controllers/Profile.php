@@ -67,7 +67,7 @@ class Profile extends CI_Controller {
 		$role = $this->session->userdata("role");
 		
 		if (isset($id)) {
-			$data['2-category'] = $this->Product_model->get_category($id);
+			$data['SecondCategory'] = $this->Product_model->get_category($id);
 			echo json_encode($data);
 			die();
 		}else{
