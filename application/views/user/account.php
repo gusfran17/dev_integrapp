@@ -11,11 +11,6 @@
 				    </div>
 				<?php endif;?>
 
-				<div class="alert alert-dismissable alert-success">
-				      <button type="button" class="close" data-dismiss="alert">×</button>
-				      <strong>Bien!</strong> <?php echo $exito; ?></a>
-				    </div>
-				<?php endif;?>
 			<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 
 				<div class="form-group">
@@ -39,9 +34,9 @@
 					<div class="form-group ">
 						<h4>Otras acciones</h4>
 						<ul>
-							<li><a href="/perfil/cambiar_contrasena">Cambiar la contraseña</a></li>
-							<li><a href="/perfil/cambiar_email">Cambiar email de registro</a></li>
-							<li><a href="/perfil/cambiar_logo">Editar el logo de mi empresa</a></li>
+							<li><a href="<?php echo base_url(); ?>profile/change_password">Cambiar la contraseña</a></li>
+							<li><a href="<?php echo base_url(); ?>profile/change_email">Cambiar email de registro</a></li>
+							<li><a href="<?php echo base_url(); ?>profile/change_username">Cambiar Nombre de Usuario</a></li>
 						</ul>
 					</div>
 				</div>				

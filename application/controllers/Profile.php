@@ -216,21 +216,104 @@ class Profile extends CI_Controller {
 	}
 
 	public function change_password(){
-			$this->routedHome('templates/template_password_change','');
+			$this->routedHome('templates/data_change/template_password_change','');
 	}
+
+
+	public function change_email(){
+			$data['email'] = $this->session->userdata('email');
+			$this->routedHome('templates/data_change/template_email_change',null,$data);
+	}
+
+	public function change_username(){
+			$data['user'] = $this->session->userdata('user');
+			$this->routedHome('templates/data_change/template_username_change',null,$data);
+	}
+
+
+   	public function save_email() {
+
+		$id = $this->session->userdata("id");
+
+		$this->form_validation->set_rules('password', 'Password', 'callback_passwordAuthenticate');
+
+		$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+
+		$this->form_validation->set_message('passwordAuthenticate', 'Password actual inválido');
+
+		$this->form_validation->set_message('required', 'Este campo es necesario para cambiar el email de registro');
+
+		$this->form_validation->set_message('valid_email', 'El formato de email no es válido');
+
+
+		if ($this->form_validation->run() == FALSE){
+
+			$data['email'] = $this->session->userdata('email');
+			$this->routedHome('templates/data_change/template_email_change',null,$data);
+
+		}else{
+
+			$mail = $this->input->post("email");
+
+			$this->User_model->email_change($id, $mail);
+
+			$this->session->set_userdata(array('email'=>$mail));
+
+			$this->session->set_flashdata('success', 'El email se ha cambiado!'); 
+
+			$this->account();
+
+		}
+
+   	}
+
+
+   	public function save_username() {
+
+		$id = $this->session->userdata("id");
+
+		$this->form_validation->set_rules('password', 'Contraseña', 'callback_passwordAuthenticate');
+
+		$this->form_validation->set_rules('username', 'Nombre de Usuario', 'required');
+
+		$this->form_validation->set_message('passwordAuthenticate', 'Contraseña actual inválida');
+
+		$this->form_validation->set_message('required', 'Este campo es necesario para cambiar el nombre de usuario');
+
+
+		if ($this->form_validation->run() == FALSE){
+
+			$data['user'] = $this->session->userdata('user');
+			$this->routedHome('templates/data_change/template_username_change',null,$data);
+
+		}else{
+
+			$username = $this->input->post("username");
+
+			$this->User_model->username_change($id, $username);
+
+			$this->session->set_userdata(array('username'=>$username));
+
+			$this->session->set_flashdata('success', 'El Nombre de Usuario se ha cambiado!'); 
+
+			$this->account();
+
+		}
+
+   	}
 
 
    	public function save_password() {
 
 		$id = $this->session->userdata("id");
 
-		$this->form_validation->set_rules('password', 'Password', 'callback_passwordAuthenticate');
+		$this->form_validation->set_rules('password', 'Contraseña', 'callback_passwordAuthenticate');
 
 		$this->form_validation->set_rules('new_password', 'Nueva contraseña', 'required');
 
 		$this->form_validation->set_rules('new_repassword', 'Nueva contraseña (otra vez)', 'required|matches[new_password]');
 
-		$this->form_validation->set_message('passwordAuthenticate', 'Password actual inválido');
+		$this->form_validation->set_message('passwordAuthenticate', 'Contraseña actual inválida');
 
 		$this->form_validation->set_message('required', 'Este campo es necesario para cambiar la contraseña');
 
@@ -240,7 +323,7 @@ class Profile extends CI_Controller {
 
 		if ($this->form_validation->run() == FALSE){
 
-			$this->routedHome('templates/template_password_change','');
+			$this->routedHome('templates/data_change/template_password_change','');
 
 		}else{
 
