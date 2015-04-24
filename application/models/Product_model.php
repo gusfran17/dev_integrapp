@@ -39,7 +39,22 @@ class Product_model extends CI_Model {
         return $result;
     }
   
+    function get_categories($parent=null, $tab)
+    {
 
+
+        $this->db->where("parent_id", $parent);
+        $query = $this->db->get('category');
+        $result = $query->result();
+
+        $tab = $tab."\t";
+
+        foreach($result as $record){
+                $categories = $categories . $tab . $record->name . "\n" . $this->get_categories($record->id,$tab);
+        }
+        return  $categories;
+
+    }
 
 }
 
