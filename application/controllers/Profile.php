@@ -219,7 +219,6 @@ class Profile extends CI_Controller {
 			$this->routedHome('templates/data_change/template_password_change','');
 	}
 
-
 	public function change_email(){
 			$data['email'] = $this->session->userdata('email');
 			$this->routedHome('templates/data_change/template_email_change',null,$data);
@@ -237,13 +236,15 @@ class Profile extends CI_Controller {
 
 		$this->form_validation->set_rules('password', 'Password', 'callback_passwordAuthenticate');
 
-		$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+		$this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_emailcheck');
 
 		$this->form_validation->set_message('passwordAuthenticate', 'Password actual inválido');
 
 		$this->form_validation->set_message('required', 'Este campo es necesario para cambiar el email de registro');
 
 		$this->form_validation->set_message('valid_email', 'El formato de email no es válido');
+
+		$this->form_validation->set_message('emailcheck', 'Ops, el mail ya esta en uso');
 
 
 		if ($this->form_validation->run() == FALSE){
@@ -274,12 +275,13 @@ class Profile extends CI_Controller {
 
 		$this->form_validation->set_rules('password', 'Contraseña', 'callback_passwordAuthenticate');
 
-		$this->form_validation->set_rules('username', 'Nombre de Usuario', 'required');
+		$this->form_validation->set_rules('username', 'Nombre de Usuario', 'required|callback_usernamecheck');
 
 		$this->form_validation->set_message('passwordAuthenticate', 'Contraseña actual inválida');
 
 		$this->form_validation->set_message('required', 'Este campo es necesario para cambiar el nombre de usuario');
 
+		$this->form_validation->set_message('usernamecheck', 'Ops, el nombre de usuario ya esta en uso');
 
 		if ($this->form_validation->run() == FALSE){
 
@@ -343,6 +345,17 @@ class Profile extends CI_Controller {
 		return $this->User_model->passwordAuthenticate($password, $data);
 	}
 
+	public function usernamecheck(){
+		$username = $this->input->post("username");
+		return $this->User_model->username_not_exist($username);
+	}
+
+
+
+	public function emailcheck(){
+		$email = $this->input->post("email");
+		return 	$this->User_model->email_not_exist($email); 
+	}
 
 
 }
