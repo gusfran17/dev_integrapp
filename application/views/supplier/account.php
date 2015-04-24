@@ -43,9 +43,10 @@
 					<div class="form-group ">
 						<h4>Otras acciones</h4>
 						<ul>
-							<li><a href="/perfil/cambiar_contrasena">Cambiar la contraseña</a></li>
-							<li><a href="/perfil/cambiar_email">Cambiar email de registro</a></li>
-							<li><a href="/perfil/cambiar_logo">Editar el logo de mi empresa</a></li>
+							<li><a href="<?php echo base_url(); ?>profile/change_password">Cambiar la contraseña</a></li>
+							<li><a href="<?php echo base_url(); ?>profile/change_email">Cambiar email de registro</a></li>
+							<li><a href="<?php echo base_url(); ?>profile/change_username">Cambiar Nombre de Usuario</a></li>
+							<li><a href="<?php echo base_url(); ?>profile/change_logo">Editar el logo de mi empresa</a></li>
 						</ul>
 					</div>
 				</div>				
@@ -65,6 +66,7 @@
 
 			<div class="form-group">
 			  <label class="control-label" for="comercial_email">Email comercial</label>
+			  <?php echo form_error('comercial_email', '<span class="label label-danger">', '</span>'); ?>
 			  <input class="form-control" id="comercial_email" name="comercial_email" type="text" placeHolder="Dirección comercial" value="<?php if (isset($supplier)) echo set_value('commercial_email', $supplier->comercial_email); else echo set_value('comercial_email');?>">
 			</div>				
 

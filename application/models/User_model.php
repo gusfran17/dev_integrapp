@@ -74,7 +74,7 @@ class User_model extends CI_Model {
 
             if ($password==$passwordDB_decoded) {
 
-                $this->session->set_userdata(array('id'=>$user_result[0]->id,'user'=>$user_result[0]->username, 'role'=>$user_result[0]->role, 'logged_in'=>true));
+                $this->session->set_userdata(array('id'=>$user_result[0]->id,'user'=>$user_result[0]->username, 'role'=>$user_result[0]->role, 'email'=>$user_result[0]->email, 'logged_in'=>true));
                 return TRUE;
             }else{
                     return FALSE;
@@ -97,7 +97,7 @@ class User_model extends CI_Model {
             $passwordDB_decoded = $this->encrypt->decode($passwordDB, $this->config->item('encryption_key'));
 
             if ($password==$passwordDB_decoded) {
-                $this->session->set_userdata(array('id'=>$user_result[0]->id, 'user'=>$user_result[0]->username, 'role'=>$user_result[0]->role, 'logged_in'=>true));
+                $this->session->set_userdata(array('id'=>$user_result[0]->id, 'user'=>$user_result[0]->username, 'role'=>$user_result[0]->role, 'email'=>$user_result[0]->email, 'logged_in'=>true));
                 return TRUE;
             }else{
                     return FALSE;
@@ -121,6 +121,21 @@ class User_model extends CI_Model {
 
         $this->db->where('id', $id);
         return $this->db->update('user', array('password'=>$this->encrypt->encode($newpassword, $this->config->item('encryption_key'))));
+
+    }
+
+   public function email_change($id, $newemail){
+
+        $this->db->where('id', $id);
+        return $this->db->update('user', array('email'=>$newemail));
+
+    }
+
+
+   public function username_change($id, $new_username){
+
+        $this->db->where('id', $id);
+        return $this->db->update('user', array('username'=>$new_username));
 
     }
 
