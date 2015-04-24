@@ -34,7 +34,7 @@ class Product_model extends CI_Model {
     }
 
     
-    function get_categories($parent=null, $tab){
+    function get_all_categories($parent=null, $tab){
 
         $this->db->where("parent_id", $parent);
         $query = $this->db->get('category');
