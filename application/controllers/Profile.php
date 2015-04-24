@@ -117,29 +117,18 @@ class Profile extends CI_Controller {
 
 	   	$this->form_validation->set_message('required', 'El campo %s es necesario');
 	   	$this->form_validation->set_message('valid_email', 'El campo %s debe ser una dirección de email válida');
-
    		$this->form_validation->set_rules('name', 'Nombre', 'trim|required');
    		$this->form_validation->set_rules('lastname', 'Apellido', 'trim|required');
-
 		if(($role == "distributor") or ($role == "supplier")){
 
-
 	   		$this->form_validation->set_rules('comercial_email', 'Email comercial', 'trim|valid_email');
-
 	   		$this->form_validation->set_rules('comercial_address', 'Dirección comercial', 'trim');
-
 	   		$this->form_validation->set_rules('razon_social', 'Razon social', 'trim');
-
 	   		$this->form_validation->set_rules('fiscal_address', 'Direccion fiscal', 'trim');
-
 	   		$this->form_validation->set_rules('service_description', 'Descricion del servicio', 'trim');
-
 	   		$this->form_validation->set_rules('cuit', 'cuit', 'trim');
-
 	   		//$this->form_validation->set_rules('phone', 'Teléfono', 'trim');
-
 	   		$this->form_validation->set_rules('city', 'Ciudad', 'trim');
-
    		}
 
 
@@ -150,75 +139,41 @@ class Profile extends CI_Controller {
 		} else {
 
 			$userdata = array();
-
 	   		$data['name'] = $this->input->post("name");
-
 	   		$data['lastname'] = $this->input->post("lastname");
-
 	   		$resultado = $this->User_model->save($id, $data);
-
 	   		if ($resultado){
-
 		   		$data = array();
-
 				if($role == "supplier"){
-
 			   		$data['fake_name'] = $this->input->post("fake_name");
-
 			   		$data['razon_social'] = $this->input->post("razon_social");
-
 			   		$data['cuit'] = $this->input->post("cuit");
-
 			   		$data['service_description'] = $this->input->post("service_description");
-
 			   		$data['commercial_address'] = $this->input->post("comercial_address");
-
 			   		$data['fiscal_address'] = $this->input->post("fiscal_address");
-
 			   		$data['cbu'] = $this->input->post("cbu");
-
 			   		$data['checks'] = $this->input->post("checks");
-
 			   		$data['bank_account'] = $this->input->post("bank_account");
-
 			   		//$data['phone'] = $this->input->post("phone");
-
 			   		$data['comercial_email'] = $this->input->post("comercial_email");
-
 			   		$data['bank_name'] = $this->input->post("bank_name");
-
 			   		$data['bank_branch'] = $this->input->post("bank_branch");
-
 			   		$data['bank_account_number'] = $this->input->post("bank_account_number");
-
 			   		$data['bank_account_name'] = $this->input->post("bank_account_name");
-
 		   			$resultado = $this->Supplier_model->save($id, $data);
-
-
 
 		   		}else if($role == "distributor"){
 
 			   		$data['commercial_address'] = $this->input->post("commercial_address");
-
 			   		//$data['phone'] = $this->input->post("phone");
-
 			   		$data['comercial_email'] = $this->input->post("comercial_email");
-
 			   		$data['razon_social'] = $this->input->post("razon_social");
-
 			   		$data['fake_name'] = $this->input->post("fake_name");
-
 			   		$data['fiscal_address'] = $this->input->post("fiscal_address");
-
 			   		$data['service_description'] = $this->input->post("service_description");
-
 			   		$data['cuit'] = $this->input->post("cuit");
-
 			   		$data['latLocation'] = $this->input->post("latLocation");
-
 			   		$data['longLocation'] = $this->input->post("longLocation");
-
 		   			$resultado = $this->Distributor_model->save($id, $data);
 
 				}
@@ -227,9 +182,7 @@ class Profile extends CI_Controller {
 	   		}
 
 	  		$data = '';
-
 	   		$this->session->set_flashdata('success', "Sus datos de perfil se guardaron correctamente.");
-
 	   		$this->account();
 
 		}
@@ -256,17 +209,11 @@ class Profile extends CI_Controller {
    	public function save_email() {
 
 		$id = $this->session->userdata("id");
-
 		$this->form_validation->set_rules('password', 'Password', 'callback_passwordAuthenticate');
-
 		$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
-
 		$this->form_validation->set_message('passwordAuthenticate', 'Password actual inválido');
-
 		$this->form_validation->set_message('required', 'Este campo es necesario para cambiar el email de registro');
-
 		$this->form_validation->set_message('valid_email', 'El formato de email no es válido');
-
 
 		if ($this->form_validation->run() == FALSE){
 
@@ -276,13 +223,9 @@ class Profile extends CI_Controller {
 		}else{
 
 			$mail = $this->input->post("email");
-
 			$this->User_model->email_change($id, $mail);
-
 			$this->session->set_userdata(array('email'=>$mail));
-
 			$this->session->set_flashdata('success', 'El email se ha cambiado!'); 
-
 			$this->account();
 
 		}
@@ -293,31 +236,22 @@ class Profile extends CI_Controller {
    	public function save_username() {
 
 		$id = $this->session->userdata("id");
-
 		$this->form_validation->set_rules('password', 'Contraseña', 'callback_passwordAuthenticate');
-
 		$this->form_validation->set_rules('username', 'Nombre de Usuario', 'required');
-
 		$this->form_validation->set_message('passwordAuthenticate', 'Contraseña actual inválida');
-
 		$this->form_validation->set_message('required', 'Este campo es necesario para cambiar el nombre de usuario');
-
 
 		if ($this->form_validation->run() == FALSE){
 
 			$data['user'] = $this->session->userdata('user');
-			$this->routedHome('templates/data_change/template_username_change',null,$data);
+			$this->routedHome('templates/data_change/template_username_change',NULL, $data);
 
 		}else{
 
 			$username = $this->input->post("username");
-
 			$this->User_model->username_change($id, $username);
-
 			$this->session->set_userdata(array('username'=>$username));
-
 			$this->session->set_flashdata('success', 'El Nombre de Usuario se ha cambiado!'); 
-
 			$this->account();
 
 		}
@@ -328,20 +262,12 @@ class Profile extends CI_Controller {
    	public function save_password() {
 
 		$id = $this->session->userdata("id");
-
 		$this->form_validation->set_rules('password', 'Contraseña', 'callback_passwordAuthenticate');
-
 		$this->form_validation->set_rules('new_password', 'Nueva contraseña', 'required');
-
 		$this->form_validation->set_rules('new_repassword', 'Nueva contraseña (otra vez)', 'required|matches[new_password]');
-
 		$this->form_validation->set_message('passwordAuthenticate', 'Contraseña actual inválida');
-
 		$this->form_validation->set_message('required', 'Este campo es necesario para cambiar la contraseña');
-
 		$this->form_validation->set_message('matches', 'Los campos de la nueva contraseña deben ser iguales');
-
-
 
 		if ($this->form_validation->run() == FALSE){
 
@@ -350,9 +276,7 @@ class Profile extends CI_Controller {
 		}else{
 
 			$this->User_model->password_change($id, $this->input->post("new_password"));
-
 			$this->session->set_flashdata('success', 'La contraseña se ha cambiado!'); 
-
 			$this->account();
 
 		}
@@ -364,8 +288,6 @@ class Profile extends CI_Controller {
 		$password = $this->input->post("password");
 		return $this->User_model->passwordAuthenticate($password, $data);
 	}
-
-
 
 }
 

@@ -48,18 +48,13 @@ class User_model extends CI_Model {
     }
     
     function register_user($data){
-
         $this->db->insert("user", $data);
-
     }
 
 
     function save($id, $data){
-
         $this->db->where('id', $id);
-
         return $this->db->update('user', $data);
-
     }
 
 
