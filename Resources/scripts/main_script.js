@@ -41,7 +41,7 @@ $('#FirstCategory').change(function () {
   		dataType:'json',
   		data:{parent:str},
   		success:function(data){
-  			$('#result').append("<select id='SecondCategory'></select>");
+  			$('#result').append("<select id='SecondCategory' class='col-md-2'></select>");
   	     	for(var i in data){
 	     		var obj=data[i];
 	     		for(var j in obj){
@@ -71,7 +71,7 @@ $('body').on('change', '#SecondCategory', function () {
   		dataType:'json',
   		data:{parent:id},
   		success:function(data){
-  			$('#result').append("<select id='ThirdCategory'></select>");
+  			$('#result').append("<select id='ThirdCategory' class='col-md-2'></select>");
   	     	for(var i in data){
 	     		var obj=data[i];
 	     		for(var j in obj){
@@ -99,7 +99,7 @@ $('body').on('change', '#ThirdCategory', function () {
   		dataType:'json',
   		data:{parent:id},
   		success:function(data){
-  			$('#result').append("<select id='FourthCategory'></select>");
+  			$('#result').append("<select id='FourthCategory' class='col-md-2'></select>");
   	     	for(var i in data){
 	     		var obj=data[i];
 	     		for(var j in obj){
@@ -126,7 +126,7 @@ $('body').on('change', '#FourthCategory', function () {
   		dataType:'json',
   		data:{parent:id},
   		success:function(data){
-  			$('#result').append("<select id='FifthCategory'></select>");
+  			$('#result').append("<select id='FifthCategory' class='col-md-2'></select>");
   	     	for(var i in data){
 	     		var obj=data[i];
 	     		for(var j in obj){
