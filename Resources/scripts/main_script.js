@@ -59,7 +59,7 @@ function ajaxCall(){
 	     		for(var j in obj){
 	     			var id=obj[j].id;
 	     			var name=obj[j].name;
-	     			$('#category'+categoryLevel).append("<option id='"+id+"'>"+id+" - "+name+"</option>");
+	     			$('#category'+categoryLevel).append("<option id='"+id+"'>"+name+"</option>");
 	     		}
 	     		
 	     	}

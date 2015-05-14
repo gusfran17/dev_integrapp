@@ -22,12 +22,11 @@
 					<select name="" id="category1">
 						<option value="">Seleccione una categoria...</option>
 						<?php foreach ($category as $option) {
-							echo "<option id='".$option->id."'>".$option->id." - ".$option->name."</option>";
+							echo "<option id='".$option->id."'>".$option->name."</option>";
 						} ?>
 					</select>
 					
 				</div>
-				<div id='result' class=""></div>
 
 		    </div>
 		    <div role="tabpanel" class="tab-pane fade" id="settings">...</div>
