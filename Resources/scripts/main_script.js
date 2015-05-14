@@ -29,118 +29,49 @@ $(window).scroll(function(){
 	}
 });
 
-$('#FirstCategory').change(function () {
-	$('#result').empty();
-    var str = "";
+
+var idCategory;
+//idCategory=$('#products').find('select').attr('id');
+
+function ajaxCall(){
+	var categoryLevel= idCategory.substr(8,1);
+	for (var i = categoryLevel+1; i <= 5; i++) {
+		$(i).remove();
+	}
+	var str = "";
     $( "select option:selected" ).each(function() {
-      str += $( this ).attr('id') + " ";
+      str = $( this ).attr('id') + " ";
     });
-   	$.ajax({
+    console.log(str);
+	$.ajax({
   		url:'/dev_integrapp/profile/product/'+str,
   		type:'POST',
   		dataType:'json',
   		data:{parent:str},
   		success:function(data){
-  			$('#result').append("<select id='SecondCategory' class='col-md-2'></select>");
+  			categoryLevel++;
+  			$('#products').append("<select id='category"+categoryLevel+"' class=''></select>");
   	     	for(var i in data){
 	     		var obj=data[i];
 	     		for(var j in obj){
 	     			var id=obj[j].id;
 	     			var name=obj[j].name;
-	     			$('#SecondCategory').append("<option id='"+id+"'>"+id+" - "+name+"</option>");
+	     			$('#category'+categoryLevel).append("<option id='"+id+"'>"+id+" - "+name+"</option>");
 	     		}
 	     		
 	     	}
   		}
   	});
-  })
-  .change();
+}
 
-  
-$('body').on('change', '#SecondCategory', function () { 
-	$('#ThirdCategory').remove();
-	$('#FourthCategory').remove();
-	$('#FifthCategory').remove();
-	    var id = "";
-	    $("#SecondCategory option:selected").each(function() {
-	      id += $( this ).attr('id') + " ";
-	    });
-	    	$.ajax({
-  		url:'/dev_integrapp/profile/product/'+id,
-  		type:'POST',
-  		dataType:'json',
-  		data:{parent:id},
-  		success:function(data){
-  			$('#result').append("<select id='ThirdCategory' class='col-md-2'></select>");
-  	     	for(var i in data){
-	     		var obj=data[i];
-	     		for(var j in obj){
-	     			var id=obj[j].id;
-	     			var name=obj[j].name;
-	     			$('#ThirdCategory').append("<option id='"+id+"'>"+id+" - "+name+"</option>");
-	     		}
-	     		
-	     	}
-  		}
-  	});
+
+$('body').on('change', 'select', function () {
+	idCategory=$(this).attr('id');
+
+	ajaxCall();
+
 	
 });
 
-$('body').on('change', '#ThirdCategory', function () { 
-	$('#FourthCategory').remove();
-	$('#FifthCategory').remove();
-	    var id = "";
-	    $("#ThirdCategory option:selected").each(function() {
-	      id += $( this ).attr('id') + " ";
-	    });
-	$.ajax({
-  		url:'/dev_integrapp/profile/product/'+id,
-  		type:'POST',
-  		dataType:'json',
-  		data:{parent:id},
-  		success:function(data){
-  			$('#result').append("<select id='FourthCategory' class='col-md-2'></select>");
-  	     	for(var i in data){
-	     		var obj=data[i];
-	     		for(var j in obj){
-	     			var id=obj[j].id;
-	     			var name=obj[j].name;
-	     			$('#FourthCategory').append("<option id='"+id+"'>"+id+" - "+name+"</option>");
-	     		}
-	     		
-	     	}
-  		}
-  	});
-});
-
-
-$('body').on('change', '#FourthCategory', function () { 
-	$('#FifthCategory').remove();
-	    var id = "";
-	    $("#FourthCategory option:selected").each(function() {
-	      id += $( this ).attr('id') + " ";
-	    });
-	$.ajax({
-  		url:'/dev_integrapp/profile/product/'+id,
-  		type:'POST',
-  		dataType:'json',
-  		data:{parent:id},
-  		success:function(data){
-  			$('#result').append("<select id='FifthCategory' class='col-md-2'></select>");
-  	     	for(var i in data){
-	     		var obj=data[i];
-	     		for(var j in obj){
-	     			var id=obj[j].id;
-	     			var name=obj[j].name;
-	     			$('#FifthCategory').append("<option id='"+id+"'>"+id+" - "+name+"</option>");
-	     		}
-	     		
-	     	}
-  		}
-  	});
-});
-
-
-  
 
 });
