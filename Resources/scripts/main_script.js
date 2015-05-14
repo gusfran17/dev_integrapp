@@ -34,15 +34,18 @@ var idCategory;
 //idCategory=$('#products').find('select').attr('id');
 
 function ajaxCall(){
+
 	var categoryLevel= idCategory.substr(8,1);
-	for (var i = categoryLevel+1; i <= 5; i++) {
-		$(i).remove();
+
+	for ( i = parseInt(categoryLevel)+1; i <= 5; i++) {
+		$("#category"+i).remove();
 	}
+
 	var str = "";
     $( "select option:selected" ).each(function() {
       str = $( this ).attr('id') + " ";
     });
-    console.log(str);
+    
 	$.ajax({
   		url:'/dev_integrapp/profile/product/'+str,
   		type:'POST',
@@ -65,7 +68,7 @@ function ajaxCall(){
 }
 
 
-$('body').on('change', 'select', function () {
+$('#products').on('change', 'select', function () {
 	idCategory=$(this).attr('id');
 
 	ajaxCall();
