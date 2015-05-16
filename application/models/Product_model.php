@@ -47,5 +47,9 @@ class Product_model extends CI_Model {
 
     }
 
+    function get_property($parent=null){
+        
+    }
+
 }
 

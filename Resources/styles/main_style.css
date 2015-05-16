@@ -196,9 +196,6 @@ form{/*width: 40%; */position: relative; padding-bottom: 50px;}
  	color: black;
  }
 
-#FirstCategory{
-	width: 100%;
+.categories{
+	margin: 10px 0;
 }
-
-#SecondCategory, #ThirdCategory, #FourthCategory, #FifthCategory{
-margin: 0 5px;}

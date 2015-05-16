@@ -18,20 +18,17 @@
 		    <div role="tabpanel" class="tab-pane fade" id="load-products">
 		    	<h3>Por favor, seleccione una categoria para comenzar...</h3>
 		    	<div class="row">
-				<div class="col-md-2" id="products">
-					<select name="" id="category1">
-						<option value="">Seleccione una categoria...</option>
-						<?php foreach ($category as $option) {
-							echo "<option id='".$option->id."'>".$option->name."</option>";
-						} ?>
-					</select>
-					
-				</div>
-
-		    </div>
+					<div class="col-md-2" id="products">
+						<select name="" id="category1">
+							<option value="">Seleccione una categoria...</option>
+							<?php foreach ($category as $option) {
+								echo "<option id='".$option->id."'>".$option->name."</option>";
+							} ?>
+						</select>
+					</div>
+			    </div>
+			</div>
 		    <div role="tabpanel" class="tab-pane fade" id="settings">...</div>
-		  </div>
-
 		</div>
 	</div>
 </section>
