@@ -16,8 +16,14 @@ public function get_categories($id=NULL){
 }
 
 public function get_properties($id=NULL){
-	$data['property']= $this->Product_model->get_property($id);
-	echo json_encode($data);
+
+		if (isset($id)) {
+			$data['property'] = $this->Product_model->get_property($id);
+			echo json_encode($data);
+		
+		}
+
+
 }
 
 

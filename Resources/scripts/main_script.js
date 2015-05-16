@@ -8,7 +8,6 @@ $('#role').change(function(){
 		url:"../../Resources/data/userOptions.php",
 		data:{option:option},
 		success: function(data){
-			console.log(data);
 			$('#description-user').hide().append("<div>"+data+"<div>").delay(800).fadeIn('slow');
 		}
 	})
@@ -47,13 +46,13 @@ function ajaxCall(){
 
 
 	$.ajax({
-  		url:'/dev_integrapp/product/get_categories/'+str,
+  		url:'/dev_integrapp/profile/product/'+str,
   		type:'POST',
   		dataType:'json',
   		data:{parent:str},
 		statusCode: {
 		    500: function() {
-		      $('#products').append("<div id='confirmation'><p>Ha seleccionado la categoria "+finalCategory+"</p><button type='submit'>Confirmar</button></div>");
+		      $('#products').append("<div id='confirmation'><p>Ha seleccionado la categoria "+finalCategory+"</p><button type='submit' id='submit1'>Confirmar</button></div>");
 		    }
 		  },
   		success:function(data){
@@ -84,14 +83,46 @@ $('#products').on('change', 'select', function () {
 
 });
 
+
+var buttonId;
+
 $('#products').on('click', 'button', function(){
-	$('#confirmation').fadeOut('slow');
+	$('#properties').empty();
+	buttonId=$(this).attr('id');
+	buttonIdNumber=buttonId.substr(6,1);
+	var category = $('#products').find('select').last().find('option:selected').text();
+
+	$('#input'+buttonIdNumber).fadeIn();
+	$('#input'+buttonIdNumber+' input').val(category);
+
+	$('#confirmation').fadeOut();
+	 	  var str = "";
+    $( "select option:selected" ).each(function() {
+      str = $( this ).attr('id');
+    });
 	$.ajax({
-		url:'/dev_integrapp/product/get_categories/'+str,
+  		url:'/dev_integrapp/profile/getProperties/'+str,
+  		type:'GET',
+  		dataType:'json',
+  		success:function(data){
+	        $.each(data, function(index, item) {
+	        		$.each(item[0], function(property, value){
+	        			if (value == 'true' ) {
+	        				$('#properties').append('<p>'+property+'</p>')
+	        			};
+	        		});
 
-	});
-
+	        });
+  		}
+  	});
 });
+
+
+function categoryProperty(){
+
+ 
+
+}
 
 
 });

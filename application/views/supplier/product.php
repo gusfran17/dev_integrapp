@@ -17,8 +17,8 @@
 		    <div role="tabpanel" class="tab-pane fade" id="my-products">...</div>
 		    <div role="tabpanel" class="tab-pane fade" id="load-products">
 		    	<h3>Por favor, seleccione una categoria para comenzar...</h3>
-		    	<div class="row">
-					<div class="col-md-2" id="products">
+		    	<div class="row" id="productSection">
+					<div class="col-md-3" id="products">
 						<select name="" id="category1">
 							<option value="">Seleccione una categoria...</option>
 							<?php foreach ($category as $option) {
@@ -26,7 +26,11 @@
 							} ?>
 						</select>
 					</div>
+					<div class="col-md-4"><div id="input1" class="input"><label for="selectedCategory">Categoria Seleccionada: <br><input name="selectedCategory" type="text" value=" "></label></div></div>
 			    </div>
+				<div class="row">
+					<div class="col-md-6" id="properties"></div>
+				</div>			    
 			</div>
 		    <div role="tabpanel" class="tab-pane fade" id="settings">...</div>
 		</div>

@@ -90,6 +90,17 @@ class Profile extends CI_Controller {
 	}
 
 
+public function getProperties($id=NULL){
+
+		if (isset($id)) {
+			$data['property'] = $this->Product_model->get_property($id);
+			echo json_encode($data);
+		
+		}
+
+
+}
+
 	public function request(){
 		$data['user'] = $this->session->userdata("user");
 		$this->routedHome($this->section, $this->session->userdata("role"), $data);

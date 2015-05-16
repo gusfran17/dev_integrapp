@@ -48,7 +48,10 @@ class Product_model extends CI_Model {
     }
 
     function get_property($parent=null){
-        
+        $this->db->where("category_id", $parent);
+        $query = $this->db->get('category_properties');
+        $result = $query->result();
+        return $result;
     }
 
 }
