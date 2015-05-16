@@ -87,7 +87,8 @@ $('#products').on('change', 'select', function () {
 var buttonId;
 
 $('#products').on('click', 'button', function(){
-	$('#properties').empty();
+	$('#medidas').empty();
+	$('#properties').fadeIn();
 	buttonId=$(this).attr('id');
 	buttonIdNumber=buttonId.substr(6,1);
 	var category = $('#products').find('select').last().find('option:selected').text();
@@ -106,11 +107,10 @@ $('#products').on('click', 'button', function(){
   		dataType:'json',
   		success:function(data){
 	        $.each(data, function(index, item) {
-	        		$.each(item[0], function(property, value){
-	        			if (value == 'true' ) {
-	        				$('#properties').append('<p>'+property+'</p>')
-	        			};
-	        		});
+	        	var items = item[0];
+	         	$.each(Object.keys(items).slice(1,5), function(property, value){
+	        		$('#medidas').append('<label>'+value+': </label><input type="text" placeholder="30cm"><label>Unidad: </label><select><option>cm</option><option>mts</option></select> </br>');
+	        	});
 
 	        });
   		}

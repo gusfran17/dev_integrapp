@@ -203,3 +203,17 @@ form{/*width: 40%; */position: relative; padding-bottom: 50px;}
 .input{
 	display: none;
 }
+
+#properties{
+	display: none;
+	
+}
+
+#medidas{
+	border: black solid 1px;
+	padding: 10px;
+}
+
+.row>div#properties{
+	margin: 5px 0;
+}

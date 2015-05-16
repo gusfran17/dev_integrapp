@@ -29,7 +29,16 @@
 					<div class="col-md-4"><div id="input1" class="input"><label for="selectedCategory">Categoria Seleccionada: <br><input name="selectedCategory" type="text" value=" "></label></div></div>
 			    </div>
 				<div class="row">
-					<div class="col-md-6" id="properties"></div>
+					<div class="col-md-6" id="properties">
+						<h3>Propiedades:</h3>
+						<label for="#medidas">Medidas</label>
+						<div id="medidas">
+							<h4>Medidas</h4>
+						</div>
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
 				</div>			    
 			</div>
 		    <div role="tabpanel" class="tab-pane fade" id="settings">...</div>
