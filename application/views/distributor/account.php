@@ -17,11 +17,11 @@
 					<div class="panel-heading">
 						<h3 class="panel-title">Datos del perfil</h3>
 					</div>
-		<!-- 				<div class="panel-body">
+	 				<div class="panel-body">
 						<div class="progress progress-striped active">
-							<div class="progress-bar" style="width: <?php echo $user->porcentaje; ?>%"></div>
-						</div> Datos completos en un <?php echo $user->porcentaje; ?>%
-						</div> -->
+							<div class="progress-bar" style="width: <?php echo $distributor->percentage; ?>%"></div>
+						</div> Datos completos en un <?php echo $distributor->percentage; ?>%
+						</div> 
 				</div>
 
 			<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
