@@ -27,6 +27,15 @@ class Product extends CI_Controller {
 			}
 	}
 
+	public function get_tree($id){
+
+				
+				$data['tree'] = $this->Product_model->get_tree($id);
+				return $data;
+			
+			
+	}
+
 }
 
 

@@ -54,5 +54,13 @@ class Product_model extends CI_Model {
         return $result;
     }
 
+    function get_tree($id){
+        $this->db->select('ascending_path');
+        $this->db->from('category');
+        $this->db->where('id', $id);
+        $result = $this->db->get();
+        return $result;
+    }
+
 }
 

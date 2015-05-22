@@ -121,6 +121,22 @@ function propertySwitch(){
 var buttonId;
 
 $('#products').on('click', 'button', function(){
+		var str = "";
+
+    $( "select option:selected" ).each(function() {
+      str = $( this ).attr('id') + " ";
+    });
+	var category = $('#products').find('select').last().find('option:selected').text();
+	$.ajax({
+		url:'/dev_integrapp/product/get_tree/'+str,
+		type:'post',
+		data:{id:str},
+		success:function(data){
+			$('#categoryTree').val(data);
+			console.log(data);
+		}
+	});
+
 	/*$('#medidas').empty();
 	$('#properties').fadeIn();
 	buttonId=$(this).attr('id');

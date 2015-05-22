@@ -53,7 +53,7 @@
 							<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
 								<div class="form-group">
 									<label for="" class="control-label">Categoria seleccionada</label>
-									<input type="text" class="form-control" value="">
+									<input type="text" class="form-control" id="categoryTree" value="">
 									<label for="" class="control-label">Nombre del producto*</label>
 									<input type="text" class="form-control" placeholder="Ingrese un nombre único...">
 									<label for="" class="control-label">Código*</label>
