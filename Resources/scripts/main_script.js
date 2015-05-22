@@ -38,6 +38,7 @@ $('#products').on('change', 'select', function () {
 	idCategory=$(this).attr('id');
 	finalCategory=$(this).find(':selected').text();
 	ajaxCall();
+
 });
 
 function ajaxCall(){
@@ -47,15 +48,15 @@ function ajaxCall(){
 		$("#confirmation").remove();
 	}
 	var str = "";
+
     $( "select option:selected" ).each(function() {
       str = $( this ).attr('id') + " ";
     });
-
 	$.ajax({
   		url:'/dev_integrapp/product/get_categories/'+str,
   		type:'POST',
   		dataType:'json',
-  		data:{parent:str},
+  		data:{id:str},
 		statusCode: {
 		    500: function() {
 		      $('#products').append("<div id='confirmation'><p>Ha seleccionado la categoria "+finalCategory+"</p><button type='submit' id='submit1'>Confirmar</button></div>");

@@ -84,9 +84,6 @@ class Profile extends CI_Controller {
 		}*/
 
 		$this->routedHome('product',$role, $data);
-
-		
-		
 	}
 
 
