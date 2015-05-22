@@ -29,8 +29,16 @@ $(window).scroll(function(){
 });
 
 
+
+/*!!! Codigo para dropdown menu !!!*/
 var idCategory;
 var finalCategory;
+
+$('#products').on('change', 'select', function () {
+	idCategory=$(this).attr('id');
+	finalCategory=$(this).find(':selected').text();
+	ajaxCall();
+});
 
 function ajaxCall(){
 	var categoryLevel= idCategory.substr(8,1);
@@ -43,10 +51,8 @@ function ajaxCall(){
       str = $( this ).attr('id') + " ";
     });
 
-
-
 	$.ajax({
-  		url:'/dev_integrapp/profile/product/'+str,
+  		url:'/dev_integrapp/product/get_categories/'+str,
   		type:'POST',
   		dataType:'json',
   		data:{parent:str},
@@ -70,24 +76,32 @@ function ajaxCall(){
   		}
   	});
 }
+/*End code*/
 
 
 
 
+var property;
 
-$('#products').on('change', 'select', function () {
-	idCategory=$(this).attr('id');
-	finalCategory=$(this).find(':selected').text();
-	ajaxCall();
+function drawPannels(){
 
 
-});
+
+}
+
+
+function propertySwitch(){
+
+}
+
+
+
 
 
 var buttonId;
 
 $('#products').on('click', 'button', function(){
-	$('#medidas').empty();
+	/*$('#medidas').empty();
 	$('#properties').fadeIn();
 	buttonId=$(this).attr('id');
 	buttonIdNumber=buttonId.substr(6,1);
@@ -114,15 +128,10 @@ $('#products').on('click', 'button', function(){
 
 	        });
   		}
-  	});
+  	});*/
 });
 
 
-function categoryProperty(){
-
- 
-
-}
 
 
 });

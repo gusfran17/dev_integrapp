@@ -11,7 +11,7 @@ public function get_categories($id=NULL){
 			die();
 		}else{
 			$data['category'] = $this->Product_model->get_category();
-		}}
+		}
 
 }
 
