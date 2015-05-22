@@ -217,3 +217,22 @@ form{/*width: 40%; */position: relative; padding-bottom: 50px;}
 .row>div#properties{
 	margin: 5px 0;
 }
+
+
+.inputProperty{
+	margin-right: 4px;
+	margin-top: 4px;
+}
+
+.add_field_button, .btn-primary{
+	margin-bottom: 10px;
+	
+}
+
+.input_fields_wrap{
+	margin-top: 50px;
+}
+
+h3{
+	font-weight: bold;
+}
