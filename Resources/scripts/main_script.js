@@ -34,12 +34,35 @@ $(window).scroll(function(){
 var idCategory;
 var finalCategory;
 
+$('#products').on('click', 'button', function(){
+	getTree();
+});
+
 $('#products').on('change', 'select', function () {
 	idCategory=$(this).attr('id');
 	finalCategory=$(this).find(':selected').text();
 	ajaxCall();
 
 });
+
+
+function getTree(){
+		var str = "";
+    $( "select option:selected" ).each(function() {
+      str = $( this ).attr('id') + " ";
+    });
+
+	$.ajax({
+  		url:'/dev_integrapp/product/get_tree/'+str,
+		type:'POST',
+		data:{id:str},
+		dataType:'json', 
+		success:function(data){
+			$('#categoryTree').val(data);
+			console.log(data);
+		}
+	});
+}
 
 function ajaxCall(){
 	var categoryLevel= idCategory.substr(8,1);
@@ -79,7 +102,8 @@ function ajaxCall(){
 }
 /*End code*/
 
-$(document).ready(function() {
+
+
     var max_fields      = 20; //maximum input boxes allowed
     var wrapper         = $(".input_fields_wrap"); //Fields wrapper
     var add_button      = $(".add_field_button"); //Add button ID
@@ -89,83 +113,18 @@ $(document).ready(function() {
         e.preventDefault();
         if(x < max_fields){ //max input box allowed
             x++; //text box increment
-            $(wrapper).append('<div><input type="text" class="inputProperty" name="mytext[]" placeholder="Atributo..."/><input type="text" class="inputProperty" name="mytext[]" placeholder="Valor..."/><a href="#" class="remove_field">X</a></div>'); //add input box
+            $(wrapper).append('<div class="form-group"><input type="text" class="inputProperty" name="mytext[]" placeholder="Atributo..."/><input type="text" class="inputProperty" name="mytext[]" placeholder="Valor..."/><a href="#" class="remove_field">X</a></div>'); //add input box
         }
     });
     
     $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
         e.preventDefault(); $(this).parent('div').remove(); x--;
-    })
-});
-
-
-
-
-var property;
-
-function drawPannels(){
-
-
-
-}
-
-
-function propertySwitch(){
-
-}
-
-
-
-
-
-var buttonId;
-
-$('#products').on('click', 'button', function(){
-		var str = "";
-
-    $( "select option:selected" ).each(function() {
-      str = $( this ).attr('id') + " ";
     });
-	var category = $('#products').find('select').last().find('option:selected').text();
-	$.ajax({
-		url:'/dev_integrapp/product/get_tree/'+str,
-		type:'post',
-		data:{id:str},
-		success:function(data){
-			$('#categoryTree').val(data);
-			console.log(data);
-		}
-	});
 
-	/*$('#medidas').empty();
-	$('#properties').fadeIn();
-	buttonId=$(this).attr('id');
-	buttonIdNumber=buttonId.substr(6,1);
-	var category = $('#products').find('select').last().find('option:selected').text();
 
-	$('#input'+buttonIdNumber).fadeIn();
-	$('#input'+buttonIdNumber+' input').val(category);
 
-	$('#confirmation').fadeOut();
-	 	  var str = "";
-    $( "select option:selected" ).each(function() {
-      str = $( this ).attr('id');
-    });
-	$.ajax({
-  		url:'/dev_integrapp/profile/getProperties/'+str,
-  		type:'GET',
-  		dataType:'json',
-  		success:function(data){
-	        $.each(data, function(index, item) {
-	        	var items = item[0];
-	         	$.each(Object.keys(items).slice(1,5), function(property, value){
-	        		$('#medidas').append('<label>'+value+': </label><input type="text" placeholder="30cm"><label>Unidad: </label><select><option>cm</option><option>mts</option></select> </br>');
-	        	});
 
-	        });
-  		}
-  	});*/
-});
+
 
 
 

@@ -43,45 +43,62 @@
 									
 					    		</div>
 					</div>
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="panel-title">
-								<h4>Planilla Datos de Producto</h4>
+					<form class="region size1of2" action="<?php echo base_url(); ?>product/save" method="post" id="">
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								<div class="panel-title">
+									<h4>Planilla Datos de Producto</h4>
+								</div>
 							</div>
-						</div>
-						<div class="panel-body">
-							<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
-								<div class="form-group">
-									<label for="" class="control-label">Categoria seleccionada</label>
-									<input type="text" class="form-control" id="categoryTree" value="">
-									<label for="" class="control-label">Nombre del producto*</label>
-									<input type="text" class="form-control" placeholder="Ingrese un nombre único...">
-									<label for="" class="control-label">Código*</label>
-									<input type="text" class="form-control" placeholder="Ingrese el ID del código único del producto...">
-									<label for="" class="control-label">Condición IVA*</label>
-									<input type="text" class="form-control" placeholder="Ni idea...">
-									<label for="" class="control-label">Descripción*</label>
-									<textarea class="form-control"></textarea> 
-									<div class="addInput">
+							<div class="panel-body">
+								<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
+									<div class="form-group">
+										<label for="" class="control-label">Categoria seleccionada</label>
+										<input type="text" class="form-control" id="categoryTree" name="" value="">
+									</div>
+									<div class="form-group">
+										<label for="" class="control-label">Nombre del producto*</label>
+											<?php echo form_error('productName', '<span class="label label-danger">', '</span>'); ?>
+										<input type="text" class="form-control" name="productName" placeholder="Ingrese un nombre único...">
+									</div>
+									<div class="form-group">
+										<label for="" class="control-label">Código*</label>
+											<?php echo form_error('productCode', '<span class="label label-danger">', '</span>'); ?>
+										<input type="text" class="form-control" name="productCode" placeholder="Ingrese el ID del código único del producto...">
+									</div>
+									<div class="form-group">
+										<label for="" class="control-label">Condición IVA*</label>
+											<?php echo form_error('productVAT', '<span class="label label-danger">', '</span>'); ?>
+										<input type="text" class="form-control" name="productVAT" placeholder="Ni idea...">
+									</div>
+									<div class="form-group">
+										<label for="" class="control-label">Descripción*</label>
+											<?php echo form_error('productDesc', '<span class="label label-danger">', '</span>'); ?>
+										<textarea class="form-control" name="productDesc"></textarea> 
+									</div>
+									<div class="input_fields_wrap">
+										<h3>Especificaciones técnicas</h3>
+									    <button class="add_field_button btn btn-primary btn-md">Agregar mas campos</button>
+									    <div>
+									    	<div class="form-group">
+											    <input type="text" name="" placeholder="" value="Ej.:Ancho" disabled>
+											    <input type="text" name="" placeholder="" value="Ej.:30cm" disabled>
+											</div>   
+									    </div>
+									</div>
+									<!--<div>
+									<h3>Imagenes</h3>
+										<form action="../Dropzone/upload" class="dropzone"></form>
+									</div>-->
+									
+									<div class="form-group">
+										<input type="submit" value="Guardar" class="btn btn-primary">
 									</div>
 								</div>
-								<div class="input_fields_wrap">
-								<h3>Especificaciones técnicas</h3>
-								    <button class="add_field_button btn btn-primary btn-md">Agregar mas campos</button>
 
-								    <div>
-								    <input type="text" name="mytext[]" placeholder="Alto" >
-								    <input type="text" name="mytext[]" placeholder="30cm">
-
-								    </div>
-								</div>
-								<div>
-								<h3>Imagenes</h3>
-									<form action="../Dropzone/upload" class="dropzone"></form>
-								</div>
 							</div>
 						</div>
-					</div>			    
+					</form>			    
 				</div>
 			</div>
 			<div role="tabpanel" class="tab-pane fade" id="settings">...</div>

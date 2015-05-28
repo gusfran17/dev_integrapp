@@ -59,7 +59,18 @@ class Product_model extends CI_Model {
         $this->db->from('category');
         $this->db->where('id', $id);
         $result = $this->db->get();
-        return $result;
+
+        return $result->row_array();;
+    }
+
+
+    function product_check(){
+
+    }
+
+    function code_check(){
+
+
     }
 
 }

@@ -37,31 +37,23 @@ class Profile extends CI_Controller {
 	public function account(){
 
 		$userid = $this->session->userdata("id");
-
 		$role = $this->session->userdata("role");
-
 		$data['user'] = $this->User_model->get_user($userid);
 
 		if($role == "supplier"){
-
 			$data['supplier'] = $this->Supplier_model->get_supplier($userid);
-
 		}else if($role == "distributor"){
-
 			$data['distributor'] = $this->Distributor_model->get_distributor($userid);
-
 		}
 
 		$data['success'] = $this->session->flashdata('success');
 
 		// if(!$this->fabricante_model->is_verified($data['user']->id)){
-
 		// 	$data["mensaje_verificacion"] = "Su usuario no ha sido verificado por administrador todavia, para facilitar el proceso complete todos los datos a continuacion. Una vez verificado podra acceder a todas las funciones. Si el proceso de verificacion demora mas de 48hs <strong><a href='/contacto'>Contacte con un administrador</a></strong>";
-
 		// }
 		$this->routedHome('account',$role, $data);
-
 	}
+
 
 	public function product($id=NULL){
 		$role = $this->session->userdata("role");
