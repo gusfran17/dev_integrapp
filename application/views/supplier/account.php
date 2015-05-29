@@ -17,11 +17,11 @@
 				<div class="panel-heading">
 					<h3 class="panel-title">Datos del perfil</h3>
 				</div>
-	<!-- 				<div class="panel-body">
+				<div class="panel-body">
 					<div class="progress progress-striped active">
-						<div class="progress-bar" style="width: <?php echo $user->porcentaje; ?>%"></div>
-					</div> Datos completos en un <?php echo $user->porcentaje; ?>%
-					</div> -->
+						<div class="progress-bar" style="width: <?php echo $supplier->percentage; ?>%"></div>
+					</div> Datos completos en un <?php echo $supplier->percentage; ?>%
+				</div> 
 			</div>
 			<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 
@@ -56,7 +56,7 @@
 	
 			<div class="form-group">
 			  <label class="control-label" for="fake_name">Nombre de fantasía (Nombre de su empresa)</label>
-			  <input class="form-control" id="fake_name" name="fake_name" type="text" placeHolder="Escriba el nombre de fantasía." value="<?php if (isset($supplier)) echo set_value('fake_name', $supplier->fake_name); ?>">
+			  <input class="form-control" id="fake_name" name="fake_name" type="text" placeHolder="Escriba el nombre de fantasía." value="<?php if (isset($supplier)) echo set_value('fake_name', $supplier->fake_name); else echo set_value('fake_name');?>">
 			</div>
 
 			<div class="form-group">

@@ -42,15 +42,19 @@ class Profile extends CI_Controller {
 
 		if($role == "supplier"){
 			$data['supplier'] = $this->Supplier_model->get_supplier($userid);
+
+			$data['supplier']->percentage = $this->Supplier_model->get_completeness($userid);
+
+
 		}else if($role == "distributor"){
 			$data['distributor'] = $this->Distributor_model->get_distributor($userid);
-		}
 
+			$data['distributor']->percentage = $this->Distributor_model->get_completeness($userid);
+
+		}
 		$data['success'] = $this->session->flashdata('success');
 
-		// if(!$this->fabricante_model->is_verified($data['user']->id)){
-		// 	$data["mensaje_verificacion"] = "Su usuario no ha sido verificado por administrador todavia, para facilitar el proceso complete todos los datos a continuacion. Una vez verificado podra acceder a todas las funciones. Si el proceso de verificacion demora mas de 48hs <strong><a href='/contacto'>Contacte con un administrador</a></strong>";
-		// }
+
 		$this->routedHome('account',$role, $data);
 	}
 
@@ -190,10 +194,10 @@ public function getProperties($id=NULL){
  
 	}
 
+
 	public function change_password(){
 			$this->routedHome('templates/data_change/template_password_change','');
 	}
-
 
 	public function change_email(){
 			$data['email'] = $this->session->userdata('email');
@@ -206,16 +210,63 @@ public function getProperties($id=NULL){
 	}
 
 
+   	public function save_password() {
+
+		$id = $this->session->userdata("id");
+
+
+		$this->form_validation->set_rules('password', 'Contraseña', 'callback_passwordAuthenticate');
+
+		$this->form_validation->set_rules('new_password', 'Nueva contraseña', 'required');
+
+		$this->form_validation->set_rules('new_repassword', 'Nueva contraseña (otra vez)', 'required|matches[new_password]');
+
+		$this->form_validation->set_message('passwordAuthenticate', 'Contraseña actual inválida');
+
+		$this->form_validation->set_message('required', 'Este campo es necesario para cambiar la contraseña');
+
+		$this->form_validation->set_message('matches', 'Los campos de la nueva contraseña deben ser iguales');
+
+
+		if ($this->form_validation->run() == FALSE){
+
+
+			$this->routedHome('templates/data_change/template_password_change','');
+
+		}else{
+
+			$this->User_model->password_change($id, $this->input->post("new_password"));
+
+			$this->session->set_flashdata('success', 'La contraseña se ha cambiado!'); 
+
+
+			$this->account();
+
+		}
+
+   	}
+
+
    	public function save_email() {
 
 		$id = $this->session->userdata("id");
+
+
 		$this->form_validation->set_rules('password', 'Password', 'callback_passwordAuthenticate');
-		$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+
+		$this->form_validation->set_rules('email', 'Email', 'required|valid_email|callback_emailcheck');
+
 		$this->form_validation->set_message('passwordAuthenticate', 'Password actual inválido');
+
 		$this->form_validation->set_message('required', 'Este campo es necesario para cambiar el email de registro');
+
 		$this->form_validation->set_message('valid_email', 'El formato de email no es válido');
 
+		$this->form_validation->set_message('emailcheck', 'Ops, el mail ya esta en uso');
+
+
 		if ($this->form_validation->run() == FALSE){
+
 
 			$data['email'] = $this->session->userdata('email');
 			$this->routedHome('templates/data_change/template_email_change',null,$data);
@@ -223,9 +274,14 @@ public function getProperties($id=NULL){
 		}else{
 
 			$mail = $this->input->post("email");
+
 			$this->User_model->email_change($id, $mail);
+
 			$this->session->set_userdata(array('email'=>$mail));
+
 			$this->session->set_flashdata('success', 'El email se ha cambiado!'); 
+
+
 			$this->account();
 
 		}
@@ -237,57 +293,58 @@ public function getProperties($id=NULL){
 
 		$id = $this->session->userdata("id");
 		$this->form_validation->set_rules('password', 'Contraseña', 'callback_passwordAuthenticate');
-		$this->form_validation->set_rules('username', 'Nombre de Usuario', 'required');
+
+
+		$this->form_validation->set_rules('username', 'Nombre de Usuario', 'required|callback_usernamecheck');
+
 		$this->form_validation->set_message('passwordAuthenticate', 'Contraseña actual inválida');
+
 		$this->form_validation->set_message('required', 'Este campo es necesario para cambiar el nombre de usuario');
+
+		$this->form_validation->set_message('usernamecheck', 'Ops, el nombre de usuario ya esta en uso');
+
 
 		if ($this->form_validation->run() == FALSE){
 
 			$data['user'] = $this->session->userdata('user');
-			$this->routedHome('templates/data_change/template_username_change',NULL, $data);
+			$this->routedHome('templates/data_change/template_username_change',null,$data);
 
 		}else{
 
 			$username = $this->input->post("username");
+
 			$this->User_model->username_change($id, $username);
+
 			$this->session->set_userdata(array('username'=>$username));
+
 			$this->session->set_flashdata('success', 'El Nombre de Usuario se ha cambiado!'); 
+
+
 			$this->account();
 
 		}
 
    	}
 
-
-   	public function save_password() {
-
-		$id = $this->session->userdata("id");
-		$this->form_validation->set_rules('password', 'Contraseña', 'callback_passwordAuthenticate');
-		$this->form_validation->set_rules('new_password', 'Nueva contraseña', 'required');
-		$this->form_validation->set_rules('new_repassword', 'Nueva contraseña (otra vez)', 'required|matches[new_password]');
-		$this->form_validation->set_message('passwordAuthenticate', 'Contraseña actual inválida');
-		$this->form_validation->set_message('required', 'Este campo es necesario para cambiar la contraseña');
-		$this->form_validation->set_message('matches', 'Los campos de la nueva contraseña deben ser iguales');
-
-		if ($this->form_validation->run() == FALSE){
-
-			$this->routedHome('templates/data_change/template_password_change','');
-
-		}else{
-
-			$this->User_model->password_change($id, $this->input->post("new_password"));
-			$this->session->set_flashdata('success', 'La contraseña se ha cambiado!'); 
-			$this->account();
-
-		}
-
-   	}
 
    	public function passwordAuthenticate(){
 		$data = $this->session->userdata("user");
 		$password = $this->input->post("password");
 		return $this->User_model->passwordAuthenticate($password, $data);
 	}
+
+
+	public function emailcheck(){
+		$email = $this->input->post("email");
+		return 	$this->User_model->email_not_exist($email); 
+	}
+
+
+	public function usernamecheck(){
+		$username = $this->input->post("username");
+		return $this->User_model->username_not_exist($username);
+	}
+
 
 }
 
