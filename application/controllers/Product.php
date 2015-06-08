@@ -29,9 +29,9 @@ class Product extends CI_Controller {
 	public function get_tree($id=NULL){
 
 				
-			//	$data['tree'] = $this->Product_model->get_tree($id);
-			//	echo json_encode($data) ;
-			echo "hola";
+			$data['tree'] = $this->Product_model->get_tree($id);
+			echo json_encode($data) ;
+			
 	}
 
 	public function save(){

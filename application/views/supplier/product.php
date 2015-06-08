@@ -92,7 +92,7 @@
 									</div>-->
 									
 									<div class="form-group">
-										<input type="submit" value="Guardar" class="btn btn-primary">
+										<input type="submit" id="saveProduct" value="Guardar" class="btn btn-primary">
 									</div>
 								</div>
 

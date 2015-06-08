@@ -34,9 +34,7 @@ $(window).scroll(function(){
 var idCategory;
 var finalCategory;
 
-$('#products').on('click', 'button', function(){
-	getTree();
-});
+
 
 $('#products').on('change', 'select', function () {
 	idCategory=$(this).attr('id');
@@ -45,6 +43,9 @@ $('#products').on('change', 'select', function () {
 
 });
 
+$('#products').on('click', 'button', function(){
+	getTree();
+});
 
 function getTree(){
 		var str = "";
@@ -58,8 +59,9 @@ function getTree(){
 		data:{id:str},
 		dataType:'json', 
 		success:function(data){
-			$('#categoryTree').val(data);
-			console.log(data);
+			
+			var tree = data['tree'].ascending_path;
+			$('#categoryTree').val(tree);
 		}
 	});
 }
