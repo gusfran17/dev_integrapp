@@ -34,9 +34,7 @@ $(window).scroll(function(){
 var idCategory;
 var finalCategory;
 
-$('#products').on('click', 'button', function(){
-	getTree();
-});
+
 
 $('#products').on('change', 'select', function () {
 	idCategory=$(this).attr('id');
@@ -45,6 +43,9 @@ $('#products').on('change', 'select', function () {
 
 });
 
+$('#products').on('click', 'button', function(){
+	getTree();
+});
 
 function getTree(){
 		var str = "";
@@ -58,8 +59,10 @@ function getTree(){
 		data:{id:str},
 		dataType:'json', 
 		success:function(data){
-			$('#categoryTree').val(data);
-			console.log(data);
+			
+			var tree = data['tree'].ascending_path;
+			$('#categoryTree').val(tree);
+			$('#categoryTree').html(tree);
 		}
 	});
 }
@@ -101,6 +104,33 @@ function ajaxCall(){
   	});
 }
 /*End code*/
+
+
+$('#saveProduct').click(function(){
+	var form_data = {
+		productName: $("input[name='productName']").val(), 
+		productCode: $("input[name='productCode']").val(),
+		productVAT: $("input[name='productVAT']").val(),
+		productDesc: $("textarea[name='productDesc']").val()
+	}
+		event.preventDefault();
+		console.log(form_data);
+		$.ajax({
+
+			url:'../product/save_product',
+			type:'POST',
+			data: form_data,
+			success:function(data){
+
+				console.log(data)
+			}
+
+		});
+
+});
+
+
+
 
 
 

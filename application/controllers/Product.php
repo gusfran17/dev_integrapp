@@ -26,45 +26,68 @@ class Product extends CI_Controller {
 			}
 	}
 
-	public function get_tree($id=NULL){
 
-				
-			//	$data['tree'] = $this->Product_model->get_tree($id);
-			//	echo json_encode($data) ;
-			echo "hola";
+	public function get_tree($id=NULL){
+			$data['tree'] = $this->Product_model->get_tree($id);
+			echo json_encode($data) ;
 	}
 
-	public function save(){
 
-			$this->form_validation->set_rules('productName', 'Nombre del Producto', 'trim|required|callback_productcheck');
-	   		$this->form_validation->set_rules('productCode', 'Codigo', 'alpa_dash|required|callback_codecheck');
+	public function save_product(){
+			$this->form_validation->set_rules('productName', 'Nombre del Producto', 'required');
+	   		$this->form_validation->set_rules('productCode', 'Codigo', 'required');
 	   		$this->form_validation->set_rules('productVAT', 'IVA', 'trim');
 	   		$this->form_validation->set_rules('productDesc', 'Descripcion', 'required|min_length[30]|max_length[400]');
 
 	   		if ($this->form_validation->run()) {
-	   			
+
+	   			$insert = array();
+				$insert['name'] = $this->input->post("productName");
+				$insert['description'] = $this->input->post("productDesc");
+				$insert['code'] = $this->input->post("productCode");
+				$insert['supplier_id'] = $this->session->userdata("role_id");
+				$insert['tax'] = $this->input->post("productVAT");
+
+				
+				$id = $this->Product_model->save_product($insert);
+				echo $id;
+	   			echo "corre";
+
 	   		}else{
 
+	   			/*
 	   			$section=$this->uri->segment(2);
 	   			$role=$this->session->userdata("role");
+	   			$this->session->set_flashdata('error', "active in");
+	   			$data['error'] = $this->session->flashdata('error');
 
 				$this->load->view('templates/template_header');
 				$this->load->view('templates/template_nav');
 				$this->load->view('navs/nav_'.$role);
-				$this->load->view('supplier/product');
-				$this->load->view('templates/template_footer');
+				$this->load->view('supplier/product', $data);
+				$this->load->view('templates/template_footer');*/
+				echo "no corre";
+				$data = array(
+					'categoryTree' => form_error('categoryTree'),
+                    'productName' => form_error('productName'), 
+                    'productCode' => form_error('productCode'),
+                    'productDesc' => form_error('productDesc')
+           			 );
+				echo json_encode($data);
 	   		}
 	}
 
 
 	public function productcheck(){
-		$name = $this->input->post("productName");
-		return $this->Product_model->product_check($name);
+		//$name = $this->input->post("productName");
+		//return $this->Product_model->product_check($name);
+		return TRUE;
 	}
 
 	public function codecheck(){
-		$code = $this->input->post("productCode");
-		return $this->Product_model->code_check($code);
+		//$code = $this->input->post("productCode");
+		//return $this->Product_model->code_check($code);
+		return TRUE;
 	}
 
 
