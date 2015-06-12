@@ -5,24 +5,17 @@
 
 		  
 		  <ul class="nav nav-tabs" role="tablist">
-		    <li role="presentation" class="active"><a href="#catalog" aria-controls="catalog" role="tab" data-toggle="tab">Catalogo</a></li>
+		    <li role="presentation" class="<?php if (!isset($error)) {echo "active";} ?>"><a href="#catalog" aria-controls="catalog" role="tab" data-toggle="tab">Catalogo</a></li>
 		    <li role="presentation"><a href="#my-products" aria-controls="my-products" role="my-products" data-toggle="tab">Mis Productos</a></li>
-		    <li role="presentation"><a href="#load-products" aria-controls="load-products" role="load-products" data-toggle="tab">Cargar Productos</a></li>
+		    <li role="presentation" class="<?php if (isset($error)) { echo "active";} ?>"><a href="#load-products" aria-controls="load-products" role="load-products" data-toggle="tab">Cargar Productos</a></li>
 		    <li role="presentation"><a href="#settings" aria-controls="settings" role="settings" data-toggle="tab">Ajustes</a></li>
 		  </ul>
 
 		  
 		  <div class="tab-content">
-		    <div role="tabpanel" class="tab-pane fade inactive" id="catalog">...</div>
+		    <div role="tabpanel" class="tab-pane fade <?php if (!isset($error)) {echo "active in";} ?>" id="catalog">...</div>
 		    <div role="tabpanel" class="tab-pane fade" id="my-products">...</div>
-		    <div role="tabpanel" class="tab-pane fade" id="load-products">
-		    	<h3>Tips:</h3>
-		    	<ul>
-		    		<li>Recuerde que el nombre de cada producto no puede ser el mismo de un producto ya cargado con anterioridad.</li>
-		    		<li>Recuerde que el código de cada producto no puede ser el mismo de un producto ya cargado con anterioridad.</li>
-		    		<li>Recuerde que puede duplicar un producto cargado y editar solo la informacion necesaria para autopopular la planilla de Carga de Productos y no volver a escribir todo a mano.</li>
-		    		<li>Recuerde no molestar a la gente de IT por una mala experiencia de usuario.</li>
-		    	</ul>
+		    <div role="tabpanel" class="tab-pane fade <?php if (isset($error)) { echo "active in";} ?>" id="load-products">
 		    	<div class="row" id="productSection">
 				    <div class="panel panel-primary" id="">
 								<div class="panel-heading">
@@ -32,7 +25,7 @@
 								</div>
 								<div class="panel-body">
 
-									<div class="col-md-4" id="products">
+									<div class="col-md-3" id="products">
 										<select name="" id="category1">
 											<option value="">Seleccione una categoria...</option>
 											<?php foreach ($category as $option) {
@@ -40,10 +33,19 @@
 											} ?>
 										</select>
 									</div>
+									<div class="col-md-9">
+							    		<h3>Tips:</h3>
+								    	<ul>
+								    		<li>Recuerde que el nombre de cada producto no puede ser el mismo de un producto ya cargado con anterioridad.</li>
+								    		<li>Recuerde que el código de cada producto no puede ser el mismo de un producto ya cargado con anterioridad.</li>
+								    		<li>Recuerde que puede duplicar un producto cargado y editar solo la informacion necesaria para autopopular la planilla de Carga de Productos y no volver a escribir todo a mano.</li>
+								    		<li>Recuerde no molestar a la gente de IT por una mala experiencia de usuario.</li>
+								    	</ul>	
+									</div>
 									
 					    		</div>
 					</div>
-					<form class="region size1of2" action="<?php echo base_url(); ?>product/save" method="post" id="">
+					<form class="region size1of2" action="<?php echo base_url(); ?>product/save_product" method="post" id="">
 						<div class="panel panel-info">
 							<div class="panel-heading">
 								<div class="panel-title">
@@ -54,7 +56,7 @@
 								<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
 									<div class="form-group">
 										<label for="" class="control-label">Categoria seleccionada</label>
-										<input type="text" class="form-control" id="categoryTree" name="" value="">
+										<input type="text" class="form-control" id="categoryTree" name="categoryTree" value="">
 									</div>
 									<div class="form-group">
 										<label for="" class="control-label">Nombre del producto*</label>

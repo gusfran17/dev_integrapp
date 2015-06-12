@@ -73,5 +73,10 @@ class Product_model extends CI_Model {
 
     }
 
+    function save_product($data){
+        $this->db->insert("product", $data);
+        
+    }
+
 }
 

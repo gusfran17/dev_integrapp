@@ -62,6 +62,7 @@ function getTree(){
 			
 			var tree = data['tree'].ascending_path;
 			$('#categoryTree').val(tree);
+			$('#categoryTree').html(tree);
 		}
 	});
 }
@@ -103,6 +104,33 @@ function ajaxCall(){
   	});
 }
 /*End code*/
+
+
+$('#saveProduct').click(function(){
+	var form_data = {
+		productName: $("input[name='productName']").val(), 
+		productCode: $("input[name='productCode']").val(),
+		productVAT: $("input[name='productVAT']").val(),
+		productDesc: $("textarea[name='productDesc']").val()
+	}
+		event.preventDefault();
+		console.log(form_data);
+		$.ajax({
+
+			url:'../product/save_product',
+			type:'POST',
+			data: form_data,
+			success:function(data){
+
+				console.log(data)
+			}
+
+		});
+
+});
+
+
+
 
 
 
