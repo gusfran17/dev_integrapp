@@ -74,8 +74,17 @@ class Product_model extends CI_Model {
     }
 
     function save_product($data){
+
         $this->db->insert("product", $data);
+
         
+    }
+
+    function get_new_id(){
+        $this->db->select_max('id');
+        $query = $this->db->get('product');
+        $result = $query->result();
+        echo ($result[0]->id+1);
     }
 
     function get_catalog($id){

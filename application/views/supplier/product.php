@@ -14,6 +14,22 @@
 		  
 		  <div class="tab-content">
 		    <div role="tabpanel" class="tab-pane fade <?php if (!isset($error)) {echo "active in";} ?>" id="catalog">
+		    	<div class="row">
+
+
+					<?php 
+					$catalogSize = count($catalog);
+					for ($i=0; $i < $catalogSize ; $i++) { ?>
+						
+						<div class="col-md-3 col-sm-4 col-xs-6 item-catalogo">
+							<div class="producto-container"> 
+								<div class="jquery-description"><h6><?php echo $catalog[$i]->name ?></h6></div>
+							</div> 
+						</div>
+
+
+					<?php } ?>
+		    	</div>
 				
 		    </div>
 		    <div role="tabpanel" class="tab-pane fade" id="my-products">

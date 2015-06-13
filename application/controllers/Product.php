@@ -41,6 +41,8 @@ class Product extends CI_Controller {
 
 	   		if ($this->form_validation->run()) {
 
+
+
 	   			$insert = array();
 				$insert['name'] = $this->input->post("productName");
 				$insert['description'] = $this->input->post("productDesc");
@@ -48,10 +50,19 @@ class Product extends CI_Controller {
 				$insert['supplier_id'] = $this->session->userdata("role_id");
 				$insert['category_id'] = $this->input->post("categoryID");
 				$insert['tax'] = $this->input->post("productVAT");
+				$insert['published_date'] = date("Y-m-d H:i:s");
 
+				$new_id= $this->Product_model->get_new_id();
+
+				$insert['integrapp_code'] = "PR".$new_id."C".$this->input->post("categoryID");
+
+				$insert['id']= $new_id;
 				
 				$id = $this->Product_model->save_product($insert);
+
+
 				echo $id;
+
 	   			echo "corre";
 
 	   		}else{
