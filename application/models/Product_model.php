@@ -86,7 +86,7 @@ class Product_model extends CI_Model {
             echo "No registra ningun producto cargado hasta el momento";
         } else{ 
             $result = $query->result();
-            echo $result;
+            return $result;
             }
     }
 
