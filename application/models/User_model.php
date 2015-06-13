@@ -69,9 +69,15 @@ class User_model extends CI_Model {
 
             if ($password==$passwordDB_decoded) {
 
-                $bufferedQuery = $this->Supplier_model->get_supplier($user_result[0]->id);
+                $role = $user_result[0]->role;
+                if ($role == 'supplier') {
+                    $role_information = $this->Supplier_model->get_supplier($user_result[0]->id);
+                } else if ($role == 'distributor'){
+                    $role_information = $this->Distributor_model->get_distributor($user_result[0]->id);
+                }
+                
 
-                $this->session->set_userdata(array('id'=>$user_result[0]->id, 'role_id'=>$bufferedQuery->id,'user'=>$user_result[0]->username, 'role'=>$user_result[0]->role, 'email'=>$user_result[0]->email, 'logged_in'=>true));
+                $this->session->set_userdata(array('id'=>$user_result[0]->id, 'role_id'=>$role_information->id,'user'=>$user_result[0]->username, 'role'=>$user_result[0]->role, 'email'=>$user_result[0]->email, 'logged_in'=>true));
                 return TRUE;
 
 
