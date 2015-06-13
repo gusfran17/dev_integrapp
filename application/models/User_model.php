@@ -69,11 +69,11 @@ class User_model extends CI_Model {
 
             if ($password==$passwordDB_decoded) {
 
-                
-                $this->session->set_userdata(array('id'=>$user_result[0]->id,'user'=>$user_result[0]->username, 'role'=>$user_result[0]->role, 'email'=>$user_result[0]->email, 'logged_in'=>true));
+                $bufferedQuery = $this->Supplier_model->get_supplier($user_result[0]->id);
+
+                $this->session->set_userdata(array('id'=>$user_result[0]->id, 'role_id'=>$bufferedQuery->id,'user'=>$user_result[0]->username, 'role'=>$user_result[0]->role, 'email'=>$user_result[0]->email, 'logged_in'=>true));
                 return TRUE;
-                  /* $bufferedQuery = $this->db->get_where("distributor", array("userid"=>$user_result[0]->id));
-                    $buffered_result = $query->result();*/
+
 
             }else{
                     return FALSE;
