@@ -33,12 +33,14 @@ $(window).scroll(function(){
 /*!!! Codigo para dropdown menu !!!*/
 var idCategory;
 var finalCategory;
+var finalCategoryID;
 
 
 
 $('#products').on('change', 'select', function () {
 	idCategory=$(this).attr('id');
 	finalCategory=$(this).find(':selected').text();
+	finalCategoryID = $(this).find(':selected').attr('id');
 	ajaxCall();
 
 });
@@ -86,6 +88,7 @@ function ajaxCall(){
 		statusCode: {
 		    500: function() {
 		      $('#products').append("<div id='confirmation'><p>Ha seleccionado la categoria "+finalCategory+"</p><button type='submit' id='submit1'>Confirmar</button></div>");
+
 		    }
 		  },
   		success:function(data){
@@ -97,6 +100,8 @@ function ajaxCall(){
 	     			var id=obj[j].id;
 	     			var name=obj[j].name;
 	     			$('#category'+categoryLevel).append("<option id='"+id+"'>"+name+"</option>");
+	     			
+	     			
 	     		}
 	     		
 	     	}
@@ -106,11 +111,14 @@ function ajaxCall(){
 /*End code*/
 
 
+
+
 $('#saveProduct').click(function(){
 	var form_data = {
 		productName: $("input[name='productName']").val(), 
 		productCode: $("input[name='productCode']").val(),
 		productVAT: $("input[name='productVAT']").val(),
+		categoryID: finalCategoryID,
 		productDesc: $("textarea[name='productDesc']").val()
 	}
 		event.preventDefault();

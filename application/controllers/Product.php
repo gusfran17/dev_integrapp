@@ -46,6 +46,7 @@ class Product extends CI_Controller {
 				$insert['description'] = $this->input->post("productDesc");
 				$insert['code'] = $this->input->post("productCode");
 				$insert['supplier_id'] = $this->session->userdata("role_id");
+				$insert['category_id'] = $this->input->post("categoryID");
 				$insert['tax'] = $this->input->post("productVAT");
 
 				

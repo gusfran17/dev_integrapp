@@ -13,8 +13,12 @@
 
 		  
 		  <div class="tab-content">
-		    <div role="tabpanel" class="tab-pane fade <?php if (!isset($error)) {echo "active in";} ?>" id="catalog">...</div>
-		    <div role="tabpanel" class="tab-pane fade" id="my-products">...</div>
+		    <div role="tabpanel" class="tab-pane fade <?php if (!isset($error)) {echo "active in";} ?>" id="catalog">
+				
+		    </div>
+		    <div role="tabpanel" class="tab-pane fade" id="my-products">
+			
+		    </div>
 		    <div role="tabpanel" class="tab-pane fade <?php if (isset($error)) { echo "active in";} ?>" id="load-products">
 		    	<div class="row" id="productSection">
 				    <div class="panel panel-primary" id="">

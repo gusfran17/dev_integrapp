@@ -78,5 +78,17 @@ class Product_model extends CI_Model {
         
     }
 
+    function get_catalog($id){
+
+        $this->db->where("supplier_id", $id);
+        $query = $this->db->get('product');
+        if($query->num_rows() == 0){
+            echo "No registra ningun producto cargado hasta el momento";
+        } else{ 
+            $result = $query->result();
+            echo $result;
+            }
+    }
+
 }
 
