@@ -60,7 +60,7 @@
 								<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
 									<div class="form-group">
 										<label for="" class="control-label">Categoria seleccionada</label>
-										<input type="text" class="form-control" id="categoryTree" name="categoryTree" value="">
+										<input type="text" class="form-control" id="categoryTree" name="categoryTree" value="" disabled>
 									</div>
 									<div class="form-group">
 										<label for="" class="control-label">Nombre del producto*</label>
