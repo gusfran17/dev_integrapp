@@ -87,6 +87,23 @@ class Product_model extends CI_Model {
         return ($result[0]->id+1);
     }
 
+
+    function get_added_product($id){
+
+        $this->db->where("id", $id);
+        $query = $this->db->get('product');
+       // $result = $query->result();
+       // return $result;
+        if($query->num_rows() == 0){
+            echo "El Producto no se cargo satisfactoriamente, Intente volver a cargarlo por favor.";
+        } else{ 
+            $result = $query->result();
+            return $result[0];
+
+            }
+    }
+
+
     function get_catalog($id){
 
         $this->db->where("supplier_id", $id);

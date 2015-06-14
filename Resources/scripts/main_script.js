@@ -124,12 +124,13 @@ $('#saveProduct').click(function(){
 		productDesc: $("textarea[name='productDesc']").val()
 	}
 		event.preventDefault();
-		console.log(form_data);
+		
 		$.ajax({
 
 			url:'../product/save_product',
 			type:'POST',
 			data: form_data,
+			dataType:'json',
 			success:function(data){
 
 				console.log(data)
@@ -153,7 +154,7 @@ $('#saveProduct').click(function(){
         e.preventDefault();
         if(x < max_fields){ //max input box allowed
             x++; //text box increment
-            
+
             $(wrapper).append('<div class="form-group"><input type="text" class="inputProperty" name="atribute" placeholder="Atributo..."/><input type="text" class="inputProperty" name="value" placeholder="Valor..."/><a href="#" class="remove_field">X</a></div>'); //add input box
         }
     });

@@ -39,7 +39,7 @@ class Product extends CI_Controller {
 	   		$this->form_validation->set_rules('productVAT', 'IVA', 'trim');
 	   		$this->form_validation->set_rules('productDesc', 'Descripcion', 'required|min_length[30]|max_length[400]');
 
-	   		
+
 
 
 	   		if ($this->form_validation->run()) {
@@ -57,18 +57,18 @@ class Product extends CI_Controller {
 				$insert['short_desc'] = $this->input->post("categoryTree"); 
 
 				$new_id= $this->Product_model->get_new_id();
-
+				
 				$insert['integrapp_code'] = "PR".$new_id."C".$this->input->post("categoryID");
 
 				$insert['id']= $new_id;
-				
+
+
+
 				$id = $this->Product_model->save_product($insert);
 
-				echo ($new_id);
-
+				$product_added = $this->Product_model->get_added_product($new_id);
+				echo json_encode($product_added);
 				
-
-	   			echo "corre";
 
 	   		}else{
 
