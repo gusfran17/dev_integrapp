@@ -136,6 +136,7 @@ $('#saveProduct').click(function(){
 				$('#tableBody').append("<tr><td>"+data.name+"</td><td>"+data.description+"</td><td>"+data.integrapp_code+"</td><td>"+data.code+"</td></tr>")
 				$('#formOptions input[type=text]').val('');
 				$('#formOptions textarea').val('');
+				$('.alert').removeClass('insight');
 			}
 
 		});

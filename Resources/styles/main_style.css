@@ -237,3 +237,16 @@ form{/*width: 40%; */position: relative; padding-bottom: 50px;}
 h3{
 	font-weight: bold;
 }
+
+.insight{
+	display: none;
+}
+
+.sight{
+	display: block;
+}
+
+.alert-warning{
+	background-color: #dff0d8;
+	color: #3c763d
+}
