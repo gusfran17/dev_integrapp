@@ -117,6 +117,7 @@
 										<input type="submit" id="saveProduct" value="Guardar" class="btn btn-primary">
 									</div>
 									<div class="alert alert-warning alert-dismissible insight" role="alert">
+									
 									  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 									  <strong>Atencion!</strong> Has Cargado un producto nuevo. Puedes verlo en la planilla del costado o entrando en detalle en el area Mis Productos.
 									</div>
