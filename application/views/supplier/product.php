@@ -73,7 +73,7 @@
 								</div>
 							</div>
 							<div class="panel-body">
-								<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
+								<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5" id="formOptions">
 									<div class="form-group">
 										<label for="" class="control-label">Categoria seleccionada</label>
 										<input type="text" class="form-control" id="categoryTree" name="categoryTree" value="" disabled>
@@ -116,6 +116,22 @@
 									<div class="form-group">
 										<input type="submit" id="saveProduct" value="Guardar" class="btn btn-primary">
 									</div>
+								</div>
+								<div  class="col-xs-12 col-sm-12 col-md-6 col-lg-7">
+									<table class="table">
+										<caption>Productos Cargados</caption>
+										<thead>
+											<tr>
+												<th>Nombre</th>
+												<th>Descripcion</th>
+												<th>Codigo Integrapp</th>
+												<th>Codigo</th>
+											</tr>
+										</thead>
+										<tbody id="tableBody">
+											
+										</tbody>
+									</table>
 								</div>
 
 							</div>
