@@ -23,7 +23,7 @@
 						
 						<div class="col-md-3 col-sm-4 col-xs-6 item-catalogo">
 							<div class="producto-container"> 
-								<div class="jquery-description"><h6><?php echo $catalog[$i]->name ?></h6></div>
+								<div class="jquery-description"><h6><?php echo "Codigo Integrapp: ".$catalog[$i]->integrapp_code."</br>Codigo: ". $catalog[$i]->code . "</br>Nombre: ". $catalog[$i]->name. "</br>Descripcion: ". $catalog[$i]->short_desc   ?></h6></div>
 							</div> 
 						</div>
 

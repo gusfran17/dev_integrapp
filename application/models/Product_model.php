@@ -84,7 +84,7 @@ class Product_model extends CI_Model {
         $this->db->select_max('id');
         $query = $this->db->get('product');
         $result = $query->result();
-        echo ($result[0]->id+1);
+        return ($result[0]->id+1);
     }
 
     function get_catalog($id){

@@ -39,6 +39,9 @@ class Product extends CI_Controller {
 	   		$this->form_validation->set_rules('productVAT', 'IVA', 'trim');
 	   		$this->form_validation->set_rules('productDesc', 'Descripcion', 'required|min_length[30]|max_length[400]');
 
+	   		
+
+
 	   		if ($this->form_validation->run()) {
 
 
@@ -51,6 +54,7 @@ class Product extends CI_Controller {
 				$insert['category_id'] = $this->input->post("categoryID");
 				$insert['tax'] = $this->input->post("productVAT");
 				$insert['published_date'] = date("Y-m-d H:i:s");
+				$insert['short_desc'] = $this->input->post("categoryTree"); 
 
 				$new_id= $this->Product_model->get_new_id();
 
@@ -60,8 +64,9 @@ class Product extends CI_Controller {
 				
 				$id = $this->Product_model->save_product($insert);
 
+				echo ($new_id);
 
-				echo $id;
+				
 
 	   			echo "corre";
 
