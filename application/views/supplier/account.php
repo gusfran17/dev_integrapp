@@ -53,6 +53,11 @@
 			</div>
 		
 			<h3 class="info-level-3">Datos de mi empresa</h3>
+			<?php if(isset($supplier->logo)): ?>
+			<div class="form-group">
+				<img src="<?php echo base_url() . $supplier->logo; ?>" />
+			</div>
+			<?php endif;?>
 	
 			<div class="form-group">
 			  <label class="control-label" for="fake_name">Nombre de fantasía (Nombre de su empresa)</label>

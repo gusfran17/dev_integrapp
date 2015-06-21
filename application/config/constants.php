@@ -86,5 +86,22 @@ define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
 
+
+/*
+|--------------------------------------------------------------------------
+| Application Constants
+|--------------------------------------------------------------------------
+|
+| These constants are declared for application
+|
+*/
+
+define('ALLOWED_PROFILE_IMAGE_TYPE', 'png');
+define('ALLOWED_PROFILE_IMAGE_MAXSIZE', 200);
+define('ALLOWED_PROFILE_IMAGE_MAXWIDTH', 300);
+define('ALLOWED_PROFILE_IMAGE_MAXHEIGHT', 250);
+define('DISTRIBUTOR_PROFILE_IMAGE_PATH', '/Resources/imgs/profile/distributor/');
+define('SUPPLIER_PROFILE_IMAGE_PATH', '/Resources/imgs/profile/supplier/');
 define('MAX_ATTRIBUTE_AMOUNT', 20);
+
 

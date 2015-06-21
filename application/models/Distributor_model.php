@@ -56,5 +56,30 @@ class Distributor_model extends CI_Model {
 
     }
 
+    public function save_logo($id){
+        $config['upload_path'] = '.' . DISTRIBUTOR_PROFILE_IMAGE_PATH;
+        $config['allowed_types'] = ALLOWED_PROFILE_IMAGE_TYPE;
+        $config['max_size'] = ALLOWED_PROFILE_IMAGE_MAXSIZE;
+        $config['max_width']  = ALLOWED_PROFILE_IMAGE_MAXWIDTH;
+        $config['max_height']  = ALLOWED_PROFILE_IMAGE_MAXHEIGHT;
+        $config['file_name']  = md5($id);
+        $config['overwrite']  = true;
+        $this->load->library('upload', $config);
+        return $this->upload->do_upload();
+    }
+
+
+    public function get_logo($userid){
+        $path = '.' . DISTRIBUTOR_PROFILE_IMAGE_PATH;
+        $url_path = DISTRIBUTOR_PROFILE_IMAGE_PATH;
+        $filename = $path . md5($userid) . ".png";
+        if(file_exists($filename)){
+            return $url_path . md5($userid) . ".png";
+        }else{
+            return false;
+        }
+        
+    }
+
 }
 

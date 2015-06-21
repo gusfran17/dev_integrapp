@@ -38,8 +38,10 @@ class Product extends CI_Controller {
 	   		$this->form_validation->set_rules('productCode', 'Codigo', 'required');
 	   		$this->form_validation->set_rules('productVAT', 'IVA', 'trim');
 	   		$this->form_validation->set_rules('productDesc', 'Descripcion', 'required|min_length[30]|max_length[400]');
+
 		/*	$this->form_validation->set_rules('atribute', 'Atributo', 'required');
 	   		$this->form_validation->set_rules('value', 'Valor', 'required'); */
+
 
 
 	   		if ($this->form_validation->run()) {
@@ -92,7 +94,8 @@ class Product extends CI_Controller {
 	   			$section=$this->uri->segment(2);
 	   			$role=$this->session->userdata("role");
 	   			$this->session->set_flashdata('error', "active in");
-	   			$data['error'] = $this->sessiosn->flashdata('error');
+
+	   			$data['error'] = $this->session->flashdata('error');
 
 				$this->load->view('templates/template_header');
 				$this->load->view('templates/template_nav');

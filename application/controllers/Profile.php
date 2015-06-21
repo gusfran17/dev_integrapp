@@ -45,11 +45,23 @@ class Profile extends CI_Controller {
 
 			$data['supplier']->percentage = $this->Supplier_model->get_completeness($userid);
 
+			$logo = $this->get_logo();
+			if ($logo!=false){
+				$data['supplier']->logo = $logo;
+			} 
+			
+		}else if($role == "distributor"){
+
 
 		}else if($role == "distributor"){
 			$data['distributor'] = $this->Distributor_model->get_distributor($userid);
 
 			$data['distributor']->percentage = $this->Distributor_model->get_completeness($userid);
+
+			$logo = $this->get_logo();
+			if ($logo!=false){
+				$data['distributor']->logo = $logo;
+			}
 
 		}
 		$data['success'] = $this->session->flashdata('success');
@@ -212,6 +224,36 @@ public function getProperties($id=NULL){
 			$this->routedHome('templates/data_change/template_username_change',null,$data);
 	}
 
+	public function change_logo(){
+			$data['user'] = $this->session->userdata('user');
+			$data['error'] = $this->session->flashdata('error');
+			$this->routedHome('templates/data_change/template_logo_change',null,$data);
+	}
+
+	public function save_logo(){
+
+		$userid = $this->session->userdata("id");
+   		$role = $this->session->userdata("role");
+   		if($role == "distributor"){
+			$resultado = $this->Distributor_model->save_logo($userid);
+   		}else if($role == "supplier"){
+   			$resultado = $this->Supplier_model->save_logo($userid);
+   		}
+
+		if ( ! $resultado)
+		{
+			$error = $this->upload->display_errors('','');
+			$this->session->set_flashdata('error', $error);
+			$this->change_logo();
+		}
+		else
+		{	
+			$this->session->set_flashdata('success',"El logotipo se ha subido correctamente!");
+			$this->account();
+		}
+
+	}
+
 
    	public function save_password() {
 
@@ -348,6 +390,16 @@ public function getProperties($id=NULL){
 		return $this->User_model->username_not_exist($username);
 	}
 
+   	private function get_logo(){
+   		$userid = $this->session->userdata("id"); 
+   		$role = $this->session->userdata("role");
+   		if($role == "distributor"){
+			$resultado = $this->Distributor_model->get_logo($userid);
+   		}else if($role == "supplier"){
+			$resultado = $this->Supplier_model->get_logo($userid);
+   		}
+ 		return $resultado;		
+	}
 
 }
 
