@@ -38,8 +38,8 @@ class Product extends CI_Controller {
 	   		$this->form_validation->set_rules('productCode', 'Codigo', 'required');
 	   		$this->form_validation->set_rules('productVAT', 'IVA', 'trim');
 	   		$this->form_validation->set_rules('productDesc', 'Descripcion', 'required|min_length[30]|max_length[400]');
-
-
+		/*	$this->form_validation->set_rules('atribute', 'Atributo', 'required');
+	   		$this->form_validation->set_rules('value', 'Valor', 'required'); */
 
 
 	   		if ($this->form_validation->run()) {
@@ -62,13 +62,29 @@ class Product extends CI_Controller {
 
 				$insert['id']= $new_id;
 
-
-
 				$id = $this->Product_model->save_product($insert);
 
 				$product_added = $this->Product_model->get_added_product($new_id);
+
+				if ($product_added!=FALSE) {
+				
+
+					for ($i=0; $i < MAX_ATTRIBUTE_AMOUNT ; $i++) { 
+
+						$attribute = $this->input->post('attribute'.$i);
+						$value = $this->input->post('value'.$i);
+						
+
+						if ($attribute !=NULL && $value!=NULL) {
+							$this->Product_model->save_product_attribute($new_id, $attribute, $value);
+
+						}
+						
+					}
+				}
 				echo json_encode($product_added);
 				
+
 
 	   		}else{
 
@@ -76,7 +92,7 @@ class Product extends CI_Controller {
 	   			$section=$this->uri->segment(2);
 	   			$role=$this->session->userdata("role");
 	   			$this->session->set_flashdata('error', "active in");
-	   			$data['error'] = $this->session->flashdata('error');
+	   			$data['error'] = $this->sessiosn->flashdata('error');
 
 				$this->load->view('templates/template_header');
 				$this->load->view('templates/template_nav');

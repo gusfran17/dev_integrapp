@@ -103,8 +103,8 @@
 									    <button class="add_field_button btn btn-primary btn-md">Agregar mas campos</button>
 									    <div>
 									    	<div class="form-group">
-											    <input type="text" name="" placeholder="" value="Ej.:Ancho" disabled>
-											    <input type="text" name="" placeholder="" value="Ej.:30cm" disabled>
+											    <input type="text" name="atributeExample" placeholder="Ej.:Ancho" value="" disabled>
+											    <input type="text" name="valueExample" placeholder="Ej.:30cm" value="" disabled><a href="#" class="remove_field"> X</a>
 											</div>   
 									    </div>
 									</div>

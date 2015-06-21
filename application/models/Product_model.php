@@ -92,10 +92,8 @@ class Product_model extends CI_Model {
 
         $this->db->where("id", $id);
         $query = $this->db->get('product');
-       // $result = $query->result();
-       // return $result;
         if($query->num_rows() == 0){
-            echo "El Producto no se cargo satisfactoriamente, Intente volver a cargarlo por favor.";
+           return FALSE;
         } else{ 
             $result = $query->result();
             return $result[0];
@@ -114,6 +112,17 @@ class Product_model extends CI_Model {
             $result = $query->result();
             return $result;
             }
+    }
+
+    function save_product_attribute($productId, $attribute, $value){
+
+        $insert = array();
+        $insert['product_id'] = $productId;
+        $insert['attribute_name'] = $attribute;
+        $insert['attribute_value'] = $value;
+        $insert['published_date'] = date("Y-m-d H:i:s");
+
+        $this->db->insert("product_attribute", $insert);
     }
 
 }

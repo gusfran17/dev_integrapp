@@ -121,10 +121,30 @@ $('#saveProduct').click(function(){
 		productVAT: $("input[name='productVAT']").val(),
 		categoryID: finalCategoryID,
 		categoryTree: $("input[name='categoryTree']").val(),
-		productDesc: $("textarea[name='productDesc']").val()
+		productDesc: $("textarea[name='productDesc']").val(),
 	}
+
+	var map = new Object();
+
+	if ($('.specifications')) {
+
+		var i=1;
+
+		$('.specifications').each(function(){
+			var attribute=$(this).find('input[name="attribute"]').val();
+			var value=$(this).find('input[name="value"]').val();
+			form_data['attribute'+i] = attribute;
+			form_data['value'+i] = value;
+			i++;
+		});
+
+
+
+	};
 		event.preventDefault();
 		
+		console.log (form_data);
+
 		$.ajax({
 
 			url:'../product/save_product',
@@ -132,7 +152,7 @@ $('#saveProduct').click(function(){
 			data: form_data,
 			dataType:'json',
 			success:function(data){
-
+				console.log(data);
 				$('#tableBody').append("<tr><td>"+data.name+"</td><td>"+data.description+"</td><td>"+data.integrapp_code+"</td><td>"+data.code+"</td></tr>")
 				$('#formOptions input[type=text]').val('');
 				$('#formOptions textarea').val('');
@@ -158,7 +178,7 @@ $('#saveProduct').click(function(){
         if(x < max_fields){ //max input box allowed
             x++; //text box increment
 
-            $(wrapper).append('<div class="form-group"><input type="text" class="inputProperty" name="atribute" placeholder="Atributo..."/><input type="text" class="inputProperty" name="value" placeholder="Valor..."/><a href="#" class="remove_field">X</a></div>'); //add input box
+            $(wrapper).append('<div class="form-group specifications"><input type="text" class="inputProperty" name="attribute" placeholder="Atributo..."/><input type="text" class="inputProperty" name="value" placeholder="Valor..."/><a href="#" class="remove_field">X</a></div>'); //add input box
         }
     });
     
