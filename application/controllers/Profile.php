@@ -46,13 +46,19 @@ class Profile extends CI_Controller {
 
 			$data['supplier'] = $this->Supplier_model->get_supplier($userid);
 			$data['supplier']->percentage = $this->Supplier_model->get_completeness($userid);
-			$data['supplier']->logo = $this->get_logo();
-
+			$logo = $this->get_logo();
+			if ($logo!=false){
+				$data['supplier']->logo = $logo;
+			} 
+			
 		}else if($role == "distributor"){
 
 			$data['distributor'] = $this->Distributor_model->get_distributor($userid);
 			$data['distributor']->percentage = $this->Distributor_model->get_completeness($userid);
-			$data['distributor']->logo = $this->get_logo();
+			$logo = $this->get_logo();
+			if ($logo!=false){
+				$data['distributor']->logo = $logo;
+			}
 		}
 		$data['success'] = $this->session->flashdata('success');
 
@@ -235,12 +241,12 @@ class Profile extends CI_Controller {
 
 	public function save_logo(){
 
-		$email = $this->session->userdata("email");
+		$userid = $this->session->userdata("id");
    		$role = $this->session->userdata("role");
    		if($role == "distributor"){
-			$resultado = $this->Distributor_model->save_logo($email);
+			$resultado = $this->Distributor_model->save_logo($userid);
    		}else if($role == "supplier"){
-   			$resultado = $this->Supplier_model->save_logo($email);
+   			$resultado = $this->Supplier_model->save_logo($userid);
    		}
 
 		if ( ! $resultado)
@@ -387,7 +393,7 @@ class Profile extends CI_Controller {
 	}
 
    	private function get_logo(){
-   		$email = $this->session->userdata("email"); 
+   		$userid = $this->session->userdata("id"); 
    		$role = $this->session->userdata("role");
    		if($role == "distributor"){
 			$path = './Resources/imgs/profile/distributor/';
@@ -396,9 +402,9 @@ class Profile extends CI_Controller {
 			$path = './Resources/imgs/profile/supplier/';
 			$url_path = '/Resources/imgs/profile/supplier/';
    		}
-   		$filename = $path . md5($email) . ".png";
+   		$filename = $path . md5($userid) . ".png";
    		if(file_exists($filename)){
-   			return $url_path . md5($email) . ".png" ;
+   			return $url_path . md5($userid) . ".png" ;
    		}else{
    			return false;
    		}
