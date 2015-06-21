@@ -69,5 +69,17 @@ class Distributor_model extends CI_Model {
     }
 
 
+    public function get_logo($userid){
+        $path = '.' . DISTRIBUTOR_PROFILE_IMAGE_PATH;
+        $url_path = DISTRIBUTOR_PROFILE_IMAGE_PATH;
+        $filename = $path . md5($userid) . ".png";
+        if(file_exists($filename)){
+            return $url_path . md5($userid) . ".png";
+        }else{
+            return false;
+        }
+        
+    }
+
 }
 

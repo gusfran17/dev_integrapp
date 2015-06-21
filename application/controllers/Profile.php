@@ -396,19 +396,11 @@ class Profile extends CI_Controller {
    		$userid = $this->session->userdata("id"); 
    		$role = $this->session->userdata("role");
    		if($role == "distributor"){
-			$path = '.' . DISTRIBUTOR_PROFILE_IMAGE_PATH;
-			$url_path = DISTRIBUTOR_PROFILE_IMAGE_PATH;
+			$resultado = $this->Distributor_model->get_logo($userid);
    		}else if($role == "supplier"){
-			$path = '.' . SUPPLIER_PROFILE_IMAGE_PATH;
-			$url_path = SUPPLIER_PROFILE_IMAGE_PATH;
+			$resultado = $this->Supplier_model->get_logo($userid);
    		}
-   		$filename = $path . md5($userid) . ".png";
-   		if(file_exists($filename)){
-   			return $url_path . md5($userid) . ".png";
-   		}else{
-   			return false;
-   		}
-		
+ 		return $resultado;		
 	}
 
 }
