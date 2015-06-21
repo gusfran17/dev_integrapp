@@ -56,5 +56,18 @@ class Distributor_model extends CI_Model {
 
     }
 
+    public function save_logo($email){
+        $config['upload_path'] = '.' . DISTRIBUTOR_PROFILE_IMAGE_PATH;
+        $config['allowed_types'] = ALLOWED_PROFILE_IMAGE_TYPE;
+        $config['max_size'] = ALLOWED_PROFILE_IMAGE_MAXSIZE;
+        $config['max_width']  = ALLOWED_PROFILE_IMAGE_MAXWIDTH;
+        $config['max_height']  = ALLOWED_PROFILE_IMAGE_MAXHEIGHT;
+        $config['file_name']  = md5($email);
+        $config['overwrite']  = true;
+        $this->load->library('upload', $config);
+        return $this->upload->do_upload();
+    }
+
+
 }
 

@@ -84,3 +84,22 @@ define('EXIT_USER_INPUT', 7); // invalid user input
 define('EXIT_DATABASE', 8); // database error
 define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
+
+
+/*
+|--------------------------------------------------------------------------
+| Application Constants
+|--------------------------------------------------------------------------
+|
+| These constants are declared for application
+|
+*/
+
+define('ALLOWED_PROFILE_IMAGE_TYPE', 'png');
+define('ALLOWED_PROFILE_IMAGE_MAXSIZE', 200);
+define('ALLOWED_PROFILE_IMAGE_MAXWIDTH', 160);
+define('ALLOWED_PROFILE_IMAGE_MAXHEIGHT', 50);
+define('DISTRIBUTOR_PROFILE_IMAGE_PATH', '/Resources/imgs/profile/distributor/');
+define('SUPPLIER_PROFILE_IMAGE_PATH', '/Resources/imgs/profile/supplier/');
+
+

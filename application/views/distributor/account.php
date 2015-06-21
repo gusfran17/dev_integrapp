@@ -61,7 +61,11 @@
 			<div class="form-group">
 			  <h3 class="info-level-3">Datos de mi empresa</h3>
 			</div>
-
+			<?php if(isset($distributor->logo)): ?>
+			<div class="form-group">
+				<img src="<?php echo base_url() . $distributor->logo; ?>" />
+			</div>
+			<?php endif;?>
 			<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 
 			

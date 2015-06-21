@@ -46,11 +46,13 @@ class Profile extends CI_Controller {
 
 			$data['supplier'] = $this->Supplier_model->get_supplier($userid);
 			$data['supplier']->percentage = $this->Supplier_model->get_completeness($userid);
+			$data['supplier']->logo = $this->get_logo();
 
 		}else if($role == "distributor"){
 
 			$data['distributor'] = $this->Distributor_model->get_distributor($userid);
 			$data['distributor']->percentage = $this->Distributor_model->get_completeness($userid);
+			$data['distributor']->logo = $this->get_logo();
 		}
 		$data['success'] = $this->session->flashdata('success');
 
@@ -225,6 +227,36 @@ class Profile extends CI_Controller {
 			$this->routedHome('templates/data_change/template_username_change',null,$data);
 	}
 
+	public function change_logo(){
+			$data['user'] = $this->session->userdata('user');
+			$data['error'] = $this->session->flashdata('error');
+			$this->routedHome('templates/data_change/template_logo_change',null,$data);
+	}
+
+	public function save_logo(){
+
+		$email = $this->session->userdata("email");
+   		$role = $this->session->userdata("role");
+   		if($role == "distributor"){
+			$resultado = $this->Distributor_model->save_logo($email);
+   		}else if($role == "supplier"){
+   			$resultado = $this->Supplier_model->save_logo($email);
+   		}
+
+		if ( ! $resultado)
+		{
+			$error = $this->upload->display_errors('','');
+			$this->session->set_flashdata('error', $error);
+			$this->change_logo();
+		}
+		else
+		{	
+			$this->session->set_flashdata('success',"El logotipo se ha subido correctamente!");
+			$this->account();
+		}
+
+	}
+
 
    	public function save_password() {
 
@@ -354,6 +386,24 @@ class Profile extends CI_Controller {
 		return $this->User_model->username_not_exist($username);
 	}
 
+   	private function get_logo(){
+   		$email = $this->session->userdata("email"); 
+   		$role = $this->session->userdata("role");
+   		if($role == "distributor"){
+			$path = './Resources/imgs/profile/distributor/';
+			$url_path = '/Resources/imgs/profile/distributor/';
+   		}else if($role == "supplier"){
+			$path = './Resources/imgs/profile/supplier/';
+			$url_path = '/Resources/imgs/profile/supplier/';
+   		}
+   		$filename = $path . md5($email) . ".png";
+   		if(file_exists($filename)){
+   			return $url_path . md5($email) . ".png" ;
+   		}else{
+   			return false;
+   		}
+		
+	}
 
 }
 
