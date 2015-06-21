@@ -15,7 +15,7 @@
 		</div>
 
 		<div class="form-group">
-		  <label class="control-label" for="userfile">Archivo de Logotipo (PNG - 150 píxels x 50 píxels)</label>
+		  <label class="control-label" for="userfile">Archivo de Logotipo (PNG - <?php echo ALLOWED_PROFILE_IMAGE_MAXWIDTH; ?> píxels x <?php echo ALLOWED_PROFILE_IMAGE_MAXHEIGHT; ?> píxels)</label>
 		  <?php if(isset($error)): ?><span class="label label-danger"><?php echo $error;  ?></span><?php endif;?>
 		  <input class="form-control" id="userfile" name="userfile" type="file">
 		</div>
