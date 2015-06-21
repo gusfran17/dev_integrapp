@@ -97,8 +97,8 @@ define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
 define('ALLOWED_PROFILE_IMAGE_TYPE', 'png');
 define('ALLOWED_PROFILE_IMAGE_MAXSIZE', 200);
-define('ALLOWED_PROFILE_IMAGE_MAXWIDTH', 160);
-define('ALLOWED_PROFILE_IMAGE_MAXHEIGHT', 50);
+define('ALLOWED_PROFILE_IMAGE_MAXWIDTH', 300);
+define('ALLOWED_PROFILE_IMAGE_MAXHEIGHT', 250);
 define('DISTRIBUTOR_PROFILE_IMAGE_PATH', '/Resources/imgs/profile/distributor/');
 define('SUPPLIER_PROFILE_IMAGE_PATH', '/Resources/imgs/profile/supplier/');
 
