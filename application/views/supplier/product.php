@@ -108,11 +108,10 @@
 											</div>   
 									    </div>
 									</div>
-									<!--<div>
-									<h3>Imagenes</h3>
-										<form action="../Dropzone/upload" class="dropzone"></form>
-									</div>-->
-									
+
+									<div id="dZUpload" class="dropzone">
+									      <div class=""></div>
+									</div>
 									<div class="form-group">
 										<input type="submit" id="saveProduct" value="Guardar" class="btn btn-primary">
 									</div>
@@ -141,9 +140,12 @@
 
 							</div>
 						</div>
+
 					</form>			    
 				</div>
+
 			</div>
 			<div role="tabpanel" class="tab-pane fade" id="settings">...</div>
 	</div>
+
 </section>

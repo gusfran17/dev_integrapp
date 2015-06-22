@@ -15,7 +15,7 @@ class Dropzone extends CI_Controller {
 			if (!empty($_FILES)) {
 				$tempFile = $_FILES['file']['tmp_name'];
 				$fileName = $_FILES['file']['name'];
-				$targetPath = base_url().'DropImages';
+				$targetPath = PRODUCT_IMAGES_PATH;
 				$targetFile = $targetPath . $fileName ;
 				move_uploaded_file($tempFile, $targetFile);
 				// if you want to save in db,where here

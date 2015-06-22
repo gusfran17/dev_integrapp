@@ -32,11 +32,11 @@
         <link href="<?php echo base_url(); ?>Resources/bootstrap/css/bootstrap.css" rel="stylesheet">
         <link href="<?php echo base_url(); ?>Resources/styles/main_style.css" rel="stylesheet">
         <link href="<?php echo base_url(); ?>Resources/styles/dropzone.css" type="text/css" rel="stylesheet" />
+        
         <script type="text/javascript" src="<?php echo base_url(); ?>Resources/scripts/modernizr.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>Resources/scripts/jquery.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>Resources/scripts/main_script.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>Resources/scripts/dropzone.js"></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>Resources/scripts/dropzone-amd-module.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>Resources/bootstrap/js/bootstrap.js"></script>
         
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

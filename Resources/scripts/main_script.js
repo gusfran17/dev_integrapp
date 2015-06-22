@@ -188,7 +188,18 @@ $('#saveProduct').click(function(){
 
 
 
-
+Dropzone.autoDiscover = false;
+    $("#dZUpload").dropzone({
+        url: "../Dropzone/upload",
+        addRemoveLinks: true,
+        success: function (file, response) {
+            var imgName = response;
+            file.previewElement.classList.add("dz-success");
+        },
+        error: function (file, response) {
+            file.previewElement.classList.add("dz-error");
+        }
+    });
 
 
 
