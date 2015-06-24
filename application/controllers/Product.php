@@ -7,7 +7,7 @@ class Product extends CI_Controller {
 	public function get_categories($id=NULL){
 				
 		if (isset($id)) {
-			$data['SecondCategory'] = $this->Product_model->get_category($id);
+			$data['NextCategory'] = $this->Product_model->get_category($id);
 			echo json_encode($data);
 			die();
 		}else{
@@ -66,43 +66,35 @@ class Product extends CI_Controller {
 
 				$id = $this->Product_model->save_product($insert);
 
-				$product_added = $this->Product_model->get_added_product($new_id);
+				$product_added = $this->Product_model->get_added_product($id);
 
 				if ($product_added!=FALSE) {
 				
-
 					for ($i=0; $i < MAX_ATTRIBUTE_AMOUNT ; $i++) { 
 
 						$attribute = $this->input->post('attribute'.$i);
 						$value = $this->input->post('value'.$i);
 						
-
 						if ($attribute !=NULL && $value!=NULL) {
 							$this->Product_model->save_product_attribute($new_id, $attribute, $value);
-
 						}
-						
 					}
 				}
-				echo json_encode($product_added);
-				
+				//echo json_encode($product_added);
 
+				//copy images permanently
+				if($this->input->post('imagen')){
+					echo "Hay imagenes";
+					foreach($this->input->post('imagen') as $img){
+						@mkdir("." . PRODUCT_IMAGES_PATH . $new_id);
+						@mkdir("." . PRODUCT_IMAGES_PATH . $new_id . "/thumbs");
+						@copy("." . PRODUCT_IMAGES_PATH . "temp/" . $img, "." . PRODUCT_IMAGES_PATH . $new_id . "/" . $img);
+						@copy("." . PRODUCT_IMAGES_PATH . "temp/thumbs/". $img, "." . PRODUCT_IMAGES_PATH . $new_id . "/thumbs/" . $img);
+					}
+				}
 
 	   		}else{
 
-	   			/*
-	   			$section=$this->uri->segment(2);
-	   			$role=$this->session->userdata("role");
-	   			$this->session->set_flashdata('error', "active in");
-
-	   			$data['error'] = $this->session->flashdata('error');
-
-				$this->load->view('templates/template_header');
-				$this->load->view('templates/template_nav');
-				$this->load->view('navs/nav_'.$role);
-				$this->load->view('supplier/product', $data);
-				$this->load->view('templates/template_footer');*/
-				echo "no corre";
 				$data = array(
 					'categoryTree' => form_error('categoryTree'),
                     'productName' => form_error('productName'), 
@@ -126,6 +118,52 @@ class Product extends CI_Controller {
 		return TRUE;
 	}
 
+
+	public function upload_foto(){
+		$filename = md5(date("Y-m-d h:i:s") . microtime());
+		$config['upload_path'] = '.' . PRODUCT_IMAGES_PATH . "temp/";
+		$config['allowed_types'] = 'jpg|png|gif';
+		$config['max_size']	= '5000';
+		$config['max_width']  = '7000';
+		$config['max_height']  = '7000';
+		$config['file_name'] = $filename;
+		$this->load->library('upload', $config);
+
+		$result = new stdClass();
+
+		if ( ! $this->upload->do_upload())
+		{
+			$result->error = $this->upload->display_errors();
+		}else{
+			$result->success = $this->upload->data();
+			$this->do_resize($result->success['file_name']);
+		}
+		echo  json_encode($result);
+	}
+
+
+	public function do_resize($filename)
+	{
+	    $source_path = '.' . PRODUCT_IMAGES_PATH . "temp/" . $filename;
+	    $target_path = '.' . PRODUCT_IMAGES_PATH. 'temp/thumbs/';
+	    $config_manip = array(
+	        'image_library' => 'gd2',
+	        'source_image' => $source_path,
+	        'new_image' => $target_path,
+	        'maintain_ratio' => TRUE,
+	        'create_thumb' => TRUE,
+	        'thumb_marker' => '',
+	        'width' => 100,
+	        'height' => 100
+	    );
+
+	    $this->image_lib->initialize($config_manip);
+	    if (!$this->image_lib->resize()) {
+	        echo $this->image_lib->display_errors();
+	    }
+	    // clear //
+	    $this->image_lib->clear();
+	}
 
 
 }

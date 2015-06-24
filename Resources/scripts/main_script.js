@@ -71,6 +71,7 @@ function getTree(){
 
 function ajaxCall(){
 	var categoryLevel= idCategory.substr(8,1);
+	//Deletes all spare dropdowns when root categories are changed
 	for ( i = parseInt(categoryLevel)+1; i <= 5; i++) {
 		$("#category"+i).remove();
 		$("#confirmation").remove();
@@ -80,6 +81,7 @@ function ajaxCall(){
     $( "select option:selected" ).each(function() {
       str = $( this ).attr('id') + " ";
     });
+    console.log(str);
 	$.ajax({
   		url:'/dev_integrapp/product/get_categories/'+str,
   		type:'POST',
@@ -87,24 +89,29 @@ function ajaxCall(){
   		data:{id:str},
 		statusCode: {
 		    500: function() {
-		      $('#products').append("<div id='confirmation'><p>Ha seleccionado la categoria "+finalCategory+"</p><button type='submit' id='submit1'>Confirmar</button></div>");
+		      
 
 		    }
 		  },
   		success:function(data){
-  			categoryLevel++;
-  			$('#products').append("<select id='category"+categoryLevel+"' class='categories'></select>");
-  	     	for(var i in data){
-	     		var obj=data[i];
-	     		for(var j in obj){
-	     			var id=obj[j].id;
-	     			var name=obj[j].name;
-	     			$('#category'+categoryLevel).append("<option id='"+id+"'>"+name+"</option>");
-	     			
-	     			
-	     		}
-	     		
-	     	}
+  			if (data['NextCategory'] != null){
+  				categoryLevel++;
+  				$('#products').append("<select id='category"+categoryLevel+"' class='categories'></select>");
+  				for(var i in data){
+		     		var obj=data[i];
+		     		if (obj != null){
+		     			console.log(data);
+			     		for(var j in obj){
+			     			var id=obj[j].id;
+			     			var name=obj[j].name;
+			     			$('#category'+categoryLevel).append("<option id='"+id+"'>"+name+"</option>");
+			     		}
+				    } 	
+		     	}
+  			} else {
+  				$("#categoryID").val(finalCategoryID);
+		  		$('#products').append("<div id='confirmation'><p>Ha seleccionado la categoria "+finalCategory+"</p><button type='submit' id='submit1'>Confirmar</button></div>");
+	  		}
   		}
   	});
 }
@@ -114,57 +121,53 @@ function ajaxCall(){
 
 
 $('#saveProduct').click(function(){
+	$("#categoryTree").removeAttr('disabled');
 
-	var form_data = {
-		productName: $("input[name='productName']").val(), 
-		productCode: $("input[name='productCode']").val(),
-		productVAT: $("input[name='productVAT']").val(),
-		categoryID: finalCategoryID,
-		categoryTree: $("input[name='categoryTree']").val(),
-		productDesc: $("textarea[name='productDesc']").val(),
-	}
+	// var form_data = {
+	// 	productName: $("input[name='productName']").val(), 
+	// 	productCode: $("input[name='productCode']").val(),
+	// 	productVAT: $("input[name='productVAT']").val(),
+	// 	categoryID: finalCategoryID,
+	// 	categoryTree: $("input[name='categoryTree']").val(),
+	// 	productDesc: $("textarea[name='productDesc']").val(),
+	// }
 
-	var map = new Object();
+	// if ($('.specifications')) {
 
-	if ($('.specifications')) {
+	// 	var i=1;
 
-		var i=1;
-
-		$('.specifications').each(function(){
-			var attribute=$(this).find('input[name="attribute"]').val();
-			var value=$(this).find('input[name="value"]').val();
-			form_data['attribute'+i] = attribute;
-			form_data['value'+i] = value;
-			i++;
-		});
-
+	// 	$('.specifications').each(function(){
+	// 		var attribute=$(this).find('input[name="attribute"]').val();
+	// 		var value=$(this).find('input[name="value"]').val();
+	// 		form_data['attribute'+i] = attribute;
+	// 		form_data['value'+i] = value;
+	// 		i++;
+	// 	});
 
 
-	};
-		event.preventDefault();
-		
-		console.log (form_data);
 
-		$.ajax({
+	// };
+	// event.preventDefault();
+	
+	// console.log (form_data);
 
-			url:'../product/save_product',
-			type:'POST',
-			data: form_data,
-			dataType:'json',
-			success:function(data){
-				console.log(data);
-				$('#tableBody').append("<tr><td>"+data.name+"</td><td>"+data.description+"</td><td>"+data.integrapp_code+"</td><td>"+data.code+"</td></tr>")
-				$('#formOptions input[type=text]').val('');
-				$('#formOptions textarea').val('');
-				$('.alert').removeClass('insight');
-			}
+	// $.ajax({
 
-		});
+	// 	url:'../product/save_product',
+	// 	type:'POST',
+	// 	data: form_data,
+	// 	dataType:'json',
+	// 	success:function(data){
+	// 		console.log(data);
+	// 		$('#tableBody').append("<tr><td>"+data.name+"</td><td>"+data.description+"</td><td>"+data.integrapp_code+"</td><td>"+data.code+"</td></tr>")
+	// 		$('#formOptions input[type=text]').val('');
+	// 		$('#formOptions textarea').val('');
+	// 		$('.alert').removeClass('insight');
+	// 	}
+
+	// });
 
 });
-
-
-
 
 
 
@@ -178,30 +181,13 @@ $('#saveProduct').click(function(){
         if(x < max_fields){ //max input box allowed
             x++; //text box increment
 
-            $(wrapper).append('<div class="form-group specifications"><input type="text" class="inputProperty" name="attribute" placeholder="Atributo..."/><input type="text" class="inputProperty" name="value" placeholder="Valor..."/><a href="#" class="remove_field">X</a></div>'); //add input box
+            $(wrapper).append('<div class="form-group specifications"><input type="text" class="inputProperty" name="attribute' + x + '" placeholder="Atributo..."/><input type="text" class="inputProperty" name="value' + x + '" placeholder="Valor..."/><a href="#" class="remove_field">X</a></div>'); //add input box
         }
     });
     
     $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
         e.preventDefault(); $(this).parent('div').remove(); x--;
     });
-
-
-
-Dropzone.autoDiscover = false;
-    $("#dZUpload").dropzone({
-        url: "../Dropzone/upload",
-        addRemoveLinks: true,
-        success: function (file, response) {
-            var imgName = response;
-            file.previewElement.classList.add("dz-success");
-        },
-        error: function (file, response) {
-            file.previewElement.classList.add("dz-error");
-        }
-    });
-
-
 
 
 

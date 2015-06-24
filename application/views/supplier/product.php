@@ -53,6 +53,7 @@
 											} ?>
 										</select>
 									</div>
+
 									<div class="col-md-9">
 							    		<h3>Tips:</h3>
 								    	<ul>
@@ -76,7 +77,13 @@
 								<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5" id="formOptions">
 									<div class="form-group">
 										<label for="" class="control-label">Categoria seleccionada</label>
-										<input type="text" class="form-control" id="categoryTree" name="categoryTree" value="" disabled>
+										<input type="text" class="form-control" id="categoryTree" name="categoryTree" value="" >
+										<input type="text" name="categoryID" value="" id="categoryID">
+										<script type="text/javascript">
+											$("#categoryID").hide();
+											$("#categoryTree").attr('disabled','disabled');
+										</script>
+
 									</div>
 									<div class="form-group">
 										<label for="" class="control-label">Nombre del producto*</label>
@@ -103,14 +110,87 @@
 									    <button class="add_field_button btn btn-primary btn-md">Agregar mas campos</button>
 									    <div>
 									    	<div class="form-group">
-											    <input type="text" name="atributeExample" placeholder="Ej.:Ancho" value="" disabled>
+											    <input type="text" name="attributeExample" placeholder="Ej.:Ancho" value="" disabled>
 											    <input type="text" name="valueExample" placeholder="Ej.:30cm" value="" disabled><a href="#" class="remove_field"> X</a>
 											</div>   
 									    </div>
 									</div>
+									
+									<div class="form-group">
+										<h3>imagenes de producto</h3>
+										<div id="freewalk-dropzone" class="dropzone"></div>
+										<div class="dropzone-previews"></div>
+										
+										<?php if($this->input->post("imagen")):?>
+											<script type="text/javascript">
+												Dropzone.autoDiscover = false; // otherwise will be initialized twice
+												var myDropzoneOptions = {
+												    maxFilesize: 5,
+												    addRemoveLinks: true,
+												    clickable: true,
+												    url: "../product/upload_foto"
+												}; 
+												var myDropzone = new Dropzone('#freewalk-dropzone', myDropzoneOptions);
+												
+												<?php foreach($this->input->post("imagen") as $i): ?>
+													var mockFile = { name: "imagen", size: 12345 };
+													myDropzone.options.addedfile.call(myDropzone, mockFile);
+													myDropzone.options.thumbnail.call(myDropzone, mockFile, "<?php echo PRODUCT_IMAGES_PATH.'temp/thumbs/'.$i;?>");
+												<?php endforeach; ?>	
 
-									<div id="dZUpload" class="dropzone">
-									      <div class=""></div>
+											</script>
+										<?php else: ?>
+											<script type="text/javascript">
+												function imagePush(image){
+													$("#imagesArray").append("<input type='hidden' name='imagen[]' value='"+ image +"' />");
+												}
+
+												function imagePop(image){
+													$( "input[value='" + image + "']" ).remove();
+												}
+												
+												Dropzone.options.freewalkDropzone = {
+												  paramName: "userfile", // The name that will be used to transfer the file
+												  maxFilesize: 2, // MB
+												  url: "../product/upload_foto",
+												  addRemoveLinks: true,
+												  dictCancelUpload: "Cancelar",
+												  dictRemoveFile: "Borrar", 
+												  acceptedFiles: "image/jpeg",
+												  dictInvalidFileType: "Solo se aceptan imagenes jpg",
+
+												  accept: function(file, done) {
+												    if (file.name == "justinbieber.jpg") {
+												      done("Naha, you don't.");
+												    }
+												    else { done(); }
+												  }, 
+												  success: function(file, response){
+												  	var result =  $.parseJSON(response);
+												  	if(result.success){
+												  		file.file_name = result.success.file_name;
+												  		imagePush(result.success.file_name);
+												  	}
+												  },
+												  removedfile: function(file){
+												  	console.log(file);
+												  	imagePop(file.file_name);
+												  	var _ref;
+												    return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+												  }
+												};
+											</script>					
+										<?php endif;?>
+
+										<div id="imagesArray">
+											<?php if($this->input->post("imagen")):?>
+												<?php foreach($this->input->post("imagen") as $i): ?>
+													<input type="hidden" name="imagen[]" value="<?php echo $i;?>">
+												<?php endforeach; ?>
+											<?php endif;?>
+										</div>
+
+
 									</div>
 									<div class="form-group">
 										<input type="submit" id="saveProduct" value="Guardar" class="btn btn-primary">
@@ -143,6 +223,7 @@
 
 					</form>			    
 				</div>
+
 
 			</div>
 			<div role="tabpanel" class="tab-pane fade" id="settings">...</div>

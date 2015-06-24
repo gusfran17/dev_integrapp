@@ -10,9 +10,7 @@ class Product_model extends CI_Model {
         $this->db->where("parent_id", $parent);
         $query = $this->db->get('category');
         if($query->num_rows() == 0){
-            $parent = $this->db->get_where("categorias", array("id"=>$parent))->result()[0]->parent_id;
-            $this->db->where("parent_id", $parent);
-            $query = $this->db->get('categorias');
+            return null;
         }
         $result = $query->result();
         
@@ -74,10 +72,8 @@ class Product_model extends CI_Model {
     }
 
     function save_product($data){
-
         $this->db->insert("product", $data);
-
-        
+        return $this->db->insert_id();
     }
 
     function get_new_id(){
@@ -93,7 +89,7 @@ class Product_model extends CI_Model {
         $this->db->where("id", $id);
         $query = $this->db->get('product');
         if($query->num_rows() == 0){
-           return FALSE;
+            echo "El Producto no se cargo satisfactoriamente, Intente volver a cargarlo por favor.";
         } else{ 
             $result = $query->result();
             return $result[0];
@@ -114,16 +110,17 @@ class Product_model extends CI_Model {
             }
     }
 
-    function save_product_attribute($productId, $attribute, $value){
-
+    function save_product_attribute($product_id, $attribute_name, $attribute_value){
         $insert = array();
-        $insert['product_id'] = $productId;
-        $insert['attribute_name'] = $attribute;
-        $insert['attribute_value'] = $value;
+        $insert['product_id'] = $product_id;
+        $insert['attribute_name'] = $attribute_name;
+        $insert['attribute_value'] = $attribute_value;
         $insert['published_date'] = date("Y-m-d H:i:s");
-
+        $insert['last_update'] = date("Y-m-d H:i:s");
         $this->db->insert("product_attribute", $insert);
+        return $this->db->insert_id();
     }
+
 
 }
 
