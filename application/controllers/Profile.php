@@ -51,9 +51,6 @@ class Profile extends CI_Controller {
 			} 
 			
 		}else if($role == "distributor"){
-
-
-		}else if($role == "distributor"){
 			$data['distributor'] = $this->Distributor_model->get_distributor($userid);
 
 			$data['distributor']->percentage = $this->Distributor_model->get_completeness($userid);
@@ -71,34 +68,7 @@ class Profile extends CI_Controller {
 	}
 
 
-	public function product($id=NULL){
-		$role = $this->session->userdata("role");
-		$role_id = $this->session->userdata('role_id');
-		$data['catalog'] = $this->Product_model->get_catalog($role_id);
-
-		
-		if (isset($id)) {
-			$data['SecondCategory'] = $this->Product_model->get_category($id);
-			echo json_encode($data);
-			die();
-		}else{
-			$data['category'] = $this->Product_model->get_category();
-		}
-		/*if($role == "supplier"){
-
-			$data['supplier'] = $this->Supplier_model->get_supplier($userid);
-
-		}else if($role == "distributor"){
-
-			$data['distributor'] = $this->Distributor_model->get_distributor($userid);
-
-		}*/
-
-		$this->routedHome('product',$role, $data);
-	}
-
-
-public function getProperties($id=NULL){
+	public function getProperties($id=NULL){
 
 		if (isset($id)) {
 			$data['property'] = $this->Product_model->get_property($id);
@@ -107,7 +77,7 @@ public function getProperties($id=NULL){
 		}
 
 
-}
+	}
 
 	public function request(){
 		$data['user'] = $this->session->userdata("user");
@@ -134,7 +104,7 @@ public function getProperties($id=NULL){
   		$id = $this->session->userdata("id");
    		$role = $this->session->userdata("role");
 
-	   	$this->form_validation->set_message('required', 'El campo %s es necesario');
+	   	$this->form_validation->set_message('required', 'El campo %s es obligatorio');
 	   	$this->form_validation->set_message('valid_email', 'El campo %s debe ser una dirección de email válida');
    		$this->form_validation->set_rules('name', 'Nombre', 'trim|required');
    		$this->form_validation->set_rules('lastname', 'Apellido', 'trim|required');
@@ -153,7 +123,7 @@ public function getProperties($id=NULL){
 
    		if ($this->form_validation->run() == FALSE){
 
-			$this->routedHome('account',$role);
+			$this->account();
 
 		} else {
 

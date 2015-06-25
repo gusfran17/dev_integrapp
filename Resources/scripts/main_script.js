@@ -121,6 +121,7 @@ function ajaxCall(){
 
 
 $('#saveProduct').click(function(){
+	//To obtain categoryTree information through post it needs to be enabled temporary
 	$("#categoryTree").removeAttr('disabled');
 
 	// var form_data = {

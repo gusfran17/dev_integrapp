@@ -61,14 +61,24 @@ class Product_model extends CI_Model {
         return $result->row_array();;
     }
 
-
-    function product_check(){
-
+    function productNameCheck($productName){
+        $this->db->where("name", $productName);
+        $query = $this->db->get('product');
+        if($query->num_rows() == 0){
+            return true;
+        } else{ 
+            return false;
+        }
     }
 
-    function code_check(){
-
-
+    function productCodeCheck($productCode){
+        $this->db->where("code", $productCode);
+        $query = $this->db->get('product');
+        if($query->num_rows() == 0){
+            return true;
+        } else{ 
+            return false;
+        }
     }
 
     function save_product($data){

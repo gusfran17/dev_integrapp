@@ -1,5 +1,5 @@
 <li><a href="<?php echo base_url(); ?>profile/account">MI CUENTA</a></li>
-			        <li><a href="<?php echo base_url(); ?>profile/product">PRODUCTOS</a></li>
+			        <li><a href="<?php echo base_url(); ?>product/product_view">PRODUCTOS</a></li>
 			        <li><a href="<?php echo base_url(); ?>profile/request">SOLICITUDES</a></li>
 			        <li><a href="<?php echo base_url(); ?>profile/auction">SUBASTA</a></li>
 			        <li><a href="<?php echo base_url(); ?>profile/credit">CREDITO</a></li>

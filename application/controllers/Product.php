@@ -2,8 +2,30 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Product extends CI_Controller {
-
 	
+	public function product_view($id=NULL, $data=NULL){
+		$role = $this->session->userdata("role");
+		$role_id = $this->session->userdata('role_id');
+		$data['catalog'] = $this->Product_model->get_catalog($role_id);
+
+		if (isset($id)) {
+			$data['NextCategory'] = $this->Product_model->get_category($id);
+			//echo json_encode($data);
+			//die();
+		}else{
+			$data['category'] = $this->Product_model->get_category();
+		}
+		$this->routedHome('product',$role, $data);
+	}
+
+	public function routedHome($section, $role = null, $data = null){
+		$this->load->view('templates/template_header');
+		$this->load->view('templates/template_nav');
+		$this->load->view('navs/nav_'.$this->session->userdata("role"));
+		$this->load->view($role.'/'.$section, $data);
+		$this->load->view('templates/template_footer');
+	}
+
 	public function get_categories($id=NULL){
 				
 		if (isset($id)) {
@@ -34,22 +56,28 @@ class Product extends CI_Controller {
 
 
 	public function save_product(){
-			$this->form_validation->set_rules('productName', 'Nombre del Producto', 'required');
-	   		$this->form_validation->set_rules('productCode', 'Codigo', 'required');
+			$this->form_validation->set_rules('productName', 'Nombre del Producto', 'required|callback_productNameCheck');
+	   		$this->form_validation->set_rules('productCode', 'Codigo', 'required|callback_productCodeCheck');
 	   		$this->form_validation->set_rules('productVAT', 'IVA', 'trim');
-	   		$this->form_validation->set_rules('productDesc', 'Descripcion', 'required|min_length[30]|max_length[400]');
+	   		$this->form_validation->set_rules('productDesc', 'Descripcion', 'required|min_length[' . PROD_DESCRIPTION_MIN_LENGTH . ']|max_length[' . PROD_DESCRIPTION_MAX_LENGTH . ']');
 
-		/*	$this->form_validation->set_rules('atribute', 'Atributo', 'required');
+
+	   		$this->form_validation->set_message('required', 'El campo %s es obligatorio');
+	   		$this->form_validation->set_message('min_length', 'La descripcion debe tener al menos ' . PROD_DESCRIPTION_MIN_LENGTH . ' caracteres');
+	   		$this->form_validation->set_message('max_length', 'La descripcion debe tener a lo sumo ' . PROD_DESCRIPTION_MAX_LENGTH . ' caracteres');
+	   		$this->form_validation->set_message('productNameCheck', 'Usted ya tiene un producto con este nombre en su catalogo');
+	   		$this->form_validation->set_message('productCodeCheck', 'Usted ya tiene un producto con este código en su catalogo');
+
+
+			/*$this->form_validation->set_rules('atribute', 'Atributo', 'required');
 	   		$this->form_validation->set_rules('value', 'Valor', 'required'); */
 
 
 
 	   		if ($this->form_validation->run()) {
 
-
-
 	   			$insert = array();
-				$insert['name'] = $this->input->post("productName");
+	   			$insert['name'] = $this->input->post("productName");
 				$insert['description'] = $this->input->post("productDesc");
 				$insert['code'] = $this->input->post("productCode");
 				$insert['supplier_id'] = $this->session->userdata("role_id");
@@ -92,30 +120,27 @@ class Product extends CI_Controller {
 						@copy("." . PRODUCT_IMAGES_PATH . "temp/thumbs/". $img, "." . PRODUCT_IMAGES_PATH . $new_id . "/thumbs/" . $img);
 					}
 				}
-
+				//$this->product_view();
+				$data['product_load'] = true;
+				$data['imagen'] = $this->input->post('imagen');
+				$this->product_view(null,$data);
+				//$this->routedHome('product','supplier', $data);
 	   		}else{
-
-				$data = array(
-					'categoryTree' => form_error('categoryTree'),
-                    'productName' => form_error('productName'), 
-                    'productCode' => form_error('productCode'),
-                    'productDesc' => form_error('productDesc')
-           			 );
-				echo json_encode($data);
+	   			$data['imagen'] = $this->input->post('imagen');
+				$data['product_load'] = true;
+				$this->product_view(null,$data);
 	   		}
 	}
 
 
-	public function productcheck(){
-		//$name = $this->input->post("productName");
-		//return $this->Product_model->product_check($name);
-		return TRUE;
+	public function productNameCheck(){
+		$name = $this->input->post("productName");
+		return $this->Product_model->productNameCheck($name);
 	}
 
-	public function codecheck(){
-		//$code = $this->input->post("productCode");
-		//return $this->Product_model->code_check($code);
-		return TRUE;
+	public function ProductCodeCheck(){
+		$code = $this->input->post("productCode");
+		return $this->Product_model->productCodeCheck($code);
 	}
 
 

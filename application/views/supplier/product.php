@@ -5,15 +5,15 @@
 
 		  
 		  <ul class="nav nav-tabs" role="tablist">
-		    <li role="presentation" class="<?php if (!isset($error)) {echo "active";} ?>"><a href="#catalog" aria-controls="catalog" role="tab" data-toggle="tab">Catalogo</a></li>
+		    <li role="presentation" class="<?php if (!isset($product_load)) {echo "active";} ?>"><a href="#catalog" aria-controls="catalog" role="tab" data-toggle="tab">Catalogo</a></li>
 		    <li role="presentation"><a href="#my-products" aria-controls="my-products" role="my-products" data-toggle="tab">Mis Productos</a></li>
-		    <li role="presentation" class="<?php if (isset($error)) { echo "active";} ?>"><a href="#load-products" aria-controls="load-products" role="load-products" data-toggle="tab">Cargar Productos</a></li>
+		    <li role="presentation" class="<?php if (isset($product_load)) { echo "active";} ?>"><a href="#load-products" aria-controls="load-products" role="load-products" data-toggle="tab">Cargar Productos</a></li>
 		    <li role="presentation"><a href="#settings" aria-controls="settings" role="settings" data-toggle="tab">Ajustes</a></li>
 		  </ul>
 
 		  
 		  <div class="tab-content">
-		    <div role="tabpanel" class="tab-pane fade <?php if (!isset($error)) {echo "active in";} ?>" id="catalog">
+		    <div role="tabpanel" class="tab-pane fade <?php if (!isset($product_load)) {echo "active in";} ?>" id="catalog">
 		    	<div class="row">
 
 
@@ -35,7 +35,7 @@
 		    <div role="tabpanel" class="tab-pane fade" id="my-products">
 			
 		    </div>
-		    <div role="tabpanel" class="tab-pane fade <?php if (isset($error)) { echo "active in";} ?>" id="load-products">
+		    <div role="tabpanel" class="tab-pane fade <?php if (isset($product_load)) { echo "active in";} ?>" id="load-products">
 		    	<div class="row" id="productSection">
 				    <div class="panel panel-primary" id="">
 								<div class="panel-heading">
@@ -77,8 +77,8 @@
 								<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5" id="formOptions">
 									<div class="form-group">
 										<label for="" class="control-label">Categoria seleccionada</label>
-										<input type="text" class="form-control" id="categoryTree" name="categoryTree" value="" >
-										<input type="text" name="categoryID" value="" id="categoryID">
+										<input type="text" class="form-control" id="categoryTree" name="categoryTree" value="<?php if (isset($product_load)) echo set_value('categoryTree'); else echo set_value('categoryTree');?>" >
+										<input type="text" name="categoryID" value="<?php if (isset($product_load)) echo set_value('categoryID'); else echo set_value('categoryID');?>" id="categoryID">
 										<script type="text/javascript">
 											$("#categoryID").hide();
 											$("#categoryTree").attr('disabled','disabled');
@@ -87,23 +87,24 @@
 									</div>
 									<div class="form-group">
 										<label for="" class="control-label">Nombre del producto*</label>
-											<?php echo form_error('productName', '<span class="label label-danger">', '</span>'); ?>
-										<input type="text" class="form-control" name="productName" placeholder="Ingrese un nombre único...">
+										<?php echo form_error('productName', '<span class="label label-danger">', '</span>'); ?>
+										<input type="text" class="form-control" name="productName" placeholder="Ingrese un nombre único..." value="<?php if (isset($product_load)) echo set_value('productName'); else echo set_value('productName');?>">
 									</div>
 									<div class="form-group">
 										<label for="" class="control-label">Código*</label>
-											<?php echo form_error('productCode', '<span class="label label-danger">', '</span>'); ?>
-										<input type="text" class="form-control" name="productCode" placeholder="Ingrese el ID del código único del producto...">
+										<?php echo form_error('productCode', '<span class="label label-danger">', '</span>'); ?>
+										<input type="text" class="form-control" name="productCode" placeholder="Ingrese el ID del código único del producto..." value="<?php if (isset($product_load)) echo set_value('productCode'); else echo set_value('productCode');?>">
 									</div>
 									<div class="form-group">
 										<label for="" class="control-label">Condición IVA*</label>
-											<?php echo form_error('productVAT', '<span class="label label-danger">', '</span>'); ?>
-										<input type="text" class="form-control" name="productVAT" placeholder="Ni idea...">
+										<?php echo form_error('productVAT', '<span class="label label-danger">', '</span>'); ?>
+										<input type="text" class="form-control" name="productVAT" placeholder="% de I.V.A." value="<?php if (isset($product_load)) echo set_value('productVAT'); else echo set_value('productVAT');?>">
 									</div>
 									<div class="form-group">
 										<label for="" class="control-label">Descripción*</label>
-											<?php echo form_error('productDesc', '<span class="label label-danger">', '</span>'); ?>
-										<textarea class="form-control" name="productDesc"></textarea> 
+										<?php echo form_error('productDesc', '<span class="label label-danger">', '</span>'); ?>
+										<textarea class="form-control" name="productDesc"><?php if (isset($product_load)) echo set_value('productDesc'); else echo set_value('productDesc');?></textarea> 
+										
 									</div>
 									<div class="input_fields_wrap">
 										<h3>Especificaciones técnicas</h3>
@@ -121,23 +122,41 @@
 										<div id="freewalk-dropzone" class="dropzone"></div>
 										<div class="dropzone-previews"></div>
 										
-										<?php if($this->input->post("imagen")):?>
+										<?php if(isset($imagen)):?>
 											<script type="text/javascript">
+												function imagePush(image){
+													$("#imagesArray").append("<input type='hidden' name='imagen[]' value='"+ image +"' />");
+												}
+												function imagePop(image){
+													$( "input[value='" + image + "']" ).remove();
+												}
 												Dropzone.autoDiscover = false; // otherwise will be initialized twice
 												var myDropzoneOptions = {
-												    maxFilesize: 5,
-												    addRemoveLinks: true,
-												    clickable: true,
-												    url: "../product/upload_foto"
+													paramName: "userfile",
+													maxFilesize: 2,
+													addRemoveLinks: true,
+													clickable: true,
+													url: "../product/upload_foto",
+													success: function(file, response){
+														var result =  $.parseJSON(response);
+														if(result.success){
+															file.file_name = result.success.file_name;
+															imagePush(result.success.file_name);
+														}
+													},
+													removedfile: function(file){
+														console.log(file);
+														imagePop(file.file_name);
+														var _ref;
+														return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+													}
 												}; 
 												var myDropzone = new Dropzone('#freewalk-dropzone', myDropzoneOptions);
-												
-												<?php foreach($this->input->post("imagen") as $i): ?>
-													var mockFile = { name: "imagen", size: 12345 };
+												<?php foreach($imagen as $i): ?>
+													var mockFile = { name: "Imagen", size: 12345, file_name: '<?php echo $i;?>' };
 													myDropzone.options.addedfile.call(myDropzone, mockFile);
-													myDropzone.options.thumbnail.call(myDropzone, mockFile, "<?php echo PRODUCT_IMAGES_PATH.'temp/thumbs/'.$i;?>");
-												<?php endforeach; ?>	
-
+													myDropzone.options.thumbnail.call(myDropzone, mockFile, "<?php echo base_url() . PRODUCT_IMAGES_PATH . 'temp/thumbs/' . $i;?>");
+												<?php endforeach; ?>
 											</script>
 										<?php else: ?>
 											<script type="text/javascript">

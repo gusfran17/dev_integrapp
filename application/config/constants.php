@@ -106,3 +106,10 @@ define('PRODUCT_IMAGES_PATH', '/Resources/imgs/product/');
 define('MAX_ATTRIBUTE_AMOUNT', 20);
 
 
+/*
+|
+| Product description length
+|
+*/
+define('PROD_DESCRIPTION_MIN_LENGTH', 20);
+define('PROD_DESCRIPTION_MAX_LENGTH', 400);
