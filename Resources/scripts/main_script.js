@@ -214,8 +214,7 @@ $('#saveProduct').click(function(){
 						$.each(json.editProduct.attributes, function(index, value) {
 							console.log(value);
 							console.log(index);
-							attributeNumber = index + 1; //index starts in 0 (refer below for: $(add_button).click(function(e) )
-							$(".input_fields_wrap").append('<div class="form-group specifications"><input type="text" class="inputProperty" name="attribute' + attributeNumber + '" value="' + value.attribute_name + '" placeholder="Atributo..."/><input type="text" class="inputProperty" name="value' + attributeNumber + '" value="' + value.attribute_value + '" placeholder="Valor..."/><a href="#" class="remove_field">X</a></div>');
+							$(".input_fields_wrap").append('<div class="form-group specifications"><input type="text" class="inputProperty" name="attribute' + index + '" value="' + value.attribute_name + '" placeholder="Atributo..."/><input type="text" class="inputProperty" name="value' + index + '" value="' + value.attribute_value + '" placeholder="Valor..."/><a href="#" class="remove_field">X</a></div>');
 						});
 					},
 					error: function(jqXHR,textStatus,errorThrown){
@@ -238,7 +237,7 @@ $('#saveProduct').click(function(){
     var wrapper         = $(".input_fields_wrap"); //Fields wrapper
     var add_button      = $(".add_field_button"); //Add button ID
     
-    var x = 1; //initlal text box count
+    var x = 0; //initlal text box count
     $(add_button).click(function(e){ //on add input button click
         e.preventDefault();
         if(x < max_fields){ //max input box allowed
