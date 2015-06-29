@@ -66,7 +66,7 @@ class Product extends CI_Controller {
 	   			$this->form_validation->set_rules('productCode', 'Codigo', 'required');
 
 			}
-			$this->form_validation->set_rules('categoryTree', 'Categoria de producto', 'selectCategory|required');
+			$this->form_validation->set_rules('categoryTree', 'Categoria de producto', 'required');
 	   		$this->form_validation->set_rules('productVAT', 'IVA', 'trim');
 	   		$this->form_validation->set_rules('productDesc', 'Descripcion', 'required|min_length[' . PROD_DESCRIPTION_MIN_LENGTH . ']|max_length[' . PROD_DESCRIPTION_MAX_LENGTH . ']');
 	   		$this->form_validation->set_message('required', 'El campo %s es obligatorio');
