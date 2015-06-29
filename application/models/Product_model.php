@@ -81,6 +81,41 @@ class Product_model extends CI_Model {
         }
     }
 
+    function productNameCheckForEdition($productName, $productId){
+        if (($productName!=null) and ($productId!=null)){
+            $this->db->where("name", $productName);
+            $query = $this->db->get('product');
+            if($query->num_rows() == 0){
+                return true;
+            } else{ 
+                $result = $query->result();
+                if ($result[0]->id == $productId){
+                    return false;
+                }
+                return true;
+            }
+        } 
+        return false;
+    }
+
+    function productCodeCheckForEdition($productCode, $productId){
+        if (($productCode!=null) and ($productId != null)){
+            $this->db->where("code", $productCode);
+            $query = $this->db->get('product');
+            if($query->num_rows() == 0){
+                return true;
+            } else{ 
+                $result = $query->result();
+                if ($result[0]->id == $productId){
+                    return false;
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     function saveProduct($data){
         $this->db->insert("product", $data);
         return $this->db->insert_id();
@@ -139,8 +174,6 @@ class Product_model extends CI_Model {
         }   else {
             return array();
         }
-        
-
     }
 
 
@@ -167,6 +200,43 @@ class Product_model extends CI_Model {
         return $this->db->insert_id();
     }
 
+
+    public function setImagesFolder($isEditProduct, $images, $productId){
+        if($images!=null){
+            //if it is edition, moves existing images to temp in order to upload them again
+            if ($isEditProduct){
+                @copy( "." . PRODUCT_IMAGES_PATH . $productId . "/" . $img, "." . PRODUCT_IMAGES_PATH . "temp/" . $img);
+                @copy("." . PRODUCT_IMAGES_PATH . $productId . "/thumbs/" . $img, "." . PRODUCT_IMAGES_PATH . "temp/thumbs/". $img);
+                $this->delTree("." . PRODUCT_IMAGES_PATH . $productId);
+
+            }
+            foreach($images as $img){
+                @mkdir("." . PRODUCT_IMAGES_PATH . $productId);
+                @mkdir("." . PRODUCT_IMAGES_PATH . $productId . "/thumbs");
+                @copy("." . PRODUCT_IMAGES_PATH . "temp/" . $img, "." . PRODUCT_IMAGES_PATH . $productId . "/" . $img);
+                @copy("." . PRODUCT_IMAGES_PATH . "temp/thumbs/". $img, "." . PRODUCT_IMAGES_PATH . $productId . "/thumbs/" . $img);
+            }
+        } else {//If during edition all images are erased and the product is saved with no images.
+            if ($isEditProduct){ 
+                $this->delTree("." . PRODUCT_IMAGES_PATH . $productId);
+            }
+        }
+    }
+
+    public function delTree($dir) { 
+        if (file_exists($dir)) {
+            $files = array_diff(scandir($dir), array('.','..')); 
+            foreach ($files as $file) { 
+                if (is_dir("$dir/$file")){
+                    $this->delTree("$dir/$file");
+                } else {
+                    unlink("$dir/$file");   
+                }
+            } 
+            return rmdir($dir); 
+        }
+
+    }
 
 }
 

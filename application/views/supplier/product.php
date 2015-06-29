@@ -15,8 +15,6 @@
 		  <div class="tab-content">
 		    <div role="tabpanel" class="tab-pane fade <?php if (!(isset($lastLoadedProductsGrid) or isset($productLoaded) or isset($productCancelled))) {echo "active in";} ?>" id="catalog">
 		    	<div class="row">
-
-
 					<?php 
 					$catalogSize = count($catalog);
 					for ($i=0; $i < $catalogSize ; $i++) { ?>
@@ -26,8 +24,6 @@
 								<div class="jquery-description"><h6><?php echo "Codigo Integrapp: ".$catalog[$i]->integrapp_code."</br>Codigo: ". $catalog[$i]->code . "</br>Nombre: ". $catalog[$i]->name. "</br>Descripcion: ". $catalog[$i]->short_desc   ?></h6></div>
 							</div> 
 						</div>
-
-
 					<?php } ?>
 		    	</div>
 				
@@ -72,6 +68,12 @@
 								<div class="panel-title">
 									<h4>Planilla Datos de Producto</h4>
 								</div>
+							</div>
+							<div id="editionAlert">
+<!-- 								<div class="alert alert-warning alert-dismissible" role="alert">
+								  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								  <strong>¡Atencion!</strong> Se encuentra en modo edición de uno de los productos que ha cargado recientemente, para volver a cargar un producto desde el inicio debe presionar en Cancelar al final de la pantalla.
+								</div>						 -->
 							</div>
 							<div class="panel-body">
 								<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5" id="formOptions">
@@ -244,11 +246,11 @@
 										});
 
 									</script>
-									<div class="alert alert-warning alert-dismissible insight" role="alert">
+<!-- 									<div class="alert alert-warning alert-dismissible insight" role="alert">
 									
 									  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 									  <strong>Atencion!</strong> Has Cargado un producto nuevo. Puedes verlo en la planilla del costado o entrando en detalle en el area Mis Productos.
-									</div>
+									</div> -->
 
 								</div>
 								<div  class="col-xs-12 col-sm-12 col-md-6 col-lg-7" id="divRecentlyAddedProducts">

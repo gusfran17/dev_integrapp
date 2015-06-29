@@ -217,8 +217,6 @@ $('#saveProduct').click(function(){
 							attributeNumber = index + 1; //index starts in 0 (refer below for: $(add_button).click(function(e) )
 							$(".input_fields_wrap").append('<div class="form-group specifications"><input type="text" class="inputProperty" name="attribute' + attributeNumber + '" value="' + value.attribute_name + '" placeholder="Atributo..."/><input type="text" class="inputProperty" name="value' + attributeNumber + '" value="' + value.attribute_value + '" placeholder="Valor..."/><a href="#" class="remove_field">X</a></div>');
 						});
-
-
 					},
 					error: function(jqXHR,textStatus,errorThrown){
 						console.log("jqXHR: "+jqXHR);

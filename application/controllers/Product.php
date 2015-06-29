@@ -59,12 +59,15 @@ class Product extends CI_Controller {
 			$editID = $this->input->post("productID");
 			$editProduct = $editID != "";
 			if (!$editProduct){ 
-				$this->form_validation->set_rules('productName', 'Nombre del Producto', 'required');
+				$this->form_validation->set_rules('productName', 'Nombre del Producto', 'required|callback_productNameCheck');
 		   		$this->form_validation->set_rules('productCode', 'Codigo', 'required|callback_productCodeCheck');	
+		   		$this->form_validation->set_message('productNameCheck', 'Usted ya tiene un producto con este nombre en su catalogo');
+	   			$this->form_validation->set_message('productCodeCheck', 'Usted ya tiene un producto con este código en su catalogo');
 			} else {
-				$this->form_validation->set_rules('productName', 'Nombre del Producto', 'required');
-	   			$this->form_validation->set_rules('productCode', 'Codigo', 'required');
-
+				$this->form_validation->set_rules('productName', 'Nombre del Producto', 'required|callback_productNameCheckForEdition');
+	   			$this->form_validation->set_rules('productCode', 'Codigo', 'required|callback_productCodeCheckForEdition');
+		   		$this->form_validation->set_message('productNameCheckForEdition', 'Usted ya tiene un producto con este nombre en su catalogo');
+	   			$this->form_validation->set_message('productCodeCheckForEdition', 'Usted ya tiene un producto con este código en su catalogo');
 			}
 			$this->form_validation->set_rules('categoryTree', 'Categoria de producto', 'required');
 	   		$this->form_validation->set_rules('productVAT', 'IVA', 'trim');
@@ -72,8 +75,7 @@ class Product extends CI_Controller {
 	   		$this->form_validation->set_message('required', 'El campo %s es obligatorio');
 	   		$this->form_validation->set_message('min_length', 'La descripcion debe tener al menos ' . PROD_DESCRIPTION_MIN_LENGTH . ' caracteres');
 	   		$this->form_validation->set_message('max_length', 'La descripcion debe tener a lo sumo ' . PROD_DESCRIPTION_MAX_LENGTH . ' caracteres');
-	   		$this->form_validation->set_message('productNameCheck', 'Usted ya tiene un producto con este nombre en su catalogo');
-	   		$this->form_validation->set_message('productCodeCheck', 'Usted ya tiene un producto con este código en su catalogo');
+
 
 			/*$this->form_validation->set_rules('atribute', 'Atributo', 'required');
 	   		$this->form_validation->set_rules('value', 'Valor', 'required'); */
@@ -126,26 +128,7 @@ class Product extends CI_Controller {
 						}
 					}
 
-
-					if($this->input->post('imagen')){
-						//if it is edition, moves existing images to temp in order to upload them again
-						if ($editProduct){
-							@copy( "." . PRODUCT_IMAGES_PATH . $new_id . "/" . $img, "." . PRODUCT_IMAGES_PATH . "temp/" . $img);
-							@copy("." . PRODUCT_IMAGES_PATH . $new_id . "/thumbs/" . $img, "." . PRODUCT_IMAGES_PATH . "temp/thumbs/". $img);
-							$this->delTree("." . PRODUCT_IMAGES_PATH . $new_id);
-
-						}
-						foreach($this->input->post('imagen') as $img){
-							@mkdir("." . PRODUCT_IMAGES_PATH . $new_id);
-							@mkdir("." . PRODUCT_IMAGES_PATH . $new_id . "/thumbs");
-							@copy("." . PRODUCT_IMAGES_PATH . "temp/" . $img, "." . PRODUCT_IMAGES_PATH . $new_id . "/" . $img);
-							@copy("." . PRODUCT_IMAGES_PATH . "temp/thumbs/". $img, "." . PRODUCT_IMAGES_PATH . $new_id . "/thumbs/" . $img);
-						}
-					} else {//If during edition all images are erased and the product is saved with no images.
-						if ($editProduct){ 
-							$this->delTree("." . PRODUCT_IMAGES_PATH . $new_id);
-						}
-					}
+					$this->Product_model->setImagesFolder($editProduct, $this->input->post('imagen'), $new_id);
 					
 					//Goes back to the form 
 	   				$recent_products = $this->input->post('recentlyAddedIntegrappCode');
@@ -194,17 +177,7 @@ class Product extends CI_Controller {
 			$data['editProduct']->images = $productImages;
 			$data['editProduct']->attributes = $attributes;
 			echo json_encode($data);
-			//$this->product_view(null,$data);	
 		}
-		
-
-
-		// foreach($productImages as $image){
-		// 	echo $image;
-		// }
-		
-		// return true;
-
 	}
 
 
@@ -218,6 +191,17 @@ class Product extends CI_Controller {
 		return $this->Product_model->productCodeCheck($code);
 	}
 
+	public function productNameCheckForEdition(){
+		$name = $this->input->post("productName");
+		$id = $this->input->post("productID");
+		return $this->Product_model->productNameCheckForEdition($name,$id);
+	}
+
+	public function ProductCodeCheckForEdition(){
+		$code = $this->input->post("productCode");
+		$id = $this->input->post("productID");
+		return $this->Product_model->productCodeCheckForEdition($code,$id);
+	}
 
 	public function upload_foto(){
 		$filename = md5(date("Y-m-d h:i:s") . microtime());
@@ -264,23 +248,7 @@ class Product extends CI_Controller {
 	    // clear //
 	    $this->image_lib->clear();
 	}
-
-	public function delTree($dir) { 
-		if (file_exists($dir)) {
-			$files = array_diff(scandir($dir), array('.','..')); 
-			foreach ($files as $file) { 
-				if (is_dir("$dir/$file")){
-					$this->delTree("$dir/$file");
-				} else {
-					unlink("$dir/$file"); 	
-				}
-			} 
-			return rmdir($dir); 
-		}
-
-	} 
-
-
+ 
 
 
 }
