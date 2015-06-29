@@ -90,9 +90,9 @@ class Product_model extends CI_Model {
             } else{ 
                 $result = $query->result();
                 if ($result[0]->id == $productId){
-                    return false;
+                    return true;
                 }
-                return true;
+                return false;
             }
         } 
         return false;
@@ -107,9 +107,9 @@ class Product_model extends CI_Model {
             } else{ 
                 $result = $query->result();
                 if ($result[0]->id == $productId){
-                    return false;
+                    return true;
                 }
-                return true;
+                return false;
             }
         }
         return false;

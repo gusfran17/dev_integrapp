@@ -171,8 +171,8 @@ $('#saveProduct').click(function(){
 	$('#divRecentlyAddedProducts').on('click', 'button', function(){
 		buttonName = $(this).attr('name');
 		if(buttonName=="editRecentlyAdded"){
-			var islreadyEditing = $("#productEdition").val();
-			if (islreadyEditing == "true") {
+			var islreadyEditing = $("#editProductID").val();
+			if (islreadyEditing != "") {
 				alert("¡ATENCION! Usted ya esta editando otro producto. Para escoger otro producto a editar haga click en Cancelar al final de la pantalla.")
 			} else {
 				integrappCode = $(this).attr('id');
@@ -193,7 +193,7 @@ $('#saveProduct').click(function(){
 						$("#productName").val(json.editProduct.name);
 						$("#categoryTree").val(json.editProduct.short_desc);
 						$("#categoryID").val(json.editProduct.category_id);
-						$("#productID").val(json.editProduct.id);
+						$("#editProductID").val(json.editProduct.id);
 						$("#productCode").val(json.editProduct.code);
 						$("#productVAT").val(json.editProduct.tax);
 						$("#productDesc").val(json.editProduct.description);

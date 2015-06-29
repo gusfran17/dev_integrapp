@@ -95,14 +95,26 @@ define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 | These constants are declared for application
 |
 */
-
+/*
+|
+|IMAGES
+|
+*/
 define('ALLOWED_PROFILE_IMAGE_TYPE', 'png');
 define('ALLOWED_PROFILE_IMAGE_MAXSIZE', 200);
 define('ALLOWED_PROFILE_IMAGE_MAXWIDTH', 300);
 define('ALLOWED_PROFILE_IMAGE_MAXHEIGHT', 250);
+define('ALLOWED_PRODUCT_IMAGE_TYPE', 'png|png|gif');
+define('ALLOWED_PRODUCT_IMAGE_MAXSIZE', 5000);
+define('ALLOWED_PRODUCT_IMAGE_MAXWIDTH', 7000);
+define('ALLOWED_PRODUCT_IMAGE_MAXHEIGHT', 7000);
 define('DISTRIBUTOR_PROFILE_IMAGE_PATH', '/Resources/imgs/profile/distributor/');
 define('SUPPLIER_PROFILE_IMAGE_PATH', '/Resources/imgs/profile/supplier/');
 define('PRODUCT_IMAGES_PATH', '/Resources/imgs/product/');
+
+/*
+|Product attributes amount
+*/
 define('MAX_ATTRIBUTE_AMOUNT', 20);
 
 

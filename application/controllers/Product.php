@@ -56,7 +56,7 @@ class Product extends CI_Controller {
 
 
 	public function save_product(){
-			$editID = $this->input->post("productID");
+			$editID = $this->input->post("editProductID");
 			$editProduct = $editID != "";
 			if (!$editProduct){ 
 				$this->form_validation->set_rules('productName', 'Nombre del Producto', 'required|callback_productNameCheck');
@@ -137,11 +137,11 @@ class Product extends CI_Controller {
 	   				}
 					$lastloadedProducts = $this->Product_model->getProductsByIntegrappCode($recent_products);
 					$data['lastLoadedProductsGrid'] = $lastloadedProducts;
-					//$data['productLoaded'] = "Loaded";
+					$data['productLoaded'] = "Loaded";
 					$this->product_view(null,$data);
 		   		}else{
 					for ($i=0; $i < MAX_ATTRIBUTE_AMOUNT ; $i++) { 
-
+						//attributes loaded need to be shown again
 						$attribute_name = $this->input->post('attribute'.$i);
 						$attribute_value = $this->input->post('value'.$i);
 						if (($attribute_name != null) or ($attribute_name != "")){
@@ -157,8 +157,15 @@ class Product extends CI_Controller {
 					}   			
 		   			$data['imagen'] = $this->input->post('imagen');
 					$recent_products = $this->input->post('recentlyAddedIntegrappCode');
+					if (!isset($recent_products)){
+						//If it is the first time a product is loaded the array needs to be initialized so as not to bring all existing products
+						$recent_products = array("");
+					}
 					$lastLoadedProducts = $this->Product_model->getProductsByIntegrappCode($recent_products);
 					$data['lastLoadedProductsGrid'] = $lastLoadedProducts;
+					if (isset($editID)){
+						$data['editProductID'] = $editID;
+					}
 					$this->product_view(null,$data);
 		   		}
 
@@ -193,26 +200,25 @@ class Product extends CI_Controller {
 
 	public function productNameCheckForEdition(){
 		$name = $this->input->post("productName");
-		$id = $this->input->post("productID");
+		$id = $this->input->post("editProductID");
 		return $this->Product_model->productNameCheckForEdition($name,$id);
 	}
 
 	public function ProductCodeCheckForEdition(){
 		$code = $this->input->post("productCode");
-		$id = $this->input->post("productID");
+		$id = $this->input->post("editProductID");
 		return $this->Product_model->productCodeCheckForEdition($code,$id);
 	}
 
 	public function upload_foto(){
 		$filename = md5(date("Y-m-d h:i:s") . microtime());
 		$config['upload_path'] = '.' . PRODUCT_IMAGES_PATH . "temp/";
-		$config['allowed_types'] = 'jpg|png|gif';
-		$config['max_size']	= '5000';
-		$config['max_width']  = '7000';
-		$config['max_height']  = '7000';
+		$config['allowed_types'] = ALLOWED_PRODUCT_IMAGE_TYPE;
+		$config['max_size']	= ALLOWED_PRODUCT_IMAGE_MAXSIZE;
+		$config['max_width']  = ALLOWED_PRODUCT_IMAGE_MAXWIDTH;
+		$config['max_height']  = ALLOWED_PRODUCT_IMAGE_MAXHEIGHT;
 		$config['file_name'] = $filename;
 		$this->load->library('upload', $config);
-
 		$result = new stdClass();
 
 		if ( ! $this->upload->do_upload())
