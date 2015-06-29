@@ -76,7 +76,8 @@
 							<div class="panel-body">
 								<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5" id="formOptions">
 									<div class="form-group">
-										<label for="" class="control-label">Categoria seleccionada</label>
+										<label for="" class="control-label">Categoria seleccionada</label> (Seleccione la categoria en la sección superior)
+										<?php echo form_error('categoryTree', '<span class="label label-danger">', '</span>'); ?>
 										<input type="text" class="form-control" id="categoryTree" name="categoryTree" value="<?php if (isset($productLoaded) or isset($productCancelled)) echo set_value('categoryTree',""); else echo set_value('categoryTree');?>" >
 										<input type="text" name="categoryID" value="<?php if (isset($productLoaded) or isset($productCancelled)) echo set_value('categoryID',""); else echo set_value('categoryID');?>" id="categoryID">
 										<input type="text" name="productID" value="" id="productID">

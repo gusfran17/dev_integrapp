@@ -59,24 +59,21 @@ class Product extends CI_Controller {
 			$editID = $this->input->post("productID");
 			$editProduct = $editID != "";
 			if (!$editProduct){ 
-				$this->form_validation->set_rules('productName', 'Nombre del Producto', 'required|callback_productNameCheck');
+				$this->form_validation->set_rules('productName', 'Nombre del Producto', 'required');
 		   		$this->form_validation->set_rules('productCode', 'Codigo', 'required|callback_productCodeCheck');	
 			} else {
 				$this->form_validation->set_rules('productName', 'Nombre del Producto', 'required');
 	   			$this->form_validation->set_rules('productCode', 'Codigo', 'required');
 
 			}
-			
+			$this->form_validation->set_rules('categoryTree', 'Categoria de producto', 'selectCategory|required');
 	   		$this->form_validation->set_rules('productVAT', 'IVA', 'trim');
 	   		$this->form_validation->set_rules('productDesc', 'Descripcion', 'required|min_length[' . PROD_DESCRIPTION_MIN_LENGTH . ']|max_length[' . PROD_DESCRIPTION_MAX_LENGTH . ']');
-
-
 	   		$this->form_validation->set_message('required', 'El campo %s es obligatorio');
 	   		$this->form_validation->set_message('min_length', 'La descripcion debe tener al menos ' . PROD_DESCRIPTION_MIN_LENGTH . ' caracteres');
 	   		$this->form_validation->set_message('max_length', 'La descripcion debe tener a lo sumo ' . PROD_DESCRIPTION_MAX_LENGTH . ' caracteres');
 	   		$this->form_validation->set_message('productNameCheck', 'Usted ya tiene un producto con este nombre en su catalogo');
 	   		$this->form_validation->set_message('productCodeCheck', 'Usted ya tiene un producto con este código en su catalogo');
-
 
 			/*$this->form_validation->set_rules('atribute', 'Atributo', 'required');
 	   		$this->form_validation->set_rules('value', 'Valor', 'required'); */
