@@ -20,7 +20,7 @@ nav>.container-fluid{height: 100%; padding: 0;}
 /*Esto me resetea la posicion de la barra de navegacion a la derecha y la altura*/
 #bs-example-navbar-collapse-1>ul.nav{float: right;padding: 15px 0; height: 100%}
 .navbar-collapse.collapse{height: 100%;}
-.nav > li{height: 100%}
+.nav > li{/*height: 100%*/}
 /*end*/
 
 /*Esto me resetea el color de los links de la barra de navegacion*/

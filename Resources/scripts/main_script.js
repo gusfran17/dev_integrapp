@@ -118,8 +118,6 @@ function ajaxCall(){
 /*End code*/
 
 
-
-
 $('#saveProduct').click(function(){
 	//To obtain categoryTree information through post it needs to be enabled temporary
 	$("#categoryTree").removeAttr('disabled');
@@ -167,8 +165,74 @@ $('#saveProduct').click(function(){
 	// 	}
 
 	// });
+	});
 
-});
+
+	$('#divRecentlyAddedProducts').on('click', 'button', function(){
+		buttonName = $(this).attr('name');
+		if(buttonName=="editRecentlyAdded"){
+			var islreadyEditing = $("#productEdition").val();
+			if (islreadyEditing == "true") {
+				alert("¡ATENCION! Usted ya esta editando otro producto. Para escoger otro producto a editar haga click en Cancelar al final de la pantalla.")
+			} else {
+				integrappCode = $(this).attr('id');
+				var form_data = {
+					editionIntegrapCode : integrappCode
+				}
+				console.log (form_data);
+				$.ajax({
+					url:'../product/editProduct',
+					type:'POST',
+					data: form_data,
+					dataType:'html',
+					success:function(data, textStatus, jqXHR){
+						//console.log(data);
+						//console.log("jqXHR: " + jqXHR);
+						var json = JSON.parse(data);
+						console.log(json);
+						$("#productName").val(json.editProduct.name);
+						$("#categoryTree").val(json.editProduct.short_desc);
+						$("#categoryID").val(json.editProduct.category_id);
+						$("#productID").val(json.editProduct.id);
+						$("#productCode").val(json.editProduct.code);
+						$("#productVAT").val(json.editProduct.tax);
+						$("#productDesc").val(json.editProduct.description);
+						$("#prodImagesArray").remove();
+						$("#productEdition").val("true");
+						var myDropzone = Dropzone.forElement('#freewalk-dropzone');
+						//Dropzone.forElement("#freewalk-dropzone").removeAllFiles(myDropzone.files);
+						//myDropzone.removeAllFiles();
+						$.each(myDropzone.files, function(index, value) {
+							myDropzone.removeFile(value);
+						});
+						$.each(json.editProduct.images, function(index, value) {
+							var mockFile = { name: "Imagen", size: 12345, file_name: value };
+							myDropzone.options.addedfile.call(myDropzone, mockFile);
+							myDropzone.options.thumbnail.call(myDropzone, mockFile, $("#imagesPath").val() + "/" + json.editProduct.id + "/thumbs/" + value);
+							$("#imagesArray").append("<input type='hidden' name='imagen[]' value='"+ value +"' />");
+						});
+						$.each(json.editProduct.attributes, function(index, value) {
+							console.log(value);
+							console.log(index);
+							attributeNumber = index + 1; //index starts in 0 (refer below for: $(add_button).click(function(e) )
+							$(".input_fields_wrap").append('<div class="form-group specifications"><input type="text" class="inputProperty" name="attribute' + attributeNumber + '" value="' + value.attribute_name + '" placeholder="Atributo..."/><input type="text" class="inputProperty" name="value' + attributeNumber + '" value="' + value.attribute_value + '" placeholder="Valor..."/><a href="#" class="remove_field">X</a></div>');
+						});
+
+
+					},
+					error: function(jqXHR,textStatus,errorThrown){
+						console.log("jqXHR: "+jqXHR);
+						console.log("Status: "+textStatus);
+						console.log("Error: "+errorThrown);
+					},
+
+		 		});
+
+			}
+
+	
+		}
+	});
 
 
 

@@ -81,10 +81,21 @@ class Product_model extends CI_Model {
         }
     }
 
-    function save_product($data){
+    function saveProduct($data){
         $this->db->insert("product", $data);
         return $this->db->insert_id();
     }
+
+    function updateProduct($data, $id){
+        $this->db->where('id', $id);
+        $this->db->update('product', $data); 
+        if ($this->db->affected_rows() > 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     function get_new_id(){
         $this->db->select_max('id');
@@ -104,7 +115,32 @@ class Product_model extends CI_Model {
             $result = $query->result();
             return $result[0];
 
-            }
+        }
+    }
+
+    function getProductsByIntegrappCode($integrappCodes){
+        $this->db->where_in('integrapp_code', $integrappCodes);
+        $query = $this->db->get('product');
+        return $query->result();
+    }
+
+    function getProductAttributes($productId){
+        $this->db->where("product_id", $productId);
+        $query = $this->db->get('product_attribute');
+        return $query->result();
+    }
+
+    function getProductImages($productId){
+        //echo "." . base_url() . PRODUCT_IMAGES_PATH . $productId . "/";
+        $targetPath = ".".PRODUCT_IMAGES_PATH . $productId . "/";
+        if (file_exists($targetPath)) {
+            $files = scandir($targetPath,1);    
+            return array_diff($files, array('.', '..', 'thumbs'));
+        }   else {
+            return array();
+        }
+        
+
     }
 
 

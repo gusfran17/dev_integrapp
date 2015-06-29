@@ -56,8 +56,17 @@ class Product extends CI_Controller {
 
 
 	public function save_product(){
-			$this->form_validation->set_rules('productName', 'Nombre del Producto', 'required|callback_productNameCheck');
-	   		$this->form_validation->set_rules('productCode', 'Codigo', 'required|callback_productCodeCheck');
+			$editID = $this->input->post("productID");
+			$editProduct = $editID != "";
+			if (!$editProduct){ 
+				$this->form_validation->set_rules('productName', 'Nombre del Producto', 'required|callback_productNameCheck');
+		   		$this->form_validation->set_rules('productCode', 'Codigo', 'required|callback_productCodeCheck');	
+			} else {
+				$this->form_validation->set_rules('productName', 'Nombre del Producto', 'required');
+	   			$this->form_validation->set_rules('productCode', 'Codigo', 'required');
+
+			}
+			
 	   		$this->form_validation->set_rules('productVAT', 'IVA', 'trim');
 	   		$this->form_validation->set_rules('productDesc', 'Descripcion', 'required|min_length[' . PROD_DESCRIPTION_MIN_LENGTH . ']|max_length[' . PROD_DESCRIPTION_MAX_LENGTH . ']');
 
@@ -72,64 +81,133 @@ class Product extends CI_Controller {
 			/*$this->form_validation->set_rules('atribute', 'Atributo', 'required');
 	   		$this->form_validation->set_rules('value', 'Valor', 'required'); */
 
+	   		$cancel =  $this->input->post('submitLoad');
+	   		if ($cancel=="Cancelar"){
+	   			//Goes back to the form (now empty values)
+   				$recent_products = $this->input->post('recentlyAddedIntegrappCode');
+				$lastloadedProducts = $this->Product_model->getProductsByIntegrappCode($recent_products);
+				$data['lastLoadedProductsGrid'] = $lastloadedProducts;
+				$data['productCancelled'] = "Cancelled";
+				$this->product_view(null,$data);
+	   		} else {
+	   			if ($this->form_validation->run()) {
 
+		   			$insert = array();
+		   			$insert['name'] = $this->input->post("productName");
+					$insert['description'] = $this->input->post("productDesc");
+					$insert['code'] = $this->input->post("productCode");
+					$insert['category_id'] = $this->input->post("categoryID");
+					$insert['tax'] = $this->input->post("productVAT");
+					$insert['short_desc'] = $this->input->post("categoryTree"); 
+					if (!$editProduct){
+						$new_id = $this->Product_model->get_new_id();
+						$insert['id']= $new_id;
+						$insert['published_date'] = date("Y-m-d H:i:s");
+						$integrappCode = "PR".$new_id."C".$this->input->post("categoryID");
+						$insert['supplier_id'] = $this->session->userdata("role_id");
+						$insert['integrapp_code'] = $integrappCode;
+						$id = $this->Product_model->saveProduct($insert);
+					} else {
+						$new_id = $editID;
+						$insert['last_update'] = date("Y-m-d H:i:s");
+						$id = $this->Product_model->updateProduct($insert, $new_id);
 
-	   		if ($this->form_validation->run()) {
+					}
 
-	   			$insert = array();
-	   			$insert['name'] = $this->input->post("productName");
-				$insert['description'] = $this->input->post("productDesc");
-				$insert['code'] = $this->input->post("productCode");
-				$insert['supplier_id'] = $this->session->userdata("role_id");
-				$insert['category_id'] = $this->input->post("categoryID");
-				$insert['tax'] = $this->input->post("productVAT");
-				$insert['published_date'] = date("Y-m-d H:i:s");
-				$insert['short_desc'] = $this->input->post("categoryTree"); 
+					$product_added = $this->Product_model->get_added_product($new_id);
 
-				$new_id= $this->Product_model->get_new_id();
-				
-				$insert['integrapp_code'] = "PR".$new_id."C".$this->input->post("categoryID");
+					if ($product_added!=FALSE) {
+					
+						for ($i=0; $i < MAX_ATTRIBUTE_AMOUNT ; $i++) { 
 
-				$insert['id']= $new_id;
-
-				$id = $this->Product_model->save_product($insert);
-
-				$product_added = $this->Product_model->get_added_product($id);
-
-				if ($product_added!=FALSE) {
-				
-					for ($i=0; $i < MAX_ATTRIBUTE_AMOUNT ; $i++) { 
-
-						$attribute = $this->input->post('attribute'.$i);
-						$value = $this->input->post('value'.$i);
-						
-						if ($attribute !=NULL && $value!=NULL) {
-							$this->Product_model->save_product_attribute($new_id, $attribute, $value);
+							$attribute = $this->input->post('attribute'.$i);
+							$value = $this->input->post('value'.$i);
+							
+							if ($attribute !=NULL && $value!=NULL) {
+								$this->Product_model->save_product_attribute($new_id, $attribute, $value);
+							}
 						}
 					}
-				}
-				//echo json_encode($product_added);
 
-				//copy images permanently
-				if($this->input->post('imagen')){
-					echo "Hay imagenes";
-					foreach($this->input->post('imagen') as $img){
-						@mkdir("." . PRODUCT_IMAGES_PATH . $new_id);
-						@mkdir("." . PRODUCT_IMAGES_PATH . $new_id . "/thumbs");
-						@copy("." . PRODUCT_IMAGES_PATH . "temp/" . $img, "." . PRODUCT_IMAGES_PATH . $new_id . "/" . $img);
-						@copy("." . PRODUCT_IMAGES_PATH . "temp/thumbs/". $img, "." . PRODUCT_IMAGES_PATH . $new_id . "/thumbs/" . $img);
+
+					if($this->input->post('imagen')){
+						//if it is edition, moves existing images to temp in order to upload them again
+						if ($editProduct){
+							@copy( "." . PRODUCT_IMAGES_PATH . $new_id . "/" . $img, "." . PRODUCT_IMAGES_PATH . "temp/" . $img);
+							@copy("." . PRODUCT_IMAGES_PATH . $new_id . "/thumbs/" . $img, "." . PRODUCT_IMAGES_PATH . "temp/thumbs/". $img);
+							$this->delTree("." . PRODUCT_IMAGES_PATH . $new_id);
+
+						}
+						foreach($this->input->post('imagen') as $img){
+							@mkdir("." . PRODUCT_IMAGES_PATH . $new_id);
+							@mkdir("." . PRODUCT_IMAGES_PATH . $new_id . "/thumbs");
+							@copy("." . PRODUCT_IMAGES_PATH . "temp/" . $img, "." . PRODUCT_IMAGES_PATH . $new_id . "/" . $img);
+							@copy("." . PRODUCT_IMAGES_PATH . "temp/thumbs/". $img, "." . PRODUCT_IMAGES_PATH . $new_id . "/thumbs/" . $img);
+						}
+					} else {//If during edition all images are erased and the product is saved with no images.
+						if ($editProduct){ 
+							$this->delTree("." . PRODUCT_IMAGES_PATH . $new_id);
+						}
 					}
-				}
-				//$this->product_view();
-				$data['product_load'] = true;
-				$data['imagen'] = $this->input->post('imagen');
-				$this->product_view(null,$data);
-				//$this->routedHome('product','supplier', $data);
-	   		}else{
-	   			$data['imagen'] = $this->input->post('imagen');
-				$data['product_load'] = true;
-				$this->product_view(null,$data);
+					
+					//Goes back to the form 
+	   				$recent_products = $this->input->post('recentlyAddedIntegrappCode');
+	   				if (!$editProduct){
+	   					$recent_products[] = $integrappCode; //if it is a new saved product it gets loaded in the last loaded products grid
+	   				}
+					$lastloadedProducts = $this->Product_model->getProductsByIntegrappCode($recent_products);
+					$data['lastLoadedProductsGrid'] = $lastloadedProducts;
+					//$data['productLoaded'] = "Loaded";
+					$this->product_view(null,$data);
+		   		}else{
+					for ($i=0; $i < MAX_ATTRIBUTE_AMOUNT ; $i++) { 
+
+						$attribute_name = $this->input->post('attribute'.$i);
+						$attribute_value = $this->input->post('value'.$i);
+						if (($attribute_name != null) or ($attribute_name != "")){
+							$attribute = new stdClass();
+							$attribute->name = $attribute_name;
+							$attribute->value = $attribute_value;
+							$attributes[] = $attribute;
+						}
+
+					}		
+					if (isset($attributes)){
+						$data['attributes'] = $attributes;
+					}   			
+		   			$data['imagen'] = $this->input->post('imagen');
+					$recent_products = $this->input->post('recentlyAddedIntegrappCode');
+					$lastLoadedProducts = $this->Product_model->getProductsByIntegrappCode($recent_products);
+					$data['lastLoadedProductsGrid'] = $lastLoadedProducts;
+					$this->product_view(null,$data);
+		   		}
+
 	   		}
+	   		
+	}
+
+	public function editProduct(){
+		$editionProduct[] = $this->input->post("editionIntegrapCode");
+		$product = $this->Product_model->getProductsByIntegrappCode($editionProduct);
+		if (count($product)>0){
+			$attributes = $this->Product_model->getProductAttributes($product[0]->id);
+			$productImages = $this->Product_model->getProductImages($product[0]->id);
+
+			$data['editProduct'] = $product[0];
+			$data['editProduct']->images = $productImages;
+			$data['editProduct']->attributes = $attributes;
+			echo json_encode($data);
+			//$this->product_view(null,$data);	
+		}
+		
+
+
+		// foreach($productImages as $image){
+		// 	echo $image;
+		// }
+		
+		// return true;
+
 	}
 
 
@@ -189,6 +267,23 @@ class Product extends CI_Controller {
 	    // clear //
 	    $this->image_lib->clear();
 	}
+
+	public function delTree($dir) { 
+		if (file_exists($dir)) {
+			$files = array_diff(scandir($dir), array('.','..')); 
+			foreach ($files as $file) { 
+				if (is_dir("$dir/$file")){
+					$this->delTree("$dir/$file");
+				} else {
+					unlink("$dir/$file"); 	
+				}
+			} 
+			return rmdir($dir); 
+		}
+
+	} 
+
+
 
 
 }
