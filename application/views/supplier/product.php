@@ -33,6 +33,18 @@
 		    </div>
 		    <div role="tabpanel" class="tab-pane fade <?php if (isset($lastLoadedProductsGrid) or isset($productLoaded) or isset($productCancelled)) { echo "active in";} ?>" id="load-products">
 		    	<div class="row" id="productSection">
+		    		<?php if(isset($productLoaded)):?>
+		    			<div class="alert alert-warning alert-dismissible" role="alert">
+						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						  <strong>¡Atencion!</strong> El producto ha sido cargado exitosamente. Puede encontrar el mismo en el lado derecho de la seccion de "Planilla Datos de Producto" mas abajo. Desde alli puede editar, duplir o eliminarlo.
+						</div>
+					<?php endif;?>
+					<?php if(isset($productCancelled)):?>
+		    			<div class="alert alert-warning alert-dismissible" role="alert">
+						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						  <strong>¡Atencion!</strong> La operacion ha sido cancelada exitosamente.
+						</div>
+					<?php endif;?>
 				    <div class="panel panel-primary" id="">
 								<div class="panel-heading">
 									<div class="panel-title">
@@ -70,10 +82,14 @@
 								</div>
 							</div>
 							<div id="editionAlert">
-<!-- 								<div class="alert alert-warning alert-dismissible" role="alert">
-								  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-								  <strong>¡Atencion!</strong> Se encuentra en modo edición de uno de los productos que ha cargado recientemente, para volver a cargar un producto desde el inicio debe presionar en Cancelar al final de la pantalla.
-								</div>						 -->
+							<!-- This is filled with an alert when product is being edited, copied or deleted 
+								  The following is for when form validation occurs in edition-->
+								<?php if(isset($editProductID)):?>
+									<div class="alert alert-warning alert-dismissible" role="alert">
+										<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										<strong>¡Atencion!</strong> Se encuentra en modo edición de uno de los productos que ha cargado recientemente, para volver a cargar un producto desde el inicio debe presionar en Cancelar al final de la pantalla.
+									</div>
+								<?php endif;?>
 							</div>
 							<div class="panel-body">
 								<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5" id="formOptions">
