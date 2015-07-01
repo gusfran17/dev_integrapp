@@ -145,8 +145,8 @@
 										    </div>
 											<?php if (isset($attributes)) { for ($i=0; $i<count($attributes); $i++) {?> 
 												<div class="form-group_specifications">
-													<input type="text" id="<?php echo $i; ?>" name="<?php echo 'attribute'. $i;?>" placeholder="Ej.:Ancho" value="<?php echo  $attributes[$i]->name;?>">
-													<input type="text" id="<?php echo $i; ?>" name="<?php echo 'value'. $i;?>" placeholder="Ej.:30cm" value="<?php echo  $attributes[$i]->value;?>"><a href="#" class="remove_field"> X</a>
+													<input type="text" class="inputProperty" id="<?php echo $i; ?>" name="<?php echo 'attribute'. $i;?>" placeholder="Ej.:Ancho" value="<?php echo  $attributes[$i]->name;?>">
+													<input type="text" class="inputProperty" id="<?php echo $i; ?>" name="<?php echo 'value'. $i;?>" placeholder="Ej.:30cm" value="<?php echo  $attributes[$i]->value;?>"><a href="#" class="remove_field"> X</a>
 												</div>
 											<?php }}; ?>
 											   
@@ -284,7 +284,10 @@
 													<td><?php echo $lastLoadedProductsGrid[$i]->tax;?></td>
 													<td><?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?></td>
 													<td><?php echo $lastLoadedProductsGrid[$i]->code;?></td>
-													<td><button type='submit' name = "editRecentlyAdded" id="<?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?>" form="divRecentlyAddedProducts">Editar</button></td>
+													<td>
+														<button type='submit' name = "editRecentlyAdded" id="<?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?>" form="divRecentlyAddedProducts">Editar</button>
+														<button type='submit' name = "duplicateRecentlyAdded" id="<?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?>" form="divRecentlyAddedProducts">Duplicar</button>
+													</td>
 												</tr>
 											<?php }}; ?>
 											
