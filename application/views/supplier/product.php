@@ -82,14 +82,21 @@
 										<?php echo form_error('categoryTree', '<span class="label label-danger">', '</span>'); ?>
 										<input type="text" class="form-control" id="categoryTree" name="categoryTree" value="<?php if (isset($productLoaded) or isset($productCancelled)) echo ""; else echo set_value('categoryTree');?>" >
 										<input type="text" name="categoryID" value="<?php if (!(isset($productLoaded) or isset($productCancelled))) echo set_value('categoryID');?>" id="categoryID">
-										<input type="text" name="editProductID" value="<?php if (isset($editProductID)) echo set_value('editProductID',$editProductID); else echo ""; ?>" id="editProductID">
+										<input type="text" name="editProductID" value="<?php if (isset($editProductID)) echo set_value('editProductID',$editProductID);?>" id="editProductID">
 										<input type="text" name="imagesPath" value="<?php echo base_url() . PRODUCT_IMAGES_PATH;?>" id="imagesPath">
+										<!-- The following fields are for testing javascript hide operations
+										<input type="text" name="categoryID__" value="<?php if (isset($productLoaded) or isset($productCancelled)) echo set_value('categoryID',""); else echo set_value('categoryID');?>" id="categoryID__">
+										<input type="text" name="editProductID__" value="" id="editProductID__">
+										<input type="text" name="imagesPath__" value="<?php echo base_url() . PRODUCT_IMAGES_PATH;?>" id="imagesPath__">
+										<input type="text" name="productEdition__" value="" id="productEdition">
+ 										-->
 										<script type="text/javascript">
 											$("#categoryID").hide();
 											$("#editProductID").hide();
 											$("#imagesPath").hide();
 											$("#categoryTree").attr('disabled','disabled');
 										</script>
+
 									</div>
 									<div class="form-group">
 										<label for="" class="control-label">Nombre del producto*</label>
@@ -116,18 +123,17 @@
 										<h3>Especificaciones técnicas</h3>
 									    <button class="add_field_button btn btn-primary btn-md">Agregar mas campos</button>
 									    <div>
-									    	<div class="form-group">
-									    		<div class="form-group specifications">
-												    <input type="text" name="attributeExample" placeholder="Ej.:Ancho" value="" disabled>
-												    <input type="text" name="valueExample" placeholder="Ej.:30cm" value="" disabled><a href="#" class="remove_field"> X</a>
-											    </div>
-												<?php if (isset($attributes)) { for ($i=0; $i<count($attributes); $i++) {?> 
-													<div class="form-group specifications">
-														<input type="text" name="<?php echo 'attribute'. $i;?>" placeholder="Ej.:Ancho" value="<?php echo  $attributes[$i]->name;?>">
-														<input type="text" name="<?php echo 'value'. $i;?>" placeholder="Ej.:30cm" value="<?php echo  $attributes[$i]->value;?>"><a href="#" class="remove_field"> X</a>
-													</div>
-												<?php }}; ?>
-											</div>   
+								    		<div class="example_specifications">
+											    <input type="text" name="attributeExample" placeholder="Ej.:Ancho" value="" disabled>
+											    <input type="text" name="valueExample" placeholder="Ej.:30cm" value="" disabled><a href="#" class="remove_field"> X</a>
+										    </div>
+											<?php if (isset($attributes)) { for ($i=0; $i<count($attributes); $i++) {?> 
+												<div class="form-group_specifications">
+													<input type="text" id="<?php echo $i; ?>" name="<?php echo 'attribute'. $i;?>" placeholder="Ej.:Ancho" value="<?php echo  $attributes[$i]->name;?>">
+													<input type="text" id="<?php echo $i; ?>" name="<?php echo 'value'. $i;?>" placeholder="Ej.:30cm" value="<?php echo  $attributes[$i]->value;?>"><a href="#" class="remove_field"> X</a>
+												</div>
+											<?php }}; ?>
+											   
 									    </div>
 									</div>
 									
@@ -189,8 +195,8 @@
 												  addRemoveLinks: true,
 												  dictCancelUpload: "Cancelar",
 												  dictRemoveFile: "Borrar", 
-												  acceptedFiles: "image/jpeg,image/png,image/gif",
-												  dictInvalidFileType: "Solo se aceptan imagenes jpg, png o gif",
+												  acceptedFiles: "image/jpeg",
+												  dictInvalidFileType: "Solo se aceptan imagenes jpg",
 
 												  accept: function(file, done) {
 												    if (file.name == "justinbieber.jpg") {
@@ -216,8 +222,8 @@
 										<?php endif;?>
 
 										<div id="imagesArray">
-											<?php if($this->input->post("imagen")):?>
-												<?php foreach($this->input->post("imagen") as $i): ?>
+											<?php if(isset($imagen)):?>
+												<?php foreach($imagen as $i): ?>
 													<input id="prodImagesArray" type="hidden" name="imagen[]" value="<?php echo $i;?>">
 												<?php endforeach; ?>
 											<?php endif;?>

@@ -45,13 +45,6 @@ class Product_model extends CI_Model {
 
     }
 
-    function get_property($parent=null){
-        $this->db->where("category_id", $parent);
-        $query = $this->db->get('category_properties');
-        $result = $query->result();
-        return $result;
-    }
-
     function get_tree($id){
         $this->db->select('ascending_path');
         $this->db->from('category');
@@ -131,17 +124,13 @@ class Product_model extends CI_Model {
         }
     }
 
-
-    function get_new_id(){
-        $this->db->select_max('id');
+    function getProductsByIntegrappCode($integrappCodes){
+        $this->db->where_in('integrapp_code', $integrappCodes);
         $query = $this->db->get('product');
-        $result = $query->result();
-        return ($result[0]->id+1);
+        return $query->result();
     }
 
-
     function get_added_product($id){
-
         $this->db->where("id", $id);
         $query = $this->db->get('product');
         if($query->num_rows() == 0){
@@ -153,10 +142,44 @@ class Product_model extends CI_Model {
         }
     }
 
-    function getProductsByIntegrappCode($integrappCodes){
-        $this->db->where_in('integrapp_code', $integrappCodes);
+
+    function deleteProductById($productId){
+        $this->db->where('id', $productId); 
+        $this->db->delete('product'); 
+        if ($this->db->affected_rows() > 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function deleteProductByIntegrappCode($integrappCode){
+        $this->db->where('integrapp_code', $integrappCode); 
+        $this->db->delete('product'); 
+        if ($this->db->affected_rows() > 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    function get_new_id(){
+        $this->db->select_max('id');
         $query = $this->db->get('product');
-        return $query->result();
+        $result = $query->result();
+        return ($result[0]->id+1);
+    }
+
+    function save_product_attribute($product_id, $attribute_name, $attribute_value){
+        $insert = array();
+        $insert['product_id'] = $product_id;
+        $insert['attribute_name'] = $attribute_name;
+        $insert['attribute_value'] = $attribute_value;
+        $insert['published_date'] = date("Y-m-d H:i:s");
+        $insert['last_update'] = date("Y-m-d H:i:s");
+        $this->db->insert("product_attribute", $insert);
+        return $this->db->insert_id();
     }
 
     function getProductAttributes($productId){
@@ -164,6 +187,17 @@ class Product_model extends CI_Model {
         $query = $this->db->get('product_attribute');
         return $query->result();
     }
+
+    function deleteProductAttributes($productId){
+        $this->db->where("product_id", $productId);
+        $query = $this->db->delete('product_attribute');
+        if ($this->db->affected_rows() > 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     function getProductImages($productId){
         //echo "." . base_url() . PRODUCT_IMAGES_PATH . $productId . "/";
@@ -186,18 +220,7 @@ class Product_model extends CI_Model {
         } else{ 
             $result = $query->result();
             return $result;
-            }
-    }
-
-    function save_product_attribute($product_id, $attribute_name, $attribute_value){
-        $insert = array();
-        $insert['product_id'] = $product_id;
-        $insert['attribute_name'] = $attribute_name;
-        $insert['attribute_value'] = $attribute_value;
-        $insert['published_date'] = date("Y-m-d H:i:s");
-        $insert['last_update'] = date("Y-m-d H:i:s");
-        $this->db->insert("product_attribute", $insert);
-        return $this->db->insert_id();
+        }
     }
 
 

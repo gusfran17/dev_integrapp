@@ -38,17 +38,6 @@ class Product extends CI_Controller {
 
 	}
 
-
-	public function getProperties($id=NULL){
-
-			if (isset($id)) {
-				$data['property'] = $this->Product_model->get_property($id);
-				echo json_encode($data);
-			
-			}
-	}
-
-
 	public function get_tree($id=NULL){
 			$data['tree'] = $this->Product_model->get_tree($id);
 			echo json_encode($data) ;
@@ -57,7 +46,7 @@ class Product extends CI_Controller {
 
 	public function save_product(){
 			$editID = $this->input->post("editProductID");
-			$editProduct = $editID != "";
+			$editProduct = ($editID != "");
 			if (!$editProduct){ 
 				$this->form_validation->set_rules('productName', 'Nombre del Producto', 'required|callback_productNameCheck');
 		   		$this->form_validation->set_rules('productCode', 'Codigo', 'required|callback_productCodeCheck');	
@@ -116,6 +105,11 @@ class Product extends CI_Controller {
 					$product_added = $this->Product_model->get_added_product($new_id);
 
 					if ($product_added!=FALSE) {
+						//if edition it needs to delete all existing attributes in order to save them again (if not it will add them)
+						if ($editProduct){
+							$this->Product_model->deleteProductAttributes($new_id);	
+						}
+						
 					
 						for ($i=0; $i < MAX_ATTRIBUTE_AMOUNT ; $i++) { 
 
@@ -141,7 +135,7 @@ class Product extends CI_Controller {
 					$this->product_view(null,$data);
 		   		}else{
 					for ($i=0; $i < MAX_ATTRIBUTE_AMOUNT ; $i++) { 
-						//attributes loaded need to be shown again
+
 						$attribute_name = $this->input->post('attribute'.$i);
 						$attribute_value = $this->input->post('value'.$i);
 						if (($attribute_name != null) or ($attribute_name != "")){
@@ -213,12 +207,13 @@ class Product extends CI_Controller {
 	public function upload_foto(){
 		$filename = md5(date("Y-m-d h:i:s") . microtime());
 		$config['upload_path'] = '.' . PRODUCT_IMAGES_PATH . "temp/";
-		$config['allowed_types'] = ALLOWED_PRODUCT_IMAGE_TYPE;
-		$config['max_size']	= ALLOWED_PRODUCT_IMAGE_MAXSIZE;
-		$config['max_width']  = ALLOWED_PRODUCT_IMAGE_MAXWIDTH;
-		$config['max_height']  = ALLOWED_PRODUCT_IMAGE_MAXHEIGHT;
+		$config['allowed_types'] = 'jpg|png|gif';
+		$config['max_size']	= '5000';
+		$config['max_width']  = '7000';
+		$config['max_height']  = '7000';
 		$config['file_name'] = $filename;
 		$this->load->library('upload', $config);
+
 		$result = new stdClass();
 
 		if ( ! $this->upload->do_upload())

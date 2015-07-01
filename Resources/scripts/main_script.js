@@ -173,7 +173,8 @@ $('#saveProduct').click(function(){
 		if(buttonName=="editRecentlyAdded"){
 			var islreadyEditing = $("#editProductID").val();
 			if (islreadyEditing != "") {
-				alert("¡ATENCION! Usted ya esta editando otro producto. Para escoger otro producto a editar haga click en Cancelar al final de la pantalla.")
+				alert("¡ATENCION! Usted ya esta editando otro producto. Para escoger otro producto a editar haga click en Cancelar al final de la pantalla.");
+				console.log(islreadyEditing);
 			} else {
 				integrappCode = $(this).attr('id');
 				var form_data = {
@@ -214,7 +215,7 @@ $('#saveProduct').click(function(){
 						$.each(json.editProduct.attributes, function(index, value) {
 							console.log(value);
 							console.log(index);
-							$(".input_fields_wrap").append('<div class="form-group specifications"><input type="text" class="inputProperty" name="attribute' + index + '" value="' + value.attribute_name + '" placeholder="Atributo..."/><input type="text" class="inputProperty" name="value' + index + '" value="' + value.attribute_value + '" placeholder="Valor..."/><a href="#" class="remove_field">X</a></div>');
+							$(".input_fields_wrap").append('<div class="form-group_specifications"><input type="text" class="inputProperty" id="' + index + '" name="attribute' + index + '" value="' + value.attribute_name + '" placeholder="Atributo..."/><input type="text" class="inputProperty" id="' + index + '" name="value' + index + '" value="' + value.attribute_value + '" placeholder="Valor..."/><a href="#" class="remove_field">X</a></div>');
 						});
 					},
 					error: function(jqXHR,textStatus,errorThrown){
@@ -237,18 +238,30 @@ $('#saveProduct').click(function(){
     var wrapper         = $(".input_fields_wrap"); //Fields wrapper
     var add_button      = $(".add_field_button"); //Add button ID
     
-    var x = 0; //initlal text box count
+
     $(add_button).click(function(e){ //on add input button click
         e.preventDefault();
+        var x = 0; //starts in -1 to take off the existing example box
+        console.log(x);
+        var existingDivs = $('.input_fields_wrap .form-group_specifications');
+        console.log(existingDivs);
+        $.each(existingDivs, function(index, value) {
+        	//console.log("X a secas: "+x);
+        	//console.log("Index: "+index);
+        	//console.log($(this).find('input').attr('id'));
+        	var auxId = $(this).find('input').attr('id');
+        	if (x <= auxId){
+        		x = (parseInt(auxId) + 1);
+        	}
+        	console.log(x);
+        });
         if(x < max_fields){ //max input box allowed
-            x++; //text box increment
-
-            $(wrapper).append('<div class="form-group specifications"><input type="text" class="inputProperty" name="attribute' + x + '" placeholder="Atributo..."/><input type="text" class="inputProperty" name="value' + x + '" placeholder="Valor..."/><a href="#" class="remove_field">X</a></div>'); //add input box
+            $(wrapper).append('<div class="form-group_specifications"><input type="text" class="inputProperty" id="' + x + '" name="attribute' + x + '" placeholder="Atributo..."/><input type="text" class="inputProperty" id="' + x + '" name="value' + x + '" placeholder="Valor..."/><a href="#" class="remove_field">X</a></div>'); //add input box
         }
     });
     
     $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
-        e.preventDefault(); $(this).parent('div').remove(); x--;
+        e.preventDefault(); $(this).parent('div').remove();
     });
 
 
