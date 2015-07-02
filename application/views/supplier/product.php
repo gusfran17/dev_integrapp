@@ -42,7 +42,7 @@
 					<?php if(isset($productCancelled)):?>
 		    			<div class="alert alert-warning alert-dismissible" role="alert">
 						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						  <strong>¡Atencion!</strong> La operacion ha sido cancelada exitosamente.
+						  <strong>¡Atencion!</strong> La operacion ha sido cancelada.
 						</div>
 					<?php endif;?>
 				    <div class="panel panel-primary" id="">
@@ -63,12 +63,13 @@
 									</div>
 
 									<div class="col-md-9">
-							    		<h3>Tips:</h3>
+							    		<h3>Recuerde:</h3>
 								    	<ul>
-								    		<li>Recuerde que el nombre de cada producto no puede ser el mismo de un producto ya cargado con anterioridad.</li>
-								    		<li>Recuerde que el código de cada producto no puede ser el mismo de un producto ya cargado con anterioridad.</li>
-								    		<li>Recuerde que puede duplicar un producto cargado y editar solo la informacion necesaria para autopopular la planilla de Carga de Productos y no volver a escribir todo a mano.</li>
-								    		<li>Recuerde no molestar a la gente de IT por una mala experiencia de usuario.</li>
+								    		<li> El nombre de cada producto no puede ser el mismo de uno ya cargado.</li>
+								    		<li> El código de cada producto no puede ser el mismo de uno ya cargado.</li>
+								    		<li> Puede duplicar un producto cargado, y asi editar solo la informacion necesaria ahorrandose tiempo.</li>
+								    		<li> Puede Editar un producto cargado recientemente desde la planilla de la derecha.</li>
+								    		<li> Puede Eliminar un producto cargado recientemente desde la planilla de la derecha.</li>
 								    	</ul>	
 									</div>
 									
@@ -135,24 +136,32 @@
 										<textarea class="form-control" name="productDesc" id="productDesc"><?php if (!(isset($productLoaded) or isset($productCancelled))) echo set_value('productDesc');?></textarea> 
 										
 									</div>
-									<div class="input_fields_wrap">
-										<h3>Especificaciones técnicas</h3>
-									    <button class="add_field_button btn btn-primary btn-md">Agregar mas campos</button>
-									    <div>
-								    		<div class="example_specifications">
-											    <input type="text" name="attributeExample" placeholder="Ej.:Ancho" value="" disabled>
-											    <input type="text" name="valueExample" placeholder="Ej.:30cm" value="" disabled><a href="#" class="remove_field"> X</a>
-										    </div>
-											<?php if (isset($attributes)) { for ($i=0; $i<count($attributes); $i++) {?> 
-												<div class="form-group_specifications">
-													<input type="text" class="inputProperty" id="<?php echo $i; ?>" name="<?php echo 'attribute'. $i;?>" placeholder="Ej.:Ancho" value="<?php echo  $attributes[$i]->name;?>">
-													<input type="text" class="inputProperty" id="<?php echo $i; ?>" name="<?php echo 'value'. $i;?>" placeholder="Ej.:30cm" value="<?php echo  $attributes[$i]->value;?>"><a href="#" class="remove_field"> X</a>
-												</div>
-											<?php }}; ?>
-											   
-									    </div>
+									<div class="panel panel-info">
+										<div class="panel-heading">
+											<div class="panel-title">
+												<h4>Especificaciones técnicas</h4>
+											</div>
+										</div>
+										<div class="panel-body">
+											<strong>(Si agrega campos no los deje vacios porque estos no serán guardados)</strong>
+											<div class="input_fields_wrap">
+											    <div>
+										    		<div class="example_specifications">
+													    <input type="text" name="attributeExample" placeholder="Atributo (Ej.:Ancho)" value="" disabled>
+													    <input type="text" name="valueExample" placeholder="Valor (Ej.:30cm)" value="" disabled><a href="#" class="remove_field"> X</a>
+												    </div>
+													<?php if (isset($attributes)) { for ($i=0; $i<count($attributes); $i++) {?> 
+														<div class="form-group_specifications">
+															<input type="text" class="inputProperty" id="<?php echo $i; ?>" name="<?php echo 'attribute'. $i;?>" placeholder="Ej.:Ancho" value="<?php echo  $attributes[$i]->name;?>">
+															<input type="text" class="inputProperty" id="<?php echo $i; ?>" name="<?php echo 'value'. $i;?>" placeholder="Ej.:30cm" value="<?php echo  $attributes[$i]->value;?>"><a href="#" class="remove_field"> X</a>
+														</div>
+													<?php }}; ?>
+													   
+											    </div>
+											</div>
+											<button class="add_field_button btn btn-primary btn-md">Agregar mas campos</button>
+										</div>
 									</div>
-									
 									<div class="form-group">
 										<h3>imagenes de producto</h3>
 										<div id="freewalk-dropzone" class="dropzone"></div>
@@ -287,6 +296,7 @@
 													<td>
 														<button type='submit' name = "editRecentlyAdded" id="<?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?>" form="divRecentlyAddedProducts">Editar</button>
 														<button type='submit' name = "duplicateRecentlyAdded" id="<?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?>" form="divRecentlyAddedProducts">Duplicar</button>
+														<button type='submit' name = "deleteRecentlyAdded" id="<?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?>" form="divRecentlyAddedProducts">Eliminar</button>
 													</td>
 												</tr>
 											<?php }}; ?>

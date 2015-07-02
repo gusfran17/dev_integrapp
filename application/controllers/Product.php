@@ -157,7 +157,7 @@ class Product extends CI_Controller {
 					}
 					$lastLoadedProducts = $this->Product_model->getProductsByIntegrappCode($recent_products);
 					$data['lastLoadedProductsGrid'] = $lastLoadedProducts;
-					if (isset($editID)){
+					if ($editProduct){
 						$data['editProductID'] = $editID;
 					}
 					$this->product_view(null,$data);
@@ -181,6 +181,14 @@ class Product extends CI_Controller {
 		}
 	}
 
+	public function deleteProduct(){
+		$deletionProduct = $this->input->post("deletionIntegrapCode");
+		if ($this->Product_model->deleteProductByIntegrappCode($deletionProduct)){
+			$data['deletionProduct'] = $deletionProduct;
+			echo json_encode($data);
+		}
+
+	}
 
 	public function productNameCheck(){
 		$name = $this->input->post("productName");
