@@ -57,7 +57,11 @@ class Supplier_model extends CI_Model {
 
 
     public function save_logo($id){
-        $config['upload_path'] = '.' . SUPPLIER_PROFILE_IMAGE_PATH;
+        $upload_path = '.' . SUPPLIER_PROFILE_IMAGE_PATH;
+        if (!file_exists(SUPPLIER_PROFILE_IMAGE_PATH)){
+            @mkdir($upload_path);
+        }
+        $config['upload_path'] = $upload_path;
         $config['allowed_types'] = ALLOWED_PROFILE_IMAGE_TYPE;
         $config['max_size'] = ALLOWED_PROFILE_IMAGE_MAXSIZE;
         $config['max_width']  = ALLOWED_PROFILE_IMAGE_MAXWIDTH;

@@ -108,6 +108,7 @@ define('ALLOWED_PRODUCT_IMAGE_TYPE', 'png|png|gif');
 define('ALLOWED_PRODUCT_IMAGE_MAXSIZE', 5000);
 define('ALLOWED_PRODUCT_IMAGE_MAXWIDTH', 7000);
 define('ALLOWED_PRODUCT_IMAGE_MAXHEIGHT', 7000);
+define('PROFILE_IMAGE_PATH', '/Resources/imgs/profile/');
 define('DISTRIBUTOR_PROFILE_IMAGE_PATH', '/Resources/imgs/profile/distributor/');
 define('SUPPLIER_PROFILE_IMAGE_PATH', '/Resources/imgs/profile/supplier/');
 define('PRODUCT_IMAGES_PATH', '/Resources/imgs/product/');

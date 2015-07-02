@@ -9,11 +9,11 @@ class Product extends CI_Controller {
 		$data['catalog'] = $this->Product_model->get_catalog($role_id);
 
 		if (isset($id)) {
-			$data['NextCategory'] = $this->Product_model->get_category($id);
+			$data['NextCategory'] = $this->Product_model->getCategory($id);
 			//echo json_encode($data);
 			//die();
 		}else{
-			$data['category'] = $this->Product_model->get_category();
+			$data['category'] = $this->Product_model->getCategory();
 		}
 		$this->routedHome('product',$role, $data);
 	}
@@ -26,25 +26,25 @@ class Product extends CI_Controller {
 		$this->load->view('templates/template_footer');
 	}
 
-	public function get_categories($id=NULL){
+	public function getCategories($id=NULL){
 				
 		if (isset($id)) {
-			$data['NextCategory'] = $this->Product_model->get_category($id);
+			$data['NextCategory'] = $this->Product_model->getCategory($id);
 			echo json_encode($data);
 			die();
 		}else{
-			$data['category'] = $this->Product_model->get_category();
+			$data['category'] = $this->Product_model->getCategory();
 		}
 
 	}
 
-	public function get_tree($id=NULL){
-			$data['tree'] = $this->Product_model->get_tree($id);
+	public function getTree($id=NULL){
+			$data['tree'] = $this->Product_model->getTree($id);
 			echo json_encode($data) ;
 	}
 
 
-	public function save_product(){
+	public function saveProduct(){
 			$editID = $this->input->post("editProductID");
 			$editProduct = ($editID != "");
 			if (!$editProduct){ 
@@ -73,6 +73,10 @@ class Product extends CI_Controller {
 	   		if ($cancel=="Cancelar"){
 	   			//Goes back to the form (now empty values)
    				$recent_products = $this->input->post('recentlyAddedIntegrappCode');
+   				if (!isset($recent_products)){
+					//If it is the first time a product is loaded the array needs to be initialized so as not to bring all existing products
+					$recent_products = array("");
+				}
 				$lastloadedProducts = $this->Product_model->getProductsByIntegrappCode($recent_products);
 				$data['lastLoadedProductsGrid'] = $lastloadedProducts;
 				$data['productCancelled'] = "Cancelled";
@@ -88,7 +92,7 @@ class Product extends CI_Controller {
 					$insert['tax'] = $this->input->post("productVAT");
 					$insert['short_desc'] = $this->input->post("categoryTree"); 
 					if (!$editProduct){
-						$new_id = $this->Product_model->get_new_id();
+						$new_id = $this->Product_model->getNewId();
 						$insert['id']= $new_id;
 						$insert['published_date'] = date("Y-m-d H:i:s");
 						$integrappCode = "PR".$new_id."C".$this->input->post("categoryID");
@@ -102,7 +106,7 @@ class Product extends CI_Controller {
 
 					}
 
-					$product_added = $this->Product_model->get_added_product($new_id);
+					$product_added = $this->Product_model->getProductById($new_id);
 
 					if ($product_added!=FALSE) {
 						//if edition it needs to delete all existing attributes in order to save them again (if not it will add them)
@@ -117,7 +121,7 @@ class Product extends CI_Controller {
 							$value = $this->input->post('value'.$i);
 							
 							if ($attribute !=NULL && $value!=NULL) {
-								$this->Product_model->save_product_attribute($new_id, $attribute, $value);
+								$this->Product_model->saveProductAttribute($new_id, $attribute, $value);
 							}
 						}
 					}
@@ -214,7 +218,14 @@ class Product extends CI_Controller {
 
 	public function upload_foto(){
 		$filename = md5(date("Y-m-d h:i:s") . microtime());
-		$config['upload_path'] = '.' . PRODUCT_IMAGES_PATH . "temp/";
+		$upload_path = '.' . PRODUCT_IMAGES_PATH . "temp/";
+		if (!file_exists('.' . PRODUCT_IMAGES_PATH)){
+			@mkdir('.' . PRODUCT_IMAGES_PATH);
+		}
+		if (!file_exists($upload_path)){
+			@mkdir($upload_path);
+		}
+		$config['upload_path'] = $upload_path;
 		$config['allowed_types'] = 'jpg|png|gif';
 		$config['max_size']	= '5000';
 		$config['max_width']  = '7000';
@@ -239,6 +250,9 @@ class Product extends CI_Controller {
 	{
 	    $source_path = '.' . PRODUCT_IMAGES_PATH . "temp/" . $filename;
 	    $target_path = '.' . PRODUCT_IMAGES_PATH. 'temp/thumbs/';
+	    if (!file_exists($target_path)){
+			@mkdir($target_path);
+		}
 	    $config_manip = array(
 	        'image_library' => 'gd2',
 	        'source_image' => $source_path,

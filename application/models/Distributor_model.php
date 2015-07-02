@@ -57,7 +57,11 @@ class Distributor_model extends CI_Model {
     }
 
     public function save_logo($id){
-        $config['upload_path'] = '.' . DISTRIBUTOR_PROFILE_IMAGE_PATH;
+        $upload_path = '.' . DISTRIBUTOR_PROFILE_IMAGE_PATH;
+        if (!file_exists($upload_path)){
+            @mkdir($upload_path);
+        }
+        $config['upload_path'] = $upload_path;
         $config['allowed_types'] = ALLOWED_PROFILE_IMAGE_TYPE;
         $config['max_size'] = ALLOWED_PROFILE_IMAGE_MAXSIZE;
         $config['max_width']  = ALLOWED_PROFILE_IMAGE_MAXWIDTH;

@@ -201,7 +201,10 @@ class Profile extends CI_Controller {
 	}
 
 	public function save_logo(){
-
+		$upload_path = '.' . PROFILE_IMAGE_PATH;
+        if (!file_exists($upload_path)){
+            @mkdir($upload_path);
+        }
 		$userid = $this->session->userdata("id");
    		$role = $this->session->userdata("role");
    		if($role == "distributor"){

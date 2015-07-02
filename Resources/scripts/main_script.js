@@ -56,7 +56,7 @@ $(document).ready(function(){
 	    });
 
 		$.ajax({
-	  		url:'/dev_integrapp/product/get_tree/'+str,
+	  		url:'/dev_integrapp/product/getTree/'+str,
 			type:'POST',
 			data:{id:str},
 			dataType:'json', 
@@ -83,7 +83,7 @@ $(document).ready(function(){
 	    });
 	    console.log(str);
 		$.ajax({
-	  		url:'/dev_integrapp/product/get_categories/'+str,
+	  		url:'/dev_integrapp/product/getCategories/'+str,
 	  		type:'POST',
 	  		dataType:'json',
 	  		data:{id:str},

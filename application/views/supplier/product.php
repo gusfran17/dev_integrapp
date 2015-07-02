@@ -75,7 +75,7 @@
 									
 					    		</div>
 					</div>
-					<form class="region size1of2" action="<?php echo base_url(); ?>product/save_product" method="post" id="fromLoadProducts">
+					<form class="region size1of2" action="<?php echo base_url(); ?>product/saveProduct" method="post" id="fromLoadProducts">
 						<div class="panel panel-info">
 							<div class="panel-heading">
 								<div class="panel-title">

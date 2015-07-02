@@ -5,7 +5,7 @@
 class Product_model extends CI_Model {
 
 
-    function get_category($parent=null){
+    function getCategory($parent=null){
 
         $this->db->where("parent_id", $parent);
         $query = $this->db->get('category');
@@ -39,13 +39,13 @@ class Product_model extends CI_Model {
         $result = $query->result();
         $tab = $tab."\t";
         foreach($result as $record){
-                $categories = $categories . $tab . $record->name . "\n" . $this->get_categories($record->id,$tab);
+                $categories = $categories . $tab . $record->name . "\n" . $this->getCategories($record->id,$tab);
         }
         return  $categories;
 
     }
 
-    function get_tree($id){
+    function getTree($id){
         $this->db->select('ascending_path');
         $this->db->from('category');
         $this->db->where('id', $id);
@@ -130,16 +130,11 @@ class Product_model extends CI_Model {
         return $query->result();
     }
 
-    function get_added_product($id){
+    function getProductById($id){
         $this->db->where("id", $id);
         $query = $this->db->get('product');
-        if($query->num_rows() == 0){
-            echo "El Producto no se cargo satisfactoriamente, Intente volver a cargarlo por favor.";
-        } else{ 
-            $result = $query->result();
-            return $result[0];
-
-        }
+        $result = $query->result();
+        return $result[0];
     }
 
 
@@ -164,14 +159,14 @@ class Product_model extends CI_Model {
     }
 
 
-    function get_new_id(){
+    function getNewId(){
         $this->db->select_max('id');
         $query = $this->db->get('product');
         $result = $query->result();
         return ($result[0]->id+1);
     }
 
-    function save_product_attribute($product_id, $attribute_name, $attribute_value){
+    function saveProductAttribute($product_id, $attribute_name, $attribute_value){
         $insert = array();
         $insert['product_id'] = $product_id;
         $insert['attribute_name'] = $attribute_name;
@@ -200,7 +195,6 @@ class Product_model extends CI_Model {
 
 
     function getProductImages($productId){
-        //echo "." . base_url() . PRODUCT_IMAGES_PATH . $productId . "/";
         $targetPath = ".".PRODUCT_IMAGES_PATH . $productId . "/";
         if (file_exists($targetPath)) {
             $files = scandir($targetPath,1);    
