@@ -5,31 +5,68 @@
 
 		  
 		  <ul class="nav nav-tabs" role="tablist">
-		    <li role="presentation" class="<?php if (!(isset($lastLoadedProductsGrid) or isset($productLoaded) or isset($productCancelled))) {echo "active";} ?>"><a href="#catalog" aria-controls="catalog" role="tab" data-toggle="tab">Catalogo</a></li>
-		    <li role="presentation"><a href="#my-products" aria-controls="my-products" role="my-products" data-toggle="tab">Mis Productos</a></li>
+		    <li role="presentation" class="<?php if ((!(isset($lastLoadedProductsGrid) or isset($productLoaded) or isset($productCancelled))) and (!(isset($viewMyCatalog)))) {echo "active";} ?>"><a href="#catalog" aria-controls="catalog" role="tab" data-toggle="tab">Catalogo</a></li>
+		    <li role="presentation" class="<?php if ((!(isset($lastLoadedProductsGrid) or isset($productLoaded) or isset($productCancelled))) and (isset($viewMyCatalog))) {echo "active";} ?>"><a href="#my-products" aria-controls="my-products" role="my-products" data-toggle="tab">Mis Productos</a></li>
 		    <li role="presentation" class="<?php if (isset($lastLoadedProductsGrid) or isset($productLoaded) or isset($productCancelled)) { echo "active";} ?>"><a href="#load-products" aria-controls="load-products" role="load-products" data-toggle="tab">Cargar Productos</a></li>
 		    <li role="presentation"><a href="#settings" aria-controls="settings" role="settings" data-toggle="tab">Ajustes</a></li>
 		  </ul>
 
 		  
 		  <div class="tab-content">
-		    <div role="tabpanel" class="tab-pane fade <?php if (!(isset($lastLoadedProductsGrid) or isset($productLoaded) or isset($productCancelled))) {echo "active in";} ?>" id="catalog">
+		    <div role="tabpanel" class="tab-pane fade <?php if ((!(isset($lastLoadedProductsGrid) or isset($productLoaded) or isset($productCancelled))) and (!(isset($viewMyCatalog)))) {echo "active in";} ?>" id="catalog">
 		    	<div class="row">
-					<?php 
-					$catalogSize = count($catalog);
-					for ($i=0; $i < $catalogSize ; $i++) { ?>
-						
-						<div class="col-md-3 col-sm-4 col-xs-6 item-catalogo">
-							<div class="producto-container"> 
-								<div class="jquery-description"><h6><?php echo "Codigo Integrapp: ".$catalog[$i]->integrapp_code."</br>Codigo: ". $catalog[$i]->code . "</br>Nombre: ". $catalog[$i]->name. "</br>Descripcion: ". $catalog[$i]->short_desc   ?></h6></div>
-							</div> 
-						</div>
-					<?php } ?>
+		    		<div class="col-md-2 col-sm-4 col-xs-6">
+		    			<ul class="list-group">
+							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderCatalogBy/category_id"><strong>Ordenar por categorias</a></strong> </li>
+							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderCatalogBy/name"><strong>Ordenar por nombre</strong></a></li>
+							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderCatalogBy/price desc"><strong>Ordenar por precios (de mayor a menor)</strong></a> </li>
+							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderCatalogBy/price asc"><strong>Ordenar por precios (de menor a mayor)</strong></a> </li>
+						</ul>
+		    		</div>
+		    		<div class="col-md-10 col-sm-8 col-xs-6">
+						<?php 
+						$catalogSize = count($catalog);
+						for ($i=0; $i < $catalogSize ; $i++) { ?>
+							<div class="col-md-4 col-sm-6 col-xs-12 item-catalogo">
+
+								<div class="producto-container" style="<?php if (count($catalog[$i]->images)>0) echo 'background-image: url('.base_url() . PRODUCT_IMAGES_PATH . $catalog[$i]->id . "/" . $catalog[$i]->images[0] . ');'; ?>" > 
+									<div class="jquery-description"><h6><?php echo "<strong>Código: </strong>". $catalog[$i]->code . "</br><strong>Descripción: </strong>". $catalog[$i]->description; ?></h6></div>
+								</div> 
+								<div style="text-align:center;"> <strong><?php echo $catalog[$i]->name; ?></strong></div>
+								<div style="text-align:center;"><strong>Código IntegrApp: </strong><?php echo $catalog[$i]->integrapp_code; ?></div>
+								<div style="text-align:center;"><strong>Precio: </strong><?php echo $catalog[$i]->price . '$'; ?></div>
+							</div>
+						<?php } ?>		    			
+		    		</div>
 		    	</div>
 				
 		    </div>
-		    <div role="tabpanel" class="tab-pane fade" id="my-products">
-			
+		    <div role="tabpanel" class="tab-pane fade <?php if ((!(isset($lastLoadedProductsGrid) or isset($productLoaded) or isset($productCancelled))) and (isset($viewMyCatalog))) {echo "active in";} ?>" id="my-products">
+				<div class="row">
+		    		<div class="col-md-2 col-sm-4 col-xs-6">
+		    			<ul class="list-group">
+							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderMyCatalogBy/category_id"><strong>Ordenar por categorias</a></strong> </li>
+							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderMyCatalogBy/name"><strong>Ordenar por nombre</strong></a></li>
+							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderMyCatalogBy/price desc"><strong>Ordenar por precios (de mayor a menor)</strong></a> </li>
+							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderMyCatalogBy/price asc"><strong>Ordenar por precios (de menor a mayor)</strong></a> </li>
+						</ul>
+		    		</div>
+		    		<div class="col-md-10 col-sm-8 col-xs-6">					
+						<?php 
+						$catalogSize = count($myCatalog);
+						for ($i=0; $i < $catalogSize ; $i++) { ?>
+							<div class="col-md-4 col-sm-6 col-xs-12 item-catalogo">
+
+								<div class="producto-container" style="<?php if (count($myCatalog[$i]->images)>0) echo 'background-image: url('.base_url() . PRODUCT_IMAGES_PATH . $myCatalog[$i]->id . "/" . $myCatalog[$i]->images[0] . ');'; ?>" > 
+									<div class="jquery-description"><h6><?php echo "<strong>Código: </strong>". $myCatalog[$i]->code . "</br><strong>Descripción: </strong>". $myCatalog[$i]->description; ?></h6></div>
+								</div> 
+								<div style="text-align:center;"> <strong><?php echo $myCatalog[$i]->name; ?></strong></div>
+								<div style="text-align:center;"><strong>Código IntegrApp: </strong><?php echo $myCatalog[$i]->integrapp_code; ?></div>
+								<div style="text-align:center;"><strong>Precio: </strong><?php echo $myCatalog[$i]->price . '$'; ?></div>
+							</div>
+						<?php } ?>
+					</div>
+		    	</div>
 		    </div>
 		    <div role="tabpanel" class="tab-pane fade <?php if (isset($lastLoadedProductsGrid) or isset($productLoaded) or isset($productCancelled)) { echo "active in";} ?>" id="load-products">
 		    	<div class="row" id="productSection">
@@ -131,6 +168,11 @@
 										<input type="text" class="form-control" name="productVAT" id="productVAT" placeholder="% de I.V.A." value="<?php if (!(isset($productLoaded) or isset($productCancelled))) echo set_value('productVAT');?>">
 									</div>
 									<div class="form-group">
+										<label for="" class="control-label">Precio</label>
+										<?php echo form_error('productPrice', '<span class="label label-danger">', '</span>'); ?>
+										<input type="text" class="form-control" name="productPrice" id="productPrice" placeholder="Ingrese el precio del producto..." value="<?php if (!(isset($productLoaded) or isset($productCancelled))) echo set_value('productPrice');?>">
+									</div>
+									<div class="form-group">
 										<label for="" class="control-label">Descripción*</label>
 										<?php echo form_error('productDesc', '<span class="label label-danger">', '</span>'); ?>
 										<textarea class="form-control" name="productDesc" id="productDesc"><?php if (!(isset($productLoaded) or isset($productCancelled))) echo set_value('productDesc');?></textarea> 
@@ -220,7 +262,7 @@
 												  addRemoveLinks: true,
 												  dictCancelUpload: "Cancelar",
 												  dictRemoveFile: "Borrar", 
-												  acceptedFiles: "image/jpeg",
+												  acceptedFiles: "image/jpeg,image/gif,image/png",
 												  dictInvalidFileType: "Solo se aceptan imagenes jpg",
 
 												  accept: function(file, done) {

@@ -3,11 +3,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Product extends CI_Controller {
 	
-	public function product_view($id=NULL, $data=NULL){
+	public function product_view($id=NULL, $data=NULL, $orderBy=NULL, $myCatalog=false){
 		$role = $this->session->userdata("role");
 		$role_id = $this->session->userdata('role_id');
-		$data['catalog'] = $this->Product_model->get_catalog($role_id);
-
+		$data['myCatalog'] = $this->Product_model->get_catalog($role_id, $orderBy);
+		$data['catalog'] = $this->Product_model->get_catalog(null, $orderBy);
+		if ($myCatalog){
+			$data['viewMyCatalog'] = true;
+		}
 		if (isset($id)) {
 			$data['NextCategory'] = $this->Product_model->getCategory($id);
 			//echo json_encode($data);
@@ -24,6 +27,14 @@ class Product extends CI_Controller {
 		$this->load->view('navs/nav_'.$this->session->userdata("role"));
 		$this->load->view($role.'/'.$section, $data);
 		$this->load->view('templates/template_footer');
+	}
+
+	public function orderCatalogBy ($orderBy){
+		$this->product_view(null, null, $orderBy);
+	}
+
+	public function orderMyCatalogBy ($orderBy){
+		$this->product_view(null, null, $orderBy, true);
 	}
 
 	public function getCategories($id=NULL){
@@ -60,8 +71,11 @@ class Product extends CI_Controller {
 			}
 			$this->form_validation->set_rules('categoryTree', 'Categoria de producto', 'required');
 	   		$this->form_validation->set_rules('productVAT', 'IVA', 'trim');
+	   		$this->form_validation->set_rules('productPrice', 'Precio', 'required|trim|numeric');
 	   		$this->form_validation->set_rules('productDesc', 'Descripcion', 'required|min_length[' . PROD_DESCRIPTION_MIN_LENGTH . ']|max_length[' . PROD_DESCRIPTION_MAX_LENGTH . ']');
+	   		
 	   		$this->form_validation->set_message('required', 'El campo %s es obligatorio');
+	   		$this->form_validation->set_message('numeric', 'El campo %s solo puede contener vlores numéricos');
 	   		$this->form_validation->set_message('min_length', 'La descripcion debe tener al menos ' . PROD_DESCRIPTION_MIN_LENGTH . ' caracteres');
 	   		$this->form_validation->set_message('max_length', 'La descripcion debe tener a lo sumo ' . PROD_DESCRIPTION_MAX_LENGTH . ' caracteres');
 
@@ -90,6 +104,7 @@ class Product extends CI_Controller {
 					$insert['code'] = $this->input->post("productCode");
 					$insert['category_id'] = $this->input->post("categoryID");
 					$insert['tax'] = $this->input->post("productVAT");
+					$insert['price'] = $this->input->post("productPrice");
 					$insert['short_desc'] = $this->input->post("categoryTree"); 
 					if (!$editProduct){
 						$new_id = $this->Product_model->getNewId();

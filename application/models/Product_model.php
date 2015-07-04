@@ -193,28 +193,43 @@ class Product_model extends CI_Model {
         }
     }
 
+    
+    function get_catalog($id=null, $orderBy = null){
+        if (isset($id)){
+            $this->db->where("supplier_id", $id);
+        }
+        if (isset($orderBy)){
+                $this->db->order_by($orderBy);     
+        }
+        $query = $this->db->get('product');
+        $result = $query->result();
+        for ($i=0; $i<count($result); $i++){
+            $result[$i]->images = $this->getProductImages($result[$i]->id);
+        }
+        return $result;
+    }
+
 
     function getProductImages($productId){
         $targetPath = ".".PRODUCT_IMAGES_PATH . $productId . "/";
         if (file_exists($targetPath)) {
             $files = scandir($targetPath,1);    
-            return array_diff($files, array('.', '..', 'thumbs'));
+            $array = array_diff($files, array('.', '..', 'thumbs'));
+            $max_key = max(array_keys($array)); 
         }   else {
-            return array();
+            $array = array();
+            $max_key = 0;
         }
-    }
-
-
-    function get_catalog($id){
-
-        $this->db->where("supplier_id", $id);
-        $query = $this->db->get('product');
-        if($query->num_rows() == 0){
-            echo "No registra ningun producto cargado hasta el momento";
-        } else{ 
-            $result = $query->result();
-            return $result;
+        $images = array();
+        //Rearrange array keys order
+        $j = 0;
+        for ($i=0; $i<$max_key+1; $i++){
+            if (isset($array[$i])){
+                $images[$j] = $array[$i];
+                $j++;
+            }
         }
+        return $images;
     }
 
 
