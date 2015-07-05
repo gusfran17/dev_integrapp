@@ -3,21 +3,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Product extends CI_Controller {
 	
-	public function product_view($id=NULL, $data=NULL, $orderBy=NULL, $myCatalog=false){
+	public function product_view($data=NULL, $orderBy='category_id', $myCatalog=false, $page = 0){
 		$role = $this->session->userdata("role");
 		$role_id = $this->session->userdata('role_id');
+
 		$data['myCatalog'] = $this->Product_model->get_catalog($role_id, $orderBy);
 		$data['catalog'] = $this->Product_model->get_catalog(null, $orderBy);
+		$data['orderBy'] = $orderBy;
+		$data['page'] = $page;
 		if ($myCatalog){
 			$data['viewMyCatalog'] = true;
+			$data['myCatalogPage'] = $page;
+			$data['page'] = 0;
+		} else {
+			$data['myCatalogPage'] = 0;
 		}
-		if (isset($id)) {
-			$data['NextCategory'] = $this->Product_model->getCategory($id);
-			//echo json_encode($data);
-			//die();
-		}else{
-			$data['category'] = $this->Product_model->getCategory();
-		}
+		$data['category'] = $this->Product_model->getCategory();
+	
+		
 		$this->routedHome('product',$role, $data);
 	}
 
@@ -29,12 +32,26 @@ class Product extends CI_Controller {
 		$this->load->view('templates/template_footer');
 	}
 
-	public function orderCatalogBy ($orderBy){
-		$this->product_view(null, null, $orderBy);
+	public function orderCatalogBy ($orderBy, $page = 0, $action = null){
+		if (isset($action)){
+			if ($action=='next'){
+				$page++;
+			} else {
+				if ($page>0) $page--;
+			}
+		}
+		$this->product_view(null, $orderBy, false, $page);
 	}
 
-	public function orderMyCatalogBy ($orderBy){
-		$this->product_view(null, null, $orderBy, true);
+	public function orderMyCatalogBy ($orderBy, $page = 0, $action = null){
+		if (isset($action)){
+			if ($action=='next'){
+				$page++;
+			} else {
+				if ($page>0) $page--;
+			}
+		}
+		$this->product_view(null, $orderBy, true, $page);
 	}
 
 	public function getCategories($id=NULL){
@@ -94,7 +111,7 @@ class Product extends CI_Controller {
 				$lastloadedProducts = $this->Product_model->getProductsByIntegrappCode($recent_products);
 				$data['lastLoadedProductsGrid'] = $lastloadedProducts;
 				$data['productCancelled'] = "Cancelled";
-				$this->product_view(null,$data);
+				$this->product_view($data);
 	   		} else {
 	   			if ($this->form_validation->run()) {
 
@@ -151,7 +168,7 @@ class Product extends CI_Controller {
 					$lastloadedProducts = $this->Product_model->getProductsByIntegrappCode($recent_products);
 					$data['lastLoadedProductsGrid'] = $lastloadedProducts;
 					$data['productLoaded'] = "Loaded";
-					$this->product_view(null,$data);
+					$this->product_view($data);
 		   		}else{
 					for ($i=0; $i < MAX_ATTRIBUTE_AMOUNT ; $i++) { 
 
@@ -179,7 +196,7 @@ class Product extends CI_Controller {
 					if ($editProduct){
 						$data['editProductID'] = $editID;
 					}
-					$this->product_view(null,$data);
+					$this->product_view($data);
 		   		}
 
 	   		}

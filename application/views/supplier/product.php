@@ -26,20 +26,37 @@
 		    		<div class="col-md-10 col-sm-8 col-xs-6">
 						<?php 
 						$catalogSize = count($catalog);
-						for ($i=0; $i < $catalogSize ; $i++) { ?>
+						for ($i=($page*PROD_MAX_PAGE_AMOUNT); $i < ((((($page+1)*PROD_MAX_PAGE_AMOUNT)) < $catalogSize) ? (($page*PROD_MAX_PAGE_AMOUNT)+PROD_MAX_PAGE_AMOUNT) : $catalogSize); $i++) { ?>
 							<div class="col-md-4 col-sm-6 col-xs-12 item-catalogo">
 
 								<div class="producto-container" style="<?php if (count($catalog[$i]->images)>0) echo 'background-image: url('.base_url() . PRODUCT_IMAGES_PATH . $catalog[$i]->id . "/" . $catalog[$i]->images[0] . ');'; ?>" > 
 									<div class="jquery-description"><h6><?php echo "<strong>Código: </strong>". $catalog[$i]->code . "</br><strong>Descripción: </strong>". $catalog[$i]->description; ?></h6></div>
 								</div> 
 								<div style="text-align:center;"> <strong><?php echo $catalog[$i]->name; ?></strong></div>
-								<div style="text-align:center;"><strong>Código IntegrApp: </strong><?php echo $catalog[$i]->integrapp_code; ?></div>
-								<div style="text-align:center;"><strong>Precio: </strong><?php echo $catalog[$i]->price . '$'; ?></div>
+								<div style="text-align:center;"> <strong>Código IntegrApp: </strong><?php echo $catalog[$i]->integrapp_code; ?></div>
+								<div style="text-align:center;"> <strong>Precio: </strong><?php echo $catalog[$i]->price . '$'; ?></div>
 							</div>
-						<?php } ?>		    			
+						<?php } ?>	  
+						<div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center"> 			
+							<?php if ($page != 0) { ?>
+								<a href="<?php echo base_url() . 'product/orderCatalogBy/' . $orderBy . '/' . $page . '/prev'; ?>" ><strong>< Página anterior ...</strong></a>
+							<?php } ?>
+							<?php 
+							$pagesAmount = count($catalog)/PROD_MAX_PAGE_AMOUNT;
+							for ($i=0; $i < $pagesAmount; $i++) { ?>
+								<?php if ($i == $page) { ?>
+									<a href="<?php echo base_url() . 'product/orderCatalogBy/' . $orderBy . '/' . $i; ?>"><strong><?php echo $i; ?></strong></a>
+								<?php } else { ?>
+									<a href="<?php echo base_url() . 'product/orderCatalogBy/' . $orderBy . '/' . $i; ?>"><?php echo $i; ?></a>
+								<?php } ?>
+							<?php } ?>	
+			    			<?php if ($page < $pagesAmount-1) { ?>
+								<a href="<?php echo base_url() . 'product/orderCatalogBy/' . $orderBy . '/' . $page . '/next'; ?>"><strong>... Proxima página ></strong></a>
+							<?php } ?>
+		    			</div>
 		    		</div>
+
 		    	</div>
-				
 		    </div>
 		    <div role="tabpanel" class="tab-pane fade <?php if ((!(isset($lastLoadedProductsGrid) or isset($productLoaded) or isset($productCancelled))) and (isset($viewMyCatalog))) {echo "active in";} ?>" id="my-products">
 				<div class="row">
@@ -54,7 +71,7 @@
 		    		<div class="col-md-10 col-sm-8 col-xs-6">					
 						<?php 
 						$catalogSize = count($myCatalog);
-						for ($i=0; $i < $catalogSize ; $i++) { ?>
+						for ($i=($myCatalogPage*PROD_MAX_PAGE_AMOUNT); $i < ((((($myCatalogPage+1)*PROD_MAX_PAGE_AMOUNT)) < $catalogSize) ? (($myCatalogPage*PROD_MAX_PAGE_AMOUNT)+PROD_MAX_PAGE_AMOUNT) : $catalogSize); $i++) { ?>
 							<div class="col-md-4 col-sm-6 col-xs-12 item-catalogo">
 
 								<div class="producto-container" style="<?php if (count($myCatalog[$i]->images)>0) echo 'background-image: url('.base_url() . PRODUCT_IMAGES_PATH . $myCatalog[$i]->id . "/" . $myCatalog[$i]->images[0] . ');'; ?>" > 
@@ -65,6 +82,23 @@
 								<div style="text-align:center;"><strong>Precio: </strong><?php echo $myCatalog[$i]->price . '$'; ?></div>
 							</div>
 						<?php } ?>
+						<div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center"> 			
+							<?php if ($myCatalogPage != 0) { ?>
+								<a href="<?php echo base_url() . 'product/orderMyCatalogBy/' . $orderBy . '/' . $myCatalogPage . '/prev'; ?>" ><strong>< Página anterior ...</strong></a>
+							<?php } ?>
+							<?php 
+							$pagesAmount = count($myCatalog)/PROD_MAX_PAGE_AMOUNT;
+							for ($i=0; $i < $pagesAmount; $i++) { ?>
+								<?php if ($i == $myCatalogPage) { ?>
+									<a href="<?php echo base_url() . 'product/orderMyCatalogBy/' . $orderBy . '/' . $i; ?>"><strong><?php echo $i; ?></strong></a>
+								<?php } else { ?>
+									<a href="<?php echo base_url() . 'product/orderMyCatalogBy/' . $orderBy . '/' . $i; ?>"><?php echo $i; ?></a>
+								<?php } ?>
+							<?php } ?>	
+			    			<?php if ($myCatalogPage < $pagesAmount-1) { ?>
+								<a href="<?php echo base_url() . 'product/orderMyCatalogBy/' . $orderBy . '/' . $myCatalogPage . '/next'; ?>"><strong>... Proxima página ></strong></a>
+							<?php } ?>
+		    			</div>
 					</div>
 		    	</div>
 		    </div>
@@ -309,12 +343,6 @@
 										});
 
 									</script>
-<!-- 									<div class="alert alert-warning alert-dismissible insight" role="alert">
-									
-									  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-									  <strong>Atencion!</strong> Has Cargado un producto nuevo. Puedes verlo en la planilla del costado o entrando en detalle en el area Mis Productos.
-									</div> -->
-
 								</div>
 								<div  class="col-xs-12 col-sm-12 col-md-6 col-lg-7" id="divRecentlyAddedProducts">
 									<table class="table table-bordered table-striped">

@@ -127,4 +127,4 @@ define('PROD_DESCRIPTION_MAX_LENGTH', 400);
 /*
 | Product: maximun amount of products per catalog page
 */
-define('PROD_MAX_PAGE_AMOUNT', 12);
+define('PROD_MAX_PAGE_AMOUNT', 6);
