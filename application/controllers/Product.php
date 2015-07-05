@@ -6,7 +6,7 @@ class Product extends CI_Controller {
 	public function product_view($data=NULL, $orderBy='category_id', $myCatalog=false, $page = 0){
 		$role = $this->session->userdata("role");
 		$role_id = $this->session->userdata('role_id');
-
+		//Set catalogs pages
 		$data['myCatalog'] = $this->Product_model->get_catalog($role_id, $orderBy);
 		$data['catalog'] = $this->Product_model->get_catalog(null, $orderBy);
 		$data['orderBy'] = $orderBy;
@@ -18,11 +18,11 @@ class Product extends CI_Controller {
 		} else {
 			$data['myCatalogPage'] = 0;
 		}
-		$data['category'] = $this->Product_model->getCategory();
-	
 		
+		$data['category'] = $this->Product_model->getCategory();
 		$this->routedHome('product',$role, $data);
 	}
+
 
 	public function routedHome($section, $role = null, $data = null){
 		$this->load->view('templates/template_header');

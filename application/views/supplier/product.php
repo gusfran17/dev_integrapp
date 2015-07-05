@@ -17,10 +17,10 @@
 		    	<div class="row">
 		    		<div class="col-md-2 col-sm-4 col-xs-6">
 		    			<ul class="list-group">
-							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderCatalogBy/category_id"><strong>Ordenar por categorias</a></strong> </li>
-							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderCatalogBy/name"><strong>Ordenar por nombre</strong></a></li>
-							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderCatalogBy/price desc"><strong>Ordenar por precios (de mayor a menor)</strong></a> </li>
-							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderCatalogBy/price asc"><strong>Ordenar por precios (de menor a mayor)</strong></a> </li>
+							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderCatalogBy/category_id"><?php if ($orderBy == 'category_id') echo '<strong>Ordenar por categorias</strong>'; else echo 'Ordenar por categorias'; ?> </a></li>
+							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderCatalogBy/name"><?php if ($orderBy == 'name') echo '<strong>Ordenar por nombre</strong>'; else echo 'Ordenar por nombre'; ?></a></li>
+							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderCatalogBy/price desc"><?php if ($orderBy == 'price desc') echo '<strong>Ordenar por precios (de mayor a menor)</strong>'; else echo 'Ordenar por precios (de mayor a menor)'; ?></a> </li>
+							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderCatalogBy/price asc"><?php if ($orderBy == 'price asc') echo '<strong>Ordenar por precios (de menor a mayor)</strong>'; else echo 'Ordenar por precios (de menor a mayor)'; ?></a> </li>
 						</ul>
 		    		</div>
 		    		<div class="col-md-10 col-sm-8 col-xs-6">
@@ -62,10 +62,10 @@
 				<div class="row">
 		    		<div class="col-md-2 col-sm-4 col-xs-6">
 		    			<ul class="list-group">
-							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderMyCatalogBy/category_id"><strong>Ordenar por categorias</a></strong> </li>
-							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderMyCatalogBy/name"><strong>Ordenar por nombre</strong></a></li>
-							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderMyCatalogBy/price desc"><strong>Ordenar por precios (de mayor a menor)</strong></a> </li>
-							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderMyCatalogBy/price asc"><strong>Ordenar por precios (de menor a mayor)</strong></a> </li>
+							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderMyCatalogBy/category_id"><?php if ($orderBy == 'category_id') echo '<strong>Ordenar por categorias</strong>'; else echo 'Ordenar por categorias'; ?> </a></li>
+							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderMyCatalogBy/name"><?php if ($orderBy == 'name') echo '<strong>Ordenar por nombre</strong>'; else echo 'Ordenar por nombre'; ?></a></li>
+							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderMyCatalogBy/price desc"><?php if ($orderBy == 'price desc') echo '<strong>Ordenar por precios (de mayor a menor)</strong>'; else echo 'Ordenar por precios (de mayor a menor)'; ?></a> </li>
+							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderMyCatalogBy/price asc"><?php if ($orderBy == 'price asc') echo '<strong>Ordenar por precios (de menor a mayor)</strong>'; else echo 'Ordenar por precios (de menor a mayor)'; ?></a> </li>
 						</ul>
 		    		</div>
 		    		<div class="col-md-10 col-sm-8 col-xs-6">					
