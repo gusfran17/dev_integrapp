@@ -18,17 +18,15 @@ class Product extends CI_Controller {
 		} else {
 			$data['myCatalogPage'] = 0;
 		}
-		
 		$data['category'] = $this->Product_model->getCategory();
-		$this->routedHome('product',$role, $data);
+		$this->routedHome($role, $data);
 	}
 
-
-	public function routedHome($section, $role = null, $data = null){
+	public function routedHome($role = null, $data = null){
 		$this->load->view('templates/template_header');
 		$this->load->view('templates/template_nav');
 		$this->load->view('navs/nav_'.$this->session->userdata("role"));
-		$this->load->view($role.'/'.$section, $data);
+		$this->load->view($role.'/product', $data);
 		$this->load->view('templates/template_footer');
 	}
 
