@@ -80,9 +80,23 @@ class Supplier_model extends CI_Model {
         if(file_exists($filename)){
             return $url_path . md5($userid) . ".png";
         }else{
-            return false;
+            return null;
         }
         
+    }
+
+    public function suppliersCount(){
+        return $this->db->count_all("supplier");
+    }
+
+    public function getSuppliers($page, $rangePerPage){
+        $from =  ($page-1) * $rangePerPage;
+        $query = $this->db->get('supplier', $rangePerPage, $from);
+        $result = $query->result();
+        for ($i=0; $i<count($result); $i++) {
+            $result[$i]->logo = $this->get_logo($result[$i]->userid);
+        }
+        return $result;
     }
 
 }
