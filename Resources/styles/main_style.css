@@ -77,7 +77,7 @@ section#home{margin-top:110px;padding-left: 40px;padding-right: 40px;padding-bot
 /*end*/
 
 /*Esto me da la dimension de cada caja en el catalogo del home*/
-.producto-container{ cursor: pointer; background-color: #BBB;  height: 200px;  width: 200px;  margin: auto;  position: relative;  overflow: hidden; border: 1px solid black; background-size: 100% 100%;}
+.producto-container{ cursor: pointer; background-color: #BBB;  height: 200px;  width: 200px;  margin: auto;  position: relative;  overflow: hidden; background-size: 100% 100%;}
 /*end*/
 
 /*Esto me da el estilo de las cajas de descripcion que suben en hover*/
@@ -150,6 +150,25 @@ section#home{margin-top:110px;padding-left: 40px;padding-right: 40px;padding-bot
 
 
 /*!!!!!!!!!FOOTER!!!!!!!!!*/
+
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    margin: 0 0 160px; /* bottom = footer height */
+}
+
+footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 160px;
+    width: 100%;
+}
+
+
 /*Esto me da el estilo del footer*/
 #main-container>footer{	padding:0 60px;	background-color: #4784ff;	color: #444;color: white;}
 /*end*/

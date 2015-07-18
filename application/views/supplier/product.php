@@ -266,7 +266,7 @@
 														}
 													},
 													removedfile: function(file){
-														console.log(file);
+														//console.log(file);
 														imagePop(file.file_name);
 														var _ref;
 														return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
@@ -313,7 +313,7 @@
 												  	}
 												  },
 												  removedfile: function(file){
-												  	console.log(file);
+												  	//console.log(file);
 												  	imagePop(file.file_name);
 												  	var _ref;
 												    return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;

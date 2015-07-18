@@ -206,6 +206,7 @@ $(document).ready(function(){
 					$("#categoryID").val(json.editProduct.category_id);
 					$("#productCode").val(json.editProduct.code);
 					$("#productVAT").val(json.editProduct.tax);
+					$("#productPrice").val(json.editProduct.price);
 					$("#productDesc").val(json.editProduct.description);
 					$("#prodImagesArray").remove();
 					$("#productEdition").val("true");
