@@ -1,109 +1,101 @@
-<section id="home">
-	<h1>PRODUCTOS</h1>
+﻿<section id="home">
 	<div class="container-fluid" id="main-products">
-		<div role="tabpanel">
-
-		  
-		  <ul class="nav nav-tabs" role="tablist">
-		    <li role="presentation" class="<?php if ((!(isset($lastLoadedProductsGrid) or isset($productLoaded) or isset($productCancelled))) and (!(isset($viewMyCatalog)))) {echo "active";} ?>"><a href="#catalog" aria-controls="catalog" role="tab" data-toggle="tab">Catalogo</a></li>
-		    <li role="presentation" class="<?php if ((!(isset($lastLoadedProductsGrid) or isset($productLoaded) or isset($productCancelled))) and (isset($viewMyCatalog))) {echo "active";} ?>"><a href="#my-products" aria-controls="my-products" role="my-products" data-toggle="tab">Mis Productos</a></li>
-		    <li role="presentation" class="<?php if (isset($lastLoadedProductsGrid) or isset($productLoaded) or isset($productCancelled)) { echo "active";} ?>"><a href="#load-products" aria-controls="load-products" role="load-products" data-toggle="tab">Cargar Productos</a></li>
-		    <li role="presentation"><a href="#settings" aria-controls="settings" role="settings" data-toggle="tab">Ajustes</a></li>
+		<div class="page-header" style="text-align:center">
+			<h2><span class="label label-primary"><b>PRODUCTOS</b></span></h2>
+		</div>
+		<div role="tabpanel">  
+		  <ul class="nav nav-pills" role="tablist" style="padding: 5px 5px 5px 5px;">
+		    <li role="presentation" class="<?php if ((!(isset($lastLoadedProductsGrid) or isset($productLoaded) or isset($productCancelled)))) {echo "active";} ?>"><a href="<?php echo base_url() . 'Product/orderCatalogBy/category_id'; ?>"><b>Catalogo</b></a></li>
+		    <li role="presentation" class="<?php if (isset($lastLoadedProductsGrid) or isset($productLoaded) or isset($productCancelled)) { echo "active";} ?>"><a href="#load-products" aria-controls="load-products" role="load-products" data-toggle="tab"><b>Cargar Productos</b></a></li>
+		    <!-- <li role="presentation"><a href="#settings" aria-controls="settings" role="settings" data-toggle="tab">Ajustes</a></li> -->
 		  </ul>
 
 		  
 		  <div class="tab-content">
-		    <div role="tabpanel" class="tab-pane fade <?php if ((!(isset($lastLoadedProductsGrid) or isset($productLoaded) or isset($productCancelled))) and (!(isset($viewMyCatalog)))) {echo "active in";} ?>" id="catalog">
-		    	<div class="row">
-		    		<div class="col-md-2 col-sm-4 col-xs-6">
-		    			<ul class="list-group">
-							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderCatalogBy/category_id"><?php if ($orderBy == 'category_id') echo '<strong>Ordenar por categorias</strong>'; else echo 'Ordenar por categorias'; ?> </a></li>
-							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderCatalogBy/name"><?php if ($orderBy == 'name') echo '<strong>Ordenar por nombre</strong>'; else echo 'Ordenar por nombre'; ?></a></li>
-							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderCatalogBy/price desc"><?php if ($orderBy == 'price desc') echo '<strong>Ordenar por precios (de mayor a menor)</strong>'; else echo 'Ordenar por precios (de mayor a menor)'; ?></a> </li>
-							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderCatalogBy/price asc"><?php if ($orderBy == 'price asc') echo '<strong>Ordenar por precios (de menor a mayor)</strong>'; else echo 'Ordenar por precios (de menor a mayor)'; ?></a> </li>
-						</ul>
-		    		</div>
-		    		<div class="col-md-10 col-sm-8 col-xs-6">
-						<?php 
-						$catalogSize = count($catalog);
-						for ($i=($page*PROD_MAX_PAGE_AMOUNT); $i < ((((($page+1)*PROD_MAX_PAGE_AMOUNT)) < $catalogSize) ? (($page*PROD_MAX_PAGE_AMOUNT)+PROD_MAX_PAGE_AMOUNT) : $catalogSize); $i++) { ?>
-							<div class="col-md-4 col-sm-6 col-xs-12 item-catalogo">
-
-								<div class="producto-container" style="<?php if (count($catalog[$i]->images)>0) echo 'background-image: url('.base_url() . PRODUCT_IMAGES_PATH . $catalog[$i]->id . "/" . $catalog[$i]->images[0] . ');'; ?>" > 
-									<div class="jquery-description"><h6><?php echo "<strong>Código: </strong>". $catalog[$i]->code . "</br><strong>Descripción: </strong>". $catalog[$i]->description; ?></h6></div>
-								</div> 
-								<div style="text-align:center;"> <strong><?php echo $catalog[$i]->name; ?></strong></div>
-								<div style="text-align:center;"> <strong>Código IntegrApp: </strong><?php echo $catalog[$i]->integrapp_code; ?></div>
-								<div style="text-align:center;"> <strong>Precio: </strong><?php echo $catalog[$i]->price . '$'; ?></div>
-							</div>
-						<?php } ?>	  
-						<div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center"> 			
-							<?php if ($page != 0) { ?>
-								<a href="<?php echo base_url() . 'product/orderCatalogBy/' . $orderBy . '/' . $page . '/prev'; ?>" ><strong>< Página anterior ...</strong></a>
-							<?php } ?>
-							<?php 
-							$pagesAmount = count($catalog)/PROD_MAX_PAGE_AMOUNT;
-							for ($i=0; $i < $pagesAmount; $i++) { ?>
-								<?php if ($i == $page) { ?>
-									<a href="<?php echo base_url() . 'product/orderCatalogBy/' . $orderBy . '/' . $i; ?>"><strong><?php echo $i; ?></strong></a>
+		    <div role="tabpanel" class="tab-pane fade <?php if (!(isset($lastLoadedProductsGrid) or isset($productLoaded) or isset($productCancelled)))  {echo "active in";} ?>" id="catalog">
+				<div class="panel panel-primary" style="padding: 10px 10px 10px 10px;">
+					<div class="row">
+						<div class="form-group">
+							<div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
+								<?php if (isset($viewMyCatalog)) {?>
+									
+										<h2>
+											<span class="label label-default">Mi Catalogo</span>
+											<br>
+											<a href="<?php echo base_url() . 'Product/orderCatalogBy/category_id'; ?>"><small><strong>Ver Catalogo de todos los productos</strong></small></a>
+										</h2>
 								<?php } else { ?>
-									<a href="<?php echo base_url() . 'product/orderCatalogBy/' . $orderBy . '/' . $i; ?>"><?php echo $i; ?></a>
+										<h2>
+											<span class="label label-default">Catalogo General</span>
+											<br>
+											<a href="<?php echo base_url() . 'Product/orderMyCatalogBy/category_id'; ?>"><small><strong>Ver mi Catalogo</strong></small></a>
+										</h2>
 								<?php } ?>
-							<?php } ?>	
-			    			<?php if ($page < $pagesAmount-1) { ?>
-								<a href="<?php echo base_url() . 'product/orderCatalogBy/' . $orderBy . '/' . $page . '/next'; ?>"><strong>... Proxima página ></strong></a>
-							<?php } ?>
-		    			</div>
-		    		</div>
-
-		    	</div>
-		    </div>
-		    <div role="tabpanel" class="tab-pane fade <?php if ((!(isset($lastLoadedProductsGrid) or isset($productLoaded) or isset($productCancelled))) and (isset($viewMyCatalog))) {echo "active in";} ?>" id="my-products">
-				<div class="row">
-		    		<div class="col-md-2 col-sm-4 col-xs-6">
-		    			<ul class="list-group">
-							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderMyCatalogBy/category_id"><?php if ($orderBy == 'category_id') echo '<strong>Ordenar por categorias</strong>'; else echo 'Ordenar por categorias'; ?> </a></li>
-							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderMyCatalogBy/name"><?php if ($orderBy == 'name') echo '<strong>Ordenar por nombre</strong>'; else echo 'Ordenar por nombre'; ?></a></li>
-							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderMyCatalogBy/price desc"><?php if ($orderBy == 'price desc') echo '<strong>Ordenar por precios (de mayor a menor)</strong>'; else echo 'Ordenar por precios (de mayor a menor)'; ?></a> </li>
-							<li class="list-group-item"><a href="<?php echo base_url(); ?>product/orderMyCatalogBy/price asc"><?php if ($orderBy == 'price asc') echo '<strong>Ordenar por precios (de menor a mayor)</strong>'; else echo 'Ordenar por precios (de menor a mayor)'; ?></a> </li>
-						</ul>
-		    		</div>
-		    		<div class="col-md-10 col-sm-8 col-xs-6">					
-						<?php 
-						$catalogSize = count($myCatalog);
-						for ($i=($myCatalogPage*PROD_MAX_PAGE_AMOUNT); $i < ((((($myCatalogPage+1)*PROD_MAX_PAGE_AMOUNT)) < $catalogSize) ? (($myCatalogPage*PROD_MAX_PAGE_AMOUNT)+PROD_MAX_PAGE_AMOUNT) : $catalogSize); $i++) { ?>
-							<div class="col-md-4 col-sm-6 col-xs-12 item-catalogo">
-
-								<div class="producto-container" style="<?php if (count($myCatalog[$i]->images)>0) echo 'background-image: url('.base_url() . PRODUCT_IMAGES_PATH . $myCatalog[$i]->id . "/" . $myCatalog[$i]->images[0] . ');'; ?>" > 
-									<div class="jquery-description"><h6><?php echo "<strong>Código: </strong>". $myCatalog[$i]->code . "</br><strong>Descripción: </strong>". $myCatalog[$i]->description; ?></h6></div>
-								</div> 
-								<div style="text-align:center;"> <strong><?php echo $myCatalog[$i]->name; ?></strong></div>
-								<div style="text-align:center;"><strong>Código IntegrApp: </strong><?php echo $myCatalog[$i]->integrapp_code; ?></div>
-								<div style="text-align:center;"><strong>Precio: </strong><?php echo $myCatalog[$i]->price . '$'; ?></div>
 							</div>
-						<?php } ?>
-						<div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center"> 			
-							<?php if ($myCatalogPage != 0) { ?>
-								<a href="<?php echo base_url() . 'product/orderMyCatalogBy/' . $orderBy . '/' . $myCatalogPage . '/prev'; ?>" ><strong>< Página anterior ...</strong></a>
-							<?php } ?>
-							<?php 
-							$pagesAmount = count($myCatalog)/PROD_MAX_PAGE_AMOUNT;
-							for ($i=0; $i < $pagesAmount; $i++) { ?>
-								<?php if ($i == $myCatalogPage) { ?>
-									<a href="<?php echo base_url() . 'product/orderMyCatalogBy/' . $orderBy . '/' . $i; ?>"><strong><?php echo $i; ?></strong></a>
-								<?php } else { ?>
-									<a href="<?php echo base_url() . 'product/orderMyCatalogBy/' . $orderBy . '/' . $i; ?>"><?php echo $i; ?></a>
+				    		<div class="col-md-2 col-sm-4 col-xs-6">
+				    			<div class="panel panel-info" style="padding: 10px 10px 10px 10px;">
+				    				<div class="panel-body">
+						    			<ul class="nav nav-pills nav-stacked" type="circle">
+											<?php if (isset($viewMyCatalog)) {?>
+												<li class="<?php if ($orderBy == 'category_id') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMyCatalogBy/category_id'; ?>">Ordenar por categorias</a></li>
+												<li class="<?php if ($orderBy == 'name') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMyCatalogBy/name'; ?>">Ordenar por nombre</a></li>
+												<li class="<?php if ($orderBy == 'price desc') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMyCatalogBy/price desc'; ?>">Ordenar por precios (de mayor a menor)</a> </li>
+												<li class="<?php if ($orderBy == 'price asc') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMyCatalogBy/price asc'; ?>">Ordenar por precios (de menor a mayor)</a> </li>
+												<br>
+												<br>
+												<br>
+												<br>
+												<li class=""><a href="<?php echo base_url() . 'Product/orderCatalogBy/category_id'; ?>"><strong>Ver Catalogo General</strong></a> </li>
+											<?php } else { ?>
+												<li class="<?php if ($orderBy == 'category_id') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderCatalogBy/category_id'; ?>">Ordenar por categorias</a></li>
+												<li class="<?php if ($orderBy == 'name') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderCatalogBy/name'; ?>">Ordenar por nombre</a></li>
+												<li class="<?php if ($orderBy == 'price desc') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderCatalogBy/price desc'; ?>">Ordenar por precios (de mayor a menor)</a> </li>
+												<li class="<?php if ($orderBy == 'price asc') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderCatalogBy/price asc'; ?>">Ordenar por precios (de menor a mayor)</a> </li>
+												<br>
+												<br>
+												<br>
+												<br>
+												<li class=""><a href="<?php echo base_url() . 'Product/orderMyCatalogBy/category_id'; ?>"><strong>Ver Mi Catalogo</strong></a> </li>
+											<?php } ?>
+										</ul>
+									</div>
+								</div>
+				    		</div>
+				    		<div class="col-md-10 col-sm-8 col-xs-6">							
+								<?php 
+								$catalogSize = count($Catalog);
+								for ($i=0; $i < $catalogSize; $i++) { ?>
+									<div class="col-md-4 col-sm-6 col-xs-12 item-catalogo">
+
+										<div class="producto-container" style="<?php if (count($Catalog[$i]->images)>0) echo 'background-image: url('.base_url() . PRODUCT_IMAGES_PATH . $Catalog[$i]->id . "/" . $Catalog[$i]->images[0] . ');'; ?>" > 
+											<div class="jquery-description"><h6><?php echo "<strong>Código: </strong>". $Catalog[$i]->code . "</br><strong>Descripción: </strong>". $Catalog[$i]->description; ?></h6></div>
+										</div> 
+										<div style="text-align:center;"> <strong><?php echo $Catalog[$i]->name; ?></strong></div>
+										<div style="text-align:center;"><strong>Código IntegrApp: </strong><?php echo $Catalog[$i]->integrapp_code; ?></div>
+										<div style="text-align:center;"><strong>Precio: </strong><?php echo $Catalog[$i]->price . '$'; ?></div>
+									</div>
 								<?php } ?>
-							<?php } ?>	
-			    			<?php if ($myCatalogPage < $pagesAmount-1) { ?>
-								<a href="<?php echo base_url() . 'product/orderMyCatalogBy/' . $orderBy . '/' . $myCatalogPage . '/next'; ?>"><strong>... Proxima página ></strong></a>
-							<?php } ?>
-		    			</div>
-					</div>
+								<div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center"> 			
+										<div class="col-md-4 col-sm-4 col-xs-4">
+										</div>	
+										<div class="col-md-4 col-sm-4 col-xs-4">
+											<?php if(isset($pageLinks)) foreach ($pageLinks as $link) {
+												echo $link;
+											}  ?>
+										</div>
+										<div class="col-md-4 col-sm-4 col-xs-4">
+										</div>
+			
+				    			</div>
+
+							</div>
+						</div>
+			    	</div>
 		    	</div>
 		    </div>
 		    <div role="tabpanel" class="tab-pane fade <?php if (isset($lastLoadedProductsGrid) or isset($productLoaded) or isset($productCancelled)) { echo "active in";} ?>" id="load-products">
 		    	<div class="row" id="productSection">
+		    		<div class="panel panel-primary" style="padding: 10px 10px 10px 10px;">
 		    		<?php if(isset($productLoaded)):?>
 		    			<div class="alert alert-warning alert-dismissible" role="alert">
 						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -119,7 +111,7 @@
 				    <div class="panel panel-primary" id="">
 								<div class="panel-heading">
 									<div class="panel-title">
-										<h4>Para comenzar seleccione una categoria:</h4>
+										<h4>Seleccione una categoria:</h4>
 									</div>
 								</div>
 								<div class="panel-body">
@@ -172,6 +164,7 @@
 										<input type="text" name="categoryID" value="<?php if (!(isset($productLoaded) or isset($productCancelled))) echo set_value('categoryID');?>" id="categoryID">
 										<input type="text" name="editProductID" value="<?php if (isset($editProductID)) echo set_value('editProductID',$editProductID);?>" id="editProductID">
 										<input type="text" name="imagesPath" value="<?php echo base_url() . PRODUCT_IMAGES_PATH;?>" id="imagesPath">
+										<input type="text" name="basePath" value="<?php echo base_url();?>" id="basePath">
 										<!-- The following fields are for testing javascript hide operations
 										<input type="text" name="categoryID__" value="<?php if (isset($productLoaded) or isset($productCancelled)) echo set_value('categoryID',""); else echo set_value('categoryID');?>" id="categoryID__">
 										<input type="text" name="editProductID__" value="" id="editProductID__">
@@ -182,6 +175,7 @@
 											$("#categoryID").hide();
 											$("#editProductID").hide();
 											$("#imagesPath").hide();
+											$("#basePath").hide();
 											$("#categoryTree").attr('disabled','disabled');
 										</script>
 
@@ -257,7 +251,7 @@
 													maxFilesize: 2,
 													addRemoveLinks: true,
 													clickable: true,
-													url: "../product/upload_foto",
+													url: $("#basePath").val() + "product/upload_foto",
 													success: function(file, response){
 														var result =  $.parseJSON(response);
 														if(result.success){
@@ -292,7 +286,7 @@
 												Dropzone.options.freewalkDropzone = {
 												  paramName: "userfile", 
 												  maxFilesize: 2, 
-												  url: "../product/upload_foto",
+												  url: $("#basePath").val() + "product/upload_foto",
 												  addRemoveLinks: true,
 												  dictCancelUpload: "Cancelar",
 												  dictRemoveFile: "Borrar", 
@@ -332,7 +326,7 @@
 
 
 									</div>
-									<div class="form-group">
+									<div class="panel-footer clearfix">
 										<input type="submit" id="saveProduct" name="submitLoad" value="Guardar" class="btn btn-primary">
 										<input type="submit" id="cancelLoad" name="submitLoad" value="Cancelar" class="btn btn-primary">
 									</div>
@@ -389,10 +383,11 @@
 
 					</form>			    
 				</div>
+				</div>
 
 
 			</div>
-			<div role="tabpanel" class="tab-pane fade" id="settings">...</div>
+<!-- 			<div role="tabpanel" class="tab-pane fade" id="settings">...</div> -->
 	</div>
 
 </section>

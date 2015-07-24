@@ -2,22 +2,20 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Product extends CI_Controller {
+
+	function __construct() {
+		parent::__construct();
+		$this->load->library('pagination');
+		$this->pagination_uri_segment = 4;
+	}
 	
-	public function product_view($data=NULL, $orderBy='category_id', $myCatalog=false, $page = 0){
+	public function product_view($data=NULL, $orderBy='category_id', $myCatalog='false'){
+		log_message('info', "Controller: Product Function: product_view orderBy: " .  $orderBy . " Is mine: " . (($myCatalog=='true')? "yes": "no"), FALSE);
 		$role = $this->session->userdata("role");
-		$role_id = $this->session->userdata('role_id');
-		//Set catalogs pages
-		$data['myCatalog'] = $this->Product_model->get_catalog($role_id, $orderBy);
-		$data['catalog'] = $this->Product_model->get_catalog(null, $orderBy);
-		$data['orderBy'] = $orderBy;
-		$data['page'] = $page;
-		if ($myCatalog){
+		if ($myCatalog=='true'){
 			$data['viewMyCatalog'] = true;
-			$data['myCatalogPage'] = $page;
-			$data['page'] = 0;
-		} else {
-			$data['myCatalogPage'] = 0;
 		}
+		$data['orderBy'] = $orderBy;
 		$data['category'] = $this->Product_model->getCategory();
 		$this->routedHome($role, $data);
 	}
@@ -30,26 +28,58 @@ class Product extends CI_Controller {
 		$this->load->view('templates/template_footer');
 	}
 
-	public function orderCatalogBy ($orderBy, $page = 0, $action = null){
-		if (isset($action)){
-			if ($action=='next'){
-				$page++;
-			} else {
-				if ($page>0) $page--;
-			}
-		}
-		$this->product_view(null, $orderBy, false, $page);
+	public function setPagination(){	
+		$config = array();
+		$config['uri_segment'] = $this->pagination_uri_segment;
+		$config["per_page"] = PROD_MAX_PAGE_AMOUNT;
+		$config['use_page_numbers'] = TRUE;
+		$config['num_links'] = 1;
+		$config['first_link'] = '<< ';
+		$config['last_link'] = ' >>';
+		$config['next_link'] = ' >';
+		$config['prev_link'] = '< ';
+		$config['full_tag_open'] = '<p>';
+		$config['full_tag_close'] = '</p>';
+		$config['cur_tag_open'] = $config['first_tag_open'] = $config['last_tag_open']= $config['next_tag_open']= $config['prev_tag_open'] = $config['num_tag_open'] = '<div class="col-md-1 col-sm-1 col-xs-1"><b>';
+        $config['cur_tag_close'] = $config['first_tag_close'] = $config['last_tag_close']= $config['next_tag_close']= $config['prev_tag_close'] = $config['num_tag_close'] = '</b></div>';
+		return $config;
+
 	}
 
-	public function orderMyCatalogBy ($orderBy, $page = 0, $action = null){
-		if (isset($action)){
-			if ($action=='next'){
-				$page++;
-			} else {
-				if ($page>0) $page--;
-			}
+	public function orderCatalogBy ($orderBy){
+		$config = $this->setPagination();
+		$config["base_url"] = base_url() . "Product/orderCatalogBy/$orderBy";
+		$total_row = $this->Product_model->getCatalogCount();
+		$config["total_rows"] = $total_row;
+		$this->pagination->initialize($config);
+		if($this->uri->segment($this->pagination_uri_segment)){
+			$page = ($this->uri->segment($this->pagination_uri_segment)) ;
+		}else{
+			$page = 1;
 		}
-		$this->product_view(null, $orderBy, true, $page);
+		log_message('info','Contoller: Product Function: orderCatalogBy orderBy: ' . $orderBy . " Page: " . $page, false);
+		$data['Catalog'] = $this->Product_model->get_catalog(null, $orderBy, $page, $config["per_page"]);
+		$str_links = $this->pagination->create_links();
+		$data["pageLinks"] = explode('&nbsp;',$str_links );
+		$this->product_view($data,$orderBy,false);
+	}
+
+	public function orderMyCatalogBy ($orderBy){
+		$role_id = $this->session->userdata('role_id');
+		$config = $this->setPagination();
+		$config["base_url"] = base_url() . "Product/orderMyCatalogBy/$orderBy";
+		$total_row = $this->Product_model->getCatalogCount($role_id);
+		$config["total_rows"] = $total_row;
+		$this->pagination->initialize($config);
+		if($this->uri->segment($this->pagination_uri_segment)){
+			$page = ($this->uri->segment($this->pagination_uri_segment)) ;
+		}else{
+			$page = 1;
+		}
+		$data['Catalog'] = $this->Product_model->get_catalog($role_id, $orderBy, $page, $config["per_page"]);
+		$str_links = $this->pagination->create_links();
+		$data["pageLinks"] = explode('&nbsp;',$str_links );
+		$this->product_view($data,$orderBy,true);
 	}
 
 	public function getCategories($id=NULL){

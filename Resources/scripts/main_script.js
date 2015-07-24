@@ -56,7 +56,7 @@ $(document).ready(function(){
 	    });
 
 		$.ajax({
-	  		url:'/dev_integrapp/product/getTree/'+str,
+	  		url: $("#basePath").val() + 'product/getTree/'+str,
 			type:'POST',
 			data:{id:str},
 			dataType:'json', 
@@ -83,7 +83,7 @@ $(document).ready(function(){
 	    });
 	    console.log(str);
 		$.ajax({
-	  		url:'/dev_integrapp/product/getCategories/'+str,
+	  		url: $("#basePath").val() + 'product/getCategories/'+str,
 	  		type:'POST',
 	  		dataType:'json',
 	  		data:{id:str},
@@ -149,7 +149,7 @@ $(document).ready(function(){
 			}
 			//console.log (form_data);
 			$.ajax({
-				url:'../product/deleteProduct',
+				url: $("#basePath").val() + 'product/deleteProduct',
 				type:'POST',
 				data: form_data,
 				dataType:'html',
@@ -192,7 +192,7 @@ $(document).ready(function(){
 			}
 			console.log (form_data);
 			$.ajax({
-				url:'../product/editProduct',
+				url: $("#basePath").val() + 'product/editProduct',
 				type:'POST',
 				data: form_data,
 				dataType:'html',

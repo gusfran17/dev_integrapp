@@ -1,7 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-
-
 class Product_model extends CI_Model {
 
 
@@ -194,21 +192,37 @@ class Product_model extends CI_Model {
     }
 
     
-    function get_catalog($id=null, $orderBy = null){
+    function get_catalog($id=null, $orderBy = null, $page = 1, $rangePerPage = 1000){
         if (isset($id)){
             $this->db->where("supplier_id", $id);
         }
         if (isset($orderBy)){
                 $this->db->order_by($orderBy);     
         }
+        log_message('info', "Page: " .  $page . " Range: " . $rangePerPage, FALSE);
+        $from =  ($page-1) * $rangePerPage;
         $query = $this->db->get('product');
         $result = $query->result();
-        for ($i=0; $i<count($result); $i++){
+        $j = 0;
+        $finalResult = array();
+        for ($i= (($page-1)*$rangePerPage); $i< (((($page)*$rangePerPage) < count($result))? ($page*$rangePerPage): count($result)); $i++){
             $result[$i]->images = $this->getProductImages($result[$i]->id);
+            $finalResult[$j] = $result[$i];
+            $j++;
         }
-        return $result;
+        return $finalResult;
     }
 
+    function getCatalogCount($supplier_id=null){
+        log_message('info', "Product_model getCatalogCount Supplier ID: " .  $supplier_id, FALSE);
+        if (isset($supplier_id)){
+            $this->db->where("supplier_id", $supplier_id);
+        }
+        $this->db->from('product');
+        $count = $this->db->count_all_results();
+        log_message('info', "Product_model getCatalogCount ProductCount: " .  $count, FALSE);
+        return $count;
+    }
 
     function getProductImages($productId){
         $targetPath = ".".PRODUCT_IMAGES_PATH . $productId . "/";

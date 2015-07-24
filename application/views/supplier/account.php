@@ -2,7 +2,9 @@
 
 	<form class="region size1of2" action="<?php echo base_url(); ?>profile/save" method="post" id="frm-login">
 		<div class="container">
-			<h1>MI CUENTA</h1>
+			<div style="text-align:center; padding: 5px 5px 5px 5px;">
+				<h2><span class="label label-primary"><b>MI CUENTA</b></span></h2>
+			</div>
 			<?php if(isset($success)):?>
 				<div class="alert alert-dismissable alert-success">
 			      <button type="button" class="close" data-dismiss="alert">×</button>
@@ -23,6 +25,7 @@
 					</div> Datos completos en un <?php echo $supplier->percentage; ?>%
 				</div> 
 			</div>
+			<h3 class="info-level-3 col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align:center; padding: 5px 5px 5px 5px;"><span class="label label-default"><b>Datos Personales</span></b></h3>
 			<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 
 				<div class="form-group">
@@ -51,14 +54,15 @@
 					</div>
 				</div>				
 			</div>
-		
-			<h3 class="info-level-3">Datos de mi empresa</h3>
-			<?php if(isset($supplier->logo)): ?>
-			<div class="form-group">
-				<img src="<?php echo base_url() . $supplier->logo; ?>" />
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<h3 class="info-level-3" style="text-align:center; padding: 5px 5px 5px 5px;"><span class="label label-default"><b>Datos de mi Empresa </span></b></h3>
+			
+				<?php if(isset($supplier->logo)): ?>
+					<div class="form-group" style="display: block; margin-left: auto; margin-right: auto;">
+							<img src="<?php echo base_url() . $supplier->logo; ?>" />
+					</div>
+				<?php endif;?>
 			</div>
-			<?php endif;?>
-	
 			<div class="form-group">
 			  <label class="control-label" for="fake_name">Nombre de fantasía (Nombre de su empresa)</label>
 			  <input class="form-control" id="fake_name" name="fake_name" type="text" placeHolder="Escriba el nombre de fantasía." value="<?php if (isset($supplier)) echo set_value('fake_name', $supplier->fake_name); else echo set_value('fake_name');?>">

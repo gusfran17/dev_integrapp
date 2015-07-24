@@ -4,28 +4,30 @@
 	<form action="<?php echo base_url(); ?>profile/save" method="post" >
 		
 		<div class="container">
-			<h1>MI CUENTA</h1>
+			<div style="text-align:center; padding: 5px 5px 5px 5px;">
+				<h2><span class="label label-primary"><b>MI CUENTA</b></span></h2>
+			</div>
 
-				<?php if(isset($success)):?>
-					<div class="alert alert-dismissable alert-success">
-				      <button type="button" class="close" data-dismiss="alert">×</button>
-				      <strong>Bien!</strong> <?php echo $success; ?></a>
-				    </div>
-				<?php endif;?>
+			<?php if(isset($success)):?>
+				<div class="alert alert-dismissable alert-success">
+			      <button type="button" class="close" data-dismiss="alert">×</button>
+			      <strong>Bien!</strong> <?php echo $success; ?></a>
+			    </div>
+			<?php endif;?>
 
-				<div class="panel panel-success">
-					<div class="panel-heading">
-						<h3 class="panel-title">Datos del perfil</h3>
-					</div>
-	 				<div class="panel-body">
-						<div class="progress progress-striped active">
-							<div class="progress-bar" style="width: <?php echo $distributor->percentage; ?>%"></div>
-						</div> Datos completos en un <?php echo $distributor->percentage; ?>%
-						</div> 
+			<div class="panel panel-success">
+				<div class="panel-heading">
+					<h3 class="panel-title">Datos del perfil</h3>
 				</div>
+ 				<div class="panel-body">
+					<div class="progress progress-striped active">
+						<div class="progress-bar" style="width: <?php echo $distributor->percentage; ?>%"></div>
+					</div> Datos completos en un <?php echo $distributor->percentage; ?>%
+					</div> 
+			</div>
 
+			<h3 class="info-level-3 col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align:center; padding: 5px 5px 5px 5px;"><span class="label label-default"><b>Datos Personales</span></b></h3>
 			<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-
 				<div class="form-group">
 					<label class="control-label" for="name">Nombre</label>
 					<?php echo form_error('name', '<span class="label label-danger">', '</span>'); ?>
@@ -58,14 +60,15 @@
 			  <button type="button" class="close" data-dismiss="alert">×</button>
 			  <strong>Atencion!</strong> Debes completar la informacion con presición. Esta información sera compartida unicamente con los ortopedistas que usted autorice.
 			</div>
-			<div class="form-group">
-			  <h3 class="info-level-3">Datos de mi empresa</h3>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<h3 class="info-level-3" style="text-align:center; padding: 5px 5px 5px 5px;"><span class="label label-default"><b>Datos de mi Empresa </span></b></h3>
+			
+				<?php if(isset($distributor->logo)): ?>
+					<div class="form-group" style="display: block; margin-left: auto; margin-right: auto;">
+							<img src="<?php echo base_url() . $distributor->logo; ?>" />
+					</div>
+				<?php endif;?>
 			</div>
-			<?php if(isset($distributor->logo)): ?>
-			<div class="form-group">
-				<img src="<?php echo base_url() . $distributor->logo; ?>" />
-			</div>
-			<?php endif;?>
 			<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 
 			
