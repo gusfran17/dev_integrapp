@@ -80,6 +80,14 @@ section#home{margin-top:110px;padding-left: 40px;padding-right: 40px;padding-bot
 .producto-container{ cursor: pointer; background-color: #BBB;  height: 200px;  width: 200px;  margin: auto;  position: relative;  overflow: hidden; background-size: 100% 100%;}
 /*end*/
 
+/*Esto es para el contenedor de atributos*/
+.form-group_specifications{margin-top: 10px; margin-bottom: 10px;}
+/*end*/
+
+/*Esto es para el contenedor de atributos*/
+.example_specifications{margin-top: 10px; margin-bottom: 10px;}
+/*end*/
+
 /*Esto me da el estilo de las cajas de descripcion que suben en hover*/
 .jquery-description{width: 100%; height: 100%;	position: relative;	background-color: rgba(0,0,0,0.5);	left: 0;	transform: translateY(100%); transition: all 0.3s ease;	color: white; padding: 10px;}
 /*end*/

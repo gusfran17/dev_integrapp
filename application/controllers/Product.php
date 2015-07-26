@@ -124,10 +124,7 @@ class Product extends CI_Controller {
 	   		$this->form_validation->set_message('min_length', 'La descripcion debe tener al menos ' . PROD_DESCRIPTION_MIN_LENGTH . ' caracteres');
 	   		$this->form_validation->set_message('max_length', 'La descripcion debe tener a lo sumo ' . PROD_DESCRIPTION_MAX_LENGTH . ' caracteres');
 
-
-			/*$this->form_validation->set_rules('atribute', 'Atributo', 'required');
-	   		$this->form_validation->set_rules('value', 'Valor', 'required'); */
-
+	   		//El boton de submit apretado fue Cancelar
 	   		$cancel =  $this->input->post('submitLoad');
 	   		if ($cancel=="Cancelar"){
 	   			//Goes back to the form (now empty values)
@@ -152,11 +149,12 @@ class Product extends CI_Controller {
 					$insert['price'] = $this->input->post("productPrice");
 					$insert['short_desc'] = $this->input->post("categoryTree"); 
 					if (!$editProduct){
+						$role_id = $this->session->userdata("role_id");
 						$new_id = $this->Product_model->getNewId();
 						$insert['id']= $new_id;
 						$insert['published_date'] = date("Y-m-d H:i:s");
-						$integrappCode = "PR".$new_id."C".$this->input->post("categoryID");
-						$insert['supplier_id'] = $this->session->userdata("role_id");
+						$integrappCode = "PR".$new_id."C".$this->input->post("categoryID")."P".$role_id;
+						$insert['supplier_id'] = $role_id;
 						$insert['integrapp_code'] = $integrappCode;
 						$id = $this->Product_model->saveProduct($insert);
 					} else {
@@ -167,36 +165,45 @@ class Product extends CI_Controller {
 					}
 
 					$product_added = $this->Product_model->getProductById($new_id);
-
 					if ($product_added!=FALSE) {
 						//if edition it needs to delete all existing attributes in order to save them again (if not it will add them)
 						if ($editProduct){
 							$this->Product_model->deleteProductAttributes($new_id);	
 						}
 						
-					
 						for ($i=0; $i < MAX_ATTRIBUTE_AMOUNT ; $i++) { 
 
 							$attribute = $this->input->post('attribute'.$i);
 							$value = $this->input->post('value'.$i);
-							
-							if ($attribute !=NULL && $value!=NULL) {
+							if (isset($attribute) && isset($value)) {
 								$this->Product_model->saveProductAttribute($new_id, $attribute, $value);
 							}
 						}
-					}
-
-					$this->Product_model->setImagesFolder($editProduct, $this->input->post('imagen'), $new_id);
 					
-					//Goes back to the form 
-	   				$recent_products = $this->input->post('recentlyAddedIntegrappCode');
-	   				if (!$editProduct){
-	   					$recent_products[] = $integrappCode; //if it is a new saved product it gets loaded in the last loaded products grid
-	   				}
-					$lastloadedProducts = $this->Product_model->getProductsByIntegrappCode($recent_products);
-					$data['lastLoadedProductsGrid'] = $lastloadedProducts;
-					$data['productLoaded'] = "Loaded";
-					$this->product_view($data);
+						//Guarda las imagenes en la carpeta del producto (si es una edicion borra las actuales para que no se sumen)
+						$this->Product_model->setImagesFolder($editProduct, $this->input->post('imagen'), $new_id);
+						
+						//Guarda los colores del producto
+						$selectedColors = $this->input->post('selectedColorsArray');
+						if(isset($selectedColors)){
+							$this->Product_model->setProductColors($editProduct, $selectedColors, $new_id);	
+						}
+						
+						//Goes back to the form 
+		   				$recent_products = $this->input->post('recentlyAddedIntegrappCode');
+		   				if (!$editProduct){
+		   					$recent_products[] = $integrappCode; //if it is a new saved product it gets loaded in the last loaded products grid
+		   				}
+						$lastloadedProducts = $this->Product_model->getProductsByIntegrappCode($recent_products);
+						$data['lastLoadedProductsGrid'] = $lastloadedProducts;
+						$data['productLoaded'] = "Loaded";
+						$this->product_view($data);
+
+					} else {
+						log_message('error', 'Controller: Product Function: saveProduct - The product was not inserted in DB', false);
+						$data['error'] = 'Ha ocurrido un error al guardar, por favor intente más tarde';
+						$this->product_view($data);
+					}
 		   		}else{
 					for ($i=0; $i < MAX_ATTRIBUTE_AMOUNT ; $i++) { 
 
@@ -214,6 +221,8 @@ class Product extends CI_Controller {
 						$data['attributes'] = $attributes;
 					}   			
 		   			$data['imagen'] = $this->input->post('imagen');
+					$productColors = $this->input->post('selectedColorsArray');
+		   			$data['colors'] = $productColors;
 					$recent_products = $this->input->post('recentlyAddedIntegrappCode');
 					if (!isset($recent_products)){
 						//If it is the first time a product is loaded the array needs to be initialized so as not to bring all existing products
@@ -235,10 +244,12 @@ class Product extends CI_Controller {
 		$editionProduct[] = $this->input->post("editionIntegrapCode");
 		$product = $this->Product_model->getProductsByIntegrappCode($editionProduct);
 		if (count($product)>0){
+			$colors = $this->Product_model->getProductColors($product[0]->id);
 			$attributes = $this->Product_model->getProductAttributes($product[0]->id);
 			$productImages = $this->Product_model->getProductImages($product[0]->id);
 
 			$data['editProduct'] = $product[0];
+			$data['editProduct']->colors = $colors;
 			$data['editProduct']->images = $productImages;
 			$data['editProduct']->attributes = $attributes;
 			echo json_encode($data);

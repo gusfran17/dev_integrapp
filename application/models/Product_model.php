@@ -191,6 +191,35 @@ class Product_model extends CI_Model {
         }
     }
 
+    public function setProductColors($isEditProduct, $colors, $productId){
+        if ($isEditProduct){
+            $this->deleteProductColors($productId);            
+        }
+        foreach($colors as $color){
+            $insert['product_id'] = $productId;
+            $insert['color'] = $color;
+            $insert['published_date'] = date("Y-m-d H:i:s");
+            $this->db->insert("product_color", $insert);
+        }
+
+    }
+
+    function getProductColors($productId){
+        $this->db->where("product_id", $productId);
+        $query = $this->db->get('product_color');
+        return $query->result();
+    }
+
+    function deleteProductColors($productId){
+        $this->db->where("product_id", $productId);
+        $query = $this->db->delete('product_color');
+        if ($this->db->affected_rows() > 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     
     function get_catalog($id=null, $orderBy = null, $page = 1, $rangePerPage = 1000){
         if (isset($id)){
@@ -249,7 +278,7 @@ class Product_model extends CI_Model {
 
     public function setImagesFolder($isEditProduct, $images, $productId){
         if($images!=null){
-            //if it is edition, moves existing images to temp in order to upload them again
+            //if it is edition, moves existing images to temp in order to upload them again (deletes existing ones)
             if ($isEditProduct){
                 @copy( "." . PRODUCT_IMAGES_PATH . $productId . "/" . $img, "." . PRODUCT_IMAGES_PATH . "temp/" . $img);
                 @copy("." . PRODUCT_IMAGES_PATH . $productId . "/thumbs/" . $img, "." . PRODUCT_IMAGES_PATH . "temp/thumbs/". $img);

@@ -41,17 +41,19 @@ $(document).ready(function(){
 		idCategory=$(this).attr('id');
 		finalCategory=$(this).find(':selected').text();
 		finalCategoryID = $(this).find(':selected').attr('id');
+		console.log("idCat: " + idCategory + " fCat: " + finalCategory + " fCatID: " + finalCategoryID);
 		ajaxCall();
 
 	});
 
 	$('#products').on('click', 'button', function(){
 		getTree();
+		$('#products').append('<div id="categoryLoaded"> <p style="margin-top: 10px" >Se ha cargado la categoria del producto más abajo...</p></div>');
 	});
 
 	function getTree(){
 			var str = "";
-	    $( "select option:selected" ).each(function() {
+	    $( "#products select option:selected" ).each(function() {
 	      str = $( this ).attr('id') + " ";
 	    });
 
@@ -75,13 +77,15 @@ $(document).ready(function(){
 		for ( i = parseInt(categoryLevel)+1; i <= 5; i++) {
 			$("#category"+i).remove();
 			$("#confirmation").remove();
+			$("#categoryLoaded").remove();
 		}
 		var str = "";
 
-	    $( "select option:selected" ).each(function() {
+	    $( "#products select option:selected" ).each(function() {
 	      str = $( this ).attr('id') + " ";
+	      //console.log(str);
 	    });
-	    console.log(str);
+	    //console.log(str);
 		$.ajax({
 	  		url: $("#basePath").val() + 'product/getCategories/'+str,
 	  		type:'POST',
@@ -100,7 +104,7 @@ $(document).ready(function(){
 	  				for(var i in data){
 			     		var obj=data[i];
 			     		if (obj != null){
-			     			console.log(data);
+			     			//console.log(data);
 				     		for(var j in obj){
 				     			var id=obj[j].id;
 				     			var name=obj[j].name;
@@ -110,7 +114,7 @@ $(document).ready(function(){
 			     	}
 	  			} else {
 	  				$("#categoryID").val(finalCategoryID);
-			  		$('#products').append("<div id='confirmation'><p>Ha seleccionado la categoria "+finalCategory+"</p><button type='submit' id='submit1'>Confirmar</button></div>");
+			  		$('#products').append("<div id='confirmation'><p>Ha seleccionado la categoria "+finalCategory+"</p><button class='btn btn-default' type='submit' id='submit1' data-toggle='popover' title='La categoria será agregada más abajo'>Confirmar</button></div>");
 		  		}
 	  		}
 	  	});
@@ -179,6 +183,7 @@ $(document).ready(function(){
 
 	function duplicateOrEditProduct(integrappCode, isEdit){
 		var islreadyEditing = $("#editProductID").val();
+		//Product is being edited already, in order to prevent conflicts with dropzone this won't let you continue
 		if (islreadyEditing != "") {
 			if (isEdit){
 				alert("¡ATENCION! Usted ya esta editando otro producto. Para escoger otro producto a editar haga click en Cancelar al final de la pantalla.");
@@ -190,7 +195,7 @@ $(document).ready(function(){
 			var form_data = {
 				editionIntegrapCode : integrappCode
 			}
-			console.log (form_data);
+			//console.log (form_data);
 			$.ajax({
 				url: $("#basePath").val() + 'product/editProduct',
 				type:'POST',
@@ -200,7 +205,7 @@ $(document).ready(function(){
 					//console.log(data);
 					//console.log("jqXHR: " + jqXHR);
 					var json = JSON.parse(data);
-					console.log(json);
+					//console.log(json);
 					$("#productName").val(json.editProduct.name);
 					$("#categoryTree").val(json.editProduct.short_desc);
 					$("#categoryID").val(json.editProduct.category_id);
@@ -210,8 +215,26 @@ $(document).ready(function(){
 					$("#productDesc").val(json.editProduct.description);
 					$("#prodImagesArray").remove();
 					$("#productEdition").val("true");
+					$.each(json.editProduct.colors, function(index, value) {
+						console.log("Color: "+ value.color)
+						$('.selected_colors_div').show();
+						var newColor = $("<div/>");
+        				newColor.addClass('color').attr('style', "border-style: solid; border-width: 1px; background-color: "+ value.color + "; height: 20px; width: 20px;");
+        				var inputColor = $('<input/>');
+        				inputColor.attr("name", "selectedColorsArray[]").attr("value", value.color);
+        				inputColor.attr("type", "hidden");
+        				inputColor.attr("id", "selectedColorsArray[]");
+        				newColor.append(inputColor);
+        				console.log(newColor);
+        				console.log(inputColor);
+        				newColor.on('click', function(){
+        					$(this).remove();
+        				});
+        				$('#selected_colors').append(newColor);
+					});
 					$.each(json.editProduct.attributes, function(index, value) {
-						$(".input_fields_wrap").append('<div class="form-group_specifications"><input type="text" class="inputProperty" id="' + index + '" name="attribute' + index + '" value="' + value.attribute_name + '" placeholder="Atributo..."/><input type="text" class="inputProperty" id="' + index + '" name="value' + index + '" value="' + value.attribute_value + '" placeholder="Valor..."/><a href="#" class="remove_field">X</a></div>');
+						console.log("name: "+ value.attribute_name + " value: "+ value.attribute_value)
+						$(".input_fields_wrap").append('<div class="form-group_specifications" ><textarea type="text" class="inputProperty" id="' + index + '" name="attribute' + index + '" placeholder="Tipo de Variante...">' + value.attribute_name + '</textarea><textarea type="text" class="inputProperty" id="' + index + '" name="value' + index + '" placeholder="Valor de Variante...">' + value.attribute_value + '</textarea><a href="#" class="remove_field">X</a></div>');
 					});
 					if (isEdit){
 						$("#editProductID").val(json.editProduct.id);
@@ -227,10 +250,10 @@ $(document).ready(function(){
 						});
 						//Alert that a product is being edited
 						$("#editionAlert").empty();
-						$("#editionAlert").append('<div class="alert alert-warning alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>¡Atencion!</strong> Se encuentra en modo edición de uno del producto ' + json.editProduct.integrapp_code + ' que ha cargado recientemente, para volver a cargar un producto desde el inicio debe presionar en Cancelar al final de la pantalla.</div>');
+						$("#editionAlert").append('<div class="alert alert-warning alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>¡Atención!</strong> Se encuentra editando del producto ' + json.editProduct.integrapp_code + ' cargado recientemente.<br>Para volver a cargar un producto desde el inicio debe presionar en <b>Cancelar</b> al final de la pantalla.</div>');
 					} else {
 						//Alert that a product is being copied
-						$("#editionAlert").append('<div class="alert alert-warning alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>¡Atencion!</strong> Se encuentra duplicando la informacion del producto ' + json.editProduct.integrapp_code + ' que ha cargado recientemente, para volver a cargar un producto desde el inicio debe presionar en Cancelar al final de la pantalla.</div>');
+						$("#editionAlert").append('<div class="alert alert-warning alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>¡Atencion!</strong> Se encuentra duplicando información del producto ' + json.editProduct.integrapp_code + ' que ha cargado recientemente, para volver a cargar un producto desde el inicio debe presionar en Cancelar al final de la pantalla.</div>');
 					}
 				},
 				error: function(jqXHR,textStatus,errorThrown){
@@ -253,20 +276,21 @@ $(document).ready(function(){
         e.preventDefault();
         var x = 0; //starts in -1 to take off the existing example box
         console.log(x);
-        var existingDivs = $('.input_fields_wrap .form-group_specifications');
+        var existingDivs = $('.form-group_specifications');
         console.log(existingDivs);
         $.each(existingDivs, function(index, value) {
-        	//console.log("X a secas: "+x);
+        	console.log("X a secas: "+x);
         	//console.log("Index: "+index);
         	//console.log($(this).find('input').attr('id'));
-        	var auxId = $(this).find('input').attr('id');
+        	var auxId = $(this).find('textarea').attr('id');
         	if (x <= auxId){
         		x = (parseInt(auxId) + 1);
         	}
         	console.log(x);
         });
         if(x < max_fields){ //max input box allowed
-            $(wrapper).append('<div class="form-group_specifications"><input type="text" class="inputProperty" id="' + x + '" name="attribute' + x + '" placeholder="Atributo..."/><input type="text" class="inputProperty" id="' + x + '" name="value' + x + '" placeholder="Valor..."/><a href="#" class="remove_field">X</a></div>'); //add input box
+            $(wrapper).append('<div class="form-group_specifications"><textarea type="text" class="inputProperty" id="' + x + '" name="attribute' + x + '" placeholder="Atributo..."/><textarea type="text" class="inputProperty" id="' + x + '" name="value' + x + '" placeholder="Valor..."/><a href="#" class="remove_field">X</a></div>'); //add input box
+            $('.example_specifications').remove();
         }
     });
     

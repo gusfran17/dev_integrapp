@@ -99,7 +99,7 @@
 		    		<?php if(isset($productLoaded)):?>
 		    			<div class="alert alert-warning alert-dismissible" role="alert">
 						  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						  <strong>¡Atencion!</strong> El producto ha sido cargado exitosamente. Puede encontrar el mismo en el lado derecho de la seccion de "Planilla Datos de Producto" mas abajo. Desde alli puede editar, duplir o eliminarlo.
+						  <strong>¡Atencion!</strong> El producto ha sido cargado exitosamente. Puede encontrar el mismo más abajo. Desde alli puede editarlo, duplicarlo o eliminarlo.
 						</div>
 					<?php endif;?>
 					<?php if(isset($productCancelled)):?>
@@ -135,7 +135,6 @@
 								    		<li> Puede Eliminar un producto cargado recientemente desde la planilla de la derecha.</li>
 								    	</ul>	
 									</div>
-									
 					    		</div>
 					</div>
 					<form class="region size1of2" action="<?php echo base_url(); ?>product/saveProduct" method="post" id="fromLoadProducts">
@@ -151,12 +150,12 @@
 								<?php if(isset($editProductID)):?>
 									<div class="alert alert-warning alert-dismissible" role="alert">
 										<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-										<strong>¡Atencion!</strong> Se encuentra en modo edición de uno de los productos que ha cargado recientemente, para volver a cargar un producto desde el inicio debe presionar en Cancelar al final de la pantalla.
+										<strong>¡Atención!</strong> Se encuentra editando un producto cargado recientemente.<br>Para volver a cargar un producto desde el inicio debe presionar en <b>Cancelar</b> al final de la pantalla.
 									</div>
 								<?php endif;?>
 							</div>
 							<div class="panel-body">
-								<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5" id="formOptions">
+								<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" id="formOptions">
 									<div class="form-group">
 										<label for="" class="control-label">Categoria seleccionada</label> (Seleccione la categoria en la sección superior)
 										<?php echo form_error('categoryTree', '<span class="label label-danger">', '</span>'); ?>
@@ -188,12 +187,16 @@
 									<div class="form-group">
 										<label for="" class="control-label">Código*</label>
 										<?php echo form_error('productCode', '<span class="label label-danger">', '</span>'); ?>
-										<input type="text" class="form-control" name="productCode" id="productCode" placeholder="Ingrese el ID del código único del producto..." value="<?php if (!(isset($productLoaded) or isset($productCancelled))) echo set_value('productCode');?>">
+										<input type="text" class="form-control" name="productCode" id="productCode" placeholder="Ingrese el código (único) del producto..." value="<?php if (!(isset($productLoaded) or isset($productCancelled))) echo set_value('productCode');?>">
 									</div>
 									<div class="form-group">
 										<label for="" class="control-label">Condición IVA*</label>
-										<?php echo form_error('productVAT', '<span class="label label-danger">', '</span>'); ?>
-										<input type="text" class="form-control" name="productVAT" id="productVAT" placeholder="% de I.V.A." value="<?php if (!(isset($productLoaded) or isset($productCancelled))) echo set_value('productVAT');?>">
+										<select class="form-control" name="productVAT" id="productVAT">
+											<option value="0%" id="IVA0">0%</option>
+											<option value="10,5%" id="IVA0">10,5%</option>
+											<option value="21%" id="IVA0">21%</option>
+											<option value="27%" id="IVA0">27%</option>
+										</select>
 									</div>
 									<div class="form-group">
 										<label for="" class="control-label">Precio</label>
@@ -206,33 +209,97 @@
 										<textarea class="form-control" name="productDesc" id="productDesc"><?php if (!(isset($productLoaded) or isset($productCancelled))) echo set_value('productDesc');?></textarea> 
 										
 									</div>
-									<div class="panel panel-info">
+									<div class="panel panel-default">
 										<div class="panel-heading">
 											<div class="panel-title">
 												<h4>Especificaciones técnicas</h4>
 											</div>
 										</div>
-										<div class="panel-body">
-											<strong>(Si agrega campos no los deje vacios porque estos no serán guardados)</strong>
-											<div class="input_fields_wrap">
+										<div class="panel-body" style="margin: 10px 10px 10px 10px">
+											<div>
 											    <div>
-										    		<div class="example_specifications">
-													    <input type="text" name="attributeExample" placeholder="Atributo (Ej.:Ancho)" value="" disabled>
-													    <input type="text" name="valueExample" placeholder="Valor (Ej.:30cm)" value="" disabled><a href="#" class="remove_field"> X</a>
-												    </div>
-													<?php if (isset($attributes)) { for ($i=0; $i<count($attributes); $i++) {?> 
-														<div class="form-group_specifications">
-															<input type="text" class="inputProperty" id="<?php echo $i; ?>" name="<?php echo 'attribute'. $i;?>" placeholder="Ej.:Ancho" value="<?php echo  $attributes[$i]->name;?>">
-															<input type="text" class="inputProperty" id="<?php echo $i; ?>" name="<?php echo 'value'. $i;?>" placeholder="Ej.:30cm" value="<?php echo  $attributes[$i]->value;?>"><a href="#" class="remove_field"> X</a>
+											    	<div class="input_fields_wrap panel panel-info col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin: 10px 10px 10px 10px">
+											    		<label for="" class="control-label">Variantes Exitentes (detalles, medidas, talles, etc.)</label><p>(Si agrega campos no los deje vacios porque estos no serán guardados)</p>
+											    		<button class="add_field_button btn btn-primary btn-md">Agregar mas campos</button>
+											    		<div class="example_specifications">
+														    <textarea type="text" name="attributeExample" placeholder="Tipo de Variante (Ej.:Ancho)" value="" disabled></textarea>
+														    <textarea type="text" name="valueExample" placeholder="Valor de Variantes (Ej.:30cm)" value="" disabled></textarea><a href="#" class="remove_field"> X</a>
+													    </div>
+														<?php if (isset($attributes)) { for ($i=0; $i<count($attributes); $i++) {?> 
+															<div class="form-group_specifications">
+																<textarea type="text" class="inputProperty" id="<?php echo $i; ?>" name="<?php echo 'attribute'. $i;?>" placeholder="Ej.:Ancho"><?php echo  $attributes[$i]->name;?></textarea>
+																<textarea type="text" class="inputProperty" id="<?php echo $i; ?>" name="<?php echo 'value'. $i;?>" placeholder="Ej.:30cm"><?php echo  $attributes[$i]->value;?></textarea><a href="#" class="remove_field"> X</a>
+															</div>
+														<?php }}; ?>
+													</div>
+													<div class="panel panel-info col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin: 10px 10px 10px 10px">
+														<div class="form-group col-xs-5 col-sm-5 col-md-5 col-lg-5" style="margin: 5px 5px 5px 5px">
+															<label for="" class="control-label">Colores Disponibles</label>
+															<br>
+															<input type="color" class="color-picker" id="color-picker" name="color-picker" data-toggle='popover' title='Agregar un color' style="height: 50px; width: 50px;">
+															
 														</div>
-													<?php }}; ?>
-													   
+														<div class="form-group selected_colors_div col-xs-6 col-sm-6 col-md-6 col-lg-6" style="margin: 5px 5px 5px 5px">
+															<label for="" class="control-label">Colores Seleccionados</label>
+															<br>(Para eliminar un color haga clic en el mismo)
+															<div name="selected_colors" id="selected_colors">
+																<?php if(isset($colors)){?>
+																	<script  type="text/javascript">
+																		$('.selected_colors_div').show();
+																	</script>
+																	<?php foreach($colors as $color): ?>
+																		<div class="color" style="border-style: solid; border-width: 1px; background-color: <?php echo $color;?>; height: 20px; width: 20px;">
+																			<input name="selectedColorsArray[]" value="<?php echo $color;?>" type="hidden" id="selectedColorsArray[]">
+																		</div>
+																	<?php endforeach; ?>
+																<?php } else {?>
+																	<script  type="text/javascript">
+																		$('.selected_colors_div').hide();
+																	</script>							
+																<?php }?>
+															</div>
+														</div>
+													</div>
 											    </div>
 											</div>
-											<button class="add_field_button btn btn-primary btn-md">Agregar mas campos</button>
 										</div>
 									</div>
-									<div class="form-group">
+									<script type="text/javascript">
+				            			$('#color-picker').on('change', function(){
+				            				$('.selected_colors_div').show();
+				            				if($('div.color[style*="background-color: '+$('#color-picker').val()+';"]').length > 0){
+				            					console.log("Returned from Color-Picker");
+				            					return;
+				            				}
+				            				var newColor = $("<div/>");
+				            				newColor.addClass('color').attr('style', "border-style: solid; border-width: 1px; background-color: "+ $('#color-picker').val() + "; height: 20px; width: 20px;");
+				            				var inputColor = $('<input/>');
+				            				inputColor.attr("name", "selectedColorsArray[]").attr("value", $('#color-picker').val());
+				            				inputColor.attr("type", "hidden");
+				            				inputColor.attr("id", "selectedColorsArray[]");
+				            				newColor.append(inputColor);
+				            				console.log(newColor);
+				            				console.log(inputColor);
+				            				newColor.on('click', function(){
+				            					$(this).remove();
+				            				});
+				            				$('#selected_colors').append(newColor);
+				            			});
+				                	</script>
+									<div>
+										<input type="submit" id="saveProduct" name="submitLoad" value="Guardar" class="btn btn-primary">
+										<input type="submit" id="cancelLoad" name="submitLoad" value="Cancelar" class="btn btn-primary">
+									</div>
+									<script type="text/javascript">
+										$("#cancelLoadCheck").hide();
+										$('#cancelLoad').click(function(){
+											$("#cancelLoadCheck").prop( "checked", true );
+										});
+
+									</script>
+								</div>
+								<div  class="col-xs-12 col-sm-12 col-md-6 col-lg-6" id="divRecentlyAddedProducts">
+																		<div class="form-group">
 										<h3>imagenes de producto</h3>
 										<div id="freewalk-dropzone" class="dropzone"></div>
 										<div class="dropzone-previews"></div>
@@ -323,28 +390,13 @@
 												<?php endforeach; ?>
 											<?php endif;?>
 										</div>
-
-
 									</div>
-									<div class="panel-footer clearfix">
-										<input type="submit" id="saveProduct" name="submitLoad" value="Guardar" class="btn btn-primary">
-										<input type="submit" id="cancelLoad" name="submitLoad" value="Cancelar" class="btn btn-primary">
-									</div>
-									<script type="text/javascript">
-										$("#cancelLoadCheck").hide();
-										$('#cancelLoad').click(function(){
-											$("#cancelLoadCheck").prop( "checked", true );
-										});
-
-									</script>
-								</div>
-								<div  class="col-xs-12 col-sm-12 col-md-6 col-lg-7" id="divRecentlyAddedProducts">
 									<table class="table table-bordered table-striped">
 										<caption>Productos Cargados</caption>
 										<thead>
 											<tr>
 												<th>Nombre</th>
-												<th>Condición I.V.A.</th>
+												<th>Precio</th>
 												<th>Código Integrapp</th>
 												<th>Código</th>
 												<th>Acción</th>
@@ -354,13 +406,13 @@
 											<?php if (isset($lastLoadedProductsGrid)) { for ($i=0; $i<count($lastLoadedProductsGrid); $i++) {?> 
 												<tr id="<?php echo 'tr_' . $lastLoadedProductsGrid[$i]->integrapp_code;?>">
 													<td><?php echo $lastLoadedProductsGrid[$i]->name;?></td>
-													<td><?php echo $lastLoadedProductsGrid[$i]->tax;?></td>
+													<td><?php echo $lastLoadedProductsGrid[$i]->price . '$';?></td>
 													<td><?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?></td>
 													<td><?php echo $lastLoadedProductsGrid[$i]->code;?></td>
 													<td>
-														<button type='submit' name = "editRecentlyAdded" id="<?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?>" form="divRecentlyAddedProducts">Editar</button>
-														<button type='submit' name = "duplicateRecentlyAdded" id="<?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?>" form="divRecentlyAddedProducts">Duplicar</button>
-														<button type='submit' name = "deleteRecentlyAdded" id="<?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?>" form="divRecentlyAddedProducts">Eliminar</button>
+														<button type='submit' class="btn btn-default" name = "editRecentlyAdded" id="<?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?>" form="divRecentlyAddedProducts">Editar</button>
+														<button type='submit' class="btn btn-default" name = "duplicateRecentlyAdded" id="<?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?>" form="divRecentlyAddedProducts">Duplicar</button>
+														<button type='submit' class="btn btn-default" name = "deleteRecentlyAdded" id="<?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?>" form="divRecentlyAddedProducts">Eliminar</button>
 													</td>
 												</tr>
 											<?php }}; ?>
