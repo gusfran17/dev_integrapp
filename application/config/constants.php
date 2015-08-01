@@ -127,7 +127,7 @@ define('PROD_DESCRIPTION_MAX_LENGTH', 400);
 /*
 | Product: maximun amount of products per catalog page
 */
-define('PROD_MAX_PAGE_AMOUNT', 6);
+define('PROD_MAX_PAGE_AMOUNT', 9);
 
 /*
 | Suppliers: maximun amount of suppliers per catalog page in Distributor

@@ -7,17 +7,37 @@ class Product extends CI_Controller {
 		parent::__construct();
 		$this->load->library('pagination');
 		$this->pagination_uri_segment = 4;
+		$this->categoryLevelsAmount = 5;
 	}
 	
 	public function product_view($data=NULL, $orderBy='category_id', $myCatalog='false'){
-		log_message('info', "Controller: Product Function: product_view orderBy: " .  $orderBy . " Is mine: " . (($myCatalog=='true')? "yes": "no"), FALSE);
 		$role = $this->session->userdata("role");
 		if ($myCatalog=='true'){
 			$data['viewMyCatalog'] = true;
 		}
+		$data['loadCategory']= $this->Product_model->getCategory();
 		$data['orderBy'] = $orderBy;
-		$data['category'] = $this->Product_model->getCategory();
 		$this->routedHome($role, $data);
+	}
+
+	//New Test functions
+	public function productLoadView($data=NULL, $orderBy='category_id'){
+		$role = $this->session->userdata("role");
+		$data['productLoadView'] = true;
+		$data['Catalog'] = array();
+		$data['loadCategory']= $this->Product_model->getCategory();
+		$this->tabbedRoutedHome($role, $data, 'product_load');
+	}
+
+	//New Test functions
+	public function tabbedRoutedHome($role = null, $data = null, $tab){
+		$this->load->view('templates/template_header');
+		$this->load->view('templates/template_nav');
+		$this->load->view('navs/nav_'.$this->session->userdata("role"));
+		$this->load->view($role.'/product/product_tabs_top', $data);
+		$this->load->view($role.'/product/' . $tab, $data);
+		$this->load->view($role.'/product/product_tabs_bottom', $data);
+		$this->load->view('templates/template_footer');
 	}
 
 	public function routedHome($role = null, $data = null){
@@ -28,8 +48,10 @@ class Product extends CI_Controller {
 		$this->load->view('templates/template_footer');
 	}
 
-	public function setPagination(){	
+	public function setPagination($url, $totalRows){	
 		$config = array();
+		$config["base_url"] = $url;
+		$config["total_rows"] = $totalRows;
 		$config['uri_segment'] = $this->pagination_uri_segment;
 		$config["per_page"] = PROD_MAX_PAGE_AMOUNT;
 		$config['use_page_numbers'] = TRUE;
@@ -38,52 +60,93 @@ class Product extends CI_Controller {
 		$config['last_link'] = ' >>';
 		$config['next_link'] = ' >';
 		$config['prev_link'] = '< ';
-		$config['full_tag_open'] = '<p>';
-		$config['full_tag_close'] = '</p>';
-		$config['cur_tag_open'] = $config['first_tag_open'] = $config['last_tag_open']= $config['next_tag_open']= $config['prev_tag_open'] = $config['num_tag_open'] = '<div class="col-md-1 col-sm-1 col-xs-1"><b>';
-        $config['cur_tag_close'] = $config['first_tag_close'] = $config['last_tag_close']= $config['next_tag_close']= $config['prev_tag_close'] = $config['num_tag_close'] = '</b></div>';
-		return $config;
+		$config['full_tag_open'] = '<ul class="pagination">';
+		$config['full_tag_close'] = '</ul>';
+		$config['cur_tag_open'] = '<li class="active"><a href="#">';
+		$config['cur_tag_close'] = '</a></li>';
+		$config['first_tag_open'] = $config['last_tag_open']= $config['next_tag_open']= $config['prev_tag_open'] = $config['num_tag_open'] = '<li>';
+        $config['first_tag_close'] = $config['last_tag_close']= $config['next_tag_close']= $config['prev_tag_close'] = $config['num_tag_close'] = '</li>';
+		$this->pagination->initialize($config);
 
 	}
 
+	public function getCategoryFilter(){
+		$selectedCategoryId = $this->input->post("selectedCategoryId");
+		if (($selectedCategoryId == -1) or ($selectedCategoryId == 0)){
+			if ($selectedCategoryId == -1) $this->session->unset_userdata('selectedCategoryId');
+			$selectedCategoryId = null;
+		}
+		if ($selectedCategoryId == null){
+			log_message('info', "null. ".$selectedCategoryId, false);
+			if ($this->session->has_userdata('selectedCategoryId')){
+				$selectedCategoryId = $this->session->userdata('selectedCategoryId');
+			}
+		} else {
+			$this->session->set_userdata('selectedCategoryId', $selectedCategoryId);
+		}
+		return $selectedCategoryId;
+	}
+
 	public function orderCatalogBy ($orderBy){
-		$config = $this->setPagination();
-		$config["base_url"] = base_url() . "Product/orderCatalogBy/$orderBy";
-		$total_row = $this->Product_model->getCatalogCount();
-		$config["total_rows"] = $total_row;
-		$this->pagination->initialize($config);
+		$url = base_url() . "Product/orderCatalogBy/$orderBy";
+		$selectedCategoryId = $this->getCategoryFilter();
+		$branch = $this->getCategoryBranch($selectedCategoryId);
+		$data['selectedCategoryId'] = $selectedCategoryId;
+		$data['branch'] = $branch;
+		$data['childCategories'] = $this->Product_model->getCategory($selectedCategoryId); 
 		if($this->uri->segment($this->pagination_uri_segment)){
 			$page = ($this->uri->segment($this->pagination_uri_segment)) ;
 		}else{
 			$page = 1;
 		}
-		log_message('info','Contoller: Product Function: orderCatalogBy orderBy: ' . $orderBy . " Page: " . $page, false);
-		$data['Catalog'] = $this->Product_model->get_catalog(null, $orderBy, $page, $config["per_page"]);
+		$totalRows = 0;
+		$data['Catalog'] = $this->Product_model->get_catalog(null, $orderBy, $page, PROD_MAX_PAGE_AMOUNT, $selectedCategoryId, $totalRows);
+		$this->setPagination($url, $totalRows);
 		$str_links = $this->pagination->create_links();
 		$data["pageLinks"] = explode('&nbsp;',$str_links );
-		$this->product_view($data,$orderBy,false);
+		log_message('info',"Pagination: ".$str_links . "total rows: " . $totalRows,false);
+		$role = $this->session->userdata("role");
+		$data['orderBy'] = $orderBy;
+		$tab = 'product_catalog';
+		$this->tabbedRoutedHome($role,$data,$tab);
 	}
 
 	public function orderMyCatalogBy ($orderBy){
 		$role_id = $this->session->userdata('role_id');
-		$config = $this->setPagination();
-		$config["base_url"] = base_url() . "Product/orderMyCatalogBy/$orderBy";
-		$total_row = $this->Product_model->getCatalogCount($role_id);
-		$config["total_rows"] = $total_row;
-		$this->pagination->initialize($config);
+		$url = base_url() . "Product/orderCatalogBy/$orderBy";
+		$selectedCategoryId = $this->getCategoryFilter();
+		$branch = $this->getCategoryBranch($selectedCategoryId);
+		$data['selectedCategoryId'] = $selectedCategoryId;
+		$data['branch'] = $branch;
+		$data['childCategories'] = $this->Product_model->getCategory($selectedCategoryId); 
 		if($this->uri->segment($this->pagination_uri_segment)){
 			$page = ($this->uri->segment($this->pagination_uri_segment)) ;
 		}else{
 			$page = 1;
 		}
-		$data['Catalog'] = $this->Product_model->get_catalog($role_id, $orderBy, $page, $config["per_page"]);
+		$totalRows = 0;
+		$data['Catalog'] = $this->Product_model->get_catalog($role_id, $orderBy, $page, PROD_MAX_PAGE_AMOUNT, $selectedCategoryId, $totalRows);
+		$this->setPagination($url, $totalRows);
+		
 		$str_links = $this->pagination->create_links();
 		$data["pageLinks"] = explode('&nbsp;',$str_links );
-		$this->product_view($data,$orderBy,true);
+		log_message('info',"Pagination: ".$str_links . "total rows: " . $totalRows,false);
+		$data['viewMyCatalog'] = true;
+		$role = $this->session->userdata("role");
+		$data['orderBy'] = $orderBy;
+		$tab = 'product_catalog';
+		$this->tabbedRoutedHome($role, $data, $tab);
+	}
+
+	public function getCategoryBranch($selectedCategoryId){
+		$categoriesArray = array();
+		if (isset($selectedCategoryId)){
+				$this->Product_model->getCategoryBranch($selectedCategoryId, $categoriesArray);	
+		}
+		return $categoriesArray;
 	}
 
 	public function getCategories($id=NULL){
-				
 		if (isset($id)) {
 			$data['NextCategory'] = $this->Product_model->getCategory($id);
 			echo json_encode($data);

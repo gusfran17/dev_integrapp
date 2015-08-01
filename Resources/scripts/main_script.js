@@ -36,24 +36,24 @@ $(document).ready(function(){
 	var finalCategoryID;
 
 
-
-	$('#products').on('change', 'select', function () {
+	//Gets the select category event and calls setNextCategory with its ID
+	$('#productsCategorySelect').on('change', 'select', function () {
 		idCategory=$(this).attr('id');
 		finalCategory=$(this).find(':selected').text();
 		finalCategoryID = $(this).find(':selected').attr('id');
 		console.log("idCat: " + idCategory + " fCat: " + finalCategory + " fCatID: " + finalCategoryID);
-		ajaxCall();
-
+		divID = "productsCategorySelect";
+		setNextCategory(divID);
 	});
 
-	$('#products').on('click', 'button', function(){
+	$('#productsCategorySelect').on('click', 'button', function(){
 		getTree();
-		$('#products').append('<div id="categoryLoaded"> <p style="margin-top: 10px" >Se ha cargado la categoria del producto más abajo...</p></div>');
+		$('#productsCategorySelect').append('<div id="categoryLoaded"> <p style="margin-top: 10px" >Se ha cargado la categoria del producto más abajo...</p></div>');
 	});
 
 	function getTree(){
 			var str = "";
-	    $( "#products select option:selected" ).each(function() {
+	    $( "#productsCategorySelect select option:selected" ).each(function() {
 	      str = $( this ).attr('id') + " ";
 	    });
 
@@ -71,53 +71,61 @@ $(document).ready(function(){
 		});
 	}
 
-	function ajaxCall(){
-		var categoryLevel= idCategory.substr(8,1);
-		//Deletes all spare dropdowns when root categories are changed
-		for ( i = parseInt(categoryLevel)+1; i <= 5; i++) {
-			$("#category"+i).remove();
-			$("#confirmation").remove();
-			$("#categoryLoaded").remove();
-		}
-		var str = "";
+	function setNextCategory(divID){
+		if (divID != null) {	
+			console.log(divID);
+			var categoryLevel= idCategory.substr(8,1);
+			//Deletes all spare dropdowns when root categories are changed
+			for ( i = parseInt(categoryLevel)+1; i <= 5; i++) {
+				$("#category"+i).remove();
+				$("#confirmation").remove();
+				$("#categoryLoaded").remove();
+			}
+			var str = "";
 
-	    $( "#products select option:selected" ).each(function() {
-	      str = $( this ).attr('id') + " ";
-	      //console.log(str);
-	    });
-	    //console.log(str);
-		$.ajax({
-	  		url: $("#basePath").val() + 'product/getCategories/'+str,
-	  		type:'POST',
-	  		dataType:'json',
-	  		data:{id:str},
-			statusCode: {
-			    500: function() {
-			      
+		    $( "#" + divID + " select option:selected" ).each(function() {
+		      str = $( this ).attr('id') + " ";
+		      //console.log(str);
+		    });
+		    //console.log(str);
+			$.ajax({
+		  		url: $("#basePath").val() + 'product/getCategories/'+str,
+		  		type:'POST',
+		  		dataType:'json',
+		  		data:{id:str},
+				statusCode: {
+				    500: function() {
+				      
 
-			    }
-			  },
-	  		success:function(data){
-	  			if (data['NextCategory'] != null){
-	  				categoryLevel++;
-	  				$('#products').append("<select id='category"+categoryLevel+"' class='categories'></select>");
-	  				for(var i in data){
-			     		var obj=data[i];
-			     		if (obj != null){
-			     			//console.log(data);
-				     		for(var j in obj){
-				     			var id=obj[j].id;
-				     			var name=obj[j].name;
-				     			$('#category'+categoryLevel).append("<option id='"+id+"'>"+name+"</option>");
-				     		}
-					    } 	
-			     	}
-	  			} else {
-	  				$("#categoryID").val(finalCategoryID);
-			  		$('#products').append("<div id='confirmation'><p>Ha seleccionado la categoria "+finalCategory+"</p><button class='btn btn-default' type='submit' id='submit1' data-toggle='popover' title='La categoria será agregada más abajo'>Confirmar</button></div>");
+				    }
+				  },
+		  		success:function(data){
+		  			if (data['NextCategory'] != null){
+		  				categoryLevel++;
+		  				$('#' + divID).append("<select id='category"+categoryLevel+"' class='categories'></select>");
+		  				$('#category'+categoryLevel).append("<option id='"+0+"'>Seleccione una sub-categoria</option>");
+		  				for(var i in data){
+				     		var obj=data[i];
+				     		if (obj != null){
+				     			//console.log(data);
+					     		for(var j in obj){
+					     			var id=obj[j].id;
+					     			var name=obj[j].name;
+					     			$('#category'+categoryLevel).append("<option id='"+id+"'>"+name+"</option>");
+					     		}
+						    } 	
+				     	}
+		  			} else {
+		  				if (divID == "productsCategorySelect") {
+			  				$("#categoryID").val(finalCategoryID);
+					  		$('#' + divID).append("<div id='confirmation' style='margin: 5px 5px 5px 5px; padding: 5px 5px 5px 5px;'><p>Ha seleccionado la categoria "+finalCategory+"</p><button class='btn btn-default' type='submit' id='submit1' data-toggle='popover' title='La categoria será agregada más abajo' style='margin: 5px 5px 5px 5px; padding: 5px 5px 5px 5px;'>Confirmar</button></div>");
+				  		} else {
+				  			$('#' + divID).append("<div id='confirmation' style='margin: 5px 5px 5px 5px; padding: 5px 5px 5px 5px;'><p>"+finalCategory+" es la categoria final</p></div>");	
+				  		}
+			  		}
 		  		}
-	  		}
-	  	});
+		  	});
+		}
 	}
 	/*End code*/
 

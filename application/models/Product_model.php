@@ -11,27 +11,21 @@ class Product_model extends CI_Model {
             return null;
         }
         $result = $query->result();
-        
-        if($parent != ""){
-            $result_with_home = array();
-            $home_element = new stdClass();
-            $home_element->id = " ";
-            $home_element->name = "Seleccione  sub-categoria...";
-            $home_element->seo_name = "";
-            $home_element->parent_id = null;
-            $result_with_home[] = $home_element;
-            foreach($result as $r){
-                $result_with_home[] = $r;
-            }
-            $result = $result_with_home;
-        }
-
         return $result;
     }
 
-    
-    function get_all_categories($parent=null, $tab){
+    function getCategoryRecord($categoryId){
 
+        $this->db->where("id", $categoryId);
+        $query = $this->db->get('category');
+        if($query->num_rows() == 0){
+            return null;
+        }
+        $result = $query->result();
+        return $result;
+    }
+    
+    function getCategories($parent=null, $tab){
         $this->db->where("parent_id", $parent);
         $query = $this->db->get('category');
         $result = $query->result();
@@ -41,6 +35,15 @@ class Product_model extends CI_Model {
         }
         return  $categories;
 
+    }
+
+    public function getCategoryBranch($categoryId, &$branch, $level=0){
+            $categoryRecord = $this->getCategoryRecord($categoryId);
+            if (isset($categoryRecord)){
+                $branch[$level] = $categoryRecord[0];
+                $level ++;
+                $this->getCategoryBranch($categoryRecord[0]->parent_id, $branch, $level);
+            } 
     }
 
     function getTree($id){
@@ -221,17 +224,24 @@ class Product_model extends CI_Model {
     }
 
     
-    function get_catalog($id=null, $orderBy = null, $page = 1, $rangePerPage = 1000){
+    function get_catalog($id=null, $orderBy = null, $page = 1, $rangePerPage = 1000, $parentCategoryId = null, &$totalRows){
+        if (isset($parentCategoryId) and ($parentCategoryId != 0)){
+            $leafCategories = array();
+            log_message('info', "Product_model get_catalog", FALSE);
+            $this->getLeafCategories($leafCategories, $parentCategoryId);
+            $this->db->where_in("category_id", $leafCategories);
+        }
         if (isset($id)){
             $this->db->where("supplier_id", $id);
         }
         if (isset($orderBy)){
                 $this->db->order_by($orderBy);     
         }
-        log_message('info', "Page: " .  $page . " Range: " . $rangePerPage, FALSE);
+        log_message('info', "Product_model get_catalog Page: " .  $page . " Range: " . $rangePerPage . " ParentId: " . $parentCategoryId, FALSE);
         $from =  ($page-1) * $rangePerPage;
         $query = $this->db->get('product');
         $result = $query->result();
+        $totalRows = count($result);
         $j = 0;
         $finalResult = array();
         for ($i= (($page-1)*$rangePerPage); $i< (((($page)*$rangePerPage) < count($result))? ($page*$rangePerPage): count($result)); $i++){
@@ -240,6 +250,18 @@ class Product_model extends CI_Model {
             $j++;
         }
         return $finalResult;
+    }
+
+    public function getLeafCategories(&$leafCategories, $parentCategoryId){
+        log_message('info', "Product_model getLeafCategories ParentID: ".$parentCategoryId, FALSE);
+        $childCategories = $this->getCategory($parentCategoryId);
+        if (count($childCategories)>0){
+            foreach ($childCategories as $childCategory) {
+                $this->getLeafCategories($leafCategories, $childCategory->id);
+            }  
+        } else {
+             $leafCategories[] = $parentCategoryId;
+        }
     }
 
     function getCatalogCount($supplier_id=null){
