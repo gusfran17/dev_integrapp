@@ -99,6 +99,18 @@ class Supplier_model extends CI_Model {
         return $result;
     }
 
+    public function getSupplierById($supplierId){
+        $this->db->where('id', $supplierId);
+        $query = $this->db->get('supplier');
+        if ($query->num_rows() == 1){
+            $result = $query->result();
+            $result[0]->logo = $this->get_logo($result[0]->userid);           
+            return $result[0];
+        } else {
+            return false;
+        }
+    }
+
 }
 
 

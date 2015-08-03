@@ -1,7 +1,7 @@
 <section id="home" style="margin-top: 70px;">
 	<div class="container-fluid" id="main-products">
 		<div class="page-header" style="text-align:center; margin: 0px 0 0px;">
-			<h2><span class="label label-primary"><b>PRODUCTOS</b></span></h2>
+			<h2><span class="label label-default"><b>PRODUCTOS</b></span></h2>
 		</div>
 		<div role="tabpanel">  
 			<ul class="nav nav-pills" role="tablist" style="padding: 5px 5px 5px 5px;">

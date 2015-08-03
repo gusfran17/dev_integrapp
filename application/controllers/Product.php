@@ -26,25 +26,23 @@ class Product extends CI_Controller {
 		$data['productLoadView'] = true;
 		$data['Catalog'] = array();
 		$data['loadCategory']= $this->Product_model->getCategory();
-		$this->tabbedRoutedHome($role, $data, 'product_load');
+		$this->tabbedRoutedHome($data, 'product_load');
 	}
 
 	//New Test functions
-	public function tabbedRoutedHome($role = null, $data = null, $tab){
+	public function tabbedRoutedHome($data = null, $tab){
+		if($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+		} else {
+			redirect('Login/Logout');
+			die;
+		}
 		$this->load->view('templates/template_header');
 		$this->load->view('templates/template_nav');
 		$this->load->view('navs/nav_'.$this->session->userdata("role"));
 		$this->load->view($role.'/product/product_tabs_top', $data);
 		$this->load->view($role.'/product/' . $tab, $data);
 		$this->load->view($role.'/product/product_tabs_bottom', $data);
-		$this->load->view('templates/template_footer');
-	}
-
-	public function routedHome($role = null, $data = null){
-		$this->load->view('templates/template_header');
-		$this->load->view('templates/template_nav');
-		$this->load->view('navs/nav_'.$this->session->userdata("role"));
-		$this->load->view($role.'/product', $data);
 		$this->load->view('templates/template_footer');
 	}
 
@@ -67,7 +65,6 @@ class Product extends CI_Controller {
 		$config['first_tag_open'] = $config['last_tag_open']= $config['next_tag_open']= $config['prev_tag_open'] = $config['num_tag_open'] = '<li>';
         $config['first_tag_close'] = $config['last_tag_close']= $config['next_tag_close']= $config['prev_tag_close'] = $config['num_tag_close'] = '</li>';
 		$this->pagination->initialize($config);
-
 	}
 
 	public function getCategoryFilter(){
@@ -108,7 +105,7 @@ class Product extends CI_Controller {
 		$role = $this->session->userdata("role");
 		$data['orderBy'] = $orderBy;
 		$tab = 'product_catalog';
-		$this->tabbedRoutedHome($role,$data,$tab);
+		$this->tabbedRoutedHome($data,$tab);
 	}
 
 	public function orderMyCatalogBy ($orderBy){
@@ -135,7 +132,7 @@ class Product extends CI_Controller {
 		$role = $this->session->userdata("role");
 		$data['orderBy'] = $orderBy;
 		$tab = 'product_catalog';
-		$this->tabbedRoutedHome($role, $data, $tab);
+		$this->tabbedRoutedHome($data, $tab);
 	}
 
 	public function getCategoryBranch($selectedCategoryId){

@@ -15,21 +15,34 @@ class Profile extends CI_Controller {
 	
    
 	public function index(){
+		if($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+		} else {
+			redirect('Login/Logout');
+			die;
+		}
 		$data["userdata"]=$this->session->userdata("user");
 		$this->load->view('templates/template_header');
 		$this->load->view('templates/template_nav');
-		$this->load->view('navs/nav_'.$this->session->userdata("role"));
-		$this->load->view($this->session->userdata("role").'/home', $data);
+		$this->load->view('navs/nav_'.$role);
+		$this->load->view($role.'/home', $data);
 		$this->load->view('templates/template_footer');
 	}
 
 
 
-	public function routedHome($section, $role = null, $data = null){
+	public function routedHome($section, $data = null, $template=false){
+		if($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+		} else {
+			redirect('Login/Logout');
+			die;
+		}
 		$this->load->view('templates/template_header');
 		$this->load->view('templates/template_nav');
-		$this->load->view('navs/nav_'.$this->session->userdata("role"));
-		$this->load->view($role.'/'.$section, $data);
+		$this->load->view('navs/nav_'.$role);
+		if ($template) $this->load->view('/'.$section, $data);
+		else $this->load->view($role.'/'.$section, $data);
 		$this->load->view('templates/template_footer');
 	}
 
@@ -64,7 +77,7 @@ class Profile extends CI_Controller {
 		$data['success'] = $this->session->flashdata('success');
 
 
-		$this->routedHome('account',$role, $data);
+		$this->routedHome('account', $data);
 	}
 
 
@@ -81,22 +94,22 @@ class Profile extends CI_Controller {
 
 	public function request(){
 		$data['user'] = $this->session->userdata("user");
-		$this->routedHome($this->section, $this->session->userdata("role"), $data);
+		$this->routedHome($this->section, $data);
 	}
 
 	public function auction(){
 		$data['user'] = $this->session->userdata("user");
-		$this->routedHome($this->section, $this->session->userdata("role"), $data);
+		$this->routedHome($this->section, $data);
 	}
 
-	public function credit(){
+	public function product(){
 		$data['user'] = $this->session->userdata("user");
-		$this->routedHome($this->section, $this->session->userdata("role"), $data);
+		$this->routedHome('product', $data);
 	}
 
 	public function suppliers(){
 		$data['user'] = $this->session->userdata("user");
-		$this->routedHome($this->section, $this->session->userdata("role"), $data);
+		$this->routedHome($this->section, $data);
 	}
 
 	public function save(){
@@ -181,23 +194,23 @@ class Profile extends CI_Controller {
 
 
 	public function change_password(){
-			$this->routedHome('templates/data_change/template_password_change','');
+			$this->routedHome('templates/data_change/template_password_change',null,true);
 	}
 
 	public function change_email(){
 			$data['email'] = $this->session->userdata('email');
-			$this->routedHome('templates/data_change/template_email_change',null,$data);
+			$this->routedHome('templates/data_change/template_email_change', $data, true);
 	}
 
 	public function change_username(){
 			$data['user'] = $this->session->userdata('user');
-			$this->routedHome('templates/data_change/template_username_change',null,$data);
+			$this->routedHome('templates/data_change/template_username_change',$data, true);
 	}
 
 	public function change_logo(){
 			$data['user'] = $this->session->userdata('user');
 			$data['error'] = $this->session->flashdata('error');
-			$this->routedHome('templates/data_change/template_logo_change',null,$data);
+			$this->routedHome('templates/data_change/template_logo_change',$data, true);
 	}
 
 	public function save_logo(){
@@ -249,7 +262,7 @@ class Profile extends CI_Controller {
 		if ($this->form_validation->run() == FALSE){
 
 
-			$this->routedHome('templates/data_change/template_password_change','');
+			$this->routedHome('templates/data_change/template_password_change',null,true);
 
 		}else{
 
@@ -287,7 +300,7 @@ class Profile extends CI_Controller {
 
 
 			$data['email'] = $this->session->userdata('email');
-			$this->routedHome('templates/data_change/template_email_change',null,$data);
+			$this->routedHome('templates/data_change/template_email_change',$data, true);
 
 		}else{
 
@@ -325,7 +338,7 @@ class Profile extends CI_Controller {
 		if ($this->form_validation->run() == FALSE){
 
 			$data['user'] = $this->session->userdata('user');
-			$this->routedHome('templates/data_change/template_username_change',null,$data);
+			$this->routedHome('templates/data_change/template_username_change', $data, true);
 
 		}else{
 

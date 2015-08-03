@@ -3,7 +3,7 @@
 class Product_model extends CI_Model {
 
 
-    function getCategory($parent=null){
+    public function getCategory($parent=null){
 
         $this->db->where("parent_id", $parent);
         $query = $this->db->get('category');
@@ -14,7 +14,7 @@ class Product_model extends CI_Model {
         return $result;
     }
 
-    function getCategoryRecord($categoryId){
+    public function getCategoryRecord($categoryId){
 
         $this->db->where("id", $categoryId);
         $query = $this->db->get('category');
@@ -25,7 +25,7 @@ class Product_model extends CI_Model {
         return $result;
     }
     
-    function getCategories($parent=null, $tab){
+    public function getCategories($parent=null, $tab){
         $this->db->where("parent_id", $parent);
         $query = $this->db->get('category');
         $result = $query->result();
@@ -46,7 +46,7 @@ class Product_model extends CI_Model {
             } 
     }
 
-    function getTree($id){
+    public function getTree($id){
         $this->db->select('ascending_path');
         $this->db->from('category');
         $this->db->where('id', $id);
@@ -55,7 +55,7 @@ class Product_model extends CI_Model {
         return $result->row_array();;
     }
 
-    function productNameCheck($productName){
+    public function productNameCheck($productName){
         $this->db->where("name", $productName);
         $query = $this->db->get('product');
         if($query->num_rows() == 0){
@@ -65,7 +65,7 @@ class Product_model extends CI_Model {
         }
     }
 
-    function productCodeCheck($productCode){
+    public function productCodeCheck($productCode){
         $this->db->where("code", $productCode);
         $query = $this->db->get('product');
         if($query->num_rows() == 0){
@@ -75,7 +75,7 @@ class Product_model extends CI_Model {
         }
     }
 
-    function productNameCheckForEdition($productName, $productId){
+    public function productNameCheckForEdition($productName, $productId){
         if (($productName!=null) and ($productId!=null)){
             $this->db->where("name", $productName);
             $query = $this->db->get('product');
@@ -92,7 +92,7 @@ class Product_model extends CI_Model {
         return false;
     }
 
-    function productCodeCheckForEdition($productCode, $productId){
+    public function productCodeCheckForEdition($productCode, $productId){
         if (($productCode!=null) and ($productId != null)){
             $this->db->where("code", $productCode);
             $query = $this->db->get('product');
@@ -110,12 +110,12 @@ class Product_model extends CI_Model {
     }
 
 
-    function saveProduct($data){
+    public function saveProduct($data){
         $this->db->insert("product", $data);
         return $this->db->insert_id();
     }
 
-    function updateProduct($data, $id){
+    public function updateProduct($data, $id){
         $this->db->where('id', $id);
         $this->db->update('product', $data); 
         if ($this->db->affected_rows() > 0){
@@ -125,21 +125,20 @@ class Product_model extends CI_Model {
         }
     }
 
-    function getProductsByIntegrappCode($integrappCodes){
+    public function getProductsByIntegrappCode($integrappCodes){
         $this->db->where_in('integrapp_code', $integrappCodes);
         $query = $this->db->get('product');
         return $query->result();
     }
 
-    function getProductById($id){
+    public function getProductById($id){
         $this->db->where("id", $id);
         $query = $this->db->get('product');
         $result = $query->result();
         return $result[0];
     }
 
-
-    function deleteProductById($productId){
+    public function deleteProductById($productId){
         $this->db->where('id', $productId); 
         $this->db->delete('product'); 
         if ($this->db->affected_rows() > 0){
@@ -149,7 +148,7 @@ class Product_model extends CI_Model {
         }
     }
 
-    function deleteProductByIntegrappCode($integrappCode){
+    public function deleteProductByIntegrappCode($integrappCode){
         $this->db->where('integrapp_code', $integrappCode); 
         $this->db->delete('product'); 
         if ($this->db->affected_rows() > 0){
@@ -160,14 +159,14 @@ class Product_model extends CI_Model {
     }
 
 
-    function getNewId(){
+    public function getNewId(){
         $this->db->select_max('id');
         $query = $this->db->get('product');
         $result = $query->result();
         return ($result[0]->id+1);
     }
 
-    function saveProductAttribute($product_id, $attribute_name, $attribute_value){
+    public function saveProductAttribute($product_id, $attribute_name, $attribute_value){
         $insert = array();
         $insert['product_id'] = $product_id;
         $insert['attribute_name'] = $attribute_name;
@@ -178,13 +177,13 @@ class Product_model extends CI_Model {
         return $this->db->insert_id();
     }
 
-    function getProductAttributes($productId){
+    public function getProductAttributes($productId){
         $this->db->where("product_id", $productId);
         $query = $this->db->get('product_attribute');
         return $query->result();
     }
 
-    function deleteProductAttributes($productId){
+    public function deleteProductAttributes($productId){
         $this->db->where("product_id", $productId);
         $query = $this->db->delete('product_attribute');
         if ($this->db->affected_rows() > 0){
@@ -207,13 +206,13 @@ class Product_model extends CI_Model {
 
     }
 
-    function getProductColors($productId){
+    public function getProductColors($productId){
         $this->db->where("product_id", $productId);
         $query = $this->db->get('product_color');
         return $query->result();
     }
 
-    function deleteProductColors($productId){
+    public function deleteProductColors($productId){
         $this->db->where("product_id", $productId);
         $query = $this->db->delete('product_color');
         if ($this->db->affected_rows() > 0){
@@ -224,7 +223,7 @@ class Product_model extends CI_Model {
     }
 
     
-    function get_catalog($id=null, $orderBy = null, $page = 1, $rangePerPage = 1000, $parentCategoryId = null, &$totalRows){
+    public function get_catalog($id=null, $orderBy = null, $page = 1, $rangePerPage = 1000, $parentCategoryId = null, &$totalRows){
         if (isset($parentCategoryId) and ($parentCategoryId != 0)){
             $leafCategories = array();
             log_message('info', "Product_model get_catalog", FALSE);
@@ -264,7 +263,7 @@ class Product_model extends CI_Model {
         }
     }
 
-    function getCatalogCount($supplier_id=null){
+    public function getCatalogCount($supplier_id=null){
         log_message('info', "Product_model getCatalogCount Supplier ID: " .  $supplier_id, FALSE);
         if (isset($supplier_id)){
             $this->db->where("supplier_id", $supplier_id);
@@ -275,7 +274,7 @@ class Product_model extends CI_Model {
         return $count;
     }
 
-    function getProductImages($productId){
+    public function getProductImages($productId){
         $targetPath = ".".PRODUCT_IMAGES_PATH . $productId . "/";
         if (file_exists($targetPath)) {
             $files = scandir($targetPath,1);    

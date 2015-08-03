@@ -80,7 +80,6 @@
 											echo '<ol class="breadcrumb" style= "margin-bottom: 0;">';
 											echo '<li><a href="#" onclick="selectCategory(id);" id="-1"><b>PRODUCTOS</b></a></li>';
 											$treeHeight = count($branch);
-											//echo var_dump($branch);
 											for ($i=$treeHeight-1; $i >= 0; $i--) {
 												echo '<li><a href="#" onclick="selectCategory(id);" id="'.$branch[$i]->id.'">'.$branch[$i]->name.'</a></li>';
 											}
@@ -94,19 +93,19 @@
 								for ($i=0; $i < $catalogSize; $i++) { ?>
 									<div class="col-md-4 col-sm-6 col-xs-12 item-catalogo">
 										<div class="well" style="background-color: #FFF;">
-										<div class="producto-container" >
-									    	<a href="#">
-									    	<?php if (count($Catalog[$i]->images)>0) {?>
-									      		<img src="<?php echo base_url() . PRODUCT_IMAGES_PATH . $Catalog[$i]->id . "/" . $Catalog[$i]->images[0]; ?>" style="max-width: 100%;display: block;margin: 0 auto;max-height: 200px;">
-										    <?php } else { ?>
-									      		<img src="<?php echo base_url() . 'Resources/imgs/NoFoto.jpg'; ?>" style="max-width: 100%;display: block;margin: 0 auto;max-height: 200px;">
-										    <?php } ?>
-										    </a>
+											<div class="producto-container" >
+										    	<a href="#">
+										    	<?php if (count($Catalog[$i]->images)>0) {?>
+										      		<img src="<?php echo base_url() . PRODUCT_IMAGES_PATH . $Catalog[$i]->id . "/" . $Catalog[$i]->images[0]; ?>" style="max-width: 100%;display: block;margin: 0 auto;max-height: 200px;">
+											    <?php } else { ?>
+										      		<img src="<?php echo base_url() . 'Resources/imgs/NoFoto.jpg'; ?>" style="max-width: 100%;display: block;margin: 0 auto;max-height: 200px;">
+											    <?php } ?>
+											    </a>
+											</div>
+											<div style="text-align:center;"> <strong><?php echo $Catalog[$i]->name; ?></strong></div>
+											<div style="text-align:center;"><strong>Código IntegrApp: </strong><?php echo $Catalog[$i]->integrapp_code; ?></div>
+											<div style="text-align:center;"><strong>Precio: </strong><?php echo $Catalog[$i]->price . '$'; ?></div>
 										</div>
-										<div style="text-align:center;"> <strong><?php echo $Catalog[$i]->name; ?></strong></div>
-										<div style="text-align:center;"><strong>Código IntegrApp: </strong><?php echo $Catalog[$i]->integrapp_code; ?></div>
-										<div style="text-align:center;"><strong>Precio: </strong><?php echo $Catalog[$i]->price . '$'; ?></div>
-									</div>
 									</div>
 								<?php } ?>
 								<div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center"> 			
