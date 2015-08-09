@@ -47,6 +47,11 @@
 						</select>
 					</div>
 					<div class="form-group">
+						<label for="fake_name">Nombre de la Empresa (nombre de fantasia)</label>
+						<?php echo form_error('fake_name', '<span class="label label-danger">', '</span>'); ?>
+						<input type="text" id="fake_name" class="form-control" name="fake_name" value="<?php echo set_value('fake_name'); ?>" placeholder="Ingrese el nombre de fantasia de su empresa">
+					</div>
+					<div class="form-group">
 						<input type="checkbox" name="terms">Acepto los terminos y condiciones de integrapp
 						<?php echo form_error('terms', '<span class="label label-danger">', '</span>'); ?>
 					</div>

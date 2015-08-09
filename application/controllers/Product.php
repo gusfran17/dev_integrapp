@@ -8,20 +8,62 @@ class Product extends CI_Controller {
 		$this->load->library('pagination');
 		$this->pagination_uri_segment = 4;
 		$this->categoryLevelsAmount = 5;
+		$this->productsAmountPerPage = 9;
+		$this->myProductsAmountPerPage = 15;
 	}
 	
-	public function product_view($data=NULL, $orderBy='category_id', $myCatalog='false'){
-		$role = $this->session->userdata("role");
-		if ($myCatalog=='true'){
-			$data['viewMyCatalog'] = true;
+
+	public function tabbedRoutedHome($data = null, $tab){
+		if($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+			$data["userdata"]=$this->session->userdata("user");
+		} else {
+			redirect(TIMEOUT_REDIRECT);
+			die;
 		}
-		$data['loadCategory']= $this->Product_model->getCategory();
-		$data['orderBy'] = $orderBy;
-		$this->routedHome($role, $data);
+		$this->load->view('templates/template_header');
+		$this->load->view('templates/template_nav');
+		$this->load->view('navs/nav_'.$role, $data);
+		$this->load->view($role.'/product/product_tabs_top', $data);
+		$this->load->view($role.'/product/' . $tab, $data);
+		$this->load->view($role.'/product/product_tabs_bottom', $data);
+		$this->load->view('templates/template_footer');
 	}
 
+	public function routedHome($data = null, $section = null, $template=false){
+		if($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+			$data["userdata"]=$this->session->userdata("user");
+		} else {
+			redirect(TIMEOUT_REDIRECT);
+			die;
+		}
+		$this->load->view('templates/template_header');
+		$this->load->view('templates/template_nav');
+		$this->load->view('navs/nav_'.$role, $data);
+		if ($template) $this->load->view($section, $data);
+		else $this->load->view($role.'/'.$section, $data);
+		$this->load->view('templates/template_footer');
+	}
+
+
+
+	public function products($categoryId=null){
+		if (isset($categoryId)){
+			$this->session->set_userdata('selectedCategoryId', $categoryId);
+		} else {
+			$this->session->unset_userdata('selectedCategoryId');
+		}
+		$this->orderCatalogBy('category_id');
+		
+	}
+
+	public function myProducts(){
+		$this->session->unset_userdata('selectedCategoryId');
+		$this->orderMyCatalogBy('category_id');
+	}
 	//New Test functions
-	public function productLoadView($data=NULL, $orderBy='category_id'){
+	public function productLoadView($data=NULL){
 		$role = $this->session->userdata("role");
 		$data['productLoadView'] = true;
 		$data['Catalog'] = array();
@@ -29,31 +71,15 @@ class Product extends CI_Controller {
 		$this->tabbedRoutedHome($data, 'product_load');
 	}
 
-	//New Test functions
-	public function tabbedRoutedHome($data = null, $tab){
-		if($this->session->has_userdata('role')){
-			$role = $this->session->userdata("role");
-		} else {
-			redirect('Login/Logout');
-			die;
-		}
-		$this->load->view('templates/template_header');
-		$this->load->view('templates/template_nav');
-		$this->load->view('navs/nav_'.$this->session->userdata("role"));
-		$this->load->view($role.'/product/product_tabs_top', $data);
-		$this->load->view($role.'/product/' . $tab, $data);
-		$this->load->view($role.'/product/product_tabs_bottom', $data);
-		$this->load->view('templates/template_footer');
-	}
 
-	public function setPagination($url, $totalRows){	
+	public function setPagination($url, $totalRows, $amountPerPage){	
 		$config = array();
 		$config["base_url"] = $url;
 		$config["total_rows"] = $totalRows;
 		$config['uri_segment'] = $this->pagination_uri_segment;
-		$config["per_page"] = PROD_MAX_PAGE_AMOUNT;
+		$config["per_page"] = $amountPerPage;
 		$config['use_page_numbers'] = TRUE;
-		$config['num_links'] = 1;
+		$config['num_links'] = 3;
 		$config['first_link'] = '<< ';
 		$config['last_link'] = ' >>';
 		$config['next_link'] = ' >';
@@ -97,8 +123,8 @@ class Product extends CI_Controller {
 			$page = 1;
 		}
 		$totalRows = 0;
-		$data['Catalog'] = $this->Product_model->get_catalog(null, $orderBy, $page, PROD_MAX_PAGE_AMOUNT, $selectedCategoryId, $totalRows);
-		$this->setPagination($url, $totalRows);
+		$data['Catalog'] = $this->Product_model->get_catalog(null, $orderBy, $page, $this->productsAmountPerPage, $selectedCategoryId, $totalRows);
+		$this->setPagination($url, $totalRows, $this->productsAmountPerPage);
 		$str_links = $this->pagination->create_links();
 		$data["pageLinks"] = explode('&nbsp;',$str_links );
 		log_message('info',"Pagination: ".$str_links . "total rows: " . $totalRows,false);
@@ -110,7 +136,7 @@ class Product extends CI_Controller {
 
 	public function orderMyCatalogBy ($orderBy){
 		$role_id = $this->session->userdata('role_id');
-		$url = base_url() . "Product/orderCatalogBy/$orderBy";
+		$url = base_url() . "Product/orderMyCatalogBy/$orderBy";
 		$selectedCategoryId = $this->getCategoryFilter();
 		$branch = $this->getCategoryBranch($selectedCategoryId);
 		$data['selectedCategoryId'] = $selectedCategoryId;
@@ -122,8 +148,8 @@ class Product extends CI_Controller {
 			$page = 1;
 		}
 		$totalRows = 0;
-		$data['Catalog'] = $this->Product_model->get_catalog($role_id, $orderBy, $page, PROD_MAX_PAGE_AMOUNT, $selectedCategoryId, $totalRows);
-		$this->setPagination($url, $totalRows);
+		$data['Catalog'] = $this->Product_model->get_catalog($role_id, $orderBy, $page, $this->myProductsAmountPerPage, $selectedCategoryId, $totalRows);
+		$this->setPagination($url, $totalRows, $this->myProductsAmountPerPage);
 		
 		$str_links = $this->pagination->create_links();
 		$data["pageLinks"] = explode('&nbsp;',$str_links );
@@ -177,8 +203,9 @@ class Product extends CI_Controller {
 			$this->form_validation->set_rules('categoryTree', 'Categoria de producto', 'required');
 	   		$this->form_validation->set_rules('productVAT', 'IVA', 'trim');
 	   		$this->form_validation->set_rules('productPrice', 'Precio', 'required|trim|numeric');
-	   		$this->form_validation->set_rules('productDesc', 'Descripcion', 'required|min_length[' . PROD_DESCRIPTION_MIN_LENGTH . ']|max_length[' . PROD_DESCRIPTION_MAX_LENGTH . ']');
-	   		
+	   		$this->form_validation->set_rules('productDesc', 'Descripción', 'required|min_length[' . PROD_DESCRIPTION_MIN_LENGTH . ']|max_length[' . PROD_DESCRIPTION_MAX_LENGTH . ']');
+	   		$this->form_validation->set_rules('productPresc', 'Como Prescribirlo', 'required|min_length[' . PROD_DESCRIPTION_MIN_LENGTH . ']|max_length[' . PROD_DESCRIPTION_MAX_LENGTH . ']');
+
 	   		$this->form_validation->set_message('required', 'El campo %s es obligatorio');
 	   		$this->form_validation->set_message('numeric', 'El campo %s solo puede contener vlores numéricos');
 	   		$this->form_validation->set_message('min_length', 'La descripcion debe tener al menos ' . PROD_DESCRIPTION_MIN_LENGTH . ' caracteres');
@@ -196,13 +223,14 @@ class Product extends CI_Controller {
 				$lastloadedProducts = $this->Product_model->getProductsByIntegrappCode($recent_products);
 				$data['lastLoadedProductsGrid'] = $lastloadedProducts;
 				$data['productCancelled'] = "Cancelled";
-				$this->product_view($data);
+				$this->productLoadView($data);
 	   		} else {
 	   			if ($this->form_validation->run()) {
 
 		   			$insert = array();
 		   			$insert['name'] = $this->input->post("productName");
 					$insert['description'] = $this->input->post("productDesc");
+					$insert['prescription'] = $this->input->post("productPresc");
 					$insert['code'] = $this->input->post("productCode");
 					$insert['category_id'] = $this->input->post("categoryID");
 					$insert['tax'] = $this->input->post("productVAT");
@@ -257,12 +285,12 @@ class Product extends CI_Controller {
 						$lastloadedProducts = $this->Product_model->getProductsByIntegrappCode($recent_products);
 						$data['lastLoadedProductsGrid'] = $lastloadedProducts;
 						$data['productLoaded'] = "Loaded";
-						$this->product_view($data);
+						$this->productLoadView($data);
 
 					} else {
 						log_message('error', 'Controller: Product Function: saveProduct - The product was not inserted in DB', false);
 						$data['error'] = 'Ha ocurrido un error al guardar, por favor intente más tarde';
-						$this->product_view($data);
+						$this->productLoadView($data);
 					}
 		   		}else{
 					for ($i=0; $i < MAX_ATTRIBUTE_AMOUNT ; $i++) { 
@@ -293,7 +321,7 @@ class Product extends CI_Controller {
 					if ($editProduct){
 						$data['editProductID'] = $editID;
 					}
-					$this->product_view($data);
+					$this->productLoadView($data);
 		   		}
 
 	   		}
@@ -322,6 +350,25 @@ class Product extends CI_Controller {
 			$data['deletionProduct'] = $deletionProduct;
 			echo json_encode($data);
 		}
+
+	}
+
+	public function viewProduct($productId){
+		$product = $this->Product_model->getProductById($productId);
+		$supplier = $this->Supplier_model->getSupplierById($product->supplier_id);
+		$role = $this->session->userdata("role");
+		$productImages = $this->Product_model->getProductImages($productId);
+		$colors = $this->Product_model->getProductColors($productId);
+		$attributes = $this->Product_model->getProductAttributes($productId);
+		$branch = $this->getCategoryBranch($product->category_id);
+		$data['product'] = $product;
+		$data['product']->supplier = $supplier;
+		$data['role'] = $role;
+		$data['product']->images = $productImages;
+		$data['product']->branch = $branch;
+		$data['product']->colors = $colors;
+		$data['product']->attributes = $attributes;
+		$this->routedHome($data, 'templates/product/product', true);
 
 	}
 

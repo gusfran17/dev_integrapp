@@ -11,6 +11,10 @@ class Register extends CI_Controller {
 
 
 	public function register(){
+		$role = $this->input->post("role");
+		if (($role == 'supplier') or ($role == 'supplier')) {
+			$this->form_validation->set_rules('fake_name', 'Nombre de le Empresa', 'required');	
+		}
 		$this->form_validation->set_rules('username', 'Nombre de usuario', 'required|callback_usernamecheck');
 		$this->form_validation->set_rules('name', 'Nombre', 'required|alpha');
 		$this->form_validation->set_rules('lastname', 'Apellido', 'required|alpha');
@@ -29,6 +33,7 @@ class Register extends CI_Controller {
 		if ($this->form_validation->run()){
 			$insert = array();
 			$role = $this->input->post("role");
+			$fake_name = $this->input->post("fake_name");			
 			$insert['email'] = $this->input->post("email");
 			$insert['username'] = $this->input->post("username");
 			$insert['password'] = $this->encrypt->encode($this->input->post("password"), $this->config->item('encryption_key'));
@@ -42,7 +47,7 @@ class Register extends CI_Controller {
 				$insert['status'] = 'pending';
 			}
 			$insert['register_date'] = date("Y-m-d H:i:s");
-			$id = $this->User_model->register_user($insert);
+			$id = $this->User_model->register_user($insert, $role, $fake_name);
 			$this->session->set_flashdata('register_user', 'Su cuenta ha sido creada y le hemos enviado un e-mail de confirmación.');
 			redirect('home/routedHome/login');
 		}else{

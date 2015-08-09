@@ -2,20 +2,33 @@
 	<div class="container-fluid" id="main-products">
 		<div class="container-fluid" id="supplier-products" >
 			<div class="col-md-12 col-sm-12 col-xs-12">
-				<div class="col-md-5 col-sm-5 col-xs-5">
-					<div class="well well-small" style="background-color: #EEE; margin-top: 20px; border-radius: 20px;">    
-				    	<?php if(isset($supplier->logo)) {?>
-				      		<img src="<?php echo base_url() . $supplier->logo; ?>">
-					    <?php } ?>
-						<h3 style="height: 1em; margin-top: 10px;"><a href="#"><?php echo $supplier->razon_social; ?></a></h3>
-						<p class="text-info" style="margin-left: auto;width: 6em; height: 15px;"><a href="">Ver detalles de perfil</a></p>
+				<div class="col-md-6 col-sm-8 col-xs-12">
+					<div class="panel panel-default" style="background-color: #EEE; margin-top: 20px; border-radius: 20px;">    
+						<div class="panel-body">
+					    	<div class="col-md-4 col-sm-4 col-xs-4">
+						    	<?php if(isset($supplier->logo)) {?>
+						      		<img src="<?php echo base_url() . $supplier->logo; ?>">
+							    <?php } ?>
+								<h3 style="height: 1em; margin-top: 10px;"><a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $supplier->id;?>"><?php echo $supplier->fake_name; ?></a></h3>
+								<p class="text-info" style="margin-left: auto; height: 15px;">
+									<a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $supplier->id;?>"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span> Detalles de perfil </a>
+								</p>
+								<p style="margin-top:20px">
+									<a href="<?php echo base_url(); ?>suppliers/viewSupplier"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span><b> Proveedores</b></a>
+								</p>
+							</div>
+							<div class="col-md-8 col-sm-8 col-xs-8">
+						    	<p><b>Razón Social: </b><?php echo $supplier->razon_social;?></p>
+						    	<p><b>CUIT: </b><?php echo $supplier->cuit;?></p>
+						    	<p><b>Email: </b><?php echo $supplier->comercial_email;?></p>
+							</div>
+						</div>
 					</div>
-
 				</div>
 			</div>
 			<div class="page-header" style="text-align:center; margin: 0px 0 0px;">
 				<h2>
-					<span class="label label-primary">
+					<span class="label label-default">
 						<b>CATALOGO</b>
 					</span><br>
 					<small>Productos de este proveedor</small>
@@ -30,7 +43,7 @@
 						  <div class="input-group" class="searchOverSlideshow">
 						      <input type="text" name="q" class="form-control">
 						      <span class="input-group-btn">
-						        <button class="btn btn-info" type="submit">Buscar</button>
+						        <button class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
 						      </span>
 						  </div>
 						</form>
@@ -41,7 +54,7 @@
 						<form method="post" id="catalogCategoriesFilter" action="<?php echo base_url() . 'Suppliers/viewSupplierCatalog/' . $orderBy;?>" style= "padding-bottom: 0px;">
 							<?php
 								if (isset($selectedCategoryId)) {
-									echo '<ol class="breadcrumb" style= "margin-bottom: 0;">';
+									echo '<ol class="breadcrumb">';
 									echo '<li><a href="#" onclick="selectCategory(id);" id="-1"><b>PRODUCTOS</b></a></li>';
 									$treeHeight = count($branch);
 									//echo var_dump($branch);
@@ -89,10 +102,10 @@
 			</div>
 		</div>
 		<div class="col-md-10 col-sm-10 col-xs-8" style="margin-top: 10px;">
-				<div class="col-md-12 col-sm-12 col-xs-12">		
+			<div class="col-md-12 col-sm-12 col-xs-12">		
 				<?php
 					if (isset($selectedCategoryId)) {
-						echo '<ol class="breadcrumb" style= "margin-bottom: 0;">';
+						echo '<ol class="breadcrumb" >';
 						echo '<li><a href="#" onclick="selectCategory(id);" id="-1"><b>PRODUCTOS</b></a></li>';
 						$treeHeight = count($branch);
 						for ($i=$treeHeight-1; $i >= 0; $i--) {
@@ -123,19 +136,19 @@
 						<tr>
 							<td>
 								<?php if (count($Catalog[$i]->images)>0) {?>
-							      		<img src="<?php echo base_url() . PRODUCT_IMAGES_PATH . $Catalog[$i]->id . "/" . $Catalog[$i]->images[0]; ?>" style="max-width: 100%;display: block;margin: 0 auto;max-height: 40px;">
+							      	<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><img src="<?php echo base_url() . PRODUCT_IMAGES_PATH . $Catalog[$i]->id . "/" . $Catalog[$i]->images[0]; ?>" style="max-width: 100%;display: block;margin: 0 auto;max-height: 40px;"></a>
 							    <?php } else { ?>
-						      		<img src="<?php echo base_url() . 'Resources/imgs/NoFoto.jpg'; ?>" style="max-width: 100%;display: block;margin: 0 auto;max-height: 40px;">
+						      		<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><img src="<?php echo base_url() . 'Resources/imgs/NoFoto.jpg'; ?>" style="max-width: 100%;display: block;margin: 0 auto;max-height: 40px;"></a>
 							    <?php } ?>
 							</td>
 							<td>
-								<?php echo $Catalog[$i]->code; ?>
+								<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><?php echo $Catalog[$i]->code; ?></a>
 							</td>
 							<td>
-								<?php echo $Catalog[$i]->integrapp_code; ?>
+								<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><?php echo $Catalog[$i]->integrapp_code; ?></a>
 							</td>
 							<td>
-								<strong><?php echo $Catalog[$i]->name; ?></strong>
+								<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><strong><?php echo $Catalog[$i]->name; ?></strong></a>
 							</td>
 							<td>
 								<?php echo $Catalog[$i]->price . '$'; ?>

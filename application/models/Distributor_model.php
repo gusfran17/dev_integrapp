@@ -29,7 +29,7 @@ class Distributor_model extends CI_Model {
     function get_completeness($userid){
 
         $distributor = $this->get_distributor($userid);
-        $pasos_completos = 0;
+        $amountCompleted = 0;
         $steps = array();
         $steps['registered'] = true;
         $steps['service_description'] = ($distributor->service_description != "");
@@ -46,12 +46,13 @@ class Distributor_model extends CI_Model {
         //$steps['bank_name'] = ($distributor->bank_name != "");
         //$steps['bank_branch'] = ($distributor->bank_branch != "");
         //$steps['bank_account_name'] = ($distributor->bank_account_name != "");
+        $steps['logo'] = ($this->get_logo($userid) != null);
         foreach($steps as $key=>$step){
             if($step != false){
-                $pasos_completos++;
+                $amountCompleted++;
             }
         }
-        $porcentaje = ($pasos_completos*100)/count($steps);
+        $porcentaje = ($amountCompleted*100)/count($steps);
         return round($porcentaje, 0);
 
     }

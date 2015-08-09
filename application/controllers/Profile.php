@@ -17,14 +17,14 @@ class Profile extends CI_Controller {
 	public function index(){
 		if($this->session->has_userdata('role')){
 			$role = $this->session->userdata("role");
+			$data["userdata"]=$this->session->userdata("user");
 		} else {
-			redirect('Login/Logout');
+			redirect(TIMEOUT_REDIRECT);
 			die;
 		}
-		$data["userdata"]=$this->session->userdata("user");
 		$this->load->view('templates/template_header');
 		$this->load->view('templates/template_nav');
-		$this->load->view('navs/nav_'.$role);
+		$this->load->view('navs/nav_'.$role, $data);
 		$this->load->view($role.'/home', $data);
 		$this->load->view('templates/template_footer');
 	}
@@ -34,14 +34,15 @@ class Profile extends CI_Controller {
 	public function routedHome($section, $data = null, $template=false){
 		if($this->session->has_userdata('role')){
 			$role = $this->session->userdata("role");
+			$data["userdata"]=$this->session->userdata("user");
 		} else {
-			redirect('Login/Logout');
+			redirect(TIMEOUT_REDIRECT);
 			die;
 		}
 		$this->load->view('templates/template_header');
 		$this->load->view('templates/template_nav');
-		$this->load->view('navs/nav_'.$role);
-		if ($template) $this->load->view('/'.$section, $data);
+		$this->load->view('navs/nav_'.$role, $data);
+		if ($template) $this->load->view($section, $data);
 		else $this->load->view($role.'/'.$section, $data);
 		$this->load->view('templates/template_footer');
 	}
@@ -75,8 +76,7 @@ class Profile extends CI_Controller {
 
 		}
 		$data['success'] = $this->session->flashdata('success');
-
-
+		$data['error'] = $this->session->flashdata('error');
 		$this->routedHome('account', $data);
 	}
 
@@ -102,9 +102,9 @@ class Profile extends CI_Controller {
 		$this->routedHome($this->section, $data);
 	}
 
-	public function product(){
+	public function credit(){
 		$data['user'] = $this->session->userdata("user");
-		$this->routedHome('product', $data);
+		$this->routedHome('credit', $data);
 	}
 
 	public function suppliers(){
@@ -135,7 +135,7 @@ class Profile extends CI_Controller {
 
 
    		if ($this->form_validation->run() == FALSE){
-
+   			$this->session->set_flashdata('error', "Los datos ingresados no son correctos. En cada campo se indica el error.");
 			$this->account();
 
 		} else {

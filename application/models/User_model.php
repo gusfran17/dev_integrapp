@@ -47,8 +47,15 @@ class User_model extends CI_Model {
 
     }
     
-    function register_user($data){
+    function register_user($data, $role, $fake_name){
         $this->db->insert("user", $data);
+        $id = $this->db->insert_id();
+        if (isset($id) and (($role=='supplier')or($role=='distributor'))) {
+            $this->db->set('fake_name', $fake_name);
+            $this->db->where('userid', $id);
+            $this->db->update($role);
+        }
+        return $id;
     }
 
 

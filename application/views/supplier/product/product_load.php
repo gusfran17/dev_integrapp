@@ -2,12 +2,14 @@
 			    		<?php if(isset($productLoaded)):?>
 			    			<div class="alert alert-warning alert-dismissible" role="alert">
 							  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-							  <strong>¡Atencion!</strong> El producto ha sido cargado exitosamente. Puede encontrar el mismo más abajo. Desde alli puede editarlo, duplicarlo o eliminarlo.
+							  <strong><span class="glyphicon glyphicon-check" aria-hidden="true"></span></strong>
+							  <strong>¡Felicitaciones!</strong> El producto ha sido cargado exitosamente. Puede encontrar el mismo más abajo. Desde alli puede editarlo, duplicarlo o eliminarlo.
 							</div>
 						<?php endif;?>
 						<?php if(isset($productCancelled)):?>
 			    			<div class="alert alert-warning alert-dismissible" role="alert">
 							  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							  <strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong>
 							  <strong>¡Atencion!</strong> La operacion ha sido cancelada.
 							</div>
 						<?php endif;?>
@@ -40,7 +42,7 @@
 										</div>
 						    		</div>
 						</div>
-						<form class="region size1of2" action="<?php echo base_url(); ?>product/saveProduct" method="post" id="formLoadProducts">
+						<form class="region size1of2" action="<?php echo base_url(); ?>product/saveProduct" method="post" id="formLoadProducts" style="margin-top: 20px;">
 							<div class="panel panel-info">
 								<div class="panel-heading">
 									<div class="panel-title">
@@ -53,12 +55,13 @@
 									<?php if(isset($editProductID)):?>
 										<div class="alert alert-warning alert-dismissible" role="alert">
 											<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+											<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
 											<strong>¡Atención!</strong> Se encuentra editando un producto cargado recientemente.<br>Para volver a cargar un producto desde el inicio debe presionar en <b>Cancelar</b> al final de la pantalla.
 										</div>
 									<?php endif;?>
 								</div>
 								<div class="panel-body">
-									<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" id="formOptions">
+									<div class="col-xs-12 col-sm-12 col-md-5 col-lg-5" id="formOptions">
 										<div class="form-group">
 											<label for="" class="control-label">Categoria seleccionada</label> (Seleccione la categoria en la sección superior)
 											<?php echo form_error('categoryTree', '<span class="label label-danger">', '</span>'); ?>
@@ -107,9 +110,15 @@
 											<input type="text" class="form-control" name="productPrice" id="productPrice" placeholder="Ingrese el precio del producto..." value="<?php if (!(isset($productLoaded) or isset($productCancelled))) echo set_value('productPrice');?>">
 										</div>
 										<div class="form-group">
-											<label for="" class="control-label">Descripción*</label>
+											<label for="productDesc" class="control-label">Descripción*</label>
 											<?php echo form_error('productDesc', '<span class="label label-danger">', '</span>'); ?>
 											<textarea class="form-control" name="productDesc" id="productDesc"><?php if (!(isset($productLoaded) or isset($productCancelled))) echo set_value('productDesc');?></textarea> 
+											
+										</div>
+										<div class="form-group">
+											<label for="productPresc" class="control-label">Como Prescribirlo*</label>
+											<?php echo form_error('productPresc', '<span class="label label-danger">', '</span>'); ?>
+											<textarea class="form-control" name="productPresc" id="productPresc"><?php if (!(isset($productLoaded) or isset($productCancelled))) echo set_value('productPresc');?></textarea> 
 											
 										</div>
 										<div class="panel panel-default">
@@ -118,12 +127,12 @@
 													<h4>Especificaciones técnicas</h4>
 												</div>
 											</div>
-											<div class="panel-body" style="margin: 10px 10px 10px 10px">
+											<div class="panel-body" style="margin: 10px 10px 10px 10px; padding-left: 0px;">
 												<div>
 												    <div>
 												    	<div class="input_fields_wrap panel panel-info col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin: 10px 10px 10px 10px">
 												    		<label for="" class="control-label">Variantes Exitentes (detalles, medidas, talles, etc.)</label><p>(Si agrega campos no los deje vacios porque estos no serán guardados)</p>
-												    		<button class="add_field_button btn btn-primary btn-md">Agregar mas campos</button>
+												    		<button class="add_field_button btn btn-success btn-md">Agregar mas campos</button>
 												    		<div class="example_specifications">
 															    <textarea type="text" name="attributeExample" placeholder="Tipo de Variante (Ej.:Ancho)" value="" disabled></textarea>
 															    <textarea type="text" name="valueExample" placeholder="Valor de Variantes (Ej.:30cm)" value="" disabled></textarea><a href="#" class="remove_field"> X</a>
@@ -190,8 +199,8 @@
 					            			});
 					                	</script>
 										<div>
-											<input type="submit" id="saveProduct" name="submitLoad" value="Guardar" class="btn btn-primary">
-											<input type="submit" id="cancelLoad" name="submitLoad" value="Cancelar" class="btn btn-primary">
+											<input type="submit" id="saveProduct" name="submitLoad" value="Guardar" class="btn btn-success">
+											<input type="submit" id="cancelLoad" name="submitLoad" value="Cancelar" class="btn btn-warning">
 										</div>
 										<script type="text/javascript">
 											$("#cancelLoadCheck").hide();
@@ -201,7 +210,7 @@
 
 										</script>
 									</div>
-									<div  class="col-xs-12 col-sm-12 col-md-6 col-lg-6" id="divRecentlyAddedProducts">
+									<div  class="col-xs-12 col-sm-12 col-md-7 col-lg-7" id="divRecentlyAddedProducts">
 										<div class="form-group">
 											<h3>imagenes de producto</h3>
 											<div id="freewalk-dropzone" class="dropzone"></div>
@@ -313,9 +322,9 @@
 														<td><?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?></td>
 														<td><?php echo $lastLoadedProductsGrid[$i]->code;?></td>
 														<td>
-															<button type='submit' class="btn btn-default" name = "editRecentlyAdded" id="<?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?>" form="divRecentlyAddedProducts">Editar</button>
-															<button type='submit' class="btn btn-default" name = "duplicateRecentlyAdded" id="<?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?>" form="divRecentlyAddedProducts">Duplicar</button>
-															<button type='submit' class="btn btn-default" name = "deleteRecentlyAdded" id="<?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?>" form="divRecentlyAddedProducts">Eliminar</button>
+															<button type='submit' class="btn btn-success" name = "editRecentlyAdded" id="<?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?>" form="divRecentlyAddedProducts">Editar</button>
+															<button type='submit' class="btn btn-success" name = "duplicateRecentlyAdded" id="<?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?>" form="divRecentlyAddedProducts">Duplicar</button>
+															<button type='submit' class="btn btn-warning" name = "deleteRecentlyAdded" id="<?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?>" form="divRecentlyAddedProducts">Eliminar</button>
 														</td>
 													</tr>
 												<?php }}; ?>

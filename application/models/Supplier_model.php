@@ -28,7 +28,7 @@ class Supplier_model extends CI_Model {
     function get_completeness($userid){
 
         $supplier = $this->get_supplier($userid);
-        $pasos_completos = 0;
+        $amountCompleted = 0;
         $steps = array();
         $steps['registered'] = true;
         $steps['service_description'] = ($supplier->service_description != "");
@@ -45,13 +45,14 @@ class Supplier_model extends CI_Model {
         $steps['bank_name'] = ($supplier->bank_name != "");
         $steps['bank_branch'] = ($supplier->bank_branch != "");
         $steps['bank_account_name'] = ($supplier->bank_account_name != "");
+        $steps['logo'] = ($this->get_logo($userid) != null);
         
         foreach($steps as $key=>$step){
             if($step != false){
-                $pasos_completos++;
+                $amountCompleted++;
             }
         }
-        $porcentaje = ($pasos_completos*100)/count($steps);
+        $porcentaje = ($amountCompleted*100)/count($steps);
         return round($porcentaje, 0);
     }
 

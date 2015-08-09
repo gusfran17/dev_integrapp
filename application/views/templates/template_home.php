@@ -1,5 +1,5 @@
 
-		<div id="carousel" class="carousel slide" data-ride="carousel">
+		<div id="carousel_home" class="carousel slide" data-ride="carousel">
 			<div class="carousel-inner" role="listbox">
 			    <div class="item active">
 			        <img src="<?php echo base_url(); ?>/Resources/imgs/1.png" alt="...">

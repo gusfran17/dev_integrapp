@@ -1,11 +1,11 @@
 
-
 /*!!!!!!!!FUENTES!!!!!!!!*/
 @font-face { font-family: OpenSans; src: url(../fonts/Open_Sans/OpenSans-Regular.ttf);}
 @font-face {font-family: OpenSans; src: url(../fonts/Open_Sans/OpenSans-Bold.ttf); font-weight: bold;}
 @font-face {font-family: OpenSans;src: url(../fonts/Open_Sans/OpenSans-Italic.ttf);font-style: italic;}
 html, body{font-family: OpenSans}
 /*end*/
+/*CONSTANTES*/
 
 
 /*!!!!!!!!BARRA DE NAVEGACIÓN!!!!!!!!!!*/
@@ -42,6 +42,35 @@ nav>.container-fluid{height: 100%; padding: 0;}
 .icon-bar{color: white;	background-color: white;}
 /*end*/
 
+/*
+Menu del boton de mi cuenta
+*/
+.my-account-btn{
+    margin-top: 15px;
+    color: #FFF;
+    border-color: #4784ff;
+	background-color: #4784ff;
+	font-size:20px;
+	font-family: OpenSans;
+	padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+ .my-account-btn a:hover, .my-account-btn:hover, .my-account-btn:focus, .my-account-btn.focus, .my-account-btn:active, .my-account-btn.active, .open > .dropdown-toggle.my-account-btn {
+    color: #FFF;
+    border-color: #4784ff;
+	background-color: #4784ff;
+	text-decoration: none;
+}
+/*
+Menu del boton de mi cuenta
+*/
+.my-account-mn{
+	background-color: #4784ff;
+}
+
+.my-account-mn li a:hover, .my-account-mn li a:focus {background-color: #4784ff;} 
+
 
 /*EFECTOS TYMPANUS*/
 /* Effect 1: Brackets */
@@ -58,10 +87,9 @@ nav>.container-fluid{height: 100%; padding: 0;}
 
 
 
-
 /*!!!!!!!!HOME!!!!!!!!*/
 /*Esto POR AHORA funciona re bien y me da el estilo del carrousel de fondo*/
-.carousel{	position: fixed;opacity: 0.35;width: 100%;height: 100%;}
+#carousel_home{	position: fixed;opacity: 0.35;width: 100%;height: 100%;}
 /*end*/
 
 /*esto me da las reglas de medicion para el contenido del centro del home*/
@@ -107,9 +135,74 @@ section#home{margin-top:110px;padding-left: 40px;padding-right: 40px;padding-bot
 /*end*/
 
 
+/*
+Esto es para que los nav-pils (usados en tabs y selecciones) en general sean verdes
+*/
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
+	background-color:#D1974D;
+	color:#ffffff;
+}
+
+
+/*
+!!!BREADCRUMBS!!!
+*/
+/*change breadcrumb background color*/
+.breadcrumb {
+	 margin-bottom: 10px;
+     background-color: #aaddaa;
+     border-radius: 5px;
+     -moz-border-radius: 5px;
+     -webkit-border-radius: 5px;
+     -o-border-radius: 5px;
+}
+
+/*change breadcrumb separator to raquo symbol*/
+.breadcrumb > li + li:before {
+     content: "\00BB";
+     color: #ffffff;
+}
+
+
+/*
+!!!CAROUSEL!!!
+*/
+.carousel-inner > .item > img {
+    margin: 0 auto;
+}
+
+.carousel-indicators .active {
+	background-color: #BBB;
+}
 
 
 
+/*
+TABLES borders
+*/
+.borderless tbody tr td, .borderless tbody tr th, .borderless thead tr th {
+    border: none;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #EEE;
+}
+
+
+/*
+change color for pagination bootstrapp
+*/
+.pagination>li.active>a, .pagination>li.active>a:hover, .pagination>li.active>a:focus{
+	background-color:#D1974D;
+	color:#ffffff;
+}
+
+/*
+Change label colors for titles
+*/
+.label-default{
+	background-color:#D1974D;
+}
 
 /*!!!!!!!CATALOGO!!!!!!!*/
 
@@ -121,6 +214,12 @@ section#home{margin-top:110px;padding-left: 40px;padding-right: 40px;padding-bot
 	text-decoration: underline;
 }
 
+.catalogProdName {
+	height: 40px;
+}
+.catalogProdCode {
+	height: 20px;
+}
 
 #categoria-select select{
 	width: 200px;
@@ -254,7 +353,6 @@ form{/*width: 40%; */position: relative; padding-bottom: 50px;}
 
 .add_field_button, .btn-primary{
 	margin-bottom: 10px;
-	
 }
 
 .input_fields_wrap{
@@ -278,3 +376,4 @@ h3{
 	background-color: #dff0d8;
 	color: #3c763d
 }
+

@@ -14,12 +14,21 @@
 			<?php if(isset($success)):?>
 				<div class="alert alert-dismissable alert-success">
 			      <button type="button" class="close" data-dismiss="alert">×</button>
+			      <strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong>
 			      <strong>Bien!</strong> <?php echo $success; ?></a>
+			    </div>
+			<?php endif;?>
+			<?php if(isset($error)):?>
+				<div class="alert alert-dismissable alert-danger">
+			      <button type="button" class="close" data-dismiss="alert">×</button>
+			      <strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong>
+			      <strong>ERROR!</strong> <?php echo $error; ?></a>
 			    </div>
 			<?php endif;?>
 			<div class="alert alert-dismissable alert-info">
 				  <button type="button" class="close" data-dismiss="alert">×</button>
-				  <strong>Atencion!</strong> Debes completar la informacion con presición. Esta información sera compartida unicamente con los ortopedistas que usted autorice.
+				  <strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong>
+				  <strong>Atencion!</strong> Debes completar la informacion con presición. Esta información sera compartida unicamente con los ortopedistas que autorices.
 			</div>
 			<div class="panel panel-success">
 				<div class="panel-heading">
@@ -128,7 +137,7 @@
 
 					<div class="panel panel-primary">
 						<div class="panel-heading">
-					    	<h3 class="panel-title">Información bancaria (opcional)</h3>
+					    	<h3 class="panel-title">Información bancaria (Estos datos solo los podrá ver las Ortopedias que usted autorice)</h3>
 					  	</div>
 					  	<div class="panel-body">
 

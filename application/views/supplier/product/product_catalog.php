@@ -8,7 +8,7 @@
 											  <div class="input-group" class="searchOverSlideshow">
 											      <input type="text" name="q" class="form-control">
 											      <span class="input-group-btn">
-											        <button class="btn btn-info" type="submit">Buscar</button>
+											        <button class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
 											      </span>
 											  </div>
 											</form>
@@ -77,7 +77,7 @@
 				      			<div class="col-md-12 col-sm-12 col-xs-12">		
 					    			<?php
 	    								if (isset($selectedCategoryId)) {
-											echo '<ol class="breadcrumb" style= "margin-bottom: 0;">';
+											echo '<ol class="breadcrumb">';
 											echo '<li><a href="#" onclick="selectCategory(id);" id="-1"><b>PRODUCTOS</b></a></li>';
 											$treeHeight = count($branch);
 											for ($i=$treeHeight-1; $i >= 0; $i--) {
@@ -87,27 +87,80 @@
 										}  
 					    			?>					
 				    			</div>
-						
-								<?php 
-								$catalogSize = count($Catalog);
-								for ($i=0; $i < $catalogSize; $i++) { ?>
-									<div class="col-md-4 col-sm-6 col-xs-12 item-catalogo">
-										<div class="well" style="background-color: #FFF;">
-											<div class="producto-container" >
-										    	<a href="#">
-										    	<?php if (count($Catalog[$i]->images)>0) {?>
-										      		<img src="<?php echo base_url() . PRODUCT_IMAGES_PATH . $Catalog[$i]->id . "/" . $Catalog[$i]->images[0]; ?>" style="max-width: 100%;display: block;margin: 0 auto;max-height: 200px;">
-											    <?php } else { ?>
-										      		<img src="<?php echo base_url() . 'Resources/imgs/NoFoto.jpg'; ?>" style="max-width: 100%;display: block;margin: 0 auto;max-height: 200px;">
-											    <?php } ?>
-											    </a>
+								<?php if (isset($viewMyCatalog)) {?>
+									<table id="resultset" class="table table-bordered table-striped">
+						                <thead>
+						                    <tr>
+						                        <th data-class="expand">Imagen</th>
+						                        <th>Código de Producto</th>
+												<th>Código IntegrApp</th>
+						                        <th data-hide="phone">Producto</th>
+						                        <th class="centered-cell" data-hide="phone,tablet">Precio</th>
+						                        <th class="centered-cell" data-hide="phone,tablet">IVA</th>
+						                        <th class="centered-cell" data-hide="phone,tablet">Descripción</th>
+						                        <th class="centered-cell" data-hide="phone,tablet">Acciones</th>
+						                    </tr>
+						                </thead>
+						                <tbody>
+											<?php 
+											$catalogSize = count($Catalog);
+											for ($i=0; $i < $catalogSize; $i++) { ?>
+												<tr>
+													<td>
+														<?php if (count($Catalog[$i]->images)>0) {?>
+													      	<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><img src="<?php echo base_url() . PRODUCT_IMAGES_PATH . $Catalog[$i]->id . "/" . $Catalog[$i]->images[0]; ?>" style="max-width: 100%;display: block;margin: 0 auto;max-height: 40px;"></a>
+													    <?php } else { ?>
+												      		<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><img src="<?php echo base_url() . 'Resources/imgs/NoFoto.jpg'; ?>" style="max-width: 100%;display: block;margin: 0 auto;max-height: 40px;"></a>
+													    <?php } ?>
+													</td>
+													<td>
+														<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><?php echo $Catalog[$i]->code; ?></a>
+													</td>
+													<td>
+														<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><?php echo $Catalog[$i]->integrapp_code; ?></a>
+													</td>
+													<td>
+														<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><strong><?php echo $Catalog[$i]->name; ?></strong></a>
+													</td>
+													<td>
+														<?php echo $Catalog[$i]->price . '$'; ?>
+													</td>
+													<td>
+														<?php echo $Catalog[$i]->tax; ?>
+													</td>
+													<td>
+														<?php echo $Catalog[$i]->description; ?>
+													</td>
+													<td>
+														<a href="/fabricante/publicar_producto/17">
+															<button type="button" class="btn btn-success btn-xs">Agregar a mi Catálogo</button>
+														</a>
+													</td>
+												</tr>
+											<?php } ?>
+										</tbody>
+									</table>
+								<?php } else { 
+									$catalogSize = count($Catalog);
+									for ($i=0; $i < $catalogSize; $i++) { ?>
+											<div class="col-md-4 col-sm-6 col-xs-12 item-catalogo">
+												<div class="well" style="background-color: #FFF;">
+													<div class="producto-container" >
+												    	<a href="#">
+												    	<?php if (count($Catalog[$i]->images)>0) {?>
+												      		<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><img src="<?php echo base_url() . PRODUCT_IMAGES_PATH . $Catalog[$i]->id . "/" . $Catalog[$i]->images[0]; ?>" style="max-width: 100%;display: block;margin: 0 auto;max-height: 200px;"></a>
+													    <?php } else { ?>
+												      		<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><img src="<?php echo base_url() . 'Resources/imgs/NoFoto.jpg'; ?>" style="max-width: 100%;display: block;margin: 0 auto;max-height: 200px;"></a>
+													    <?php } ?>
+													    </a>
+													</div>
+													<div class="catalogProdName" style="text-align:center;"><strong><a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><?php echo $Catalog[$i]->name; ?></a></strong></div>
+													<div class="catalogProdCode" style="text-align:center;"><strong>Código IntegrApp: </strong><a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><?php echo $Catalog[$i]->integrapp_code; ?></a></div>
+													<div class="catalogProdCode" style="text-align:center;"><strong>Precio: </strong><?php echo $Catalog[$i]->price . '$'; ?></div>
+												</div>
 											</div>
-											<div style="text-align:center;"> <strong><?php echo $Catalog[$i]->name; ?></strong></div>
-											<div style="text-align:center;"><strong>Código IntegrApp: </strong><?php echo $Catalog[$i]->integrapp_code; ?></div>
-											<div style="text-align:center;"><strong>Precio: </strong><?php echo $Catalog[$i]->price . '$'; ?></div>
-										</div>
-									</div>
-								<?php } ?>
+									<?php } 
+								}?>
 								<div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center"> 			
 										
 									<?php if(isset($pageLinks)) foreach ($pageLinks as $link) {

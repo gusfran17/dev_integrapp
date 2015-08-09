@@ -221,6 +221,7 @@ $(document).ready(function(){
 					$("#productVAT").val(json.editProduct.tax);
 					$("#productPrice").val(json.editProduct.price);
 					$("#productDesc").val(json.editProduct.description);
+					$("#productPresc").val(json.editProduct.prescription);
 					$("#prodImagesArray").remove();
 					$("#productEdition").val("true");
 					$.each(json.editProduct.colors, function(index, value) {
