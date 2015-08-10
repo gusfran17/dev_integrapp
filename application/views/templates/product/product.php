@@ -28,7 +28,15 @@
 							</button>
 							<ul class="dropdown-menu" aria-labelledby="suppliersDropDown">
 								<li class="dropdown-header">Proveedor Principal</li>
-								<li><a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $product->supplier->id;?>"><img src="<?php echo base_url() . $product->supplier->logo; ?>" alt="Chania" style="height: 20px"><?php echo $product->supplier->fake_name; ?></a></li>
+								<li><a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $product->supplier->id;?>">
+									
+								<?php if(isset($product->supplier->logo)){ ?>
+     								<img src="<?php echo base_url() . $product->supplier->logo; ?>" style="height: 20px">
+     							<?php } else { ?>
+     								<img src="<?php echo base_url() . IMAGES_PATH . 'noProfilePic.jpg'; ?>" style="height: 20px">
+								<?php } ?>
+									<?php echo $product->supplier->fake_name; ?></a>
+								</li>
 								<li role="separator" class="divider"></li>
 								<li class="dropdown-header">Proveedores que lo distribuyen</li>
 								<li><a href="#">ProveeWWW</a></li>
@@ -41,29 +49,26 @@
 							<?php if (isset($product->images)){?>
 								<!-- Indicators -->
 								<ol class="carousel-indicators">
-									<?php for ($i=0; $i < count($product->images); $i++) {
-											if ($i==0){
-												echo '<li data-target="#myCarousel" data-slide-to="'.$i.'" class="active" style="border:1px solid #BBB;"></li>';
-											} else {
-												echo '<li data-target="#myCarousel" data-slide-to="'.$i.'" style="border: 1px solid #BBB;"></li>';
-											}			
-									}?>					
+									<li data-target="#myCarousel" data-slide-to="0" class="active" style="border:1px solid #BBB;"></li>
+									<?php for ($i=1; $i < count($product->images); $i++) {
+										echo '<li data-target="#myCarousel" data-slide-to="'.$i.'" style="border: 1px solid #BBB;"></li>';
+									}?>								
 								</ol>
 								<!-- Wrapper for slides -->
 								<div class="carousel-inner" role="listbox">
-									<?php
-									 	$path = base_url() . PRODUCT_IMAGES_PATH . $product->id . "/";
-										for ($i=0; $i < count($product->images); $i++) { 
-											if ($i==0) {?>
-												<div class="item active">
-													<img src="<?php echo $path . $product->images[$i]; ?>" alt="Chania" style="height: 360px">
-												</div>	
-									<?php 	} else { ?>	
+									<?php $path = base_url() . PRODUCT_IMAGES_PATH . $product->id . "/"; ?>
+										<div class="item active">'
+									 		<?php if (count($product->images) > 0){?>
+												<img src="<?php echo $path . $product->images[0]; ?>" style="height: 360px">
+											<?php } else { ?>
+												<img src="<?php echo base_url() . 'Resources/imgs/NoFoto.jpg'; ?>" style="height: 360px">
+											<?php } ?> 
+										</div>
+									<?php for ($i=0; $i < count($product->images); $i++) { ?>
 												<div class="item">
 													<img src="<?php echo $path . $product->images[$i]; ?>" alt="Chania" style="height: 360px">
 												</div>		
-									<?php 	}
-										}?>
+									<?php }?>
 								</div>
 
 								<!-- Left and right controls -->
