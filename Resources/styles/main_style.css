@@ -308,7 +308,24 @@ form{/*width: 40%; */position: relative; padding-bottom: 50px;}
 	top: 10px;
 }
 
+/*Modificaciones de Javier*/
 
+.form-border-container{
+	border-style: dashed;
+	border-color: #B9B0B0;
+	border-width: 1px;
+	border-radius: 5px;
+	padding: 25px;
+	margin: 0px;
+	position: relative;
+	left: -25px;
+}
+
+.col-md-7 .form-border-container{
+	position: relative;
+	top: 10px;
+	padding-top: 0px;
+}
 
 
 @media (max-width: 768px) { 

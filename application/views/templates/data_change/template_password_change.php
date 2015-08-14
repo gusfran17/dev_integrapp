@@ -7,7 +7,7 @@
 			<div class="form-group">
 			  <label class="control-label" for="password">Contraseña actual</label>
 			  <?php echo form_error('password', '<span class="label label-danger">', '</span>'); ?>
-			  <input class="form-control" id="password" name="password" type="password" placeHolder="Contraseña">
+			  <input class="form-control" id="password" name="password" type="password" placeHolder="Contraseña" disabled>
 			</div>
 			<div class="form-group">
 			  <label class="control-label" for="new_password">Nueva contraseña</label>

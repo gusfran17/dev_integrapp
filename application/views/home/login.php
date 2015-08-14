@@ -7,7 +7,7 @@
 				<div class="col-md-5 col-sm-7 col-xs-12">
 					<form action="<?php echo base_url(); ?>login/authenticate" method="POST">
 					<p> <strong>  <?php if($this->session->flashdata('register_user')):echo $this->session->flashdata('register_user');endif; ?></strong> </p>
-					
+						<div class="form-border-container">
 						<div class="form-group">
 							<label for="username">Usuario</label>
 							<?php echo form_error('username', '<span class="label label-danger">', '</span>'); ?>
@@ -20,13 +20,16 @@
 						</div>
 						<div class="form-group">
 							<button type="submit" class="btn btn-default" >Ingresar</button>
+						</div>
 						</div> 
 					</form>
 				</div> 
 				<div class="col-md-7" >
+					<div class="form-border-container">
 					<h3>Registrarse:</h3>
 					<p>Si aun no es usuario usted puede <a href="<?php echo base_url(); ?>home/routedHome/register">Registrarse</a></p>
 					<a href="<?php echo base_url(); ?>home/routedHome/register">Olvide mi contraseña</a>
+				</div>
 				</div>
 			</div> 
 		</div> 
