@@ -16,7 +16,7 @@ class Suppliers extends CI_Controller {
 	public function routedHome($data = null, $section, $template=false){
 		if($this->session->has_userdata('role')){
 			$role = $this->session->userdata("role");
-			$data["userdata"]=$this->session->userdata("user");
+			$data["username"]=$this->session->userdata("user");
 		} else {
 			redirect(TIMEOUT_REDIRECT);
 			die;
