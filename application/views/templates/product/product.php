@@ -21,8 +21,13 @@
 						<h2><b><?php echo $product->name; ?></b><small> <b><?php echo $product->price . '$' . ' (' . 'I.V.A. ' . $product->tax . ')';?></b></small></h2>
 						<h4><strong>Código Interno (<?php echo $product->supplier->fake_name;?>):</strong> <?php echo $product->code; ?><br></h4>
 						<h4><strong>Código IntegrApp: </strong><?php echo $product->integrapp_code; ?></h4>
+						<?php if ($product->mine){ ?>
+							<a href="<?php echo base_url() . 'product/editCatalogProduct/' . $product->id; ?>">
+								<button type="button" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</button>
+							</a>
+						<?php } ?>
 						<div class="dropdown" style="margin-bottom: 10px;">
-							<button class="btn btn-info dropdown-toggle" type="button" id="suppliersDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+							<button class="btn btn-info btn-xs dropdown-toggle" type="button" id="suppliersDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 								Proveedores
 								<span class="caret"></span>
 							</button>

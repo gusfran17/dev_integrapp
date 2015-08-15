@@ -16,7 +16,7 @@ class Product extends CI_Controller {
 	public function tabbedRoutedHome($data = null, $tab){
 		if($this->session->has_userdata('role')){
 			$role = $this->session->userdata("role");
-			$data["userdata"]=$this->session->userdata("user");
+			$data["username"]=$this->session->userdata("user");
 		} else {
 			redirect(TIMEOUT_REDIRECT);
 			die;
@@ -33,7 +33,7 @@ class Product extends CI_Controller {
 	public function routedHome($data = null, $section = null, $template=false){
 		if($this->session->has_userdata('role')){
 			$role = $this->session->userdata("role");
-			$data["userdata"]=$this->session->userdata("user");
+			$data["username"]=$this->session->userdata("user");
 		} else {
 			redirect(TIMEOUT_REDIRECT);
 			die;
@@ -62,7 +62,8 @@ class Product extends CI_Controller {
 		$this->session->unset_userdata('selectedCategoryId');
 		$this->orderMyCatalogBy('category_id');
 	}
-	//New Test functions
+
+
 	public function productLoadView($data=NULL){
 		$role = $this->session->userdata("role");
 		$data['productLoadView'] = true;
@@ -244,6 +245,7 @@ class Product extends CI_Controller {
 						$integrappCode = "PR".$new_id."C".$this->input->post("categoryID")."P".$role_id;
 						$insert['supplier_id'] = $role_id;
 						$insert['integrapp_code'] = $integrappCode;
+						$insert['status'] = 'active';
 						$id = $this->Product_model->saveProduct($insert);
 					} else {
 						$new_id = $editID;
@@ -269,19 +271,20 @@ class Product extends CI_Controller {
 						}
 					
 						//Guarda las imagenes en la carpeta del producto (si es una edicion borra las actuales para que no se sumen)
-						$this->Product_model->setImagesFolder($editProduct, $this->input->post('imagen'), $new_id);
+						$this->Product_model->setImagesFolder($editProduct, $this->input->post('images'), $new_id);
 						
 						//Guarda los colores del producto
 						$selectedColors = $this->input->post('selectedColorsArray');
-						if(isset($selectedColors)){
-							$this->Product_model->setProductColors($editProduct, $selectedColors, $new_id);	
+						if (!(isset($selectedColors))) {
+							$selectedColors = array();
 						}
+						$this->Product_model->setProductColors($editProduct, $selectedColors, $new_id);	
 						
 						//Goes back to the form 
 		   				$recent_products = $this->input->post('recentlyAddedIntegrappCode');
 		   				if (!$editProduct){
 		   					$recent_products[] = $integrappCode; //if it is a new saved product it gets loaded in the last loaded products grid
-		   				}
+		   				} 
 						$lastloadedProducts = $this->Product_model->getProductsByIntegrappCode($recent_products);
 						$data['lastLoadedProductsGrid'] = $lastloadedProducts;
 						$data['productLoaded'] = "Loaded";
@@ -299,8 +302,8 @@ class Product extends CI_Controller {
 						$attribute_value = $this->input->post('value'.$i);
 						if (($attribute_name != null) or ($attribute_name != "")){
 							$attribute = new stdClass();
-							$attribute->name = $attribute_name;
-							$attribute->value = $attribute_value;
+							$attribute->attribute_name = $attribute_name;
+							$attribute->attribute_value = $attribute_value;
 							$attributes[] = $attribute;
 						}
 
@@ -308,9 +311,17 @@ class Product extends CI_Controller {
 					if (isset($attributes)){
 						$data['attributes'] = $attributes;
 					}   			
-		   			$data['imagen'] = $this->input->post('imagen');
+		   			$data['images'] = $this->input->post('images');
 					$productColors = $this->input->post('selectedColorsArray');
-		   			$data['colors'] = $productColors;
+		   			if (isset($productColors)){
+		   				$colors = array();
+			   			foreach ($productColors as $color) {
+			   				$colorObject = new stdClass();
+			   				$colorObject->color = $color;
+			   				$colors[] = $colorObject;
+			   			}
+			   			$data['colors'] = $colors;
+			   		}
 					$recent_products = $this->input->post('recentlyAddedIntegrappCode');
 					if (!isset($recent_products)){
 						//If it is the first time a product is loaded the array needs to be initialized so as not to bring all existing products
@@ -318,9 +329,6 @@ class Product extends CI_Controller {
 					}
 					$lastLoadedProducts = $this->Product_model->getProductsByIntegrappCode($recent_products);
 					$data['lastLoadedProductsGrid'] = $lastLoadedProducts;
-					if ($editProduct){
-						$data['editProductID'] = $editID;
-					}
 					$this->productLoadView($data);
 		   		}
 
@@ -344,6 +352,31 @@ class Product extends CI_Controller {
 		}
 	}
 
+	public function editCatalogProduct($productId){
+		$product = $this->Product_model->getProductById($productId);
+		if (count($product)>0){
+			$colors = $this->Product_model->getProductColors($product->id);
+			$attributes = $this->Product_model->getProductAttributes($product->id);
+			$productImages = $this->Product_model->getProductImages($product->id);
+			$category = $this->Product_model->getCategoryRecord($product->category_id);
+
+			$data['editProduct'] = $product;
+			$data['colors'] = $colors;
+			$data['images'] = $productImages;
+			$data['attributes'] = $attributes;
+			$data['editProduct']->category = $category[0];
+			
+			//Goes back to the form 
+			// $recent_products = $this->input->post('recentlyAddedIntegrappCode');
+			// if (!(isset($recent_products)))  $recent_products = array();
+			// $recent_products[] = $product->integrapp_code;
+			// $lastloadedProducts = $this->Product_model->getProductsByIntegrappCode($recent_products);
+			// $data['lastLoadedProductsGrid'] = $lastloadedProducts;
+			$this->productLoadView($data);
+		}
+	}
+
+
 	public function deleteProduct(){
 		$deletionProduct = $this->input->post("deletionIntegrapCode");
 		if ($this->Product_model->deleteProductByIntegrappCode($deletionProduct)){
@@ -357,11 +390,17 @@ class Product extends CI_Controller {
 		$product = $this->Product_model->getProductById($productId);
 		$supplier = $this->Supplier_model->getSupplierById($product->supplier_id);
 		$role = $this->session->userdata("role");
+		$role_id = $this->session->userdata('role_id');
 		$productImages = $this->Product_model->getProductImages($productId);
 		$colors = $this->Product_model->getProductColors($productId);
 		$attributes = $this->Product_model->getProductAttributes($productId);
 		$branch = $this->getCategoryBranch($product->category_id);
 		$data['product'] = $product;
+		if ($product->supplier_id == $role_id) {
+			$data['product']->mine = true;
+		} else {
+			$data['product']->mine = false;
+		}
 		$data['product']->supplier = $supplier;
 		$data['role'] = $role;
 		$data['product']->images = $productImages;

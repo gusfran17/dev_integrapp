@@ -224,6 +224,7 @@ $(document).ready(function(){
 					$("#productPresc").val(json.editProduct.prescription);
 					$("#prodImagesArray").remove();
 					$("#productEdition").val("true");
+					$('#selected_colors').empty();
 					$.each(json.editProduct.colors, function(index, value) {
 						console.log("Color: "+ value.color)
 						$('.selected_colors_div').show();
@@ -241,6 +242,7 @@ $(document).ready(function(){
         				});
         				$('#selected_colors').append(newColor);
 					});
+					$('.form-group_specifications').remove();
 					$.each(json.editProduct.attributes, function(index, value) {
 						console.log("name: "+ value.attribute_name + " value: "+ value.attribute_value)
 						$(".input_fields_wrap").append('<div class="form-group_specifications" ><textarea type="text" class="inputProperty" id="' + index + '" name="attribute' + index + '" placeholder="Tipo de Variante...">' + value.attribute_name + '</textarea><textarea type="text" class="inputProperty" id="' + index + '" name="value' + index + '" placeholder="Valor de Variante...">' + value.attribute_value + '</textarea><a href="#" class="remove_field">X</a></div>');
@@ -255,7 +257,7 @@ $(document).ready(function(){
 							var mockFile = { name: "Imagen", size: 12345, file_name: value };
 							myDropzone.options.addedfile.call(myDropzone, mockFile);
 							myDropzone.options.thumbnail.call(myDropzone, mockFile, $("#imagesPath").val() + "/" + json.editProduct.id + "/thumbs/" + value);
-							$("#imagesArray").append("<input type='hidden' name='imagen[]' value='"+ value +"' />");
+							$("#imagesArray").append("<input type='hidden' name='images[]' value='"+ value +"' />");
 						});
 						//Alert that a product is being edited
 						$("#editionAlert").empty();

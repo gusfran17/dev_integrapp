@@ -15,11 +15,10 @@ class Product_model extends CI_Model {
     }
 
     public function getCategoryRecord($categoryId){
-
         $this->db->where("id", $categoryId);
         $query = $this->db->get('category');
         if($query->num_rows() == 0){
-            return null;
+            return null;            
         }
         $result = $query->result();
         return $result;
