@@ -7,6 +7,7 @@
 		<div class="row" id="registration">
 			<div class="col-md-5 col-sm-7">
 				<form action="<?php echo base_url(); ?>register/register" method="POST">
+					<div class="form-border-container">
 					<div class="form-group">
 						<label for="username">Nombre de Usuario</label>
 						<?php echo form_error('username', '<span class="label label-danger">', '</span>'); ?>
@@ -62,9 +63,11 @@
 						<!-- <input type="submit" class="btn btn-default"> -->
 						<button type="submit" class="btn btn-default" >Registrarme</button>
 					</div> 
+				</div>
 				</form>
 			</div>
 			<div class="col-md-7 col-sm-5" id="description-user">
+				<div class="form-border-container">
 				<div>
 					<h3>COMO USUARIO PUEDE:</h3>
 					<ul>
@@ -90,6 +93,7 @@
 						<li>Participar de capacitaciones
 					</ul>
 				</div>
+			</div>
 			</div>
 		</div>
 	</div>
