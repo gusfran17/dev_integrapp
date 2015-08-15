@@ -299,7 +299,7 @@ footer {
 /*!!!!!FORM!!!!!!!!!!*/
 form{/*width: 40%; */position: relative; padding-bottom: 50px;}
 .btn:hover{background-color: #4784ff; color: white; transition: all 0.3s ease;}
-#description-user{position: relative; top:100px; right: 0; border-left: #ccc solid 1px; padding-left: 15px; transition: all 0.3s ease;}
+#description-user{position: relative; top:100px; right: 0; border-left: #ccc solid 0px; padding-left: 15px; transition: all 0.3s ease;}
 #registration{position: relative; padding-bottom: 30px;}
 /*end*/
 
@@ -312,7 +312,7 @@ form{/*width: 40%; */position: relative; padding-bottom: 50px;}
 
 .form-border-container{
 	border-style: dashed;
-	border-color: #B9B0B0;
+	border-color: #4784ff;
 	border-width: 1px;
 	border-radius: 5px;
 	padding: 25px;
