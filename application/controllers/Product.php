@@ -54,15 +54,31 @@ class Product extends CI_Controller {
 		} else {
 			$this->session->unset_userdata('selectedCategoryId');
 		}
+		$this->session->set_userdata('statusFilter', 'published');
 		$this->orderCatalogBy('category_id');
 		
 	}
 
 	public function myProducts(){
 		$this->session->unset_userdata('selectedCategoryId');
+		$this->session->set_userdata('statusFilter', 'published');
 		$this->orderMyCatalogBy('category_id');
 	}
 
+	public function showPublishedProducts(){
+		$this->session->set_userdata('statusFilter', 'published');
+		$this->orderMyCatalogBy('category_id');
+	}
+
+	public function showActiveProducts(){
+		$this->session->set_userdata('statusFilter', 'active');
+		$this->orderMyCatalogBy('category_id');
+	}
+
+	public function showInactiveProducts(){
+		$this->session->set_userdata('statusFilter', 'inactive');
+		$this->orderMyCatalogBy('category_id');
+	}
 
 	public function productLoadView($data=NULL){
 		$role = $this->session->userdata("role");
@@ -111,7 +127,10 @@ class Product extends CI_Controller {
 		return $selectedCategoryId;
 	}
 
+
 	public function orderCatalogBy ($orderBy){
+		$statusFilter = $this->session->userdata('statusFilter');
+        $data['statusFilter'] = $statusFilter; 
 		$url = base_url() . "Product/orderCatalogBy/$orderBy";
 		$selectedCategoryId = $this->getCategoryFilter();
 		$branch = $this->getCategoryBranch($selectedCategoryId);
@@ -124,7 +143,7 @@ class Product extends CI_Controller {
 			$page = 1;
 		}
 		$totalRows = 0;
-		$data['Catalog'] = $this->Product_model->get_catalog(null, $orderBy, $page, $this->productsAmountPerPage, $selectedCategoryId, $totalRows);
+		$data['Catalog'] = $this->Product_model->get_catalog(null, $selectedCategoryId, $statusFilter, $orderBy, $page, $this->productsAmountPerPage, $totalRows);
 		$this->setPagination($url, $totalRows, $this->productsAmountPerPage);
 		$str_links = $this->pagination->create_links();
 		$data["pageLinks"] = explode('&nbsp;',$str_links );
@@ -137,6 +156,8 @@ class Product extends CI_Controller {
 
 	public function orderMyCatalogBy ($orderBy){
 		$role_id = $this->session->userdata('role_id');
+		$statusFilter = $this->session->userdata('statusFilter');
+        $data['statusFilter'] = $statusFilter; 
 		$url = base_url() . "Product/orderMyCatalogBy/$orderBy";
 		$selectedCategoryId = $this->getCategoryFilter();
 		$branch = $this->getCategoryBranch($selectedCategoryId);
@@ -149,12 +170,11 @@ class Product extends CI_Controller {
 			$page = 1;
 		}
 		$totalRows = 0;
-		$data['Catalog'] = $this->Product_model->get_catalog($role_id, $orderBy, $page, $this->myProductsAmountPerPage, $selectedCategoryId, $totalRows);
+		$data['Catalog'] = $this->Product_model->get_catalog($role_id, $selectedCategoryId, $statusFilter, $orderBy, $page, $this->myProductsAmountPerPage, $totalRows);
 		$this->setPagination($url, $totalRows, $this->myProductsAmountPerPage);
 		
 		$str_links = $this->pagination->create_links();
-		$data["pageLinks"] = explode('&nbsp;',$str_links );
-		log_message('info',"Pagination: ".$str_links . "total rows: " . $totalRows,false);
+		$data["pageLinks"] = explode('&nbsp;',$str_links);
 		$data['viewMyCatalog'] = true;
 		$role = $this->session->userdata("role");
 		$data['orderBy'] = $orderBy;
@@ -408,7 +428,13 @@ class Product extends CI_Controller {
 		$data['product']->colors = $colors;
 		$data['product']->attributes = $attributes;
 		$this->routedHome($data, 'templates/product/product', true);
+	}
 
+	public function setProductStatus($productId, $status){
+		$update = array();
+		$update['status'] = $status;
+		$this->Product_model->updateProduct($update, $productId);
+		redirect('Product/orderMyCatalogBy/category_id');
 	}
 
 	public function productNameCheck(){

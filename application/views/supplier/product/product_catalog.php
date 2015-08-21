@@ -1,6 +1,6 @@
 					
 						
-				    		<div class="col-md-3 col-sm-3 col-xs-4">
+				    		<div class="col-lg-2 col-md-3 col-sm-3 col-xs-4">
 				    			<div class="panel panel-info">
 				    				<div class="panel-heading">
 										<div class="panel-title">
@@ -17,64 +17,61 @@
 				    				<div class="panel-body">
 				    					<form method="post" id="catalogCategoriesFilter" action="<?php echo base_url() . 'product/' . (isset($viewMyCatalog)? 'orderMyCatalogBy/': 'orderCatalogBy/') . "$orderBy";?>" style= "padding-bottom: 0px;">
 				    						<div class="panel panel-default">
-												<?php
-													if (isset($selectedCategoryId)) {
-														echo '<ol class="breadcrumb" style= "margin-bottom: 0;">';
-														echo '<li><a href="#" onclick="selectCategory(id);" id="-1"><b>' . (isset($viewMyCatalog)? "MIS PRODUCTOS": "PRODUCTOS") . '</b></a></li>';
-														$treeHeight = count($branch);
-														//echo var_dump($branch);
-														for ($i=$treeHeight-1; $i >= 0; $i--) {
-															echo '<li><a href="#" onclick="selectCategory(id);" id="'.$branch[$i]->id.'">'.$branch[$i]->name.'</a></li>';
+				    							<div class="panel-body">	
+													<?php
+														if (isset($selectedCategoryId)) {
+															echo '<ol class="breadcrumb" style= "margin-bottom: 0;">';
+															echo '<li><a href="#" onclick="selectCategory(id);" id="-1"><b>' . (isset($viewMyCatalog)? "MIS PRODUCTOS": "PRODUCTOS") . '</b></a></li>';
+															$treeHeight = count($branch);
+															//echo var_dump($branch);
+															for ($i=$treeHeight-1; $i >= 0; $i--) {
+																echo '<li><a href="#" onclick="selectCategory(id);" id="'.$branch[$i]->id.'">'.$branch[$i]->name.'</a></li>';
+															}
+															echo '</ol>';
+														} 
+														if (isset($childCategories)) {
+															echo '<ul>';
+															for ($i=0; $i < count($childCategories); $i++) {
+																echo '<li><a href="#" onclick="selectCategory(id);" id="'. $childCategories[$i]->id . '">'.$childCategories[$i]->name.'</a></li>';
+															}
+															echo '</ul>';
+														} 
+													?>
+												
+													<input type="text" id="selectedCategoryId" name="selectedCategoryId">
+													<script type="text/javascript">
+														$('#selectedCategoryId').hide();
+														function selectCategory(selectedCategoryId) {
+															var catId = selectedCategoryId;
+															$('#selectedCategoryId').attr('value',catId);
+															$('#catalogCategoriesFilter').submit();
 														}
-														echo '</ol>';
-													} 
-													if (isset($childCategories)) {
-														echo '<ul>';
-														for ($i=0; $i < count($childCategories); $i++) {
-															echo '<li><a href="#" onclick="selectCategory(id);" id="'. $childCategories[$i]->id . '">'.$childCategories[$i]->name.'</a></li>';
-														}
-														echo '</ul>';
-													} 
-												?>
-											
-												<input type="text" id="selectedCategoryId" name="selectedCategoryId">
-												<script type="text/javascript">
-													$('#selectedCategoryId').hide();
-													function selectCategory(selectedCategoryId) {
-														var catId = selectedCategoryId;
-														$('#selectedCategoryId').attr('value',catId);
-														$('#catalogCategoriesFilter').submit();
-													}
-												</script>												
-											</div>
-											<div class="panel panel-default">
-												<div class="panel-heading">
-													<div class="panel-title">
-														Estado
-													</div>
-												</div>
-												<div class="panel-body">
-													<div class="col-lg-12">
-												        <input type="radio" name="published">
-												      	Publicados   
-													</div>
-													<div class="col-lg-12">
-												        <input type="radio" name="published">
-												      	No publicados   
-													</div>
-													<div class="col-lg-12">
-												        <input type="radio" name="published">
-												      	Eliminados   
-													</div>
+													</script>												
 												</div>
 											</div>
+											<?php if (isset($viewMyCatalog)) {?>
+												<div class="panel panel-default" style="padding:0px">
+													<div class="panel-heading">
+														<div class="panel-title">
+															Estado
+														</div>
+													</div>
+													<div class="panel-body" style="padding:0px">
+														<ul class="nav nav-pills nav-stacked" type="circle" style="margin: 5px 5px 5px 5px; padding: 5px 5px 5px 5px;">
+															<li class="<?php if ($statusFilter == 'published') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/showPublishedProducts/'; ?>">Publicados</a></li>
+															<li class="<?php if ($statusFilter == 'active') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/showActiveProducts'; ?>">Activos</a></li>
+															<li class="<?php if ($statusFilter == 'inactive') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/showInactiveProducts'; ?>"><b style="color:red">Eliminados</b></a></li>
+														</ul>
+													</div>
+												</div>
+											<?php } ?>
 											<div class="panel panel-default" style="margin-bottom: 0px;">
 												<div class="panel-heading">
 													<div class="panel-title">
 														Ordenar Catalogo
 													</div>
 												</div>
-												<div class="panel-body">
+												<div class="panel-body" style="padding:0px">
 									    			<ul class="nav nav-pills nav-stacked" type="circle" style="margin: 5px 5px 5px 5px; padding: 5px 5px 5px 5px;">
 														<?php if (isset($viewMyCatalog)) {?>
 															<li class="<?php if ($orderBy == 'category_id') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMyCatalogBy/category_id'; ?>">Ordenado por categorias</a></li>
@@ -94,7 +91,7 @@
 									</div>
 								</div>
 							</div>
-				    		<div class="col-md-9 col-sm-9 col-xs-8">
+				    		<div class="col-lg-10 col-md-9 col-sm-9 col-xs-8">
 				      			<div class="col-md-12 col-sm-12 col-xs-12">		
 					    			<?php
 	    								if (isset($selectedCategoryId)) {
@@ -156,6 +153,25 @@
 														<a href="<?php echo base_url() . 'product/editCatalogProduct/' . $Catalog[$i]->id; ?>">
 															<button type="button" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</button>
 														</a>
+														<?php if ($Catalog[$i]->status == 'active') {?>
+															<a href="<?php echo base_url() . 'product/setProductStatus/' . $Catalog[$i]->id . "/published"; ?>">
+																<button type="button" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Publicar</button>
+															</a>
+															<a href="<?php echo base_url() . 'product/setProductStatus/' . $Catalog[$i]->id . "/inactive"; ?>">
+																<button type="button" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Eliminar</button>
+															</a>
+														<?php } else if ($Catalog[$i]->status == 'inactive') {?>
+															<a href="<?php echo base_url() . 'product/setProductStatus/' . $Catalog[$i]->id . "/active"; ?>">
+																<button type="button" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Activar</button>
+															</a>
+														<?php } else if ($Catalog[$i]->status == 'published') {?>
+															<a href="<?php echo base_url() . 'product/setProductStatus/' . $Catalog[$i]->id . "/active"; ?>">
+																<button type="button" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-save-file" aria-hidden="true"></span> Despublicar</button>
+															</a>
+															<a href="<?php echo base_url() . 'product/setProductStatus/' . $Catalog[$i]->id . "/inactive"; ?>">
+																<button type="button" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Eliminar</button>
+															</a>
+														<?php } ?>
 													</td>
 												</tr>
 											<?php } ?>

@@ -222,15 +222,19 @@ class Product_model extends CI_Model {
     }
 
     
-    public function get_catalog($id=null, $orderBy = null, $page = 1, $rangePerPage = 1000, $parentCategoryId = null, &$totalRows){
+    public function get_catalog($supplierId=null, $parentCategoryId = null, $status = null, $orderBy = null, $page = 1, $rangePerPage = 1000, &$totalRows){
+        //Category ID needs to be fetched first to avoid where clauses errors
         if (isset($parentCategoryId) and ($parentCategoryId != 0)){
             $leafCategories = array();
             log_message('info', "Product_model get_catalog", FALSE);
             $this->getLeafCategories($leafCategories, $parentCategoryId);
             $this->db->where_in("category_id", $leafCategories);
         }
-        if (isset($id)){
-            $this->db->where("supplier_id", $id);
+        if (isset($supplierId)){
+            $this->db->where("supplier_id", $supplierId);
+        }
+        if (isset($status)) {
+            $this->db->where("status", $status);
         }
         if (isset($orderBy)){
                 $this->db->order_by($orderBy);     

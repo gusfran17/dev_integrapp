@@ -95,12 +95,8 @@ class Suppliers extends CI_Controller {
 		}
 		$totalRows = 0;
 		$page = $this->getPage($this->catalog_pagination_uri_segment);
-		log_message('info', "BEFORE::: suppID: " . $selectedSupplierId . " orderdy: " . $orderBy . " page: " . $page . " prodsPerPage: " . $this->productsPerPage . " selectedCat:" . $selectedCategoryId . " totalRows: " . $totalRows, false);
-		$data['Catalog'] = $this->Product_model->get_catalog($selectedSupplierId, $orderBy, $page, $this->productsPerPage, $selectedCategoryId, $totalRows);
-		log_message('info', "AFTER::: suppID: " . $selectedSupplierId . " orderdy: " . $orderBy . " page: " . $page . " prodsPerPage: " . $this->productsPerPage . " selectedCat:" . $selectedCategoryId . " totalRows: " . $totalRows, false);
+		$data['Catalog'] = $this->Product_model->get_catalog($selectedSupplierId, $selectedCategoryId, null, $orderBy, $page, $this->productsPerPage, $totalRows);
 		$url = base_url() . "Suppliers/viewSupplierCatalog/$orderBy";
-		log_message('info',"orderBy: ".$orderBy, false);
-		log_message('info',"URL: ".$url, false);
 		$this->setPagination($url, $totalRows, $this->catalog_pagination_uri_segment, $this->productsPerPage);
 		$data['orderBy']=$orderBy;
 		
@@ -109,6 +105,7 @@ class Suppliers extends CI_Controller {
 		$section = 'templates/supplier/supplier_catalog';
 		$this->routedHome($data, $section, true);		
 	}
+
 
 	public function getPage($uri_segment){
 		if($this->uri->segment($uri_segment)){
