@@ -15,6 +15,22 @@ class Supplier_model extends CI_Model {
         }
      }
 
+    public function createSupplierDistributorAssolciation($userId){
+        $this->db->where('userid', $userId);
+        $query = $this->db->get('supplier');
+        $supplier = $query->result();
+
+        $query = $this->db->get('distributor');
+        $distributors = $query->result();
+        foreach ($distributors as $key => $distributorRecord) {
+            $insert = array();
+            $insert['distributor_id'] = $distributorRecord->id;
+            $insert['supplier_id'] = $supplier[0]->id;
+            $insert['status'] = 'pending';
+            $this->db->insert('supplier_distributor_association', $insert);           
+        }
+    }
+
 
 	function save($userid, $data){
 
@@ -111,6 +127,85 @@ class Supplier_model extends CI_Model {
             return false;
         }
     }
+
+    public function notExistFakename($fake_name){
+        $this->db->where('fake_name', $fake_name);
+        $query = $this->db->get('supplier');
+        if ($query->num_rows()==0) {
+            return TRUE;
+        }else{
+            return FALSE;
+        }
+    }
+
+    public function getAssociatedDistributors($supplierId, $status = null){
+        $this->db->select('distributor.*, supplier_distributor_association.*');
+        $this->db->from('distributor');
+        $this->db->join('supplier_distributor_association', 'distributor.id = supplier_distributor_association.distributor_id');
+        $this->db->where('supplier_distributor_association.supplier_id', $supplierId);
+        if (isset($status)){
+            $this->db->where('supplier_distributor_association.status', $status);
+        }
+        $query = $this->db->get();
+        $distributors = $query->result();
+        for ($i=0; $i<count($distributors); $i++) {
+            $distributors[$i]->logo = $this->Distributor_model->get_logo($distributors[$i]->userid);
+        }
+        return $distributors;
+    }
+
+    public function associationStatus($role, $roleId, $supplierId){
+        if ($role == 'supplier') { 
+
+        } else if ($role == 'distributor') {
+            $this->db->where('supplier_id', $supplierId);
+            $this->db->where('distributor_id', $roleId);
+            $query = $this->db->get('supplier_distributor_association');
+            $association = $query->result();
+            return $association[0]->status;
+        }
+    }
+
+    public function associationDiscount($role, $roleId, $supplierId){
+        if ($role == 'supplier') {
+
+        } else if ($role == 'distributor') {
+            $this->db->where('supplier_id', $supplierId);
+            $this->db->where('distributor_id', $roleId);
+            $query = $this->db->get('supplier_distributor_association');
+            $association = $query->result();
+            return $association[0]->discount;
+        }
+    }
+
+    public function addAssociationDetailsToProduct($role, $roleId, &$catalog){
+        if ($role == 'supplier') {
+
+        } else if ($role == 'distributor') {
+            for ($i=0; $i < count($catalog); $i++) { 
+                $this->db->where('supplier_id', $catalog[$i]->supplier_id);
+                $this->db->where('distributor_id', $roleId);
+                $query = $this->db->get('supplier_distributor_association');
+                $association = $query->result();
+                $catalog[$i]->associationStatus = $association[0]->status;
+                $catalog[$i]->associationDiscount = $association[0]->discount;
+                $this->db->where('id', $catalog[$i]->supplier_id);
+                $query = $this->db->get('supplier');
+                $supplier = $query->result();
+                $catalog[$i]->supplier_fakename = $supplier[0]->fake_name;
+                $this->db->where('product_id', $catalog[$i]->id);
+                $this->db->where('distributor_id', $roleId);
+                $query = $this->db->get('distributor_catalog');
+                if ($query->num_rows() > 0){
+                    $catalog[$i]->isCatalogItem = true;
+                } else {
+                    $catalog[$i]->isCatalogItem = false;
+                }
+
+            }
+        }        
+    }
+
 
 }
 

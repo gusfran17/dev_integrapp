@@ -3,16 +3,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Profile extends CI_Controller {
 
-	
-
-	  function __construct() {
-	  	
+	function __construct() {
         parent::__construct();
         $this->section=$this->uri->segment(2);
-
     }
-	
-	
    
 	public function index(){
 		if($this->session->has_userdata('role')){

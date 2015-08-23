@@ -12,8 +12,8 @@ class Register extends CI_Controller {
 
 	public function register(){
 		$role = $this->input->post("role");
-		if (($role == 'supplier') or ($role == 'supplier')) {
-			$this->form_validation->set_rules('fake_name', 'Nombre de le Empresa', 'required');	
+		if (($role == 'supplier') or ($role == 'distributor')) {
+			$this->form_validation->set_rules('fake_name', 'Nombre de le Empresa', 'required|callback_fakenamecheck');	
 		}
 		$this->form_validation->set_rules('username', 'Nombre de usuario', 'required|callback_usernamecheck');
 		$this->form_validation->set_rules('name', 'Nombre', 'required|alpha');
@@ -28,6 +28,7 @@ class Register extends CI_Controller {
 		$this->form_validation->set_message('valid_email', 'Esto no parece ser un email');
 		$this->form_validation->set_message('matches', 'Los campos de contraseña deben ser iguales');
 		$this->form_validation->set_message('usernamecheck', 'Ops, el nombre de usuario ya esta en uso');
+		$this->form_validation->set_message('fakenamecheck', 'Ops, el nombre de la empresa ya esta en uso');
 		$this->form_validation->set_message('emailcheck', 'Ops, el mail ya esta en uso');
 
 		if ($this->form_validation->run()){
@@ -48,6 +49,11 @@ class Register extends CI_Controller {
 			}
 			$insert['register_date'] = date("Y-m-d H:i:s");
 			$id = $this->User_model->register_user($insert, $role, $fake_name);
+			if ($role=='supplier'){
+				$this->Supplier_model->createSupplierDistributorAssolciation($id);
+			} else if ($role == 'distributor'){
+				$this->Distributor_model->createSupplierDistributorAssolciation($id);
+			}
 			$this->session->set_flashdata('register_user', 'Su cuenta ha sido creada y le hemos enviado un e-mail de confirmación.');
 			redirect('home/routedHome/login');
 		}else{
@@ -65,7 +71,20 @@ class Register extends CI_Controller {
 		return $this->User_model->username_not_exist($username);
 	}
 
+	public function fakenamecheck(){
+		$fake_name = $this->input->post('fake_name');
+		if (!($this->Supplier_model->notExistFakename($fake_name))) {
+			log_message('info', "1. Register Controller fakename is false", false);
+			return false;
+		} else if (!($this->Distributor_model->notExistFakename($fake_name))) {
+			log_message('info', "2. Register Controller fakename is false", false);
+			return false;
+		} else {
+			log_message('info', "3. Register Controller fakename is true", false);
+			return true;
+		}
 
+	}
 
 	public function emailcheck(){
 		$email = $this->input->post("email");

@@ -24,7 +24,39 @@
 						<?php if ($product->mine){ ?>
 							<a href="<?php echo base_url() . 'product/editCatalogProduct/' . $product->id; ?>">
 								<button type="button" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</button>
-							</a>
+							</a><br>
+							<div class="dropdown" style="margin-bottom: 10px;">
+								<button class="btn btn-info btn-xs dropdown-toggle" type="button" id="statusDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+									<?php  if ($product->status == 'active') echo 'Activo';
+										   else if ($product->status == 'inactive') echo 'Eliminado';
+										   else echo 'Publicado';	
+									?>
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" aria-labelledby="statusDropDown">
+									<li class="dropdown-header">Cambiar estado</li>
+									<?php if ($product->status == 'active') {?>
+										<li><a href="<?php echo base_url() . 'product/setProductStatus/' . $product->id . "/published";?>">Publicar</a></li>
+										<li><a href="<?php echo base_url() . 'product/setProductStatus/' . $product->id . "/inactive";?>">Eliminar</a></li>
+									<?php } else if ($product->status == 'inactive') { ?>
+										<li><a href="<?php echo base_url() . 'product/setProductStatus/' . $product->id . "/active";?>">Activar</a></li>
+									<?php } else { ?>
+										<li><a href="<?php echo base_url() . 'product/setProductStatus/' . $product->id . "/active";?>">Despublicar</a></li>			
+									<?php }?>
+								</ul>
+							</div>
+						<?php } else { ?>
+							<?php if($product->supplier->associationStatus == 'approved'){ ?>
+								<?php if ($product->isCatalogItem == false){ ?>
+									<a href="<?php echo base_url() . 'Product/addProductToCatalog/'. $product->id;?>">
+										<button type="button" class="btn btn-success btn-xs">Agregar a mi Catálogo</button>
+									</a>
+								<?php } else {?>
+									<a href="<?php echo base_url() . 'Product/removeProductFromCatalog/'. $product->id;?>">
+										<button type="button" class="btn btn-danger btn-xs">Remover de mi Catálogo</button>
+									</a>
+								<?php } ?>
+							<?php }?>
 						<?php } ?>
 						<div class="dropdown" style="margin-bottom: 10px;">
 							<button class="btn btn-info btn-xs dropdown-toggle" type="button" id="suppliersDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -62,16 +94,16 @@
 								<!-- Wrapper for slides -->
 								<div class="carousel-inner" role="listbox">
 									<?php $path = base_url() . PRODUCT_IMAGES_PATH . $product->id . "/"; ?>
-										<div class="item active">'
+										<div class="item active">
 									 		<?php if (count($product->images) > 0){?>
-												<img src="<?php echo $path . $product->images[0]; ?>" style="height: 360px">
+												<img src="<?php echo $path . $product->images[0]; ?>" style="height: 360px; margin: 0 auto;">
 											<?php } else { ?>
-												<img src="<?php echo base_url() . 'Resources/imgs/NoFoto.jpg'; ?>" style="height: 360px">
+												<img src="<?php echo base_url() . 'Resources/imgs/NoFoto.jpg'; ?>" style="height: 360px; margin: 0 auto;">
 											<?php } ?> 
 										</div>
-									<?php for ($i=0; $i < count($product->images); $i++) { ?>
+									<?php for ($i=1; $i < count($product->images); $i++) { ?>
 												<div class="item">
-													<img src="<?php echo $path . $product->images[$i]; ?>" alt="Chania" style="height: 360px">
+													<img src="<?php echo $path . $product->images[$i]; ?>" alt="Chania" style="height: 360px; margin: 0 auto;">
 												</div>		
 									<?php }?>
 								</div>

@@ -74,13 +74,13 @@
 												<div class="panel-body" style="padding:0px">
 									    			<ul class="nav nav-pills nav-stacked" type="circle" style="margin: 5px 5px 5px 5px; padding: 5px 5px 5px 5px;">
 														<?php if (isset($viewMyCatalog)) {?>
-															<li class="<?php if ($orderBy == 'category_id') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMyCatalogBy/category_id'; ?>">Ordenado por categorias</a></li>
-															<li class="<?php if ($orderBy == 'name') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMyCatalogBy/name'; ?>">Ordenado por nombre</a></li>
+															<li class="<?php if ($orderBy == 'category_id') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMyCatalogBy/category_id'; ?>">Ordenado por Relevancia</a></li>
+															<li class="<?php if ($orderBy == 'name') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMyCatalogBy/name'; ?>">Ordenado Alfabeticamente</a></li>
 															<li class="<?php if ($orderBy == 'price desc') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMyCatalogBy/price desc'; ?>">Ordenado por precios (de mayor a menor)</a> </li>
 															<li class="<?php if ($orderBy == 'price asc') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMyCatalogBy/price asc'; ?>">Ordenado por precios (de menor a mayor)</a> </li>
 														<?php } else { ?>
-															<li class="<?php if ($orderBy == 'category_id') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderCatalogBy/category_id'; ?>">Ordenado por categorias</a></li>
-															<li class="<?php if ($orderBy == 'name') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderCatalogBy/name'; ?>">Ordenado por nombre</a></li>
+															<li class="<?php if ($orderBy == 'category_id') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderCatalogBy/category_id'; ?>">Ordenado por Relevancia</a></li>
+															<li class="<?php if ($orderBy == 'name') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderCatalogBy/name'; ?>">Ordenado Alfabeticamente</a></li>
 															<li class="<?php if ($orderBy == 'price desc') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderCatalogBy/price desc'; ?>">Ordenado por precios (de mayor a menor)</a> </li>
 															<li class="<?php if ($orderBy == 'price asc') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderCatalogBy/price asc'; ?>">Ordenado por precios (de menor a mayor)</a> </li>
 														<?php } ?>
@@ -93,6 +93,15 @@
 							</div>
 				    		<div class="col-lg-10 col-md-9 col-sm-9 col-xs-8">
 				      			<div class="col-md-12 col-sm-12 col-xs-12">		
+									<?php if (isset($viewMyCatalog)) {?>
+										<?php if ($statusFilter == 'published') { ?>
+											<h4 style="text-align:center;"><span class="label label-default" style="color:#ffffff;"><b>Publicados</b></span></h4>
+										<?php } else if ($statusFilter == 'active') { ?>
+											<h4 style="text-align:center;"><span class="label label-default" style="color:#ffffff;"><b>Activos </b></span><br><small>(No Publicados)</small></h4>
+										<?php } else { ?>
+											<h4 style="text-align:center;"><span class="label label-default" style="color:#ffffff;"><b>Eliminados</b></span></h4>
+										<?php } ?>
+									<?php } ?>
 					    			<?php
 	    								if (isset($selectedCategoryId)) {
 											echo '<ol class="breadcrumb">';
@@ -205,7 +214,7 @@
 									}  ?>
 								
 				    			</div>
-
 							</div>
+
 						
 					

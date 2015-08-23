@@ -1,5 +1,5 @@
 			        <li><a href="<?php echo base_url(); ?>Product/products">PRODUCTOS</a></li>
-			        <li><a href="<?php echo base_url(); ?>profile/request">SOLICITUDES</a></li>
+			        <li><a href="<?php echo base_url(); ?>Distributors/viewDistributors">ORTOPEDIAS</a></li>
 			        <li><a href="<?php echo base_url(); ?>profile/auction">SUBASTA</a></li>
 			        <li><a href="<?php echo base_url(); ?>profile/credit">CREDITO</a></li>
     				<li>

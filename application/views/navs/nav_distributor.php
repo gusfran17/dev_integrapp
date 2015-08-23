@@ -1,4 +1,4 @@
-			        <li><a href="<?php echo base_url(); ?>profile/product">PRODUCTOS</a></li>
+			        <li><a href="<?php echo base_url(); ?>Product/products">PRODUCTOS</a></li>
 			        <li><a href="<?php echo base_url(); ?>suppliers/viewSuppliers">PROVEEDORES</a></li>
 			        <li><a href="<?php echo base_url(); ?>profile/request">PEDIDOS</a></li>
 			        <li>

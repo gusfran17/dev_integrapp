@@ -55,14 +55,33 @@ class Product extends CI_Controller {
 			$this->session->unset_userdata('selectedCategoryId');
 		}
 		$this->session->set_userdata('statusFilter', 'published');
-		$this->orderCatalogBy('category_id');
+		if($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+		} else {
+			redirect(TIMEOUT_REDIRECT);
+		}
+		if ($role == 'supplier'){
+			$this->orderCatalogBy('category_id');
+		} else {
+			$this->orderDistributorCatalogBy('category_id');
+		}
+		
 		
 	}
 
 	public function myProducts(){
 		$this->session->unset_userdata('selectedCategoryId');
 		$this->session->set_userdata('statusFilter', 'published');
-		$this->orderMyCatalogBy('category_id');
+		if($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+		} else {
+			redirect(TIMEOUT_REDIRECT);
+		}
+		if ($role == 'supplier'){
+			$this->orderMyCatalogBy('category_id');
+		} else {
+			$this->orderMyDistributorCatalogBy('category_id');
+		}	
 	}
 
 	public function showPublishedProducts(){
@@ -130,7 +149,7 @@ class Product extends CI_Controller {
 
 	public function orderCatalogBy ($orderBy){
 		$statusFilter = $this->session->userdata('statusFilter');
-        $data['statusFilter'] = $statusFilter; 
+		$data['statusFilter'] = $statusFilter; 
 		$url = base_url() . "Product/orderCatalogBy/$orderBy";
 		$selectedCategoryId = $this->getCategoryFilter();
 		$branch = $this->getCategoryBranch($selectedCategoryId);
@@ -180,6 +199,78 @@ class Product extends CI_Controller {
 		$data['orderBy'] = $orderBy;
 		$tab = 'product_catalog';
 		$this->tabbedRoutedHome($data, $tab);
+	}
+
+	public function orderDistributorCatalogBy ($orderBy){
+		if($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+			$roleId = $this->session->userdata("role_id");
+		} else {
+			redirect(TIMEOUT_REDIRECT);
+		}
+
+		$statusFilter = $this->session->userdata('statusFilter');
+		$data['statusFilter'] = $statusFilter; 
+		$url = base_url() . "Product/orderDistributorCatalogBy/$orderBy";
+		$selectedCategoryId = $this->getCategoryFilter();
+		$branch = $this->getCategoryBranch($selectedCategoryId);
+		$data['selectedCategoryId'] = $selectedCategoryId;
+		$data['branch'] = $branch;
+		$data['childCategories'] = $this->Product_model->getCategory($selectedCategoryId); 
+
+		if($this->uri->segment($this->pagination_uri_segment)){
+			$page = ($this->uri->segment($this->pagination_uri_segment)) ;
+		}else{
+			$page = 1;
+		}
+
+		$totalRows = 0;
+		$catalog = $this->Product_model->get_catalog(null, $selectedCategoryId, $statusFilter, $orderBy, $page, $this->myProductsAmountPerPage, $totalRows);
+		$this->Supplier_model->addAssociationDetailsToProduct($role, $roleId,$catalog);
+		$data['Catalog'] = $catalog;
+		$this->setPagination($url, $totalRows, $this->myProductsAmountPerPage);
+		$str_links = $this->pagination->create_links();
+		$data["pageLinks"] = explode('&nbsp;',$str_links );
+		log_message('info',"Pagination: ".$str_links . "total rows: " . $totalRows,false);
+		
+		$data['orderBy'] = $orderBy;
+		$section = 'products';
+		$this->routedHome($data,$section);
+	}
+
+	public function orderMyDistributorCatalogBy ($orderBy){
+		if($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+			$roleId = $this->session->userdata("role_id");
+		} else {
+			redirect(TIMEOUT_REDIRECT);
+		}
+		$url = base_url() . "Product/orderMyDistributorCatalogBy/$orderBy";
+		$selectedCategoryId = $this->getCategoryFilter();
+		$branch = $this->getCategoryBranch($selectedCategoryId);
+		$data['selectedCategoryId'] = $selectedCategoryId;
+		$data['branch'] = $branch;
+		$data['childCategories'] = $this->Product_model->getCategory($selectedCategoryId); 
+
+		if($this->uri->segment($this->pagination_uri_segment)){
+			$page = ($this->uri->segment($this->pagination_uri_segment)) ;
+		}else{
+			$page = 1;
+		}
+
+		$totalRows = 0;
+		$catalog = $this->Distributor_model->get_catalog($roleId, $selectedCategoryId, $orderBy, $page, $this->myProductsAmountPerPage, $totalRows);
+		$this->Supplier_model->addAssociationDetailsToProduct($role, $roleId,$catalog);
+		$data['Catalog'] = $catalog;
+		$this->setPagination($url, $totalRows, $this->myProductsAmountPerPage);
+		$str_links = $this->pagination->create_links();
+		$data["pageLinks"] = explode('&nbsp;',$str_links );
+		log_message('info',"Pagination: ".$str_links . "total rows: " . $totalRows,false);
+		
+		$data['viewMyCatalog'] = true;
+		$data['orderBy'] = $orderBy;
+		$section = 'products';
+		$this->routedHome($data,$section);
 	}
 
 	public function getCategoryBranch($selectedCategoryId){
@@ -398,29 +489,41 @@ class Product extends CI_Controller {
 
 
 	public function deleteProduct(){
-		$deletionProduct = $this->input->post("deletionIntegrapCode");
-		if ($this->Product_model->deleteProductByIntegrappCode($deletionProduct)){
-			$data['deletionProduct'] = $deletionProduct;
-			echo json_encode($data);
+		if ($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+			if ($role == 'supplier'){
+				$deletionProduct = $this->input->post("deletionIntegrapCode");
+				if ($this->Product_model->deleteProductByIntegrappCode($deletionProduct)){
+					$data['deletionProduct'] = $deletionProduct;
+					echo json_encode($data);
+				}				
+			}
 		}
-
 	}
 
 	public function viewProduct($productId){
 		$product = $this->Product_model->getProductById($productId);
 		$supplier = $this->Supplier_model->getSupplierById($product->supplier_id);
-		$role = $this->session->userdata("role");
-		$role_id = $this->session->userdata('role_id');
+		if($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+			$roleId = $this->session->userdata("role_id");
+		} else {
+			redirect(TIMEOUT_REDIRECT);
+		}
 		$productImages = $this->Product_model->getProductImages($productId);
 		$colors = $this->Product_model->getProductColors($productId);
 		$attributes = $this->Product_model->getProductAttributes($productId);
 		$branch = $this->getCategoryBranch($product->category_id);
-		$data['product'] = $product;
-		if ($product->supplier_id == $role_id) {
-			$data['product']->mine = true;
+		if (($product->supplier_id == $roleId) and ($role=='supplier')) {
+			$product->mine = true;
+			$product->isCatalogItem = false;
 		} else {
-			$data['product']->mine = false;
+			$product->mine = false;
+			$product->isCatalogItem = $this->Distributor_model->isCatalogItem($roleId, $productId);
 		}
+		$supplier->associationStatus = $this->Supplier_model->associationStatus($role, $roleId, $supplier->id);
+		$supplier->associationDiscount = $this->Supplier_model->associationDiscount($role, $roleId, $supplier->id);
+		$data['product'] = $product;
 		$data['product']->supplier = $supplier;
 		$data['role'] = $role;
 		$data['product']->images = $productImages;
@@ -431,10 +534,43 @@ class Product extends CI_Controller {
 	}
 
 	public function setProductStatus($productId, $status){
-		$update = array();
-		$update['status'] = $status;
-		$this->Product_model->updateProduct($update, $productId);
-		redirect('Product/orderMyCatalogBy/category_id');
+		if ($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+			if ($role == 'supplier'){
+				$update = array();
+				$update['status'] = $status;
+				$this->Product_model->updateProduct($update, $productId);
+				redirect('Product/orderMyCatalogBy/category_id');
+			}
+		} else {
+			redirect(TIMEOUT_REDIRECT);
+		}
+	}
+
+	public function addProductToCatalog($productId){
+		if ($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+			$roleId = $this->session->userdata("role_id");
+			if ($role == 'distributor') {
+				$this->Distributor_model->addProductToCatalog($roleId, $productId);
+			}
+			redirect('Product/products');
+		} else {
+			redirect(TIMEOUT_REDIRECT);
+		}
+	}
+
+	public function removeProductFromCatalog($productId){
+		if ($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+			$roleId = $this->session->userdata("role_id");
+			if ($role == 'distributor') {
+				$this->Distributor_model->removeProductFromCatalog($roleId, $productId);
+			}
+			redirect('Product/products');
+		} else {
+			redirect(TIMEOUT_REDIRECT);
+		}
 	}
 
 	public function productNameCheck(){

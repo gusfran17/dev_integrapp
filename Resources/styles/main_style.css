@@ -24,7 +24,7 @@ nav>.container-fluid{height: 100%; padding: 0;}
 /*end*/
 
 /*Esto me resetea el color de los links de la barra de navegacion*/
-#bs-example-navbar-collapse-1>ul.nav a{color: white; transition:all 0.3s ease;}
+#bs-example-navbar-collapse-1>ul.nav a{color: white; transition:all 0.3s ease; background-color: #4784ff;}
 /*end*/
 
 /*Esto resetea la altura del div donde está el logo y el cambio de altura del mismo y de la barra de navegación*/
@@ -168,7 +168,7 @@ Esto es para que los nav-pils (usados en tabs y selecciones) en general sean ver
 !!!CAROUSEL!!!
 */
 .carousel-inner > .item > img {
-    margin: 0 auto;
+    
 }
 
 .carousel-indicators .active {

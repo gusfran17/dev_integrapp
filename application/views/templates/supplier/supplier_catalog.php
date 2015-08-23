@@ -5,16 +5,23 @@
 				<div class="col-md-6 col-sm-8 col-xs-12">
 					<div class="panel panel-default" style="background-color: #EEE; margin-top: 20px; border-radius: 20px;">    
 						<div class="panel-body">
-					    	<div class="col-md-4 col-sm-4 col-xs-4">
+					    	<div class="col-md-4 col-sm-4 col-xs-4" style="text-align: center">
 						    	<?php if(isset($supplier->logo)) {?>
-						      		<img src="<?php echo base_url() . $supplier->logo; ?>">
+						      		<img src="<?php echo base_url() . $supplier->logo; ?>" style="max-width: 100%;display: block;margin: 0 auto;max-height: 100px;">
+							    <?php } else { ?>
+							    	<img src="<?php echo base_url() . IMAGES_PATH . 'noProfilePic.jpg'; ?>" style="max-width: 100%;display: block;margin: 0 auto;max-height: 100px;">
 							    <?php } ?>
 								<h3 style="height: 1em; margin-top: 10px;"><a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $supplier->id;?>"><?php echo $supplier->fake_name; ?></a></h3>
-								<p class="text-info" style="margin-left: auto; height: 15px;">
+								<p class="text-info" style="margin-left: auto; height: 15px;text-align: left;">
 									<a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $supplier->id;?>"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span> Detalles de perfil </a>
 								</p>
-								<p style="margin-top:20px">
-									<a href="<?php echo base_url(); ?>suppliers/viewSupplier"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span><b> Proveedores</b></a>
+		                        <?php if ($supplier->associationStatus != 'approved') {?>
+									<p style="margin-top:20;text-align: left;">
+										<a href="<?php echo base_url() . 'suppliers/setSupplierDistributorStatus/' . $supplier->id;?>"><span class="glyphicon glyphicon-share" aria-hidden="true"></span> Reenviar solicitud de adhesión</a>
+									</p>
+			                    <?php } ?>
+								<p style="margin-top:20;text-align: left;">
+									<a href="<?php echo base_url(); ?>suppliers/viewSuppliers"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span><b> Proveedores</b></a>
 								</p>
 							</div>
 							<div class="col-md-8 col-sm-8 col-xs-8">
@@ -92,8 +99,8 @@
 							</div>
 						</div>
 		    			<ul class="nav nav-pills nav-stacked" type="circle" style="margin: 5px 5px 5px 5px; padding: 5px 5px 5px 5px;">
-								<li class="<?php if ($orderBy == 'category_id') echo 'active' ?>" ><a href="<?php echo base_url() . 'Suppliers/viewSupplierCatalog/category_id'; ?>">Ordenado por categorias</a></li>
-								<li class="<?php if ($orderBy == 'name') echo 'active' ?>" ><a href="<?php echo base_url() . 'Suppliers/viewSupplierCatalog/name'; ?>">Ordenado por nombre</a></li>
+								<li class="<?php if ($orderBy == 'category_id') echo 'active' ?>" ><a href="<?php echo base_url() . 'Suppliers/viewSupplierCatalog/category_id'; ?>">Ordenado Relevancia</a></li>
+								<li class="<?php if ($orderBy == 'name') echo 'active' ?>" ><a href="<?php echo base_url() . 'Suppliers/viewSupplierCatalog/name'; ?>">Ordenado Alfabeticamente</a></li>
 								<li class="<?php if ($orderBy == 'price desc') echo 'active' ?>" ><a href="<?php echo base_url() . 'Suppliers/viewSupplierCatalog/price desc'; ?>">Ordenado por precios (de mayor a menor)</a> </li>
 								<li class="<?php if ($orderBy == 'price asc') echo 'active' ?>" ><a href="<?php echo base_url() . 'Suppliers/viewSupplierCatalog/price asc'; ?>">Ordenado por precios (de menor a mayor)</a> </li>
 						</ul>
@@ -126,7 +133,9 @@
                         <th class="centered-cell" data-hide="phone,tablet">Precio</th>
                         <th class="centered-cell" data-hide="phone,tablet">IVA</th>
                         <th class="centered-cell" data-hide="phone,tablet">Descripción</th>
-                        <th class="centered-cell" data-hide="phone,tablet">Acciones</th>
+                        <?php if ($supplier->associationStatus == 'approved') {?>
+	                        <th class="centered-cell" data-hide="phone,tablet">Acciones</th>
+	                    <?php } ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -151,7 +160,7 @@
 								<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><strong><?php echo $Catalog[$i]->name; ?></strong></a>
 							</td>
 							<td>
-								<?php echo $Catalog[$i]->price . '$'; ?>
+								<?php if ($supplier->associationStatus == 'approved') echo ($Catalog[$i]->price - (($Catalog[$i]->price*$supplier->associationDiscount)/100)) . '$'; else echo $Catalog[$i]->price; ?>
 							</td>
 							<td>
 								<?php echo $Catalog[$i]->tax; ?>
@@ -159,11 +168,13 @@
 							<td>
 								<?php echo $Catalog[$i]->description; ?>
 							</td>
-							<td>
-								<a href="/fabricante/publicar_producto/17">
-									<button type="button" class="btn btn-success btn-xs">Agregar a mi Catálogo</button>
-								</a>
-							</td>
+							<?php if ($supplier->associationStatus == 'approved') {?>
+								<td>
+									<a href="">
+										<button type="button" class="btn btn-success btn-xs">Agregar a mi Catálogo</button>
+									</a>
+								</td>
+							<?php } ?>
 						</tr>
 					<?php } ?>
 				</tbody>

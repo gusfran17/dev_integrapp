@@ -31,11 +31,22 @@ class Suppliers extends CI_Controller {
 
 
 	public function viewSuppliers(){
+		if($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+			$roleId = $this->session->userdata("role_id");
+		} else {
+			redirect(TIMEOUT_REDIRECT);
+		}
 		$url = base_url() . "Suppliers/viewSuppliers";
 		$totalRows = $this->Supplier_model->suppliersCount();
 		$this->setPagination($url, $totalRows, $this->suppliers_pagination_uri_segment, $this->suppliersPerPage);
 		$page = $this->getPage($this->suppliers_pagination_uri_segment);
-		$data["suppliers"] = $this->Supplier_model->getSuppliers($page, $this->suppliersPerPage);
+		$suppliers =  $this->Supplier_model->getSuppliers($page, $this->suppliersPerPage);
+		for ($i=0; $i < count($suppliers); $i++) {
+			$suppliers[$i]->associationStatus = $this->Supplier_model->associationStatus($role, $roleId, $suppliers[$i]->id);
+			$suppliers[$i]->associationDiscount = $this->Supplier_model->associationDiscount($role, $roleId, $suppliers[$i]->id);
+		}
+		$data["suppliers"] = $suppliers;
 		$str_links = $this->pagination->create_links();
 		$data["pageLinks"] = explode('&nbsp;',$str_links );
 
@@ -45,12 +56,18 @@ class Suppliers extends CI_Controller {
 	}
 
 	public function viewSupplier($supplierId){
+		if($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+			$roleId = $this->session->userdata("role_id");
+		} else {
+			redirect(TIMEOUT_REDIRECT);
+		}
 		$supplier = $this->Supplier_model->getSupplierById($supplierId);
-		$role = $this->session->userdata("role");
+		$supplier->associationStatus = $this->Supplier_model->associationStatus($role, $roleId, $supplierId);
+		$supplier->associationDiscount = $this->Supplier_model->associationDiscount($role, $roleId, $supplierId);		
 		$data['supplier'] = $supplier;
 		$data['role'] = $role;
 		$this->routedHome($data, 'templates/supplier/supplier', true);
-
 	}
 	
 	public function setPagination($url, $totalRows, $uriSegment, $itemsPerPage){	
@@ -80,8 +97,17 @@ class Suppliers extends CI_Controller {
 	}
 
 	public function viewSupplierCatalog($orderBy = null){
-		$selectedSupplierId = $this->session->userdata('selectedSupplierId');
-		$data['supplier'] = $this->Supplier_model->getSupplierById($selectedSupplierId);
+		if($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+			$roleId = $this->session->userdata("role_id");
+			$selectedSupplierId = $this->session->userdata('selectedSupplierId');			
+		} else {
+			redirect(TIMEOUT_REDIRECT);
+		}
+		$supplier = $this->Supplier_model->getSupplierById($selectedSupplierId);
+		$supplier->associationStatus = $this->Supplier_model->associationStatus($role, $roleId, $supplier->id);
+		$supplier->associationDiscount = $this->Supplier_model->associationDiscount($role, $roleId, $supplier->id);		
+		$data['supplier'] = $supplier;
 		//set sidebar
 		$selectedCategoryId = $this->getCategoryFilter();
 		$branch = $this->getCategoryBranch($selectedCategoryId);
@@ -95,7 +121,7 @@ class Suppliers extends CI_Controller {
 		}
 		$totalRows = 0;
 		$page = $this->getPage($this->catalog_pagination_uri_segment);
-		$data['Catalog'] = $this->Product_model->get_catalog($selectedSupplierId, $selectedCategoryId, null, $orderBy, $page, $this->productsPerPage, $totalRows);
+		$data['Catalog'] = $this->Product_model->get_catalog($selectedSupplierId, $selectedCategoryId, 'published', $orderBy, $page, $this->productsPerPage, $totalRows);
 		$url = base_url() . "Suppliers/viewSupplierCatalog/$orderBy";
 		$this->setPagination($url, $totalRows, $this->catalog_pagination_uri_segment, $this->productsPerPage);
 		$data['orderBy']=$orderBy;
@@ -133,7 +159,6 @@ class Suppliers extends CI_Controller {
 			$selectedCategoryId = null;
 		}
 		if ($selectedCategoryId == null){
-			log_message('info', "null. ".$selectedCategoryId, false);
 			if ($this->session->has_userdata('selectedCategoryId')){
 				$selectedCategoryId = $this->session->userdata('selectedCategoryId');
 			}
@@ -143,7 +168,16 @@ class Suppliers extends CI_Controller {
 		return $selectedCategoryId;
 	}
 
-	
+	public function setSupplierDistributorStatus($supplierId){
+		if ($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+			if ($role == 'distributor'){
+				$roleId = $this->session->userdata("role_id");
+				$this->Distributor_model->setSupplierDistributorStatus($supplierId, $roleId, 'pending');
+			}
+		}
+		redirect('Suppliers/viewSuppliers');
+	}
 
 }
 
