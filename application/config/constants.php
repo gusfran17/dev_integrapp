@@ -140,5 +140,5 @@ define('TIMEOUT_REDIRECT', 'Login/Logout');
 /*
 *MESSAGES
 */
-define('ASSOCIATED_MESSAGE', 'Se encuentra asociado a este proovedor');
-define('NOT_ASSOCIATED_MESSAGE', 'Solicitud pendiente de aprobación');
+define('ASSOCIATED_MESSAGE', '<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Se encuentra asociado a este proovedor');
+define('NOT_ASSOCIATED_MESSAGE', '<span class="glyphicon glyphicon-time" aria-hidden="true"></span> Solicitud pendiente de aprobación');

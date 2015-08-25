@@ -121,7 +121,9 @@ class Suppliers extends CI_Controller {
 		}
 		$totalRows = 0;
 		$page = $this->getPage($this->catalog_pagination_uri_segment);
-		$data['Catalog'] = $this->Product_model->get_catalog($selectedSupplierId, $selectedCategoryId, 'published', $orderBy, $page, $this->productsPerPage, $totalRows);
+		$catalog = $this->Product_model->get_catalog($selectedSupplierId, $selectedCategoryId, 'published', $orderBy, $page, $this->productsPerPage, $totalRows);
+		$this->Supplier_model->addAssociationDetailsToProduct($role, $roleId,$catalog);
+		$data['Catalog'] = $catalog;
 		$url = base_url() . "Suppliers/viewSupplierCatalog/$orderBy";
 		$this->setPagination($url, $totalRows, $this->catalog_pagination_uri_segment, $this->productsPerPage);
 		$data['orderBy']=$orderBy;

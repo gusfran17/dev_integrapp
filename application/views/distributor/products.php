@@ -153,13 +153,13 @@
 												<?php if($Catalog[$i]->associationStatus == 'approved'){ ?>
 													<?php if ($Catalog[$i]->isCatalogItem == false){ ?>
 														<a href="<?php echo base_url() . 'Product/addProductToCatalog/'. $Catalog[$i]->id;?>">
-															<button type="button" class="btn btn-success btn-xs">Agregar a mi Catálogo</button>
+															<button type="button" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Agregar a mi Catálogo</button>
 														</a>
 													<?php } else {?>
 														<a href="<?php echo base_url() . 'Product/removeProductFromCatalog/'. $Catalog[$i]->id;?>">
-															<button type="button" class="btn btn-danger btn-xs">Remover de mi Catálogo</button>
+															<button type="button" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Remover de mi Catálogo</button>
 														</a>
-													<?php } ?>		
+													<?php } ?>
 												<?php } else {?>
 													<p><span class="label label-info" style="color:#ffffff;"><b><?php echo NOT_ASSOCIATED_MESSAGE; ?></b><span></p>
 												<?php }?>

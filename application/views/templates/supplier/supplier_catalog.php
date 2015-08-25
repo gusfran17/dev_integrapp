@@ -170,9 +170,15 @@
 							</td>
 							<?php if ($supplier->associationStatus == 'approved') {?>
 								<td>
-									<a href="">
-										<button type="button" class="btn btn-success btn-xs">Agregar a mi Catálogo</button>
+								<?php if ($Catalog[$i]->isCatalogItem == false){ ?>
+									<a href="<?php echo base_url() . 'Product/addProductToCatalog/'. $Catalog[$i]->id;?>">
+										<button type="button" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Agregar a mi Catálogo</button>
 									</a>
+								<?php } else {?>
+									<a href="<?php echo base_url() . 'Product/removeProductFromCatalog/'. $Catalog[$i]->id;?>">
+										<button type="button" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Remover de mi Catálogo</button>
+									</a>
+								<?php } ?>
 								</td>
 							<?php } ?>
 						</tr>
