@@ -4,16 +4,29 @@
 
 class Supplier_model extends CI_Model {
 
-
-    function get_supplier($userid)
-    {
-        $query = $this->db->get_where('supplier', array("userid"=>$userid));
+    public function getSupplierByUserId($userId){
+        $this->db->where('userid', $userId);
+        $query = $this->db->get('supplier');
         if ($query->num_rows() == 1){
-        	return $query->row(0);
+            $result = $query->result();
+            $result[0]->logo = $this->get_logo($result[0]->userid);           
+            return $result[0];
         } else {
-        	return false;
+            return false;
         }
-     }
+    }
+
+    public function getSupplierById($supplierId){
+        $this->db->where('id', $supplierId);
+        $query = $this->db->get('supplier');
+        if ($query->num_rows() == 1){
+            $result = $query->result();
+            $result[0]->logo = $this->get_logo($result[0]->userid);           
+            return $result[0];
+        } else {
+            return false;
+        }
+    }
 
     public function createSupplierDistributorAssolciation($userId){
         $this->db->where('userid', $userId);
@@ -116,17 +129,6 @@ class Supplier_model extends CI_Model {
         return $result;
     }
 
-    public function getSupplierById($supplierId){
-        $this->db->where('id', $supplierId);
-        $query = $this->db->get('supplier');
-        if ($query->num_rows() == 1){
-            $result = $query->result();
-            $result[0]->logo = $this->get_logo($result[0]->userid);           
-            return $result[0];
-        } else {
-            return false;
-        }
-    }
 
     public function notExistFakename($fake_name){
         $this->db->where('fake_name', $fake_name);
@@ -206,7 +208,28 @@ class Supplier_model extends CI_Model {
         }        
     }
 
+    public function getSupplierId($userId){
+        $this->db->where('userid', $userId);
+        $query = $this->db->get('supplier');
+        $result = $query->result();
+        return $result[0]->id;
+    }
 
+    public function getActiveProductsAmount($userId){
+        $supplierId = $this->getSupplierId($userId);
+        $this->db->where('supplier_id', $supplierId);
+        $this->db->where('status', 'active');
+        $this->db->from('product');
+        return $this->db->count_all_results();
+    }
+    
+    public function getPendingDistributorsAmount($userId){
+        $supplierId = $this->getSupplierId($userId);
+        $this->db->where('supplier_id', $supplierId);
+        $this->db->where('status', 'pending');
+        $this->db->from('supplier_distributor_association');
+        return $this->db->count_all_results();
+    }
 }
 
 

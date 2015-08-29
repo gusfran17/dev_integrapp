@@ -17,6 +17,7 @@ class Suppliers extends CI_Controller {
 		if($this->session->has_userdata('role')){
 			$role = $this->session->userdata("role");
 			$data["username"]=$this->session->userdata("user");
+			$data["loadInfo"]=$this->session->userdata("loadInfo");
 		} else {
 			redirect(TIMEOUT_REDIRECT);
 			die;

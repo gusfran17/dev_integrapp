@@ -18,7 +18,7 @@
 			<div class="panel panel-default">
 				<div class="panel-body">
 					<div class="col-md-6 col-sm-12 col-xs-12">
-						<h2><b><?php echo $product->name; ?></b><small> <b><?php echo $product->price . '$' . ' (' . 'I.V.A. ' . $product->tax . ')';?></b></small></h2>
+						<h2><b><?php echo $product->name; ?></b><small> <b><?php if(($product->supplier->associationStatus == 'approved') or ($product->mine)) echo $product->price . '$' . ' (' . 'I.V.A. ' . $product->tax . ')';?></b></small></h2>
 						<h4><strong>Código Interno (<?php echo $product->supplier->fake_name;?>):</strong> <?php echo $product->code; ?><br></h4>
 						<h4><strong>Código IntegrApp: </strong><?php echo $product->integrapp_code; ?></h4>
 						<?php if ($product->mine){ ?>

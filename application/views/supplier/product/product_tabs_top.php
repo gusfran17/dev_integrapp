@@ -1,6 +1,18 @@
 <section id="home" >
 	<div class="container-fluid" id="main-products">
 		<div class="page-header" style="text-align:center; margin: 0px 0 0px;">
+			<?php if($loadInfo->activeProducts>0):?>
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+					</div>
+					<div class="alert alert-info alert-dismissible col-lg-6 col-md-6 col-sm-6 col-xs-6" role="alert">
+					  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					  <strong>Recuerde...</strong> Tiene <?php echo $loadInfo->activeProducts;?> productos activos sin publicar 
+					</div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+					</div>
+				</div>
+			<?php endif;?>			
 			<h2><span class="label label-default" style="color:#ffffff;"><b>PRODUCTOS</b></span></h2>
 		</div>
 		<div role="tabpanel">  

@@ -5,13 +5,13 @@
 class Distributor_model extends CI_Model {
 
 
-    public function get_distributor($userid)
+    public function getDistributorByUserId($userid)
     {
         $query = $this->db->get_where('distributor', array("userid"=>$userid));
         if ($query->num_rows() == 1){
-        	return $query->row(0);
+            return $query->row(0);
         } else {
-        	return false;
+            return false;
         }
      }
 
@@ -27,6 +27,7 @@ class Distributor_model extends CI_Model {
             $insert['supplier_id'] = $supplierRecord->id;
             $insert['distributor_id'] = $distributor[0]->id;
             $insert['status'] = 'pending';
+            $insert['discount'] = 0;
             $this->db->insert('supplier_distributor_association', $insert);           
         }
     }
@@ -35,6 +36,17 @@ class Distributor_model extends CI_Model {
         $this->db->where('supplier_id', $supplierId);
         $this->db->where('distributor_id', $distributorId);
         $this->db->set('status',$status);
+        $this->db->update('supplier_distributor_association'); 
+        if ($this->db->affected_rows() > 0){
+            return true;
+        }
+        return false;
+    }
+
+    public function setSupplierDistributorDiscount($supplierId, $distributorId, $discount){
+        $this->db->where('supplier_id', $supplierId);
+        $this->db->where('distributor_id', $distributorId);
+        $this->db->set('discount',$discount);
         $this->db->update('supplier_distributor_association'); 
         if ($this->db->affected_rows() > 0){
             return true;
@@ -62,7 +74,7 @@ class Distributor_model extends CI_Model {
 
     public function get_completeness($userid){
 
-        $distributor = $this->get_distributor($userid);
+        $distributor = $this->getDistributorByUserId($userid);
         $amountCompleted = 0;
         $steps = array();
         $steps['registered'] = true;

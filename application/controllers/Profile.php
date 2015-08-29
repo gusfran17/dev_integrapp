@@ -12,6 +12,7 @@ class Profile extends CI_Controller {
 		if($this->session->has_userdata('role')){
 			$role = $this->session->userdata("role");
 			$data["username"]=$this->session->userdata("user");
+			$data["loadInfo"]=$this->session->userdata("loadInfo");
 		} else {
 			redirect(TIMEOUT_REDIRECT);
 			die;
@@ -49,7 +50,7 @@ class Profile extends CI_Controller {
 		$data['user'] = $this->User_model->get_user($userid);
 
 		if($role == "supplier"){
-			$data['supplier'] = $this->Supplier_model->get_supplier($userid);
+			$data['supplier'] = $this->Supplier_model->getSupplierupplierByUserId($userid);
 
 			$data['supplier']->percentage = $this->Supplier_model->get_completeness($userid);
 
@@ -59,7 +60,7 @@ class Profile extends CI_Controller {
 			} 
 			
 		}else if($role == "distributor"){
-			$data['distributor'] = $this->Distributor_model->get_distributor($userid);
+			$data['distributor'] = $this->Distributor_model->getDistributorByUserId($userid);
 
 			$data['distributor']->percentage = $this->Distributor_model->get_completeness($userid);
 

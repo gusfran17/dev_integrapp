@@ -61,7 +61,7 @@
 						<form method="post" id="catalogCategoriesFilter" action="<?php echo base_url() . 'Suppliers/viewSupplierCatalog/' . $orderBy;?>" style= "padding-bottom: 0px;">
 							<?php
 								if (isset($selectedCategoryId)) {
-									echo '<ol class="breadcrumb">';
+									echo '<ol class="breadcrumb" style= "margin-bottom: 5px; font-size:16px">';
 									echo '<li><a href="#" onclick="selectCategory(id);" id="-1"><b>PRODUCTOS</b></a></li>';
 									$treeHeight = count($branch);
 									//echo var_dump($branch);
@@ -71,9 +71,9 @@
 									echo '</ol>';
 								} 
 								if (isset($childCategories)) {
-									echo '<ul>';
+									echo '<ul class="nav nav-pills nav-stacked">';
 									for ($i=0; $i < count($childCategories); $i++) {
-										echo '<li><a href="#" onclick="selectCategory(id);" id="'. $childCategories[$i]->id . '">'.$childCategories[$i]->name.'</a></li>';
+										echo '<li><a href="#" onclick="selectCategory(id);" id="'. $childCategories[$i]->id . '"><b>'.$childCategories[$i]->name.'</b></a></li>';
 									}
 									echo '</ul>';
 								} 
@@ -112,7 +112,7 @@
 			<div class="col-md-12 col-sm-12 col-xs-12">		
 				<?php
 					if (isset($selectedCategoryId)) {
-						echo '<ol class="breadcrumb" >';
+						echo '<ol class="breadcrumb" style= "margin-bottom: 5px; font-size:16px">';
 						echo '<li><a href="#" onclick="selectCategory(id);" id="-1"><b>PRODUCTOS</b></a></li>';
 						$treeHeight = count($branch);
 						for ($i=$treeHeight-1; $i >= 0; $i--) {
@@ -160,7 +160,7 @@
 								<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><strong><?php echo $Catalog[$i]->name; ?></strong></a>
 							</td>
 							<td>
-								<?php if ($supplier->associationStatus == 'approved') echo ($Catalog[$i]->price - (($Catalog[$i]->price*$supplier->associationDiscount)/100)) . '$'; else echo $Catalog[$i]->price; ?>
+								<?php if ($supplier->associationStatus == 'approved') echo ($Catalog[$i]->price - (($Catalog[$i]->price*$supplier->associationDiscount)/100)) . '$'; else echo PRICE_NOT_ALLOWED_MESSAGE; ?>
 							</td>
 							<td>
 								<?php echo $Catalog[$i]->tax; ?>

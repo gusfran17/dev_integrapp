@@ -1,5 +1,13 @@
 					
-						
+							<?php if (isset($viewMyCatalog)) {?>
+										<?php if ($statusFilter == 'published') { ?>
+											<h3 style="text-align:center;margin-top: 0px;"><span class="label label-default" style="color:#ffffff;"><b><span class="glyphicon glyphicon-list-alt" aria-hidden="true"> Publicados</span></b></span></h3>
+										<?php } else if ($statusFilter == 'active') { ?>
+											<h3 style="text-align:center;margin-top: 0px;"><span class="label label-default" style="color:#ffffff;"><b>Activos </b></span><br><small>(No Publicados)</small></h3>
+										<?php } else { ?>
+											<h3 style="text-align:center;margin-top: 0px;"><span class="label label-default" style="color:#ffffff;"><b><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminados</b></span></h3>
+										<?php } ?>
+									<?php } ?>
 				    		<div class="col-lg-2 col-md-3 col-sm-3 col-xs-4">
 				    			<div class="panel panel-info">
 				    				<div class="panel-heading">
@@ -20,7 +28,7 @@
 				    							<div class="panel-body">	
 													<?php
 														if (isset($selectedCategoryId)) {
-															echo '<ol class="breadcrumb" style= "margin-bottom: 0;">';
+															echo '<ol class="breadcrumb" style= "margin-bottom: 0; font-size:16px">';
 															echo '<li><a href="#" onclick="selectCategory(id);" id="-1"><b>' . (isset($viewMyCatalog)? "MIS PRODUCTOS": "PRODUCTOS") . '</b></a></li>';
 															$treeHeight = count($branch);
 															//echo var_dump($branch);
@@ -30,9 +38,9 @@
 															echo '</ol>';
 														} 
 														if (isset($childCategories)) {
-															echo '<ul>';
+															echo '<ul class="nav nav-pills nav-stacked">';
 															for ($i=0; $i < count($childCategories); $i++) {
-																echo '<li><a href="#" onclick="selectCategory(id);" id="'. $childCategories[$i]->id . '">'.$childCategories[$i]->name.'</a></li>';
+																echo '<li class="" style="padding: 5px 5px 5px 5px;"><a href="#" onclick="selectCategory(id);" id="'. $childCategories[$i]->id . '"><b>'.$childCategories[$i]->name.'</b></a></li>';
 															}
 															echo '</ul>';
 														} 
@@ -58,9 +66,9 @@
 													</div>
 													<div class="panel-body" style="padding:0px">
 														<ul class="nav nav-pills nav-stacked" type="circle" style="margin: 5px 5px 5px 5px; padding: 5px 5px 5px 5px;">
-															<li class="<?php if ($statusFilter == 'published') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/showPublishedProducts/'; ?>">Publicados</a></li>
+															<li class="<?php if ($statusFilter == 'published') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/showPublishedProducts/'; ?>"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Publicados</a></li>
 															<li class="<?php if ($statusFilter == 'active') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/showActiveProducts'; ?>">Activos</a></li>
-															<li class="<?php if ($statusFilter == 'inactive') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/showInactiveProducts'; ?>"><b style="color:red">Eliminados</b></a></li>
+															<li class="<?php if ($statusFilter == 'inactive') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/showInactiveProducts'; ?>"><b style="color:red"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminados</b></a></li>
 														</ul>
 													</div>
 												</div>
@@ -93,18 +101,10 @@
 							</div>
 				    		<div class="col-lg-10 col-md-9 col-sm-9 col-xs-8">
 				      			<div class="col-md-12 col-sm-12 col-xs-12">		
-									<?php if (isset($viewMyCatalog)) {?>
-										<?php if ($statusFilter == 'published') { ?>
-											<h4 style="text-align:center;"><span class="label label-default" style="color:#ffffff;"><b>Publicados</b></span></h4>
-										<?php } else if ($statusFilter == 'active') { ?>
-											<h4 style="text-align:center;"><span class="label label-default" style="color:#ffffff;"><b>Activos </b></span><br><small>(No Publicados)</small></h4>
-										<?php } else { ?>
-											<h4 style="text-align:center;"><span class="label label-default" style="color:#ffffff;"><b>Eliminados</b></span></h4>
-										<?php } ?>
-									<?php } ?>
+									
 					    			<?php
 	    								if (isset($selectedCategoryId)) {
-											echo '<ol class="breadcrumb">';
+											echo '<ol class="breadcrumb" style="font-size:16px">';
 											echo '<li><a href="#" onclick="selectCategory(id);" id="-1"><b>' . (isset($viewMyCatalog)? "MIS PRODUCTOS": "PRODUCTOS") . '</b></a></li>';
 											$treeHeight = count($branch);
 											for ($i=$treeHeight-1; $i >= 0; $i--) {
@@ -160,25 +160,25 @@
 													</td>
 													<td>
 														<a href="<?php echo base_url() . 'product/editCatalogProduct/' . $Catalog[$i]->id; ?>">
-															<button type="button" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</button>
+															<button type="button" class="btn btn-success btn-xs col-md-12 col-sm-12 col-xs-12"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</button>
 														</a>
 														<?php if ($Catalog[$i]->status == 'active') {?>
 															<a href="<?php echo base_url() . 'product/setProductStatus/' . $Catalog[$i]->id . "/published"; ?>">
-																<button type="button" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Publicar</button>
+																<button type="button" class="btn btn-primary btn-xs col-md-12 col-sm-12 col-xs-12"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Publicar</button>
 															</a>
 															<a href="<?php echo base_url() . 'product/setProductStatus/' . $Catalog[$i]->id . "/inactive"; ?>">
-																<button type="button" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Eliminar</button>
+																<button type="button" class="btn btn-warning btn-xs col-md-12 col-sm-12 col-xs-12"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Eliminar</button>
 															</a>
 														<?php } else if ($Catalog[$i]->status == 'inactive') {?>
 															<a href="<?php echo base_url() . 'product/setProductStatus/' . $Catalog[$i]->id . "/active"; ?>">
-																<button type="button" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Activar</button>
+																<button type="button" class="btn btn-primary btn-xs col-md-12 col-sm-12 col-xs-12"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Activar</button>
 															</a>
 														<?php } else if ($Catalog[$i]->status == 'published') {?>
 															<a href="<?php echo base_url() . 'product/setProductStatus/' . $Catalog[$i]->id . "/active"; ?>">
-																<button type="button" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-save-file" aria-hidden="true"></span> Despublicar</button>
+																<button type="button" class="btn btn-warning btn-xs col-md-12 col-sm-12 col-xs-12"><span class="glyphicon glyphicon-save-file" aria-hidden="true"></span> Despublicar</button>
 															</a>
 															<a href="<?php echo base_url() . 'product/setProductStatus/' . $Catalog[$i]->id . "/inactive"; ?>">
-																<button type="button" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Eliminar</button>
+																<button type="button" class="btn btn-danger btn-xs col-md-12 col-sm-12 col-xs-12"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Eliminar</button>
 															</a>
 														<?php } ?>
 													</td>
@@ -202,7 +202,6 @@
 													</div>
 													<div class="catalogProdName" style="text-align:center;"><strong><a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><?php echo $Catalog[$i]->name; ?></a></strong></div>
 													<div class="catalogProdCode" style="text-align:center;"><strong>Código IntegrApp: </strong><a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><?php echo $Catalog[$i]->integrapp_code; ?></a></div>
-													<div class="catalogProdCode" style="text-align:center;"><strong>Precio: </strong><?php echo $Catalog[$i]->price . '$'; ?></div>
 												</div>
 											</div>
 									<?php } 

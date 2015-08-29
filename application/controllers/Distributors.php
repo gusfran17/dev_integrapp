@@ -6,7 +6,8 @@ class Distributors extends CI_Controller {
 	public function routedHome($data = null, $section, $template=false){
 		if($this->session->has_userdata('role')){
 			$role = $this->session->userdata("role");
-			$data["username"]=$this->session->userdata("user");
+			$data["username"] = $this->session->userdata("user");
+			$data["loadInfo"]=$this->session->userdata("loadInfo");
 		} else {
 			redirect(TIMEOUT_REDIRECT);
 			die;
@@ -36,9 +37,29 @@ class Distributors extends CI_Controller {
 	public function setSupplierDistributorStatus($distributorId, $status){
 		if ($this->session->has_userdata('role')){
 			$role = $this->session->userdata("role");
+			$userId = $this->session->userdata("id");
 			if ($role == 'supplier'){
 				$roleId = $this->session->userdata("role_id");
 				$this->Distributor_model->setSupplierDistributorStatus($roleId, $distributorId, $status);
+			}
+			$this->User_model->setLoadInfo($userId);
+			$this->viewDistributors();
+		} else {
+			redirect(TIMEOUT_REDIRECT);
+		}
+
+	}
+
+	public function setSupplierDistributorDiscount($distributorId){
+		if ($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+			if ($role == 'supplier'){
+				$roleId = $this->session->userdata("role_id");
+				$discount = $this->input->post('discount');
+				if (!($this->Distributor_model->setSupplierDistributorDiscount($roleId, $distributorId, $discount))) {
+					$this->session->set_flashdata('error', "Hubo un error al modificar el monto a descontar.");
+
+				}
 			}
 		}
 		$this->viewDistributors();

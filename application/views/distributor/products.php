@@ -33,7 +33,7 @@
 			    							<div class="panel-body">	
 												<?php
 													if (isset($selectedCategoryId)) {
-														echo '<ol class="breadcrumb" style= "margin-bottom: 0;">';
+														echo '<ol class="breadcrumb" style= "margin-bottom: 0; font-size:16px">';
 														echo '<li><a href="#" onclick="selectCategory(id);" id="-1"><b>' . (isset($viewMyCatalog)? "MIS PRODUCTOS": "PRODUCTOS") . '</b></a></li>';
 														$treeHeight = count($branch);
 														//echo var_dump($branch);
@@ -43,9 +43,9 @@
 														echo '</ol>';
 													} 
 													if (isset($childCategories)) {
-														echo '<ul>';
+														echo '<ul class="nav nav-pills nav-stacked">';
 														for ($i=0; $i < count($childCategories); $i++) {
-															echo '<li><a href="#" onclick="selectCategory(id);" id="'. $childCategories[$i]->id . '">'.$childCategories[$i]->name.'</a></li>';
+															echo '<li><a href="#" onclick="selectCategory(id);" id="'. $childCategories[$i]->id . '"><b>'.$childCategories[$i]->name.'</b></a></li>';
 														}
 														echo '</ul>';
 													} 
@@ -96,7 +96,7 @@
 			      			<div class="col-md-12 col-sm-12 col-xs-12">		
 				    			<?php
     								if (isset($selectedCategoryId)) {
-										echo '<ol class="breadcrumb">';
+										echo '<ol class="breadcrumb" style="margin-bottom: 5px; font-size:16px">';
 										echo '<li><a href="#" onclick="selectCategory(id);" id="-1"><b>' . (isset($viewMyCatalog)? "MIS PRODUCTOS": "PRODUCTOS") . '</b></a></li>';
 										$treeHeight = count($branch);
 										for ($i=$treeHeight-1; $i >= 0; $i--) {
@@ -141,7 +141,7 @@
 												<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><strong><?php echo $Catalog[$i]->name; ?></strong></a>
 											</td>
 											<td>
-												<?php if ($Catalog[$i]->associationStatus == 'approved') echo ($Catalog[$i]->price - (($Catalog[$i]->price*$Catalog[$i]->associationDiscount)/100)) . '$'; else echo $Catalog[$i]->price; ?>
+												<?php if ($Catalog[$i]->associationStatus == 'approved') echo ($Catalog[$i]->price - (($Catalog[$i]->price*$Catalog[$i]->associationDiscount)/100)) . '$'; else echo PRICE_NOT_ALLOWED_MESSAGE; ?>
 											</td>
 											<td>
 												<?php echo $Catalog[$i]->tax; ?>
@@ -153,11 +153,11 @@
 												<?php if($Catalog[$i]->associationStatus == 'approved'){ ?>
 													<?php if ($Catalog[$i]->isCatalogItem == false){ ?>
 														<a href="<?php echo base_url() . 'Product/addProductToCatalog/'. $Catalog[$i]->id;?>">
-															<button type="button" class="btn btn-success btn-xs">Agregar a mi Catálogo</button>
+															<button type="button" class="btn btn-success btn-xs col-md-12 col-sm-12 col-xs-12">Agregar a mi Catálogo</button>
 														</a>
 													<?php } else {?>
 														<a href="<?php echo base_url() . 'Product/removeProductFromCatalog/'. $Catalog[$i]->id;?>">
-															<button type="button" class="btn btn-danger btn-xs">Remover de mi Catálogo</button>
+															<button type="button" class="btn btn-danger btn-xs col-md-12 col-sm-12 col-xs-12">Remover de mi Catálogo</button>
 														</a>
 													<?php } ?>		
 												<?php } else {?>

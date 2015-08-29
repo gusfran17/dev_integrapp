@@ -139,13 +139,16 @@ $(document).ready(function(){
 	$('#divRecentlyAddedProducts').on('click', 'button', function(){
 		buttonName = $(this).attr('name');
 		if(buttonName=="editRecentlyAdded"){
+				$('.alert').remove();
 				integrappCode = $(this).attr('id');
 				duplicateOrEditProduct(integrappCode, true);
 			
 		} else if (buttonName=="duplicateRecentlyAdded") {
+				$('.alert').remove();
 				integrappCode = $(this).attr('id');
 				duplicateOrEditProduct(integrappCode, false);
 		} else if (buttonName=="deleteRecentlyAdded") {
+				$('.alert').remove();
 				integrappCode = $(this).attr('id');
 				deleteProduct(integrappCode);
 		}
