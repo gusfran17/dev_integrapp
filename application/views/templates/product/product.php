@@ -4,7 +4,7 @@
 			<?php
 				if (isset($product->branch)) {
 					echo '<ol class="breadcrumb">';
-					echo '<li><a href="' . base_url() . 'Product/products/-1" id="-1"><b>PRODUCTOS</b></a></li>';
+					echo '<li><a href="' . base_url() . 'Product/products" id="-1"><b>PRODUCTOS</b></a></li>';
 					$treeHeight = count($product->branch);
 					//echo var_dump($product->branch);
 					for ($i=$treeHeight-1; $i >= 0; $i--) {
@@ -163,7 +163,7 @@
 						</table>
 					</div>
 					<div class="col-md-6 col-sm-12 col-xs-12" style="text-align:center;">
-						<div class="panel panel-default">
+						<div class="panel panel-default" style="margin-top: 70px;">
 							<div class="panel-body">
 								<h2><b><?php if ($role == 'supplier') echo "Ortopedias"; else echo "Proveedores" ?></b></h2>
 								<img src="<?php echo base_url() . 'Resources/imgs/map_example.png'; ?>" style="max-height: 400px">		

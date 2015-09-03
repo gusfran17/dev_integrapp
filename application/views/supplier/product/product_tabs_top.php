@@ -7,7 +7,8 @@
 					</div>
 					<div class="alert alert-info alert-dismissible col-lg-6 col-md-6 col-sm-6 col-xs-6" role="alert">
 					  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					  <strong>Recuerde...</strong> Tiene <?php echo $loadInfo->activeProducts;?> productos activos sin publicar 
+					  <strong>Recuerde...</strong> Tiene <?php echo $loadInfo->activeProducts;?> productos activos sin publicar <br>
+					  <a href="<?php echo base_url() . 'Product/showActiveProducts'; ?>"><b>Ver productos activos</b></a>
 					</div>
 					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
 					</div>

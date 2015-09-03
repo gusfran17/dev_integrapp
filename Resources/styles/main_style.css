@@ -258,10 +258,26 @@ Change label colors for titles
 
 
 
+/*
+/
+/SUPPLIER and DISTRIBUTOR page
+/
+*/
+.lblDistributor{
+	background-color: #77DD44
+}
 
+.lblSupplier{
+	background-color: #2222AA
+}
 
+.pnlDistributor{
+	background-color: #ffffbb
+}
 
-
+.pnlSupplier{
+	background-color: #99ffff 
+}
 
 /*!!!!!!!!!FOOTER!!!!!!!!!*/
 

@@ -137,9 +137,11 @@ class User_model extends CI_Model {
         $user_result = $query->result();
         $loadInfo = new stdclass();
         if ($user_result[0]->role == 'supplier') {
-            $loadInfo->activeProducts = $this->Supplier_model->getActiveProductsAmount($userId);
+            $loadInfo->activeProducts = $this->Supplier_model->getProductsAmountByStatus($userId, 'active');
+            $loadInfo->inactiveProducts = $this->Supplier_model->getProductsAmountByStatus($userId, 'inactive');
+            $loadInfo->publishedProducts = $this->Supplier_model->getProductsAmountByStatus($userId, 'published');
             $loadInfo->pendingDistributors = $this->Supplier_model->getPendingDistributorsAmount($userId);
-        } else if ($user_reult[0]->role == 'distributor'){
+        } else if ($user_result[0]->role == 'distributor'){
 
         }
         $this->session->set_userdata(array('loadInfo'=>$loadInfo));

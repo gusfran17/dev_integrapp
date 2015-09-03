@@ -56,7 +56,7 @@ class Supplier_model extends CI_Model {
 
     function get_completeness($userid){
 
-        $supplier = $this->get_supplier($userid);
+        $supplier = $this->getsupplierByUserId($userid);
         $amountCompleted = 0;
         $steps = array();
         $steps['registered'] = true;
@@ -180,30 +180,23 @@ class Supplier_model extends CI_Model {
         }
     }
 
+    public function getSupplierFakeName($supplierId){
+        $this->db->where('id', $supplierId);
+        $query = $this->db->get('supplier');
+        $supplier = $query->result();
+        return $supplier[0]->fake_name;
+    }
+
     public function addAssociationDetailsToProduct($role, $roleId, &$catalog){
         if ($role == 'supplier') {
 
         } else if ($role == 'distributor') {
             for ($i=0; $i < count($catalog); $i++) { 
-                $this->db->where('supplier_id', $catalog[$i]->supplier_id);
-                $this->db->where('distributor_id', $roleId);
-                $query = $this->db->get('supplier_distributor_association');
-                $association = $query->result();
-                $catalog[$i]->associationStatus = $association[0]->status;
-                $catalog[$i]->associationDiscount = $association[0]->discount;
-                $this->db->where('id', $catalog[$i]->supplier_id);
-                $query = $this->db->get('supplier');
-                $supplier = $query->result();
-                $catalog[$i]->supplier_fakename = $supplier[0]->fake_name;
-                $this->db->where('product_id', $catalog[$i]->id);
-                $this->db->where('distributor_id', $roleId);
-                $query = $this->db->get('distributor_catalog');
-                if ($query->num_rows() > 0){
-                    $catalog[$i]->isCatalogItem = true;
-                } else {
-                    $catalog[$i]->isCatalogItem = false;
-                }
 
+                $catalog[$i]->associationStatus = $this->associationStatus($role,$roleId, $catalog[$i]->supplier_id);
+                $catalog[$i]->associationDiscount = $this->associationDiscount($role,$roleId, $catalog[$i]->supplier_id);
+                $catalog[$i]->supplier_fakename = $this->getSupplierFakeName($catalog[$i]->supplier_id);
+                $catalog[$i]->isCatalogItem = $this->Distributor_model->isCatalogItem($roleId, $catalog[$i]->id);
             }
         }        
     }
@@ -215,10 +208,10 @@ class Supplier_model extends CI_Model {
         return $result[0]->id;
     }
 
-    public function getActiveProductsAmount($userId){
+    public function getProductsAmountByStatus($userId, $status){
         $supplierId = $this->getSupplierId($userId);
         $this->db->where('supplier_id', $supplierId);
-        $this->db->where('status', 'active');
+        $this->db->where('status', $status);
         $this->db->from('product');
         return $this->db->count_all_results();
     }

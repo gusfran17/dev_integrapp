@@ -1,10 +1,11 @@
 <section id="home">
 	<div class="container-fluid">
 		<div class="col-md-12 col-sm-12 col-xs-12">
+			<h2 style="margin-top: 0px; margin-bottom: 20px; text-align: center;"><span class="label label-default lblSupplier" style="color:#ffffff; text-align: center;"><b>Perfil de Proveedor</b></span></h2>
 			<div class="panel panel-default">
 				<div class="panel-body">
-					<div class="well well-small" style="padding-top: 0px; text-align: center;">
-						<h2><span class="label label-default" style="color:#ffffff;"><b><?php echo $supplier->fake_name ?></b></span></h2>
+					<div class="well well-small pnlSupplier" style="padding-top: 0px; text-align: center;">
+						<h2><span class="label label-default lblSupplier" style="color:#ffffff;"><b><?php echo $supplier->fake_name ?></b></span></h2>
 						<?php if($supplier->associationStatus != 'approved'){ ?>
 							<p><span class="label label-warning" style="color:#ffffff;"><b><?php echo NOT_ASSOCIATED_MESSAGE; ?></b></span></p>
 						<?php } else {?>
@@ -47,12 +48,16 @@
 						<div class="panel panel-default">
 							<div class="panel-body">
 								<ul class="nav nav-pills nav-stacked">
-								<li><a href="<?php echo base_url() . 'Suppliers/viewCatalog/'. $supplier->id;?>"><b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Ver catálogo</b></a></li>
-								<?php if ($supplier->associationStatus == 'approved') {?>
-									<li><a href="<?php echo base_url() . 'Suppliers/viewCatalog/'. $supplier->id;?>"><b><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Dejar de distribuir sus productos</b></a></li>
-								<?php } else {?>
-									<li><a href="<?php echo base_url() . 'suppliers/setSupplierDistributorStatus/' . $supplier->id;?>"><b><span class="glyphicon glyphicon-share" aria-hidden="true"></span> Reenviar solicitud de adhesión</b></a></li>
-								<?php }?>
+									<li><a href="<?php echo base_url() . 'Suppliers/viewCatalog/'. $supplier->id;?>"><b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Ver catálogo</b></a></li>
+									<?php if ($watchingRole == 'distributor') {?>
+										<?php if ($supplier->associationStatus == 'approved') {?>
+											<li><a href="<?php echo base_url() . 'Distributors/setSupplierDistributorStatus/'. $supplier->id . '/rejected';?>"><b><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Dejar de distribuir sus productos</b></a></li>
+										<?php } else {?>
+											<li><a href="<?php echo base_url() . 'Distributors/setSupplierDistributorStatus/' . $supplier->id . '/pending';?>"><b><span class="glyphicon glyphicon-share" aria-hidden="true"></span> Reenviar solicitud de adhesión</b></a></li>
+										<?php }?>
+									<?php } else {?>
+									<?php }?>
+									<li><a href="<?php echo base_url(); ?>suppliers/viewSuppliers"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span><b> Proveedores</b></a></li>
 								</ul>
 							</div>
 						</div>

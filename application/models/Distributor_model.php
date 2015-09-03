@@ -15,6 +15,16 @@ class Distributor_model extends CI_Model {
         }
      }
 
+     public function getDistributorById($id)
+    {
+        $query = $this->db->get_where('distributor', array("id"=>$id));
+        if ($query->num_rows() == 1){
+            return $query->row(0);
+        } else {
+            return false;
+        }
+     } 
+
     public function createSupplierDistributorAssolciation($userId){
         $this->db->where('userid', $userId);
         $query = $this->db->get('distributor');
@@ -57,6 +67,18 @@ class Distributor_model extends CI_Model {
     public function save($userid, $data){
         $this->db->where('userid', $userid);
         return $this->db->update('distributor', $data);
+    }
+
+    public function isCatalogItem($distributorId, $productId){
+        $this->db->where('product_id', $productId);
+        $this->db->where('distributor_id', $distributorId);
+        $query = $this->db->get('distributor_catalog');
+        if ($query->num_rows() > 0){
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     public function addProductToCatalog($distributorId, $productId){
@@ -169,17 +191,6 @@ class Distributor_model extends CI_Model {
             $j++;
         }
         return $finalResult;
-    }
-
-    public function isCatalogItem($distributorId, $productId){
-        $this->db->where('product_id', $productId);
-        $this->db->where('distributor_id', $distributorId);
-        $query = $this->db->get('distributor_catalog');
-        if ($query->num_rows()>0){
-            return true;
-        } else {
-            return false;
-        }
     }
 
 }

@@ -66,9 +66,24 @@
 													</div>
 													<div class="panel-body" style="padding:0px">
 														<ul class="nav nav-pills nav-stacked" type="circle" style="margin: 5px 5px 5px 5px; padding: 5px 5px 5px 5px;">
-															<li class="<?php if ($statusFilter == 'published') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/showPublishedProducts/'; ?>"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Publicados</a></li>
-															<li class="<?php if ($statusFilter == 'active') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/showActiveProducts'; ?>">Activos</a></li>
-															<li class="<?php if ($statusFilter == 'inactive') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/showInactiveProducts'; ?>"><b style="color:red"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminados</b></a></li>
+															<li class="<?php if ($statusFilter == 'published') echo 'active' ?>" >
+																<a href="<?php echo base_url() . 'Product/showPublishedProducts/'; ?>">
+																	<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span><b> Publicados</b>
+																	<?php echo '<span class="badge">' . $loadInfo->publishedProducts . '</span>'; ?>
+																</a>
+															</li>
+															<li class="<?php if ($statusFilter == 'active') echo 'active' ?>" >
+																<a href="<?php echo base_url() . 'Product/showActiveProducts'; ?>"><b>Activos</b> (Sin publicar) 
+																	<?php echo '<span class="badge">' . $loadInfo->activeProducts . '</span>'; ?>
+																</a>
+															</li>
+															<li class="<?php if ($statusFilter == 'inactive') echo 'active' ?>" >
+																<a href="<?php echo base_url() . 'Product/showInactiveProducts'; ?>">
+																	<b style="color:red"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminados 
+																		<?php echo '<span class="badge">' . $loadInfo->inactiveProducts . '</span>'; ?>
+																	</b>
+																</a>
+															</li>
 														</ul>
 													</div>
 												</div>
@@ -76,7 +91,7 @@
 											<div class="panel panel-default" style="margin-bottom: 0px;">
 												<div class="panel-heading">
 													<div class="panel-title">
-														Ordenar Catalogo
+														<span class="glyphicon glyphicon-sort-by-attributes" aria-hidden="true"></span> Ordenar Catalogo
 													</div>
 												</div>
 												<div class="panel-body" style="padding:0px">

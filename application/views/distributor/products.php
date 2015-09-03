@@ -161,7 +161,7 @@
 														</a>
 													<?php } ?>		
 												<?php } else {?>
-													<p><span class="label label-info" style="color:#ffffff;"><b><?php echo NOT_ASSOCIATED_MESSAGE; ?></b><span></p>
+													<p><span class="label label-warning" style="color:#ffffff;"><b><?php echo NOT_ASSOCIATED_MESSAGE; ?></b><span></p>
 												<?php }?>
 											</td>
 										</tr>

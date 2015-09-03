@@ -50,7 +50,7 @@ class Suppliers extends CI_Controller {
 		$data["suppliers"] = $suppliers;
 		$str_links = $this->pagination->create_links();
 		$data["pageLinks"] = explode('&nbsp;',$str_links );
-
+		$data['watchingRole'] = $role;
 		// View data according to array.
 		$section = 'templates/supplier/suppliers';
 		$this->routedHome($data, $section, true);
@@ -67,7 +67,7 @@ class Suppliers extends CI_Controller {
 		$supplier->associationStatus = $this->Supplier_model->associationStatus($role, $roleId, $supplierId);
 		$supplier->associationDiscount = $this->Supplier_model->associationDiscount($role, $roleId, $supplierId);		
 		$data['supplier'] = $supplier;
-		$data['role'] = $role;
+		$data['watchingRole'] = $role;
 		$this->routedHome($data, 'templates/supplier/supplier', true);
 	}
 	
@@ -94,14 +94,17 @@ class Suppliers extends CI_Controller {
 
 	public function viewCatalog($selectedSupplierId){
 		$this->session->set_userdata('selectedSupplierId', $selectedSupplierId);
-		$this->viewSupplierCatalog('category_id');		
+		$this->viewSupplierCatalog(DEFAULT_CATALOG_ORDER);		
 	}
 
 	public function viewSupplierCatalog($orderBy = null){
 		if($this->session->has_userdata('role')){
 			$role = $this->session->userdata("role");
 			$roleId = $this->session->userdata("role_id");
-			$selectedSupplierId = $this->session->userdata('selectedSupplierId');			
+			$selectedSupplierId = $this->session->userdata('selectedSupplierId');		
+			if ($selectedSupplierId == $roleId){
+				$data['itIsMe'] = true;
+			}	
 		} else {
 			redirect(TIMEOUT_REDIRECT);
 		}
@@ -118,7 +121,7 @@ class Suppliers extends CI_Controller {
 
 		//setSupplierCatalog
 		if ($orderBy == null){
-			$orderBy = 'category_id';
+			$orderBy = DEFAULT_CATALOG_ORDER;
 		}
 		$totalRows = 0;
 		$page = $this->getPage($this->catalog_pagination_uri_segment);
@@ -126,7 +129,7 @@ class Suppliers extends CI_Controller {
 		$url = base_url() . "Suppliers/viewSupplierCatalog/$orderBy";
 		$this->setPagination($url, $totalRows, $this->catalog_pagination_uri_segment, $this->productsPerPage);
 		$data['orderBy']=$orderBy;
-		
+		$data['watchingRole'] = $role;
 		$str_links = $this->pagination->create_links();
 		$data["pageLinks"] = explode('&nbsp;',$str_links );
 		$section = 'templates/supplier/supplier_catalog';

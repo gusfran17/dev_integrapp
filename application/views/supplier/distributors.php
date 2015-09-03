@@ -16,6 +16,13 @@
 	        <a href="#rejected" data-toggle="tab">Rechazados <span class="badge"><?php echo count($rejectedDistributors); ?></span></a>
 	    </li>
 	  </ul>
+	  <?php if($this->session->flashdata('success') != null):?>
+		<div class="alert alert-dismissable alert-success">
+			<button type="button" class="close" data-dismiss="alert">×</button>
+			<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong>
+		 	<strong>Bien!</strong> <?php echo $this->session->flashdata('success'); ?></a>
+		</div>
+	  <?php endif;?>
 	  <div id="myTabContent" class="tab-content">
 	    <div class="tab-pane fade active in" id="pending">
 	      <div class="row">

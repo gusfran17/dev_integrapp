@@ -63,12 +63,10 @@ class Product extends CI_Controller {
 			redirect(TIMEOUT_REDIRECT);
 		}
 		if ($role == 'supplier'){
-			$this->orderCatalogBy('category_id');
+			$this->orderCatalogBy(DEFAULT_CATALOG_ORDER);
 		} else {
-			$this->orderDistributorCatalogBy('category_id');
+			$this->orderDistributorCatalogBy(DEFAULT_CATALOG_ORDER);
 		}
-		
-		
 	}
 
 	public function myProducts(){
@@ -80,25 +78,25 @@ class Product extends CI_Controller {
 			redirect(TIMEOUT_REDIRECT);
 		}
 		if ($role == 'supplier'){
-			$this->orderMyCatalogBy('category_id');
+			$this->orderMyCatalogBy(DEFAULT_CATALOG_ORDER);
 		} else {
-			$this->orderMyDistributorCatalogBy('category_id');
+			$this->orderMyDistributorCatalogBy(DEFAULT_CATALOG_ORDER);
 		}	
 	}
 
 	public function showPublishedProducts(){
 		$this->session->set_userdata('statusFilter', 'published');
-		$this->orderMyCatalogBy('category_id');
+		$this->orderMyCatalogBy(DEFAULT_CATALOG_ORDER);
 	}
 
 	public function showActiveProducts(){
 		$this->session->set_userdata('statusFilter', 'active');
-		$this->orderMyCatalogBy('category_id');
+		$this->orderMyCatalogBy(DEFAULT_CATALOG_ORDER);
 	}
 
 	public function showInactiveProducts(){
 		$this->session->set_userdata('statusFilter', 'inactive');
-		$this->orderMyCatalogBy('category_id');
+		$this->orderMyCatalogBy(DEFAULT_CATALOG_ORDER);
 	}
 
 	public function productLoadView($data=NULL){
@@ -553,7 +551,7 @@ class Product extends CI_Controller {
 				$update['status'] = $status;
 				$this->Product_model->updateProduct($update, $productId);
 				$this->User_model->setLoadInfo($userId);
-				redirect('Product/orderMyCatalogBy/category_id');
+				redirect('Product/orderMyCatalogBy/' . DEFAULT_CATALOG_ORDER);
 			}
 		} else {
 			redirect(TIMEOUT_REDIRECT);
