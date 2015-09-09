@@ -1,4 +1,4 @@
-<section id="home">
+<div id="page-wrapper">
 	
 	<div class="container">
 
@@ -44,4 +44,4 @@
 
 	</div>
 
-</section>
+</div>

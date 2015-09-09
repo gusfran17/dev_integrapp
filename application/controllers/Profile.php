@@ -12,12 +12,13 @@ class Profile extends CI_Controller {
 		if($this->session->has_userdata('role')){
 			$role = $this->session->userdata("role");
 			$data["username"]=$this->session->userdata("user");
+			$data["loadInfo"]=$this->session->userdata("loadInfo");
 		} else {
 			redirect(TIMEOUT_REDIRECT);
 			die;
 		}
 		$this->load->view('templates/template_header');
-		$this->load->view('templates/template_nav');
+		$this->load->view('templates/template_nav', $data);
 		$this->load->view('navs/nav_'.$role, $data);
 		$this->load->view($role.'/home', $data);
 		$this->load->view('templates/template_footer');
@@ -29,12 +30,13 @@ class Profile extends CI_Controller {
 		if($this->session->has_userdata('role')){
 			$role = $this->session->userdata("role");
 			$data["username"]=$this->session->userdata("user");
+			$data["loadInfo"]=$this->session->userdata("loadInfo");
 		} else {
 			redirect(TIMEOUT_REDIRECT);
 			die;
 		}
 		$this->load->view('templates/template_header');
-		$this->load->view('templates/template_nav');
+		$this->load->view('templates/template_nav', $data);
 		$this->load->view('navs/nav_'.$role, $data);
 		if ($template) $this->load->view($section, $data);
 		else $this->load->view($role.'/'.$section, $data);
@@ -49,7 +51,7 @@ class Profile extends CI_Controller {
 		$data['user'] = $this->User_model->get_user($userid);
 
 		if($role == "supplier"){
-			$data['supplier'] = $this->Supplier_model->get_supplier($userid);
+			$data['supplier'] = $this->Supplier_model->getSupplierByUserId($userid);
 
 			$data['supplier']->percentage = $this->Supplier_model->get_completeness($userid);
 
@@ -59,7 +61,7 @@ class Profile extends CI_Controller {
 			} 
 			
 		}else if($role == "distributor"){
-			$data['distributor'] = $this->Distributor_model->get_distributor($userid);
+			$data['distributor'] = $this->Distributor_model->getDistributorByUserId($userid);
 
 			$data['distributor']->percentage = $this->Distributor_model->get_completeness($userid);
 

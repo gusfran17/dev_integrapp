@@ -1,4 +1,4 @@
-<section id="home">
+<div id="page-wrapper">
 	<div class="container-fluid" id="main-products">
 		<div class="page-header" style="text-align:center; margin: 0px 0 0px;">
 			<h2><span class="label label-default" style="color:#ffffff;"><b>CLIENTES</b></span></h2>
@@ -16,6 +16,20 @@
 	        <a href="#rejected" data-toggle="tab"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> Rechazados <span class="badge"><?php echo count($rejectedDistributors); ?></span></a>
 	    </li>
 	  </ul>
+	  <?php if($this->session->flashdata('success') != null):?>
+		<div class="alert alert-dismissable alert-success">
+			<button type="button" class="close" data-dismiss="alert">×</button>
+			<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong>
+		 	<strong>Bien!</strong> <?php echo $this->session->flashdata('success'); ?></a>
+		</div>
+	  <?php endif;?>
+	  <?php if($this->session->flashdata('error') != null):?>
+		<div class="alert alert-dismissable alert-success">
+			<button type="button" class="close" data-dismiss="alert">×</button>
+			<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong>
+		 	<strong>Atención!</strong> <?php echo $this->session->flashdata('error'); ?></a>
+		</div>
+	  <?php endif;?>
 	  <div id="myTabContent" class="tab-content">
 	    <div class="tab-pane fade active in" id="pending">
 	      <div class="row">
@@ -47,17 +61,23 @@
 		                                	</td>
 		                                	<td><?php echo $pendingDistributors[$i]->fake_name; ?></td>
 		                                	<td>
-		                                		<div class="input-group porcentaje" style="float:left;width: 130px;">
-									                <span class="input-group-addon">Descontar</span>
-									                <input style="width: 80px;" type="number" class="form-control" id="discount" name="discount" min="0" max="100" step="1" value="0"/>
-									                <span class="input-group-addon">%</span>
-									            </div>
+		                                		<form action="<?php echo base_url() . 'distributors/setSupplierDistributorDiscount/' . $pendingDistributors[$i]->id;?>" method="post" id="<?php echo $pendingDistributors[$i]->id;?>">
+			                                		<div class="input-group col-lg-6 col-md-6 col-sm-12 col-xs-12" style="float:left;width: 130px;">
+										                <span class="input-group-addon">Descontar</span>
+										                <input style="width: 80px;" type="number" class="form-control" id="discount" name="discount" min="0" max="100" step="1" value="<?php echo $pendingDistributors[$i]->discount;?>"/>
+										                <span class="input-group-addon">%</span>
+										                
+										            </div>
+										            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+										            	<button type="submit" class="btn btn-success btn-sm" form="<?php echo $pendingDistributors[$i]->id;?>">Guardar descuento</button>
+										            </div>
+									            </form>
 		                                	</td>
 			                                <td class="centered-cell">
-			                                    <a href="<?php echo base_url() . 'distributors/setSupplierDistributorStatus/' . $pendingDistributors[$i]->id . '/approved';?>"><button type="button" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> Aprobar</button></a>
-			                                    <a href="<?php echo base_url() . 'distributors/setSupplierDistributorStatus/' . $pendingDistributors[$i]->id . '/rejected';?>"><button type="button" class="btn btn-danger  btn-xs"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> Bloquear</button></a>
+<<<<<<< 	                                    <a href="<?php echo base_url() . 'distributors/setSupplierDistributorStatus/' . $pendingDistributors[$i]->id . '/approved';?>"><button type="button" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> Aprobar</button></a>
+			                                    <a href="<?php echo base_url() . 'distributors/setSupplierDistributorStatus/' . $pendingDistributors[$i]->id . '/rejected';?>"><button type="button" class="btn btn-danger  btn-xs"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> Rechazar</button></a>
 			                                    <a href="<?php echo base_url() . 'distributors/viewDistributor/' . $pendingDistributors[$i]->id;?>"><button type="button" class="btn btn-default  btn-xs"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Ver detalles</button></a>
-			                                </td>
+>>>>>>> 	                                </td>
 			                            </tr>
 								<?php } ?>
 	                        </tbody>
@@ -96,15 +116,26 @@
 		                                	</td>
 		                                	<td><?php echo $approvedDistributors[$i]->fake_name; ?></td>
 		                                	<td>
-		                                		<div class="input-group porcentaje" style="float:left;width: 130px;">
-									                <span class="input-group-addon">Descontar</span>
-									                <input style="width: 80px;" type="number" class="form-control" id="discount" name="discount" min="0" max="100" step="1" value="0"/>
-									                <span class="input-group-addon">%</span>
-									            </div>		                                		
+		                                		<form action="<?php echo base_url() . 'distributors/setSupplierDistributorDiscount/' . $approvedDistributors[$i]->id;?>" method="post" id="<?php echo $approvedDistributors[$i]->id;?>">
+			                                		<div class="input-group col-lg-6 col-md-6 col-sm-12 col-xs-12" style="float:left;width: 130px;">
+										                <span class="input-group-addon">Descontar</span>
+										                <input style="width: 80px;" type="number" class="form-control" id="discount" name="discount" min="0" max="100" step="1" value="<?php echo $approvedDistributors[$i]->discount;?>"/>
+										                <span class="input-group-addon">%</span>
+										                
+										            </div>
+										            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+										            	<button type="submit" class="btn btn-success btn-sm" form="<?php echo $approvedDistributors[$i]->id;?>">Guardar descuento</button>
+										            </div>
+									            </form>		                                		
 		                                	</td>
 			                                <td class="centered-cell">
+<<<<<<< HEAD
 			                                    <a href="<?php echo base_url() . 'distributors/setSupplierDistributorStatus/' . $approvedDistributors[$i]->id . '/rejected';?>"><button type="button" class="btn btn-danger  btn-xs"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> Bloquear</button></a>
 			                                    <a href="<?php echo base_url() . 'distributors/viewDistributor/' . $approvedDistributors[$i]->id;?>"><button type="button" class="btn btn-default  btn-xs"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Ver detalles</button></a>
+=======
+			                                    <a href="<?php echo base_url() . 'distributors/setSupplierDistributorStatus/' . $approvedDistributors[$i]->id . '/rejected';?>"><button type="button" class="btn btn-danger  btn-xs">Rechazar</button></a>
+			                                    <a href="<?php echo base_url() . 'distributors/viewDistributor/' . $approvedDistributors[$i]->id;?>"><button type="button" class="btn btn-default  btn-xs">Ver detalles</button></a>
+>>>>>>> f-SuppDistAssociation
 			                                </td>
 			                            </tr>
 								<?php } ?>
@@ -143,12 +174,18 @@
 		                                	</td>
 		                                	<td><?php echo $rejectedDistributors[$i]->fake_name; ?></td>
 			                                <td>
-		                                		<div class="input-group porcentaje" style="float:left;width: 130px;">
-									                <span class="input-group-addon">Descontar</span>
-									                <input style="width: 80px;" type="number" class="form-control" id="discount" name="discount" min="0" max="100" step="1" value="0"/>
-									                <span class="input-group-addon">%</span>
-									            </div>			                                	
-			                                </td>
+		                                		<form action="<?php echo base_url() . 'distributors/setSupplierDistributorDiscount/' . $rejectedDistributors[$i]->id;?>" method="post" id="<?php echo $rejectedDistributors[$i]->id;?>">
+			                                		<div class="input-group col-lg-6 col-md-6 col-sm-12 col-xs-12" style="float:left;width: 130px;">
+										                <span class="input-group-addon">Descontar</span>
+										                <input style="width: 80px;" type="number" class="form-control" id="discount" name="discount" min="0" max="100" step="1" value="<?php echo $rejectedDistributors[$i]->discount;?>"/>
+										                <span class="input-group-addon">%</span>
+										                
+										            </div>
+										            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+										            	<button type="submit" class="btn btn-success btn-sm" form="<?php echo $rejectedDistributors[$i]->id;?>">Guardar descuento</button>
+										            </div>
+									            </form>
+									        </td>
 			                                <td class="centered-cell">
 			                                    <a href="<?php echo base_url() . 'distributors/setSupplierDistributorStatus/' . $rejectedDistributors[$i]->id . '/approved';?>"><button type="button" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> Aprobar</button></a>
 			                                    <a href="<?php echo base_url() . 'distributors/viewDistributor/' . $rejectedDistributors[$i]->id;?>"><button type="button" class="btn btn-default  btn-xs"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Ver detalles</button></a>
@@ -163,4 +200,4 @@
 	    </div>
 	  </div>
 	</div>
-</section>
+</div>

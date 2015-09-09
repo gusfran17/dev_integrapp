@@ -1,4 +1,4 @@
-<section id="home">
+<div id="page-wrapper">
 
 	
 	<form action="<?php echo base_url(); ?>profile/save" method="post" >
@@ -163,4 +163,4 @@
 		</div>
 	</form>
 
-</section>
+</div>

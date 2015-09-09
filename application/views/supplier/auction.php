@@ -1,3 +1,3 @@
-<section id="home">
+<div id="page-wrapper">
 	<h1>SUBASTAS</h1>
-</section>
+</div>

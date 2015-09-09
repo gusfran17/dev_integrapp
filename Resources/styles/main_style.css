@@ -10,80 +10,96 @@ html, body{font-family: OpenSans}
 
 /*!!!!!!!!BARRA DE NAVEGACIÓN!!!!!!!!!!*/
 /*Esto me resetea el estilo principal de la barra de navegacion*/
-.navbar{background-color: #4784ff;	height: 80px; transition:all 0.3s ease	;margin-bottom: 0;	padding: 0 40px;}
+.navbar{min-height: 80px;}
 /*end*/
 
-/*Esto me resetea la altura del contenedor que engloba todo lo de adentro del nav*/
-nav>.container-fluid{height: 100%; padding: 0;}
-/*end*/
+.side-nav {
+    top: 81px;
+    background-color: #566;
+ }
 
-/*Esto me resetea la posicion de la barra de navegacion a la derecha y la altura*/
-#bs-example-navbar-collapse-1>ul.nav{float: right;padding: 15px 0; height: 100%}
-.navbar-collapse.collapse{height: 100%;}
-.nav > li{/*height: 100%*/}
-/*end*/
+.navbar-inverse {
+    background-color: #4784ff;
+    border-color: #4784ff;
+}
 
-/*Esto me resetea el color de los links de la barra de navegacion*/
-#bs-example-navbar-collapse-1>ul.nav a{color: white; transition:all 0.3s ease; background-color: #4784ff;}
-/*end*/
+.top-nav>li>a {
+    color: #EED;
+    min-height: 80px;
+}
 
-/*Esto resetea la altura del div donde está el logo y el cambio de altura del mismo y de la barra de navegación*/
-.navbar-brand{height: 100%;}
-.navbar-brand figure{height: 100% !important;}
-.navbar-brand figure img{transition: all 0.3s ease;}
-.navbar-collapse{height: 100%;}
-/*end*/
 
-/*Esto me resetea la altura del navbar para que las opciones bajen justo abajo de donde termina*/
-.navbar-header{height: 100%;}
-/*end*/
+.navbar-inverse li a:hover, .navbar-inverse li a:focus, .top-nav>.open>a, .top-nav>.open>a:hover, .top-nav>.open>a:focus {
+	background-color: #478499;
+} 
 
-/*Esto me resetea el color del boton de la barra responsive*/
-.icon-bar{color: white;	background-color: white;}
-/*end*/
 
 /*
-Menu del boton de mi cuenta
+/ SIDEBAR
 */
-.my-account-btn{
-    margin-top: 15px;
+.navbar-nav > li > a {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    max-width: 180px;
+}
+
+.navbar-inverse .navbar-nav > li > a, .side-nav>li>ul>li>a {
+    color: #EED;
+}
+
+.subcategories {
+    color: #999 !important;
+}
+
+.navbar-nav li a:hover, .navbar-nav li a:focus{
     color: #FFF;
-    border-color: #4784ff;
-	background-color: #4784ff;
-	font-size:20px;
-	font-family: OpenSans;
-	padding-top: 0px;
-    padding-bottom: 0px;
+    background-color: #478499 !important;
 }
 
- .my-account-btn a:hover, .my-account-btn:hover, .my-account-btn:focus, .my-account-btn.focus, .my-account-btn:active, .my-account-btn.active, .open > .dropdown-toggle.my-account-btn {
-    color: #FFF;
-    border-color: #4784ff;
-	background-color: #4784ff;
-	text-decoration: none;
+@media screen and (min-width: 768px) {
+	.hasSidebar {
+	    padding-left: 250px !important;
+	}
+	
+	#page-wrapper{
+		margin-top:80px;
+	}
+
+	footer {
+    	color:#FFF;
+	}
+
 }
-/*
-Menu del boton de mi cuenta
-*/
-.my-account-mn{
-	background-color: #4784ff;
+
+@media screen and (max-width: 768px) {
+	
+	#page-wrapper{
+		padding-top:170px !important;
+		margin-top:0px !important;
+	}
+
+	body {
+		background-color: #FFF !important;
+	}
+
+	footer {
+    	color:#000;
+	}
+
+	#footerLogo {-webkit-filter: invert(100%)}
+
+	.container-fluid {
+	    padding-top: 60px;
+	 }
+
 }
 
-.my-account-mn li a:hover, .my-account-mn li a:focus {background-color: #4784ff;} 
 
+#wrapper {
 
-/*EFECTOS TYMPANUS*/
-/* Effect 1: Brackets */
-/* URL: http://tympanus.net/Development/CreativeLinkEffects/ */
-.cl-effect-1 li a::before,.cl-effect-1 li a::after {display: inline-block;opacity: 0; font-size:20px; -webkit-transition: -webkit-transform 0.3s, opacity 0.2s;-moz-transition: -moz-transform 0.3s, opacity 0.2s;transition: transform 0.3s, opacity 0.2s;}
-.cl-effect-1 li a::before {margin-right: 5px;content: '[';	-webkit-transform: translateX(20px);-moz-transform: translateX(20px);transform: translateX(20px);}
-.cl-effect-1 li a::after { margin-left: 5px; content: ']';	-webkit-transform: translateX(-20px); -moz-transform: translateX(-20px);transform: translateX(-20px);}
-.cl-effect-1 a:hover::before,.cl-effect-1 a:hover::after,.cl-effect-1 a:focus::before,.cl-effect-1 a:focus::after {opacity: 1;-webkit-transform: translateX(0px);-moz-transform: translateX(0px);transform: translateX(0px);}
-/*end*/
+    padding-left: 0px;
 
-
-
-
+}
 
 
 
@@ -93,11 +109,17 @@ Menu del boton de mi cuenta
 /*end*/
 
 /*esto me da las reglas de medicion para el contenido del centro del home*/
-section#home{margin-top:110px;padding-left: 40px;padding-right: 40px;padding-bottom: 50px;}
+#page-wrapper{
+	margin-top:80px;
+	padding-left: 40px;
+	padding-right: 40px;
+	padding-bottom: 50px; 
+	min-height: 600px;
+}
 /*end*/
 
 /*Esto me da el hack para el responsive imagen del banner*/
-#home>header #banner figure, #home>header #banner figure img{width: 100%;}
+#page-wrapper>header #banner figure, #page-wrapper>header #banner figure img{width: 100%;}
 /*end*/
 
 /*Esto me separa para arriba y abajo cajas de catalogo del home*/
@@ -143,6 +165,10 @@ Esto es para que los nav-pils (usados en tabs y selecciones) en general sean ver
 	color:#ffffff;
 }
 
+.nav > li > a {
+    position: relative;
+    display: block;
+}
 
 /*
 !!!BREADCRUMBS!!!
@@ -251,10 +277,26 @@ Change label colors for titles
 
 
 
+/*
+/
+/SUPPLIER and DISTRIBUTOR page
+/
+*/
+.lblDistributor{
+	background-color: #77DD44
+}
 
+.lblSupplier{
+	background-color: #2222AA
+}
 
+.pnlDistributor{
+	background-color: #ffffbb
+}
 
-
+.pnlSupplier{
+	background-color: #99ffff 
+}
 
 /*!!!!!!!!!FOOTER!!!!!!!!!*/
 
@@ -263,21 +305,23 @@ html {
     position: relative;
     min-height: 100%;
 }
+
 body {
-    margin: 0 0 160px; /* bottom = footer height */
+	margin: 0px -30px 100px -30px; /* bottom = footer height */
+	background-color: #4784ff;
 }
 
 footer {
     position: absolute;
-    left: 0;
     bottom: 0;
-    height: 160px;
+    height: 70px;
     width: 100%;
+    padding-left: 40px;
 }
 
 
 /*Esto me da el estilo del footer*/
-#main-container>footer{	padding:0 60px;	background-color: #4784ff;	color: #444;color: white;}
+{	padding:0 60px;	background-color: #4784ff;	color: #444;color: white;}
 /*end*/
 
 

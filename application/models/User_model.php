@@ -78,21 +78,18 @@ class User_model extends CI_Model {
 
                 $role = $user_result[0]->role;
                 if ($role == 'supplier') {
-                    $role_information = $this->Supplier_model->get_supplier($user_result[0]->id);
+                    $role_information = $this->Supplier_model->getSupplierByUserId($user_result[0]->id);
                 } else if ($role == 'distributor'){
-                    $role_information = $this->Distributor_model->get_distributor($user_result[0]->id);
+                    $role_information = $this->Distributor_model->getDistributorByUserId($user_result[0]->id);
                 }
-                
-
+                $this->setLoadInfo($user_result[0]->id);
                 $this->session->set_userdata(array('id'=>$user_result[0]->id, 'role_id'=>$role_information->id,'user'=>$user_result[0]->username, 'role'=>$user_result[0]->role, 'email'=>$user_result[0]->email, 'logged_in'=>true));
+                
                 return TRUE;
-
-
             }else{
                     return FALSE;
             }
-
-        return TRUE;
+            return TRUE;
         }else{
             return FALSE;
         }
@@ -109,7 +106,15 @@ class User_model extends CI_Model {
             $passwordDB_decoded = $this->encrypt->decode($passwordDB, $this->config->item('encryption_key'));
 
             if ($password==$passwordDB_decoded) {
-                $this->session->set_userdata(array('id'=>$user_result[0]->id, 'user'=>$user_result[0]->username, 'role'=>$user_result[0]->role, 'email'=>$user_result[0]->email, 'logged_in'=>true));
+                $role = $user_result[0]->role;
+                if ($role == 'supplier') {
+                    $role_information = $this->Supplier_model->getSupplierByUserId($user_result[0]->id);
+                } else if ($role == 'distributor'){
+                    $role_information = $this->Distributor_model->getDistributorByUserId($user_result[0]->id);
+                }
+                $this->setLoadInfo($user_result[0]->id);
+                $this->session->set_userdata(array('id'=>$user_result[0]->id, 'role_id'=>$role_information->id, 'user'=>$user_result[0]->username, 'role'=>$user_result[0]->role, 'email'=>$user_result[0]->email,  'logged_in'=>true));
+                
                 return TRUE;
             }else{
                     return FALSE;
@@ -121,13 +126,26 @@ class User_model extends CI_Model {
     }
 
 
-
    public function passwordAuthenticate($password, $data){
-    
         return $this->usernameCheck($password, $data) or 
                $this->emailCheck($password, $data);
     }
 
+    public function setLoadInfo($userId){
+        $this->db->where('id', $userId);
+        $query = $this->db->get('user');
+        $user_result = $query->result();
+        $loadInfo = new stdclass();
+        if ($user_result[0]->role == 'supplier') {
+            $loadInfo->activeProducts = $this->Supplier_model->getProductsAmountByStatus($userId, 'active');
+            $loadInfo->inactiveProducts = $this->Supplier_model->getProductsAmountByStatus($userId, 'inactive');
+            $loadInfo->publishedProducts = $this->Supplier_model->getProductsAmountByStatus($userId, 'published');
+            $loadInfo->pendingDistributors = $this->Supplier_model->getPendingDistributorsAmount($userId);
+        } else if ($user_result[0]->role == 'distributor'){
+
+        }
+        $this->session->set_userdata(array('loadInfo'=>$loadInfo));
+    }
 
    public function password_change($id, $newpassword){
 

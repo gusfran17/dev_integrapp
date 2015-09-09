@@ -1,4 +1,4 @@
-<section id="home">
+<div id="page-wrapper">
 	<h1>Contactenos</h1>
 	<h2>Subtitulo o Slogan</h2>
 	<br>
@@ -10,4 +10,4 @@
 			</div>
 		</div>
 	</article>
-</section>
+</div>

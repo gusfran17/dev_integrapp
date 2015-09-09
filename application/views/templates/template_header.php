@@ -30,9 +30,10 @@
          
         <link href="<?php echo base_url(); ?>Resources/fontawesome/css/font-awesome.css" rel="stylesheet">
         <link href="<?php echo base_url(); ?>Resources/bootstrap/css/bootstrap.css" rel="stylesheet">
-        <link href="<?php echo base_url(); ?>Resources/styles/main_style.css" rel="stylesheet">
+        <link href="<?php echo base_url(); ?>Resources/bootstrap/css/sb-admin.css" rel="stylesheet">
         <link href="<?php echo base_url(); ?>Resources/styles/dropzone.css" type="text/css" rel="stylesheet" />
-        
+        <link href="<?php echo base_url(); ?>Resources/styles/main_style.css" rel="stylesheet">
+
         <script type="text/javascript" src="<?php echo base_url(); ?>Resources/scripts/modernizr.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>Resources/scripts/jquery.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>Resources/scripts/dropzone.js"></script>

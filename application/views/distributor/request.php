@@ -1,3 +1,3 @@
-<section id="home">
+<div id="page-wrapper">
 	<h1>MIS SOLICITUDES</h1>
-</section>
+</div>

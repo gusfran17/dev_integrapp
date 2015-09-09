@@ -1,4 +1,4 @@
-<section id="home">
+<div id="page-wrapper">
 	<div class="container">
 		<form class="region size1of2" action="<?php echo base_url(); ?>profile/save_username" method="post">
 			<div class="form-group">
@@ -19,4 +19,4 @@
 			</div>
 		</form>
 	</div>
-</section>
+</div>

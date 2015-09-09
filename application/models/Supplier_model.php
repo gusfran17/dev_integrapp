@@ -4,16 +4,29 @@
 
 class Supplier_model extends CI_Model {
 
-
-    function get_supplier($userid)
-    {
-        $query = $this->db->get_where('supplier', array("userid"=>$userid));
+    public function getSupplierByUserId($userId){
+        $this->db->where('userid', $userId);
+        $query = $this->db->get('supplier');
         if ($query->num_rows() == 1){
-        	return $query->row(0);
+            $result = $query->result();
+            $result[0]->logo = $this->get_logo($result[0]->userid);           
+            return $result[0];
         } else {
-        	return false;
+            return false;
         }
-     }
+    }
+
+    public function getSupplierById($supplierId){
+        $this->db->where('id', $supplierId);
+        $query = $this->db->get('supplier');
+        if ($query->num_rows() == 1){
+            $result = $query->result();
+            $result[0]->logo = $this->get_logo($result[0]->userid);           
+            return $result[0];
+        } else {
+            return false;
+        }
+    }
 
     public function createSupplierDistributorAssolciation($userId){
         $this->db->where('userid', $userId);
@@ -43,7 +56,7 @@ class Supplier_model extends CI_Model {
 
     function get_completeness($userid){
 
-        $supplier = $this->get_supplier($userid);
+        $supplier = $this->getsupplierByUserId($userid);
         $amountCompleted = 0;
         $steps = array();
         $steps['registered'] = true;
@@ -116,17 +129,6 @@ class Supplier_model extends CI_Model {
         return $result;
     }
 
-    public function getSupplierById($supplierId){
-        $this->db->where('id', $supplierId);
-        $query = $this->db->get('supplier');
-        if ($query->num_rows() == 1){
-            $result = $query->result();
-            $result[0]->logo = $this->get_logo($result[0]->userid);           
-            return $result[0];
-        } else {
-            return false;
-        }
-    }
 
     public function notExistFakename($fake_name){
         $this->db->where('fake_name', $fake_name);
@@ -178,35 +180,49 @@ class Supplier_model extends CI_Model {
         }
     }
 
+    public function getSupplierFakeName($supplierId){
+        $this->db->where('id', $supplierId);
+        $query = $this->db->get('supplier');
+        $supplier = $query->result();
+        return $supplier[0]->fake_name;
+    }
+
     public function addAssociationDetailsToProduct($role, $roleId, &$catalog){
         if ($role == 'supplier') {
 
         } else if ($role == 'distributor') {
             for ($i=0; $i < count($catalog); $i++) { 
-                $this->db->where('supplier_id', $catalog[$i]->supplier_id);
-                $this->db->where('distributor_id', $roleId);
-                $query = $this->db->get('supplier_distributor_association');
-                $association = $query->result();
-                $catalog[$i]->associationStatus = $association[0]->status;
-                $catalog[$i]->associationDiscount = $association[0]->discount;
-                $this->db->where('id', $catalog[$i]->supplier_id);
-                $query = $this->db->get('supplier');
-                $supplier = $query->result();
-                $catalog[$i]->supplier_fakename = $supplier[0]->fake_name;
-                $this->db->where('product_id', $catalog[$i]->id);
-                $this->db->where('distributor_id', $roleId);
-                $query = $this->db->get('distributor_catalog');
-                if ($query->num_rows() > 0){
-                    $catalog[$i]->isCatalogItem = true;
-                } else {
-                    $catalog[$i]->isCatalogItem = false;
-                }
 
+                $catalog[$i]->associationStatus = $this->associationStatus($role,$roleId, $catalog[$i]->supplier_id);
+                $catalog[$i]->associationDiscount = $this->associationDiscount($role,$roleId, $catalog[$i]->supplier_id);
+                $catalog[$i]->supplier_fakename = $this->getSupplierFakeName($catalog[$i]->supplier_id);
+                $catalog[$i]->isCatalogItem = $this->Distributor_model->isCatalogItem($roleId, $catalog[$i]->id);
             }
         }        
     }
 
+    public function getSupplierId($userId){
+        $this->db->where('userid', $userId);
+        $query = $this->db->get('supplier');
+        $result = $query->result();
+        return $result[0]->id;
+    }
 
+    public function getProductsAmountByStatus($userId, $status){
+        $supplierId = $this->getSupplierId($userId);
+        $this->db->where('supplier_id', $supplierId);
+        $this->db->where('status', $status);
+        $this->db->from('product');
+        return $this->db->count_all_results();
+    }
+    
+    public function getPendingDistributorsAmount($userId){
+        $supplierId = $this->getSupplierId($userId);
+        $this->db->where('supplier_id', $supplierId);
+        $this->db->where('status', 'pending');
+        $this->db->from('supplier_distributor_association');
+        return $this->db->count_all_results();
+    }
 }
 
 

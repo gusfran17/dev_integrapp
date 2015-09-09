@@ -1,4 +1,4 @@
-<section id="home">
+<div id="page-wrapper">
 	<h1>Registrarse</h1>
 	<article class="registro">
 
@@ -94,7 +94,7 @@
 		</div>
 	</div>
 	</article>
-</section>
+</div>
 
 
   

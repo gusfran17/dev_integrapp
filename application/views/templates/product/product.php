@@ -1,10 +1,10 @@
-<section id="home">
+<div id="page-wrapper">
 	<div class="container-fluid">
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<?php
 				if (isset($product->branch)) {
 					echo '<ol class="breadcrumb">';
-					echo '<li><a href="' . base_url() . 'Product/products/-1" id="-1"><b>PRODUCTOS</b></a></li>';
+					echo '<li><a href="' . base_url() . 'Product/products" id="-1"><b>PRODUCTOS</b></a></li>';
 					$treeHeight = count($product->branch);
 					//echo var_dump($product->branch);
 					for ($i=$treeHeight-1; $i >= 0; $i--) {
@@ -18,10 +18,24 @@
 			<div class="panel panel-default">
 				<div class="panel-body">
 					<div class="col-md-6 col-sm-12 col-xs-12">
-						<h2><b><?php echo $product->name; ?></b><small> <b><?php echo $product->price . '$' . ' (' . 'I.V.A. ' . $product->tax . ')';?></b></small></h2>
+						<h2><b><?php echo $product->name; ?></b><small> <b><?php if(($product->supplier->associationStatus == 'approved') or ($product->mine)) echo $product->price . '$' . ' (' . 'I.V.A. ' . $product->tax . ')';?></b></small></h2>
 						<h4><strong>Código Interno (<?php echo $product->supplier->fake_name;?>):</strong> <?php echo $product->code; ?><br></h4>
 						<h4><strong>Código IntegrApp: </strong><?php echo $product->integrapp_code; ?></h4>
 						<?php if ($product->mine){ ?>
+							<script type="text/javascript">
+								function publishProduct(selectedProductId) {
+									var productId = selectedProductId;
+									if (window.confirm("Al publicar este producto se le descontaran <?php echo $product->publishing_cost; ?>$ de su crédito")){
+										$('#publish_' + productId).submit();	
+									}
+								}
+								function deactivateProduct(selectedProductId) {
+									var productId = selectedProductId;
+									if (window.confirm("¡Atención! Si despublica este producto, deberá pagar nuevamente el costo de publicación para publicarlo más tarde (costo: <?php echo $product->publishing_cost; ?>$)")){
+										$('#deactivate_' + productId).submit();	
+									}
+								}
+							</script>
 							<a href="<?php echo base_url() . 'product/editCatalogProduct/' . $product->id; ?>">
 								<button type="button" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</button>
 							</a><br>
@@ -36,12 +50,12 @@
 								<ul class="dropdown-menu" aria-labelledby="statusDropDown">
 									<li class="dropdown-header">Cambiar estado</li>
 									<?php if ($product->status == 'active') {?>
-										<li><a href="<?php echo base_url() . 'product/setProductStatus/' . $product->id . "/published";?>">Publicar</a></li>
+										<form action="<?php echo base_url() . 'product/setProductStatus/' . $product->id . "/published";?>" id="<?php echo 'publish_' . $product->id; ?>" style="padding-bottom: 0px;"></form><li><a href="#" onclick="publishProduct(<?php echo $product->id; ?>)">Publicar (Cuesta <?php echo $product->publishing_cost; ?> $)</a></li>
 										<li><a href="<?php echo base_url() . 'product/setProductStatus/' . $product->id . "/inactive";?>">Eliminar</a></li>
 									<?php } else if ($product->status == 'inactive') { ?>
 										<li><a href="<?php echo base_url() . 'product/setProductStatus/' . $product->id . "/active";?>">Activar</a></li>
 									<?php } else { ?>
-										<li><a href="<?php echo base_url() . 'product/setProductStatus/' . $product->id . "/active";?>">Despublicar</a></li>			
+										<form action="<?php echo base_url() . 'product/setProductStatus/' . $product->id . "/active";?>" id="<?php echo 'deactivate_' . $product->id; ?>" style="padding-bottom: 0px;"></form><li><a href="#" onclick="deactivateProduct(<?php echo $product->id ?>)">Despublicar</a></li>			
 									<?php }?>
 								</ul>
 							</div>
@@ -163,7 +177,7 @@
 						</table>
 					</div>
 					<div class="col-md-6 col-sm-12 col-xs-12" style="text-align:center;">
-						<div class="panel panel-default">
+						<div class="panel panel-default" style="margin-top: 70px;">
 							<div class="panel-body">
 								<h2><b><?php if ($role == 'supplier') echo "Ortopedias"; else echo "Proveedores" ?></b></h2>
 								<img src="<?php echo base_url() . 'Resources/imgs/map_example.png'; ?>" style="max-height: 400px">		
@@ -174,4 +188,4 @@
 			</div>
 		</div>
 	</div>
-</section>
+</div>

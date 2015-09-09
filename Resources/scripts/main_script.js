@@ -14,19 +14,19 @@ $(document).ready(function(){
 
 	});
 
-	$(window).scroll(function(){
-		if ($(window).scrollTop()>50) {
-			$('.navbar').css("height", "65px");
-			$('.navbar-nav > li > a').css("padding", "5px");
-			$('.navbar-brand figure img').css("width", "75%");
+	// $(window).scroll(function(){
+	// 	if ($(window).scrollTop()>50) {
+	// 		$('.navbar').css("height", "65px");
+	// 		$('.navbar-nav > li > a').css("padding", "5px");
+	// 		$('.navbar-brand figure img').css("width", "75%");
 
-		}else{
-			$('.navbar').css("height", "80px");
-			$('.navbar-nav > li > a').css("padding", "15px");
-			$('.navbar-brand figure img').css("width", "100%");
+	// 	}else{
+	// 		$('.navbar').css("height", "80px");
+	// 		$('.navbar-nav > li > a').css("padding", "15px");
+	// 		$('.navbar-brand figure img').css("width", "100%");
 
-		}
-	});
+	// 	}
+	// });
 
 
 
@@ -139,13 +139,16 @@ $(document).ready(function(){
 	$('#divRecentlyAddedProducts').on('click', 'button', function(){
 		buttonName = $(this).attr('name');
 		if(buttonName=="editRecentlyAdded"){
+				$('.alert').remove();
 				integrappCode = $(this).attr('id');
 				duplicateOrEditProduct(integrappCode, true);
 			
 		} else if (buttonName=="duplicateRecentlyAdded") {
+				$('.alert').remove();
 				integrappCode = $(this).attr('id');
 				duplicateOrEditProduct(integrappCode, false);
 		} else if (buttonName=="deleteRecentlyAdded") {
+				$('.alert').remove();
 				integrappCode = $(this).attr('id');
 				deleteProduct(integrappCode);
 		}

@@ -120,8 +120,10 @@ define('PRODUCT_IMAGES_PATH', '/Resources/imgs/product/');
 /*Product attributes amount*/
 define('MAX_ATTRIBUTE_AMOUNT', 20);
 /*Product description length*/
-define('PROD_DESCRIPTION_MIN_LENGTH', 20);
+define('PROD_DESCRIPTION_MIN_LENGTH', 0);
 define('PROD_DESCRIPTION_MAX_LENGTH', 400);
+/*Catalog*/
+define('DEFAULT_CATALOG_ORDER', 'category_id');
 
 /*
 |PAGINATION CONFIG
@@ -142,3 +144,5 @@ define('TIMEOUT_REDIRECT', 'Login/Logout');
 */
 define('ASSOCIATED_MESSAGE', '<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Se encuentra asociado a este proovedor');
 define('NOT_ASSOCIATED_MESSAGE', '<span class="glyphicon glyphicon-time" aria-hidden="true"></span> Solicitud pendiente de aprobación');
+define('PRICE_NOT_ALLOWED_MESSAGE', 'Precio no disponible');
+
