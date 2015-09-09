@@ -7,7 +7,7 @@
 	<div class="bs-example">
 	  <ul class="nav nav-tabs nav-pills" style="margin-bottom: 15px;">
 	    <li class="active">
-	        <a href="#pending" data-toggle="tab">Pendientes <span class="badge badge-red"><?php echo count($pendingDistributors); ?></span></a>
+	        <a href="#pending" data-toggle="tab"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> Pendientes <span class="badge badge-red"><?php echo count($pendingDistributors); ?></span></a>
 	    </li>
 	    <li class="">
 	        <a href="#approved" data-toggle="tab"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> Aprobados <span class="badge"><?php echo count($approvedDistributors); ?></span></a>
@@ -66,18 +66,17 @@
 										                <span class="input-group-addon">Descontar</span>
 										                <input style="width: 80px;" type="number" class="form-control" id="discount" name="discount" min="0" max="100" step="1" value="<?php echo $pendingDistributors[$i]->discount;?>"/>
 										                <span class="input-group-addon">%</span>
-										                
 										            </div>
 										            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-										            	<button type="submit" class="btn btn-success btn-sm" form="<?php echo $pendingDistributors[$i]->id;?>">Guardar descuento</button>
+										            	<button type="submit" class="btn btn-success btn-sm" form="<?php echo $pendingDistributors[$i]->id;?>"><span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Guardar descuento</button>
 										            </div>
 									            </form>
 		                                	</td>
 			                                <td class="centered-cell">
-<<<<<<< 	                                    <a href="<?php echo base_url() . 'distributors/setSupplierDistributorStatus/' . $pendingDistributors[$i]->id . '/approved';?>"><button type="button" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> Aprobar</button></a>
+			                                    <a href="<?php echo base_url() . 'distributors/setSupplierDistributorStatus/' . $pendingDistributors[$i]->id . '/approved';?>"><button type="button" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> Aprobar</button></a>
 			                                    <a href="<?php echo base_url() . 'distributors/setSupplierDistributorStatus/' . $pendingDistributors[$i]->id . '/rejected';?>"><button type="button" class="btn btn-danger  btn-xs"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> Rechazar</button></a>
 			                                    <a href="<?php echo base_url() . 'distributors/viewDistributor/' . $pendingDistributors[$i]->id;?>"><button type="button" class="btn btn-default  btn-xs"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Ver detalles</button></a>
->>>>>>> 	                                </td>
+	 	                                </td>
 			                            </tr>
 								<?php } ?>
 	                        </tbody>
@@ -124,18 +123,13 @@
 										                
 										            </div>
 										            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-										            	<button type="submit" class="btn btn-success btn-sm" form="<?php echo $approvedDistributors[$i]->id;?>">Guardar descuento</button>
+										            	<button type="submit" class="btn btn-success btn-sm" form="<?php echo $approvedDistributors[$i]->id;?>"><span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Guardar descuento</button>
 										            </div>
 									            </form>		                                		
 		                                	</td>
 			                                <td class="centered-cell">
-<<<<<<< HEAD
-			                                    <a href="<?php echo base_url() . 'distributors/setSupplierDistributorStatus/' . $approvedDistributors[$i]->id . '/rejected';?>"><button type="button" class="btn btn-danger  btn-xs"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> Bloquear</button></a>
+			                                    <a href="<?php echo base_url() . 'distributors/setSupplierDistributorStatus/' . $approvedDistributors[$i]->id . '/rejected';?>"><button type="button" class="btn btn-danger  btn-xs"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> Rechazar</button></a>
 			                                    <a href="<?php echo base_url() . 'distributors/viewDistributor/' . $approvedDistributors[$i]->id;?>"><button type="button" class="btn btn-default  btn-xs"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Ver detalles</button></a>
-=======
-			                                    <a href="<?php echo base_url() . 'distributors/setSupplierDistributorStatus/' . $approvedDistributors[$i]->id . '/rejected';?>"><button type="button" class="btn btn-danger  btn-xs">Rechazar</button></a>
-			                                    <a href="<?php echo base_url() . 'distributors/viewDistributor/' . $approvedDistributors[$i]->id;?>"><button type="button" class="btn btn-default  btn-xs">Ver detalles</button></a>
->>>>>>> f-SuppDistAssociation
 			                                </td>
 			                            </tr>
 								<?php } ?>
@@ -182,7 +176,7 @@
 										                
 										            </div>
 										            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-										            	<button type="submit" class="btn btn-success btn-sm" form="<?php echo $rejectedDistributors[$i]->id;?>">Guardar descuento</button>
+										            	<button type="submit" class="btn btn-success btn-sm" form="<?php echo $rejectedDistributors[$i]->id;?>"><span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Guardar descuento</button>
 										            </div>
 									            </form>
 									        </td>
