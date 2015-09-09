@@ -226,7 +226,6 @@ class Product_model extends CI_Model {
         //Category ID needs to be fetched first to avoid where clauses errors
         if (isset($parentCategoryId) and ($parentCategoryId != 0)){
             $leafCategories = array();
-            log_message('info', "Product_model get_catalog", FALSE);
             $this->getLeafCategories($leafCategories, $parentCategoryId);
             $this->db->where_in("category_id", $leafCategories);
         }
@@ -239,7 +238,6 @@ class Product_model extends CI_Model {
         if (isset($orderBy)){
                 $this->db->order_by($orderBy);     
         }
-        log_message('info', "Product_model get_catalog Page: " .  $page . " Range: " . $rangePerPage . " ParentId: " . $parentCategoryId, FALSE);
         $from =  ($page-1) * $rangePerPage;
         $query = $this->db->get('product');
         $result = $query->result();
@@ -263,6 +261,47 @@ class Product_model extends CI_Model {
             }  
         } else {
              $leafCategories[] = $parentCategoryId;
+        }
+    }
+
+    public function addProductPublishingCost(&$product){
+        $this->db->where("id", $product->category_id);
+        $query = $this->db->get("category");
+        $category = $query->result();
+        $product->publishing_cost = $category[0]->publishing_cost;
+    }
+
+    public function addProductsPublishingCost(&$catalog){
+        for ($i=0; $i < count($catalog); $i++) { 
+            if ($i==0){
+                $this->db->where("id", $catalog[$i]->category_id);
+            } else {
+                $this->db->or_where("id", $catalog[$i]->category_id);
+            }
+        }
+        $query = $this->db->get("category");
+        
+        $categories = $query->result();
+        for ($i=0; $i < count($catalog); $i++) { 
+            foreach ($categories as $category) {
+                if ($category->id == $catalog[$i]->category_id){
+                    $catalog[$i]->publishing_cost = $category->publishing_cost;
+                }
+            }    
+        }
+    }
+
+    public function addCategoryPathToProducts(&$catalog){
+        $this->db->select('id, ascending_path from category where id not in (select distinct parent_id from category where parent_id is not null)', FALSE); 
+        $query = $this->db->get();
+        $categories = $query->result();
+
+        foreach ($categories as $category) {
+            for ($i=0; $i < count($catalog) ; $i++) { 
+                if ($category->id == $catalog[$i]->category_id){
+                    $catalog[$i]->categoryPath = $category->ascending_path;
+                }
+            }
         }
     }
 

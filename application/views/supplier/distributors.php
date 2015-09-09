@@ -1,4 +1,4 @@
-<section id="home">
+<div id="page-wrapper">
 	<div class="container-fluid" id="main-products">
 		<div class="page-header" style="text-align:center; margin: 0px 0 0px;">
 			<h2><span class="label label-default" style="color:#ffffff;"><b>CLIENTES</b></span></h2>
@@ -21,6 +21,13 @@
 			<button type="button" class="close" data-dismiss="alert">×</button>
 			<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong>
 		 	<strong>Bien!</strong> <?php echo $this->session->flashdata('success'); ?></a>
+		</div>
+	  <?php endif;?>
+	  <?php if($this->session->flashdata('error') != null):?>
+		<div class="alert alert-dismissable alert-success">
+			<button type="button" class="close" data-dismiss="alert">×</button>
+			<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong>
+		 	<strong>Atención!</strong> <?php echo $this->session->flashdata('error'); ?></a>
 		</div>
 	  <?php endif;?>
 	  <div id="myTabContent" class="tab-content">
@@ -68,7 +75,7 @@
 		                                	</td>
 			                                <td class="centered-cell">
 			                                    <a href="<?php echo base_url() . 'distributors/setSupplierDistributorStatus/' . $pendingDistributors[$i]->id . '/approved';?>"><button type="button" class="btn btn-success btn-xs">Aprobar</button></a>
-			                                    <a href="<?php echo base_url() . 'distributors/setSupplierDistributorStatus/' . $pendingDistributors[$i]->id . '/rejected';?>"><button type="button" class="btn btn-danger  btn-xs">Bloquear</button></a>
+			                                    <a href="<?php echo base_url() . 'distributors/setSupplierDistributorStatus/' . $pendingDistributors[$i]->id . '/rejected';?>"><button type="button" class="btn btn-danger  btn-xs">Rechazar</button></a>
 			                                    <a href="<?php echo base_url() . 'distributors/viewDistributor/' . $pendingDistributors[$i]->id;?>"><button type="button" class="btn btn-default  btn-xs">Ver detalles</button></a>
 			                                </td>
 			                            </tr>
@@ -122,7 +129,7 @@
 									            </form>		                                		
 		                                	</td>
 			                                <td class="centered-cell">
-			                                    <a href="<?php echo base_url() . 'distributors/setSupplierDistributorStatus/' . $approvedDistributors[$i]->id . '/rejected';?>"><button type="button" class="btn btn-danger  btn-xs">Bloquear</button></a>
+			                                    <a href="<?php echo base_url() . 'distributors/setSupplierDistributorStatus/' . $approvedDistributors[$i]->id . '/rejected';?>"><button type="button" class="btn btn-danger  btn-xs">Rechazar</button></a>
 			                                    <a href="<?php echo base_url() . 'distributors/viewDistributor/' . $approvedDistributors[$i]->id;?>"><button type="button" class="btn btn-default  btn-xs">Ver detalles</button></a>
 			                                </td>
 			                            </tr>
@@ -188,4 +195,4 @@
 	    </div>
 	  </div>
 	</div>
-</section>
+</div>

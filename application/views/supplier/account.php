@@ -1,4 +1,4 @@
-<section id="home">
+<div id="page-wrapper">
 
 	<form class="region size1of2" action="<?php echo base_url(); ?>profile/save" method="post" id="frm-login">
 		<div class="container">
@@ -178,6 +178,4 @@
 
 	</form>
 
-
-
-</section>
+</div>

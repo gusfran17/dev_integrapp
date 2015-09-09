@@ -1,4 +1,4 @@
-<section id="home">
+<div id="page-wrapper">
 	<h1>Catalogo</h1>
 	<h2>Subtitulo o Slogan</h2>
 	<article id="catalogo">
@@ -66,4 +66,4 @@
 			</div>
 		</div>
 	</article>
-</section>
+</div>

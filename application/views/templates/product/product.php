@@ -1,4 +1,4 @@
-<section id="home">
+<div id="page-wrapper">
 	<div class="container-fluid">
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<?php
@@ -22,6 +22,20 @@
 						<h4><strong>Código Interno (<?php echo $product->supplier->fake_name;?>):</strong> <?php echo $product->code; ?><br></h4>
 						<h4><strong>Código IntegrApp: </strong><?php echo $product->integrapp_code; ?></h4>
 						<?php if ($product->mine){ ?>
+							<script type="text/javascript">
+								function publishProduct(selectedProductId) {
+									var productId = selectedProductId;
+									if (window.confirm("Al publicar este producto se le descontaran <?php echo $product->publishing_cost; ?>$ de su crédito")){
+										$('#publish_' + productId).submit();	
+									}
+								}
+								function deactivateProduct(selectedProductId) {
+									var productId = selectedProductId;
+									if (window.confirm("¡Atención! Si despublica este producto, deberá pagar nuevamente el costo de publicación para publicarlo más tarde (costo: <?php echo $product->publishing_cost; ?>$)")){
+										$('#deactivate_' + productId).submit();	
+									}
+								}
+							</script>
 							<a href="<?php echo base_url() . 'product/editCatalogProduct/' . $product->id; ?>">
 								<button type="button" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</button>
 							</a><br>
@@ -36,12 +50,12 @@
 								<ul class="dropdown-menu" aria-labelledby="statusDropDown">
 									<li class="dropdown-header">Cambiar estado</li>
 									<?php if ($product->status == 'active') {?>
-										<li><a href="<?php echo base_url() . 'product/setProductStatus/' . $product->id . "/published";?>">Publicar</a></li>
+										<form action="<?php echo base_url() . 'product/setProductStatus/' . $product->id . "/published";?>" id="<?php echo 'publish_' . $product->id; ?>" style="padding-bottom: 0px;"></form><li><a href="#" onclick="publishProduct(<?php echo $product->id; ?>)">Publicar (Cuesta <?php echo $product->publishing_cost; ?> $)</a></li>
 										<li><a href="<?php echo base_url() . 'product/setProductStatus/' . $product->id . "/inactive";?>">Eliminar</a></li>
 									<?php } else if ($product->status == 'inactive') { ?>
 										<li><a href="<?php echo base_url() . 'product/setProductStatus/' . $product->id . "/active";?>">Activar</a></li>
 									<?php } else { ?>
-										<li><a href="<?php echo base_url() . 'product/setProductStatus/' . $product->id . "/active";?>">Despublicar</a></li>			
+										<form action="<?php echo base_url() . 'product/setProductStatus/' . $product->id . "/active";?>" id="<?php echo 'deactivate_' . $product->id; ?>" style="padding-bottom: 0px;"></form><li><a href="#" onclick="deactivateProduct(<?php echo $product->id ?>)">Despublicar</a></li>			
 									<?php }?>
 								</ul>
 							</div>
@@ -174,4 +188,4 @@
 			</div>
 		</div>
 	</div>
-</section>
+</div>

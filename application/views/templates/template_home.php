@@ -12,7 +12,7 @@
 				</div>
 			</div>
 		</div>
-		<section id="home" class="container-fluid">
+		<div id="page-wrapper" class="container-fluid">
 			<header>
 				<div class="row">
 					<div class="col-md-5">
@@ -112,4 +112,4 @@
 					<a href="">Ver mas</a>
 				</div>
 			</article>
-		</section>
+		</div>

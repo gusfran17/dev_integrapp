@@ -23,7 +23,7 @@ class Suppliers extends CI_Controller {
 			die;
 		}
 		$this->load->view('templates/template_header');
-		$this->load->view('templates/template_nav');
+		$this->load->view('templates/template_nav', $data);
 		$this->load->view('navs/nav_'.$role, $data);
 		if ($template) $this->load->view($section, $data);
 		else $this->load->view($role.'/'.$section, $data);
@@ -94,6 +94,7 @@ class Suppliers extends CI_Controller {
 
 	public function viewCatalog($selectedSupplierId){
 		$this->session->set_userdata('selectedSupplierId', $selectedSupplierId);
+		$this->session->unset_userdata('selectedCategoryId');
 		$this->viewSupplierCatalog(DEFAULT_CATALOG_ORDER);		
 	}
 
@@ -132,6 +133,7 @@ class Suppliers extends CI_Controller {
 		$data['watchingRole'] = $role;
 		$str_links = $this->pagination->create_links();
 		$data["pageLinks"] = explode('&nbsp;',$str_links );
+		$data['hasSidebar'] = true;
 		$section = 'templates/supplier/supplier_catalog';
 		$this->routedHome($data, $section, true);		
 	}
@@ -172,16 +174,17 @@ class Suppliers extends CI_Controller {
 		return $selectedCategoryId;
 	}
 
-	public function setSupplierDistributorStatus($supplierId){
+	public function setAssociationPending($supplierId){
 		if ($this->session->has_userdata('role')){
 			$role = $this->session->userdata("role");
 			if ($role == 'distributor'){
-				$roleId = $this->session->userdata("role_id");
-				$this->Distributor_model->setSupplierDistributorStatus($supplierId, $roleId, 'pending');
+				$distributorId = $this->session->userdata("role_id");
+				$this->Distributor_model->setSupplierDistributorStatus($supplierId, $distributorId, 'pending');
 			}
 		}
 		redirect('Suppliers/viewSuppliers');
 	}
+
 
 }
 

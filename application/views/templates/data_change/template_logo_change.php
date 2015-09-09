@@ -1,32 +1,32 @@
-<section id="home">
-	
-<div class="container">
+<div id="page-wrapper">
+		
+	<div class="container">
 
-<?php if(isset($exito)):?>
-	<div class="alert alert-dismissable alert-success">
-      <button type="button" class="close" data-dismiss="alert">×</button>
-      <strong>Bien!</strong> <?php echo $exito; ?></a>
-    </div>
-<?php endif;?>
+	<?php if(isset($exito)):?>
+		<div class="alert alert-dismissable alert-success">
+	      <button type="button" class="close" data-dismiss="alert">×</button>
+	      <strong>Bien!</strong> <?php echo $exito; ?></a>
+	    </div>
+	<?php endif;?>
 
-	<form class="region size1of2" action="<?php echo base_url(); ?>profile/save_logo" method="post"  enctype="multipart/form-data" >
-		<div class="form-group">
-		  <h3 class="info-level-3">Cambiar logotipo de tu negocio</h3>
-		</div>
+		<form class="region size1of2" action="<?php echo base_url(); ?>profile/save_logo" method="post"  enctype="multipart/form-data" >
+			<div class="form-group">
+			  <h3 class="info-level-3">Cambiar logotipo de tu negocio</h3>
+			</div>
 
-		<div class="form-group">
-		  <label class="control-label" for="userfile">Archivo de Logotipo (PNG - <?php echo ALLOWED_PROFILE_IMAGE_MAXWIDTH; ?> píxels x <?php echo ALLOWED_PROFILE_IMAGE_MAXHEIGHT; ?> píxels)</label>
-		  <?php if(isset($error)): ?><span class="label label-danger"><?php echo $error;  ?></span><?php endif;?>
-		  <input class="form-control" id="userfile" name="userfile" type="file">
-		</div>
+			<div class="form-group">
+			  <label class="control-label" for="userfile">Archivo de Logotipo (PNG - <?php echo ALLOWED_PROFILE_IMAGE_MAXWIDTH; ?> píxels x <?php echo ALLOWED_PROFILE_IMAGE_MAXHEIGHT; ?> píxels)</label>
+			  <?php if(isset($error)): ?><span class="label label-danger"><?php echo $error;  ?></span><?php endif;?>
+			  <input class="form-control" id="userfile" name="userfile" type="file">
+			</div>
 
-		<div class="form-group">
-			<input type="submit" value="Cambiar logotipo" class="btn btn-info">
-		</div>
-	</form>
+			<div class="form-group">
+				<input type="submit" value="Cambiar logotipo" class="btn btn-info">
+			</div>
+		</form>
+
+
+	</div>
 
 
 </div>
-
-
-</section>

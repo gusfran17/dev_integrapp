@@ -1,4 +1,4 @@
-<section id="home">
+<div id="page-wrapper">
 	<div class="container-fluid">
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<div style="text-align: center;">
@@ -8,7 +8,7 @@
 				<div class="panel-body">
 					<div class="well well-small pnlDistributor" style="padding-top: 0px; text-align: center;">
 						<h2><span class="label label-default lblDistributor" style="color:#ffffff;"><b><?php echo $distributor->fake_name ?></b></span></h2>
-						<?php if($distributor->associationStatus != 'approved'){ ?>
+						<?php if ($distributor->associationStatus != 'approved'){ ?>
 							<p><span class="label label-warning" style="color:#ffffff;"><b><?php echo NOT_ASSOCIATED_MESSAGE; ?></b></span></p>
 						<?php } else {?>
 							<p><span class="label label-info" style="color:#ffffff;"><b><?php echo ASSOCIATED_MESSAGE; ?></b><span></p>
@@ -55,4 +55,4 @@
 			</div>
 		</div>			
 	</div>
-</section>
+</div>

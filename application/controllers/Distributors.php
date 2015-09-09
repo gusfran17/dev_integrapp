@@ -21,7 +21,7 @@ class Distributors extends CI_Controller {
 			die;
 		}
 		$this->load->view('templates/template_header');
-		$this->load->view('templates/template_nav');
+		$this->load->view('templates/template_nav', $data);
 		$this->load->view('navs/nav_'.$role, $data);
 		if ($template) $this->load->view($section, $data);
 		else $this->load->view($role.'/'.$section, $data);
@@ -63,7 +63,8 @@ class Distributors extends CI_Controller {
 		$this->routedHome($data, 'templates/distributor/distributor', true);
 	}
 
-		public function viewCatalog($selectedDistributorId){
+	public function viewCatalog($selectedDistributorId){
+		$this->session->unset_userdata('selectedCategoryId');
 		$this->session->set_userdata('selectedDistributorId', $selectedDistributorId);
 		$this->viewDistributorCatalog(DEFAULT_CATALOG_ORDER);		
 	}
@@ -101,6 +102,7 @@ class Distributors extends CI_Controller {
 		$data['orderBy']=$orderBy;
 		
 		$data['watchingRole'] = $role;
+		$data['hasSidebar']= true;
 		$str_links = $this->pagination->create_links();
 		$data["pageLinks"] = explode('&nbsp;',$str_links );
 		$section = 'templates/distributor/distributor_catalog';
@@ -162,20 +164,13 @@ class Distributors extends CI_Controller {
 		return $selectedCategoryId;
 	}
 
-	public function setSupplierDistributorStatus($supplierOrDistributorId, $status){
+	public function setSupplierDistributorStatus($DistributorId, $status){
 		if ($this->session->has_userdata('role')){
 			$role = $this->session->userdata("role");
 			$userId = $this->session->userdata("id");
-			if ($role == 'supplier'){
-				$supplierId = $this->session->userdata("role_id");
-				$result = $this->Distributor_model->setSupplierDistributorStatus($supplierId, $supplierOrDistributorId, $status);
-				$this->SetResultMessage($result, $status);
-
-			} else {
-				$distributorId = $this->session->userdata("role_id");
-				$result = $this->Distributor_model->setSupplierDistributorStatus($supplierOrDistributorId, $distributorId, $status);
-				$this->SetResultMessage($result, $status);
-			}
+			$supplierId = $this->session->userdata("role_id");
+			$result = $this->Distributor_model->setSupplierDistributorStatus($supplierId, $DistributorId, $status);
+			$this->SetResultMessage($result, $status);
 			$this->User_model->setLoadInfo($userId);
 			$this->viewDistributors();
 		} else {
@@ -186,7 +181,7 @@ class Distributors extends CI_Controller {
 	public function SetResultMessage($editionSuccess, $status){
 		if ($editionSuccess) {
 			if ($status == 'pending') { 
-				$this->session->set_flashdata('success', "Se le há recordado su solicitud al proveedor");
+				$this->session->set_flashdata('success', "La solicitud esta ahora pendiente");
 			} else if ($status == 'rejected') {
 				$this->session->set_flashdata('success', "Se há rechazado la solicitud de la ortopedia, podra encontrar la misma en la solapa de <b>Rechazados</b>");
 			} else if ($status == 'approved') {
@@ -203,7 +198,7 @@ class Distributors extends CI_Controller {
 			if ($role == 'supplier'){
 				$roleId = $this->session->userdata("role_id");
 				$discount = $this->input->post('discount');
-				if (!($this->Distributor_model->setSupplierDistributorDiscount($roleId, $distributorId, $discount))) {
+				if (($this->Distributor_model->setSupplierDistributorDiscount($roleId, $distributorId, $discount))) {
 					$this->session->set_flashdata('error', "Hubo un error al modificar el monto a descontar.");
 
 				} else {

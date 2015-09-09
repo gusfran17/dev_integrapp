@@ -1,4 +1,4 @@
-<section id="home">
+<div id="page-wrapper">
 	<div class="container-fluid">
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<h2 style="margin-top: 0px; margin-bottom: 20px; text-align: center;"><span class="label label-default lblSupplier" style="color:#ffffff; text-align: center;"><b>Perfil de Proveedor</b></span></h2>
@@ -51,9 +51,9 @@
 									<li><a href="<?php echo base_url() . 'Suppliers/viewCatalog/'. $supplier->id;?>"><b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Ver catálogo</b></a></li>
 									<?php if ($watchingRole == 'distributor') {?>
 										<?php if ($supplier->associationStatus == 'approved') {?>
-											<li><a href="<?php echo base_url() . 'Distributors/setSupplierDistributorStatus/'. $supplier->id . '/rejected';?>"><b><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Dejar de distribuir sus productos</b></a></li>
+											<li><a href="<?php echo base_url() . 'Suppliers/setAssociationRejected/'. $supplier->id . '/rejected';?>"><b><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Dejar de distribuir sus productos</b></a></li>
 										<?php } else {?>
-											<li><a href="<?php echo base_url() . 'Distributors/setSupplierDistributorStatus/' . $supplier->id . '/pending';?>"><b><span class="glyphicon glyphicon-share" aria-hidden="true"></span> Reenviar solicitud de adhesión</b></a></li>
+											<li><a href="<?php echo base_url() . 'Suppliers/setAssociationPending/' . $supplier->id;?>"><b><span class="glyphicon glyphicon-share" aria-hidden="true"></span> Reenviar solicitud de adhesión</b></a></li>
 										<?php }?>
 									<?php } else {?>
 									<?php }?>
@@ -67,4 +67,4 @@
 			</div>
 		</div>
 	</div>
-</section>
+</div>

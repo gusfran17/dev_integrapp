@@ -1,4 +1,4 @@
-<section id="home">
+<div id="page-wrapper">
 	<div class="container" style="text-align:center;">
 		<h2><span class="label label-default" style="color:#ffffff;"><b>PROVEEDORES</b></span></h2>
 		<div class="col-md-12 col-sm-12 col-xs-12">
@@ -18,7 +18,7 @@
 								<?php if (($suppliers[$i]->associationStatus != 'approved') and ($watchingRole=='distributor')){ ?>
 									<p><span class="label label-warning" style="color:#ffffff;"><b><?php echo NOT_ASSOCIATED_MESSAGE; ?></b></span></p>
 									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 item-catalogo">
-										<a href="<?php echo base_url() . 'suppliers/setSupplierDistributorStatus/' . $suppliers[$i]->id;?>"><button type="button" class="btn btn-success btn-xs">Recordar solicitud</button></a>
+										<a href="<?php echo base_url() . 'suppliers/setAssociationPending/' . $suppliers[$i]->id;?>"><button type="button" class="btn btn-success btn-xs">Recordar solicitud</button></a>
 									</div>
 								<?php } else if ($watchingRole=='distributor') {?>
 									<p><span class="label label-info" style="color:#ffffff;"><b><?php echo ASSOCIATED_MESSAGE; ?></b><span></p>
@@ -40,4 +40,4 @@
 		</div>
 	</div>		
 		
-</section>
+</div>

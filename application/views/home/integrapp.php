@@ -1,4 +1,4 @@
-<section id="home">
+<div id="page-wrapper">
 	<h1>Integrapp</h1>
 	<h2>subtitulo o slogan</h2>
 	<article id="integrapp">
@@ -23,4 +23,4 @@
 			<a href="#">AQUI</a>
 		</div>
 	</article>
-</section>
+</div>

@@ -18,7 +18,7 @@ class Profile extends CI_Controller {
 			die;
 		}
 		$this->load->view('templates/template_header');
-		$this->load->view('templates/template_nav');
+		$this->load->view('templates/template_nav', $data);
 		$this->load->view('navs/nav_'.$role, $data);
 		$this->load->view($role.'/home', $data);
 		$this->load->view('templates/template_footer');
@@ -36,7 +36,7 @@ class Profile extends CI_Controller {
 			die;
 		}
 		$this->load->view('templates/template_header');
-		$this->load->view('templates/template_nav');
+		$this->load->view('templates/template_nav', $data);
 		$this->load->view('navs/nav_'.$role, $data);
 		if ($template) $this->load->view($section, $data);
 		else $this->load->view($role.'/'.$section, $data);

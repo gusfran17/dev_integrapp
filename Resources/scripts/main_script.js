@@ -14,19 +14,19 @@ $(document).ready(function(){
 
 	});
 
-	$(window).scroll(function(){
-		if ($(window).scrollTop()>50) {
-			$('.navbar').css("height", "65px");
-			$('.navbar-nav > li > a').css("padding", "5px");
-			$('.navbar-brand figure img').css("width", "75%");
+	// $(window).scroll(function(){
+	// 	if ($(window).scrollTop()>50) {
+	// 		$('.navbar').css("height", "65px");
+	// 		$('.navbar-nav > li > a').css("padding", "5px");
+	// 		$('.navbar-brand figure img').css("width", "75%");
 
-		}else{
-			$('.navbar').css("height", "80px");
-			$('.navbar-nav > li > a').css("padding", "15px");
-			$('.navbar-brand figure img').css("width", "100%");
+	// 	}else{
+	// 		$('.navbar').css("height", "80px");
+	// 		$('.navbar-nav > li > a').css("padding", "15px");
+	// 		$('.navbar-brand figure img').css("width", "100%");
 
-		}
-	});
+	// 	}
+	// });
 
 
 
