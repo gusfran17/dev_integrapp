@@ -100,19 +100,28 @@ define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 |IMAGES
 |
 */
+//PROFILE PICTURE
 define('ALLOWED_PROFILE_IMAGE_TYPE', 'png');
 define('ALLOWED_PROFILE_IMAGE_MAXSIZE', 200);
 define('ALLOWED_PROFILE_IMAGE_MAXWIDTH', 300);
 define('ALLOWED_PROFILE_IMAGE_MAXHEIGHT', 250);
-define('ALLOWED_PRODUCT_IMAGE_TYPE', 'png|png|gif');
+//PRODUCT PICTURE
+define('ALLOWED_PRODUCT_IMAGE_TYPE', 'png|jpg|gif');
 define('ALLOWED_PRODUCT_IMAGE_MAXSIZE', 5000);
 define('ALLOWED_PRODUCT_IMAGE_MAXWIDTH', 7000);
 define('ALLOWED_PRODUCT_IMAGE_MAXHEIGHT', 7000);
+//VOUCHER PICTURE
+define('ALLOWED_VOUCHER_IMAGE_TYPE', 'jpg');
+define('ALLOWED_VOUCHER_IMAGE_MAXSIZE', 5000);
+define('ALLOWED_VOUCHER_IMAGE_MAXWIDTH', 7000);
+define('ALLOWED_VOUCHER_IMAGE_MAXHEIGHT', 7000);
+//PATHS
 define('IMAGES_PATH', '/Resources/imgs/');
 define('PROFILE_IMAGE_PATH', '/Resources/imgs/profile/'); 
 define('DISTRIBUTOR_PROFILE_IMAGE_PATH', '/Resources/imgs/profile/distributor/');
 define('SUPPLIER_PROFILE_IMAGE_PATH', '/Resources/imgs/profile/supplier/');
 define('PRODUCT_IMAGES_PATH', '/Resources/imgs/product/');
+define('VOUCHER_IMAGES_PATH', '/Resources/imgs/voucher/');
 
 /*
 |Product INFORMATION
@@ -124,6 +133,10 @@ define('PROD_DESCRIPTION_MIN_LENGTH', 0);
 define('PROD_DESCRIPTION_MAX_LENGTH', 400);
 /*Catalog*/
 define('DEFAULT_CATALOG_ORDER', 'category_id');
+/*Prices*/
+define('PRICE_DECIMAL_AMOUNT', 2);
+define('DECIMAL_SEPARATOR', ',');
+define('THOUSANDS_SEPARATOR', '.');
 
 /*
 |PAGINATION CONFIG
