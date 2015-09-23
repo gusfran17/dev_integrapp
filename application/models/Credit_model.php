@@ -51,31 +51,31 @@ class  Credit_model extends CI_Model {
         }
     }
 
-    function addTransaction($administratorId, $amount, $description){
+    function addTransaction($userId, $amount, $description){
         if($amount < 0){
             $insert_data = array(
                 "date_added"=> date("Y-m-d h:i:s"),
                 "description"=> $description,
                 "debit"=>-$amount,
                 "credit"=> 0,
-                "balance"=> $this->getLatestBalance($administratorId) + $amount,
-                "userid"=> $administratorId);
+                "balance"=> $this->getLatestBalance($userId) + $amount,
+                "userid"=> $userId);
         }else if($amount> 0){
             $insert_data = array(
                 "date_added"=> date("Y-m-d h:i:s"),
                 "description"=> $description,
                 "debit"=>0,
                 "credit"=> $amount,
-                "balance"=> $this->getLatestBalance($administratorId) + $amount,
-                "userid"=> $administratorId);
+                "balance"=> $this->getLatestBalance($userId) + $amount,
+                "userid"=> $userId);
         }else if($amount == 0){
             $insert_data = array(
                 "date_added"=> date("Y-m-d h:i:s"),
                 "description"=> $description,
                 "debit"=>0,
                 "credit"=> 0,
-                "balance"=> $this->getLatestBalance($administratorId),
-                "userid"=> $administratorId);
+                "balance"=> $this->getLatestBalance($userId),
+                "userid"=> $userId);
         }
         $this->db->insert("transaction", $insert_data);
     }
@@ -93,7 +93,7 @@ class  Credit_model extends CI_Model {
     }
 
     public function getPendingTransfers(){
-        $this->db->select('u.username, u.role, t.* from transfer t, user u where u.id = t.userid and confirmed = false', FALSE); 
+        $this->db->select("u.username, u.role, t.* from transfer t, user u where u.id = t.userid and t.confirmed = false and u.status = 'active'", FALSE); 
         $query = $this->db->get();
         return $query->result();
     }

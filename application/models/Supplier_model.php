@@ -28,6 +28,20 @@ class Supplier_model extends CI_Model {
         }
     }
 
+    public function getPendingSuppliers(){
+        $this->db->where('status', 'pending');
+        $this->db->where('role', 'supplier');
+        $query = $this->db->get("user");
+        return $query->result();
+    }
+
+    public function getApprovedSuppliers(){
+        $this->db->where('status', 'active');
+        $this->db->where('role', 'supplier');
+        $query = $this->db->get("user");
+        return $query->result();
+    }
+
     public function createSupplierDistributorAssolciation($userId){
         $this->db->where('userid', $userId);
         $query = $this->db->get('supplier');
@@ -40,22 +54,19 @@ class Supplier_model extends CI_Model {
             $insert['distributor_id'] = $distributorRecord->id;
             $insert['supplier_id'] = $supplier[0]->id;
             $insert['status'] = 'pending';
+            $insert['discount'] = 0;
             $this->db->insert('supplier_distributor_association', $insert);           
         }
     }
 
 
 	function save($userid, $data){
-
         $this->db->where('userid', $userid);
-
         return $this->db->update('supplier', $data);
-
     }
 
 
     function get_completeness($userid){
-
         $supplier = $this->getsupplierByUserId($userid);
         $amountCompleted = 0;
         $steps = array();
@@ -75,7 +86,6 @@ class Supplier_model extends CI_Model {
         $steps['bank_branch'] = ($supplier->bank_branch != "");
         $steps['bank_account_name'] = ($supplier->bank_account_name != "");
         $steps['logo'] = ($this->get_logo($userid) != null);
-        
         foreach($steps as $key=>$step){
             if($step != false){
                 $amountCompleted++;
@@ -121,6 +131,9 @@ class Supplier_model extends CI_Model {
 
     public function getSuppliers($page, $rangePerPage){
         $from =  ($page-1) * $rangePerPage;
+        $this->db->select('supplier.*');
+        $this->db->join('user','user.id = supplier.userid');
+        $this->db->where('user.status','active');
         $query = $this->db->get('supplier', $rangePerPage, $from);
         $result = $query->result();
         for ($i=0; $i<count($result); $i++) {
@@ -143,8 +156,10 @@ class Supplier_model extends CI_Model {
     public function getAssociatedDistributors($supplierId, $status = null){
         $this->db->select('distributor.*, supplier_distributor_association.*');
         $this->db->from('distributor');
-        $this->db->join('supplier_distributor_association', 'distributor.id = supplier_distributor_association.distributor_id');
+        $this->db->join('supplier_distributor_association', 'distributor.id = supplier_distributor_association.distributor_id', 'inner');
+        $this->db->join('user', 'distributor.userid = user.id', 'inner');
         $this->db->where('supplier_distributor_association.supplier_id', $supplierId);
+        $this->db->where('user.status', 'active');
         if (isset($status)){
             $this->db->where('supplier_distributor_association.status', $status);
         }
@@ -222,6 +237,18 @@ class Supplier_model extends CI_Model {
         $this->db->where('status', 'pending');
         $this->db->from('supplier_distributor_association');
         return $this->db->count_all_results();
+    }
+
+    public function setSupplierStatus($userId, $status){
+        $updateData = array("status"=>$status);
+        $this->db->where("id", $userId);
+        $this->db->where("role", 'supplier');
+        return $this->db->update("user", $updateData);
+        if ($this->db->affected_rows() > 0){
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 

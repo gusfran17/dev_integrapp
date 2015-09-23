@@ -42,7 +42,7 @@ class Register extends CI_Controller {
 			$insert['role'] = $role;
 			$insert['lastname'] = $this->input->post("lastname");
 			$insert['newsletter'] = $this->input->post("newsletter");
-			if ($role == 'user') {
+			if ($role != 'supplier') {
 				$insert['status'] = 'active';
 			} else {
 				$insert['status'] = 'pending';
@@ -54,7 +54,7 @@ class Register extends CI_Controller {
 			} else if ($role == 'distributor'){
 				$this->Distributor_model->createSupplierDistributorAssolciation($id);
 			}
-			$this->session->set_flashdata('register_user', 'Su cuenta ha sido creada y le hemos enviado un e-mail de confirmación.');
+			$this->session->set_flashdata('success', 'Su cuenta ha sido creada y le hemos enviado un e-mail de confirmación.');
 			redirect('home/routedHome/login');
 		}else{
 			$this->load->view('templates/template_header');

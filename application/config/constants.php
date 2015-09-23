@@ -137,7 +137,7 @@ define('DEFAULT_CATALOG_ORDER', 'category_id');
 define('PRICE_DECIMAL_AMOUNT', 2);
 define('DECIMAL_SEPARATOR', ',');
 define('THOUSANDS_SEPARATOR', '.');
-
+define('LEAST_CREDIT_AMOUNT', -500);
 /*
 |PAGINATION CONFIG
 */

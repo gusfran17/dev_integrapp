@@ -25,6 +25,13 @@ class Distributor_model extends CI_Model {
         }
      } 
 
+     public function getApprovedDistributors(){
+        $this->db->where('status', 'active');
+        $this->db->where('role', 'distributor');
+        $query = $this->db->get("user");
+        return $query->result();
+     }
+
     public function createSupplierDistributorAssolciation($userId){
         $this->db->where('userid', $userId);
         $query = $this->db->get('distributor');
@@ -60,8 +67,9 @@ class Distributor_model extends CI_Model {
         $this->db->update('supplier_distributor_association'); 
         if ($this->db->affected_rows() > 0){
             return true;
-        }
-        return false;
+        } else {
+            return false;    
+        } 
     }
 
     public function save($userid, $data){
@@ -85,6 +93,7 @@ class Distributor_model extends CI_Model {
         $this->db->set('distributor_id', $distributorId);
         $this->db->set('product_id', $productId);
         $this->db->insert('distributor_catalog');
+        
     }
 
     public function removeProductFromCatalog($distributorId, $productId){
@@ -165,14 +174,18 @@ class Distributor_model extends CI_Model {
     }
 
     public function get_catalog($distributorId, $parentCategoryId = null, $orderBy = null, $page = 1, $rangePerPage = 1000, &$totalRows){
+        $this->db->select('product.*');
+        $this->db->from('product');
+        $this->db->join('supplier', 'product.supplier_id = supplier.id','inner');
+        $this->db->join('user', 'supplier.userid = user.id','inner');
+        $this->db->where('user.status', 'active');
         //Category ID needs to be fetched first to avoid where clauses errors
         if (isset($parentCategoryId) and ($parentCategoryId != 0)){
             $leafCategories = array();
             $this->Product_model->getLeafCategories($leafCategories, $parentCategoryId);
             $this->db->where_in("product.category_id", $leafCategories);
         }
-        //$this->db->where("supplier_id", $supplierId);
-        $this->db->where("status", 'published');
+        $this->db->where("product.status", 'published');
         if (isset($orderBy)){
                 $this->db->order_by("product.".$orderBy);     
         }
@@ -180,7 +193,7 @@ class Distributor_model extends CI_Model {
         $this->db->where('distributor_catalog.distributor_id', $distributorId);
         log_message('info', "Distributor_model get_catalog Page: " .  $page . " Range: " . $rangePerPage . " ParentId: " . $parentCategoryId, FALSE);
         $from =  ($page-1) * $rangePerPage;
-        $query = $this->db->get('product');
+        $query = $this->db->get();
         $result = $query->result();
         $totalRows = count($result);
         $j = 0;

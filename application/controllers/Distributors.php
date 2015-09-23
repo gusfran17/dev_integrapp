@@ -33,7 +33,6 @@ class Distributors extends CI_Controller {
 		$roleId = $this->session->userdata("role_id");
 		$pendingDistributors = $this->Supplier_model->getAssociatedDistributors($roleId, 'pending');
 		$data['pendingDistributors'] = $pendingDistributors;
-		log_message('info', "Cantidad de asociaciones pending: " . count($pendingDistributors), false);
 		$rejectedDistributors = $this->Supplier_model->getAssociatedDistributors($roleId, 'rejected');
 		$data['rejectedDistributors'] = $rejectedDistributors;
 		$approvedDistributors = $this->Supplier_model->getAssociatedDistributors($roleId, 'approved');
@@ -198,9 +197,8 @@ class Distributors extends CI_Controller {
 			if ($role == 'supplier'){
 				$roleId = $this->session->userdata("role_id");
 				$discount = $this->input->post('discount');
-				if (($this->Distributor_model->setSupplierDistributorDiscount($roleId, $distributorId, $discount))) {
+				if (!($this->Distributor_model->setSupplierDistributorDiscount($roleId, $distributorId, $discount))) {
 					$this->session->set_flashdata('error', "Hubo un error al modificar el monto a descontar.");
-
 				} else {
 					$this->session->set_flashdata('success', "Se ha guardado el porcentaje de descuento exitosamente");
 				}

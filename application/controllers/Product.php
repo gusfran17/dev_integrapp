@@ -566,7 +566,49 @@ class Product extends CI_Controller {
 		}
 	}
 
+	public function publishProduct($productId){
+		if ($this->session->has_userdata('role')){
+			$userId = $this->session->userdata('id');
+			$credit = $this->Credit_model->getLatestBalance($userId);
+			$cost = $this->Product_model->getPublishingCost($productId);
+			$restCredit = $credit - $cost;
+			$product = $this->Product_model->getProductById($productId);
+			if (($restCredit) > LEAST_CREDIT_AMOUNT) {
+				$description = 'PRODUCTO PÚBLICADO: ' . $product->name . ' (id: ' . $product->id . ')';
+				$this->Credit_model->addTransaction($userId, $cost, $description);
+				$this->setProductStatus($productId, 'published');	
+				$this->session->set_flashdata('success', "Se há publicado el producto con éxito. Su crédito restante es de $" . $restCredit );
+			} else{
+				$this->session->set_flashdata('error', "Su crédito no es suficiente para publicar el producto. Su crédito restante es de $" . $credit );
+			}
+			redirect('Product/orderMyCatalogBy/' . DEFAULT_CATALOG_ORDER);
+		} else {
+			redirect(TIMEOUT_REDIRECT);
+		}
+	}
+
+	public function activateProduct($productId){
+		$result = $this->setProductStatus($productId, 'active');
+		if ($result){
+			$this->session->set_flashdata('success', "Se há activado el producto con éxito");
+		} else {
+			$this->session->set_flashdata('error', "Hubo un error al intentar activar el producto, intente más tarde o comuniquese con el administrador");
+		}
+		redirect('Product/orderMyCatalogBy/' . DEFAULT_CATALOG_ORDER);
+	}
+
+	public function deactivateProduct($productId){
+		$result = $this->setProductStatus($productId, 'inactive');
+		if ($result){
+			$this->session->set_flashdata('success', "Se há eliminado el producto con éxito");
+		} else {
+			$this->session->set_flashdata('error', "Hubo un error al intentar eliminar el producto, intente más tarde o comuniquese con el administrador");
+		}
+		redirect('Product/orderMyCatalogBy/' . DEFAULT_CATALOG_ORDER);
+	}
+
 	public function setProductStatus($productId, $status){
+		$result = false;
 		if ($this->session->has_userdata('role')){
 			$role = $this->session->userdata("role");
 			$userId = $this->session->userdata("id");
@@ -574,14 +616,12 @@ class Product extends CI_Controller {
 				$update = array();
 				$update['status'] = $status;
 				$result = $this->Product_model->updateProduct($update, $productId);
-				$this->User_model->setLoadInfo($userId);	
-				$this->setResultMessage($result, $status);
-				redirect('Product/orderMyCatalogBy/' . DEFAULT_CATALOG_ORDER);
+				$this->User_model->setLoadInfo($userId);
 			}
 		} else {
 			redirect(TIMEOUT_REDIRECT);
 		}
-
+		return $result;
 	}
 
 	public function addProductToCatalog($productId){
@@ -592,7 +632,6 @@ class Product extends CI_Controller {
 				$this->Distributor_model->addProductToCatalog($roleId, $productId);
 				$this->session->set_flashdata('success', "Se há agregado el producto a su catálogo con éxito.");
 			}
-			//log_message('info', 'viewMyCatalog: ' . $this->session->has_userdata('viewMyCatalog'), false );
 			if (($this->session->has_userdata('viewMyCatalog')) and ($this->session->userdata('viewMyCatalog') == 'true')) {
 				redirect('Product/myProducts');
 			} else {
@@ -698,8 +737,6 @@ class Product extends CI_Controller {
 	    // clear //
 	    $this->image_lib->clear();
 	}
- 
-
 
 }
 

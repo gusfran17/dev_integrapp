@@ -18,8 +18,15 @@ class User_model extends CI_Model {
         }
      }
 
-
-
+    function getUserByUsername($username){
+        $query = $this->db->get_where('user', array("username"=>$username));
+        if ($query->num_rows() == 1){
+            $query->row(0)->password = '';
+            return $query->row(0);
+        } else {
+            return false;
+        }
+     }
 
     function username_not_exist($username){
 
@@ -75,17 +82,21 @@ class User_model extends CI_Model {
             $passwordDB_decoded = $this->encrypt->decode($passwordDB, $this->config->item('encryption_key'));
 
             if ($password==$passwordDB_decoded) {
-
-                $role = $user_result[0]->role;
-                if ($role == 'supplier') {
-                    $role_information = $this->Supplier_model->getSupplierByUserId($user_result[0]->id);
-                } else if ($role == 'distributor'){
-                    $role_information = $this->Distributor_model->getDistributorByUserId($user_result[0]->id);
-                }
-                $this->setLoadInfo($user_result[0]->id);
-                $this->session->set_userdata(array('id'=>$user_result[0]->id, 'role_id'=>$role_information->id,'user'=>$user_result[0]->username, 'role'=>$user_result[0]->role, 'email'=>$user_result[0]->email, 'logged_in'=>true));
-                
-                return TRUE;
+                if ($user_result[0]->status == 'pending'){
+                    $this->session->set_flashdata("error","El usuario aún no fue aprobado por el administrador de la aplicación");
+                    return FALSE;
+                }   else {
+                    $role = $user_result[0]->role;
+                    if ($role == 'supplier') {
+                        $role_information = $this->Supplier_model->getSupplierByUserId($user_result[0]->id);
+                    } else if ($role == 'distributor'){
+                        $role_information = $this->Distributor_model->getDistributorByUserId($user_result[0]->id);
+                    }
+                    $this->setLoadInfo($user_result[0]->id);
+                    $this->session->set_userdata(array('id'=>$user_result[0]->id, 'role_id'=>$role_information->id,'user'=>$user_result[0]->username, 'role'=>$user_result[0]->role, 'email'=>$user_result[0]->email, 'logged_in'=>true));
+                    
+                    return TRUE;
+                }         
             }else{
                     return FALSE;
             }
@@ -106,20 +117,25 @@ class User_model extends CI_Model {
             $passwordDB_decoded = $this->encrypt->decode($passwordDB, $this->config->item('encryption_key'));
 
             if ($password==$passwordDB_decoded) {
-                $role = $user_result[0]->role;
-                if ($role == 'supplier') {
-                    $role_information = $this->Supplier_model->getSupplierByUserId($user_result[0]->id);
-                } else if ($role == 'distributor'){
-                    $role_information = $this->Distributor_model->getDistributorByUserId($user_result[0]->id);
+                if ($user_result[0]->status == 'pending'){
+                    $this->session->set_flashdata("error","El usuario aun no fue aprobado por el administrador de la aplicación");
+                    return FALSE;
+                } else {
+
+                    $role = $user_result[0]->role;
+                    if ($role == 'supplier') {
+                        $role_information = $this->Supplier_model->getSupplierByUserId($user_result[0]->id);
+                    } else if ($role == 'distributor'){
+                        $role_information = $this->Distributor_model->getDistributorByUserId($user_result[0]->id);
+                    }
+                    $this->setLoadInfo($user_result[0]->id);
+                    $this->session->set_userdata(array('id'=>$user_result[0]->id, 'role_id'=>$role_information->id, 'user'=>$user_result[0]->username, 'role'=>$user_result[0]->role, 'email'=>$user_result[0]->email,  'logged_in'=>true));
+                    
+                    return TRUE;
                 }
-                $this->setLoadInfo($user_result[0]->id);
-                $this->session->set_userdata(array('id'=>$user_result[0]->id, 'role_id'=>$role_information->id, 'user'=>$user_result[0]->username, 'role'=>$user_result[0]->role, 'email'=>$user_result[0]->email,  'logged_in'=>true));
-                
-                return TRUE;
             }else{
                     return FALSE;
             }
-
         }else{
             return FALSE;
         }

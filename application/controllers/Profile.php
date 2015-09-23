@@ -109,16 +109,13 @@ class Profile extends CI_Controller {
 	}
 
 	public function save(){
-
   		$id = $this->session->userdata("id");
    		$role = $this->session->userdata("role");
-
 	   	$this->form_validation->set_message('required', 'El campo %s es obligatorio');
 	   	$this->form_validation->set_message('valid_email', 'El campo %s debe ser una dirección de email válida');
    		$this->form_validation->set_rules('name', 'Nombre', 'trim|required');
    		$this->form_validation->set_rules('lastname', 'Apellido', 'trim|required');
 		if(($role == "distributor") or ($role == "supplier")){
-
 	   		$this->form_validation->set_rules('comercial_email', 'Email comercial', 'trim|valid_email');
 	   		$this->form_validation->set_rules('comercial_address', 'Dirección comercial', 'trim');
 	   		$this->form_validation->set_rules('razon_social', 'Razon social', 'trim');
@@ -129,13 +126,10 @@ class Profile extends CI_Controller {
 	   		$this->form_validation->set_rules('city', 'Ciudad', 'trim');
    		}
 
-
    		if ($this->form_validation->run() == FALSE){
    			$this->session->set_flashdata('error', "Los datos ingresados no son correctos. En cada campo se indica el error.");
 			$this->account();
-
 		} else {
-
 			$userdata = array();
 	   		$data['name'] = $this->input->post("name");
 	   		$data['lastname'] = $this->input->post("lastname");
@@ -161,7 +155,6 @@ class Profile extends CI_Controller {
 		   			$resultado = $this->Supplier_model->save($id, $data);
 
 		   		}else if($role == "distributor"){
-
 			   		$data['commercial_address'] = $this->input->post("commercial_address");
 			   		//$data['phone'] = $this->input->post("phone");
 			   		$data['comercial_email'] = $this->input->post("comercial_email");
@@ -173,19 +166,12 @@ class Profile extends CI_Controller {
 			   		$data['latLocation'] = $this->input->post("latLocation");
 			   		$data['longLocation'] = $this->input->post("longLocation");
 		   			$resultado = $this->Distributor_model->save($id, $data);
-
 				}
-
-
 	   		}
-
 	  		$data = '';
 	   		$this->session->set_flashdata('success', "Sus datos de perfil se guardaron correctamente.");
 	   		$this->account();
-
 		}
-
- 
 	}
 
 

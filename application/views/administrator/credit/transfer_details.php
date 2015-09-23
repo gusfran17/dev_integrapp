@@ -19,7 +19,7 @@
 					<a href="#" class="list-group-item">
 						<h4 class="list-group-item-heading">Comprobante</h4>
 						<p class="list-group-item-text">
-							<?php if (isset($transfer->voucher_image)) { ?>
+							<?php if ((isset($transfer->voucher_image)) and (file_exists(base_url() . VOUCHER_IMAGES_PATH . $transfer->userid . "/" . $transfer->voucher_image))){ ?>
 								<img src='<?php echo base_url() . VOUCHER_IMAGES_PATH . $transfer->issuer->id . "/" . $transfer->voucher_image;?>' style="width: 300px;"/> 
 							<?php } else { ?>
 								<img src="<?php echo base_url() . IMAGES_PATH . 'NoFotoGeneric.jpg'; ?>" style="width: 300px;">

@@ -2,14 +2,20 @@
 	<div class="page-header" style="text-align:center; margin: 0px 0 0px;">
 		<h2><span class="label label-default" style="color:#ffffff;"><b>TRANSFERENCIAS</b></span></h2>
 	</div>
-	<h3>Transferencias a confirmar</h3>
 	<?php if($this->session->flashdata('success')!= null):?>
 	    <div class="alert alert-dismissable alert-success">
 	      <button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
 	      <strong>Bien!</strong> <?php echo $this->session->flashdata('success'); ?></a>
 	    </div>
 	<?php endif;?>
-	<div class="row">
+	<?php if($this->session->flashdata('error')!= null):?>
+	    <div class="alert alert-dismissable alert-success">
+	      <button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+	      <strong>Bien!</strong> <?php echo $this->session->flashdata('error'); ?></a>
+	    </div>
+	<?php endif;?>
+	<div class="container">
+		<h3>Transferencias a confirmar</h3>
 	    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 	        <div id="example_wrapper" class="dataTables_wrapper form-inline" role="grid">
 	            <table id="resultset" class="table table-bordered table-striped">
@@ -26,13 +32,13 @@
 	                <tbody>
 	                <?php foreach($pendingTransfers as $pendingTransfer): ?>
 	                    <tr>
-	                        <td><?php echo date("M-d", strtotime($pendingTransfer->transfer_date));?></td>
+	                        <td><?php echo date("d-M-y", strtotime($pendingTransfer->transfer_date));?></td>
 	                        <td><?php echo $pendingTransfer->username; ?></td>
 	                        <td><?php if ($pendingTransfer->role == "supplier") echo "Proveedor"; else if ($pendingTransfer->role=="distributor") echo "Ortopedista"; ?></td>
 	                        <td>pendiente</td>
 	                        <td>$<?php echo number_format($pendingTransfer->amount, PRICE_DECIMAL_AMOUNT, DECIMAL_SEPARATOR, THOUSANDS_SEPARATOR); ?></td>
 	                        <td>
-	                            <a href="<?php echo base_url(); ?>/administrator/viewTransferDetails/<?php echo $pendingTransfer->id; ?>/<?php echo $pendingTransfer->userid; ?>"><button type="button" class="btn btn-default  btn-xs">Ver detalles</button></a>
+	                            <a href="<?php echo base_url(); ?>administrator/viewTransferDetails/<?php echo $pendingTransfer->id; ?>/<?php echo $pendingTransfer->userid; ?>"><button type="button" class="btn btn-default  btn-xs">Ver detalles</button></a>
 	                            <a href="<?php echo base_url(); ?>administrator/setApproveTransfer/<?php echo $pendingTransfer->id; ?>"><button type="button" class="btn btn-success btn-xs">Aprobar</button></a>
 	                        </td>
 	                    </tr>

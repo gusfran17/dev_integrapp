@@ -33,7 +33,7 @@
 									</div>
 								  <?php endif;?>
 								  <?php if($this->session->flashdata('error') != null):?>
-									<div class="alert alert-dismissable alert-error col-md-12 col-sm-12 col-xs-12">
+									<div class="alert alert-dismissable alert-danger col-md-12 col-sm-12 col-xs-12">
 										<button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
 										<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong>
 									 	<strong>Atención!</strong> <?php echo $this->session->flashdata('error'); ?></a>
@@ -91,18 +91,18 @@
 															<button type="button" class="btn btn-success btn-xs col-md-12 col-sm-12 col-xs-12"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</button>
 														</a>
 														<?php if ($Catalog[$i]->status == 'active') {?>
-															<form action="<?php echo base_url() . 'product/setProductStatus/' . $Catalog[$i]->id . "/published"; ?>" id="<?php echo 'publish_' . $Catalog[$i]->id; ?>" style="padding-bottom: 0px;">
+															<form action="<?php echo base_url() . 'product/publishProduct/' . $Catalog[$i]->id; ?>" id="<?php echo 'publish_' . $Catalog[$i]->id; ?>" style="padding-bottom: 0px;">
 																<button type="button" onclick="publishProduct(<?php echo $Catalog[$i]->id; ?>,<?php echo $Catalog[$i]->publishing_cost; ?>)" class="btn btn-primary btn-xs col-md-12 col-sm-12 col-xs-12" form="<?php echo 'publish_' . $Catalog[$i]->id; ?>"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Publicar</button>
 															</form>
-															<a href="<?php echo base_url() . 'product/setProductStatus/' . $Catalog[$i]->id . "/inactive"; ?>">
+															<a href="<?php echo base_url() . 'product/deactivateProduct/' . $Catalog[$i]->id; ?>">
 																<button type="button" class="btn btn-danger btn-xs col-md-12 col-sm-12 col-xs-12"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Eliminar</button>
 															</a>
 														<?php } else if ($Catalog[$i]->status == 'inactive') {?>
-															<a href="<?php echo base_url() . 'product/setProductStatus/' . $Catalog[$i]->id . "/active"; ?>">
+															<a href="<?php echo base_url() . 'product/activateProduct/' . $Catalog[$i]->id; ?>">
 																<button type="button" class="btn btn-primary btn-xs col-md-12 col-sm-12 col-xs-12"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Activar</button>
 															</a>
 														<?php } else if ($Catalog[$i]->status == 'published') {?>
-															<form action="<?php echo base_url() . 'product/setProductStatus/' . $Catalog[$i]->id . "/active"; ?>" id="<?php echo 'deactivate_' . $Catalog[$i]->id; ?>">
+															<form action="<?php echo base_url() . 'product/activateProduct/' . $Catalog[$i]->id; ?>" id="<?php echo 'deactivate_' . $Catalog[$i]->id; ?>">
 																<button type="button" onclick="deactivateProduct(<?php echo $Catalog[$i]->id; ?>,<?php echo $Catalog[$i]->publishing_cost; ?>)" class="btn btn-warning btn-xs col-md-12 col-sm-12 col-xs-12"><span class="glyphicon glyphicon-save-file" aria-hidden="true"></span> Despublicar</button>
 															</form>
 														<?php } ?>

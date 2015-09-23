@@ -63,6 +63,59 @@ class Administrator extends CI_Controller {
     	$data['transfer']->issuer = $user;
     	$this->routedHome("credit/transfer_details", $data);
     }
+
+    public function users(){
+    	$data['pendingSuppliers'] = $this->Supplier_model->getPendingSuppliers();
+    	$data['suppliers'] = $this->Supplier_model->getApprovedSuppliers();
+    	$data['distributors'] = $this->Distributor_model->getApprovedDistributors();
+    	$this->routedHome("users", $data);
+    }
+
+    public function approveSupplier($userId){
+    	if(!$this->session->has_userdata('role')){
+			redirect(TIMEOUT_REDIRECT);
+		} else {
+			if ($this->Supplier_model->setSupplierStatus($userId, 'active')) {
+				$this->session->set_flashdata("success","Se há aprobado al proveedor con éxito");	
+			} else {
+				$this->session->set_flashdata("error","Se há producido un error que no ha permitido aprobar el usuario. Pruebe más tarde");
+			}
+	    	redirect("/administrator/users");
+		}
+    }
+
+    public function deactivateUser($userId){
+    	if(!$this->session->has_userdata('role')){
+			redirect(TIMEOUT_REDIRECT);
+		} else {
+			if ($this->Supplier_model->setSupplierStatus($userId, 'pending')) {
+				$this->session->set_flashdata("success","Se há desactivado al proveedor con éxito");	
+			} else {
+				$this->session->set_flashdata("error","Se há producido un error que no ha permitido desactivar el usuario. Pruebe más tarde");
+			}
+	    	redirect("/administrator/users");
+		}
+    }
+
+    public function impersonateUser(){
+    	if ((!$this->session->has_userdata('role')) and ($this->session->userdata('role') == "administrator")){
+    		redirect(TIMEOUT_REDIRECT);
+		} else {
+	    	$username = $this->input->post("imperUsername");
+	    	$user = $this->User_model->getUserByUsername($username);
+	    	if ($user->role == 'supplier') { 
+	    		$supplier = $this->Supplier_model->getSupplierByUserId($user->id);
+	    		$this->session->set_userdata(array('id'=>$user->id, 'role_id'=>$supplier->id, 'user'=>$user->username, 'role'=>$user->role, 'email'=>$user->email,  'logged_in'=>true));	
+	    		$this->User_model->setLoadInfo($user->id);
+	    	} else if ($user->role == 'distributor') {
+	    		$distributor = $this->Distributor_model->getDistributorByUserId($user->id);
+	    		$this->session->set_userdata(array('id'=>$user->id, 'role_id'=>$distributor->id, 'user'=>$user->username, 'role'=>$user->role, 'email'=>$user->email,  'logged_in'=>true));
+	    		$this->User_model->setLoadInfo($user->id);
+	    	}
+	    	redirect('home');
+	    }
+    }
+
 }
 
 ?>

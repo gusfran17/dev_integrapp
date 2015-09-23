@@ -223,6 +223,11 @@ class Product_model extends CI_Model {
 
     
     public function get_catalog($supplierId=null, $parentCategoryId = null, $status = null, $orderBy = null, $page = 1, $rangePerPage = 1000, &$totalRows){
+        $this->db->select('product.*');
+        $this->db->from('product');
+        $this->db->join('supplier', 'product.supplier_id = supplier.id', 'inner');
+        $this->db->join('user', 'supplier.userid = user.id', 'inner');
+        $this->db->where("user.status", 'active');
         //Category ID needs to be fetched first to avoid where clauses errors
         if (isset($parentCategoryId) and ($parentCategoryId != 0)){
             $leafCategories = array();
@@ -230,16 +235,16 @@ class Product_model extends CI_Model {
             $this->db->where_in("category_id", $leafCategories);
         }
         if (isset($supplierId)){
-            $this->db->where("supplier_id", $supplierId);
+            $this->db->where("product.supplier_id", $supplierId);
         }
         if (isset($status)) {
-            $this->db->where("status", $status);
+            $this->db->where("product.status", $status);
         }
         if (isset($orderBy)){
                 $this->db->order_by($orderBy);     
         }
         $from =  ($page-1) * $rangePerPage;
-        $query = $this->db->get('product');
+        $query = $this->db->get();
         $result = $query->result();
         $totalRows = count($result);
         $j = 0;
@@ -269,6 +274,15 @@ class Product_model extends CI_Model {
         $query = $this->db->get("category");
         $category = $query->result();
         $product->publishing_cost = $category[0]->publishing_cost;
+    }
+
+    public function getPublishingCost($productId){
+        $this->db->from('category');
+        $this->db->join('product', 'product.category_id = category.id', 'inner');
+        $this->db->where("product.id", $productId);
+        $query = $this->db->get();
+        $category = $query->result();
+        return $category[0]->publishing_cost;
     }
 
     public function addProductsPublishingCost(&$catalog){
