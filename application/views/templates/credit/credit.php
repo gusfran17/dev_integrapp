@@ -66,8 +66,8 @@
 	                            <td>pendiente</td>
 	                            <td>$<?php echo $pendingTransfer->amount; ?></td>
 	                            <td>
-	                                <a href="<?php echo base_url(); ?>/credit/viewTransferDetails/<?php echo $pendingTransfer->id; ?>"><button type="button" class="btn btn-info  btn-xs">Ver detalles</button></a>
-	                                <a href="<?php echo base_url(); ?>/credit/deletePendingTransfer/<?php echo $pendingTransfer->id; ?>"><button type="button" class="btn btn-danger  btn-xs">Cancelar solicitud</button></a>
+	                                <a href="<?php echo base_url(); ?>credit/viewTransferDetails/<?php echo $pendingTransfer->id; ?>"><button type="button" class="btn btn-info  btn-xs">Ver detalles</button></a>
+	                                <a href="<?php echo base_url(); ?>credit/deletePendingTransfer/<?php echo $pendingTransfer->id; ?>"><button type="button" class="btn btn-danger  btn-xs">Cancelar solicitud</button></a>
 	                            </td>
 	                        </tr>
 	                    <?php endforeach; ?>

@@ -22,14 +22,29 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <b> Adjuntar comprobante</b>
-                                        <input class="checkbox" id="uploadVoucher" name="uploadVoucher" type="checkbox"> 
-                                        <label class="control-label" for="userfile">Imagen de Comprobante de depósito (PNG - <?php echo ALLOWED_VOUCHER_IMAGE_MAXWIDTH; ?> píxels x <?php echo ALLOWED_VOUCHER_IMAGE_MAXHEIGHT; ?> píxels)</label>
+                                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                                            <input class="checkbox" id="uploadVoucher" name="uploadVoucher" type="checkbox" onclick="showImageInput(this)">
+                                        </div>
+                                        <label class="col-lg-11 col-md-11 col-sm-11 col-xs-11" for="password" style="padding-bottom: 20px;">Adjuntar comprobante</label>
+                                        <label id="userfileLabel" class="control-label" for="userfile">Imagen de Comprobante de depósito (PNG - <?php echo ALLOWED_VOUCHER_IMAGE_MAXWIDTH; ?> píxels x <?php echo ALLOWED_VOUCHER_IMAGE_MAXHEIGHT; ?> píxels)</label>
                                         <?php if($this->session->flashdata('error')!=null) : ?>
                                             <span class="label label-danger"><?php echo $this->session->flashdata('error');  ?></span>
                                         <?php endif;?>
                                         <input class="form-control" id="userfile" name="userfile" type="file">
-
+                                        <script  type="text/javascript">
+                                            $('#userfileLabel').hide();
+                                            $('#userfile').hide();
+                                            function showImageInput(checkbox){
+                                                if (checkbox.checked)
+                                                {
+                                                    $('#userfile').show();
+                                                    $('#userfileLabel').show();
+                                                } else {
+                                                    $('#userfile').hide();
+                                                    $('#userfileLabel').hide();
+                                                }
+                                            }
+                                        </script>
                                     </div>
 
                                     <div class="form-group">

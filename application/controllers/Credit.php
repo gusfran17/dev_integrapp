@@ -83,12 +83,20 @@ class Credit extends CI_Controller {
 			$amount = $this->input->post("amount");
 			if($this->input->post("uploadVoucher")){
 				$voucherImage = $this->uploadTempVoucher($userId);
+				if (isset($voucherImage)){
+					$this->Credit_model->requestCredit($userId, $amount, $note, $voucherImage);
+					$this->session->set_flashdata('success', "Se ha enviado aviso al administrador para validar la transferencia");
+					redirect("credit");
+				} else {
+					$this->setRequestCredit();
+				}
 			}else{
 				$voucherImage = "";
+				$this->Credit_model->requestCredit($userId, $amount, $note, $voucherImage);
+				$this->session->set_flashdata('success', "Se ha enviado aviso al administrador para validar la transferencia");
+				redirect("credit");
 			}
-			$this->Credit_model->requestCredit($userId, $amount, $note, $voucherImage);
-			$this->session->set_flashdata('success', "Se ha enviado aviso al administrador para validar la transferencia");
-			redirect("credit/index");
+
 		}
     }
 
@@ -114,7 +122,7 @@ class Credit extends CI_Controller {
         } else {
         	$error = $this->upload->display_errors('','');
 			$this->session->set_flashdata('error', $error);
-			$this->setRequestCredit();
+			return null;
         }
     }
 

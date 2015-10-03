@@ -142,6 +142,8 @@ $autoload['model'] =  array(
 	"Supplier_model",
 	"Distributor_model",
 	"Product_model",
-	"Credit_model"
+	"Credit_model",
+	"Locations_model",
+	"Settings_model"
 	
 	);

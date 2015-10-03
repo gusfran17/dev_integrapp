@@ -115,6 +115,8 @@ class Profile extends CI_Controller {
 	   	$this->form_validation->set_message('valid_email', 'El campo %s debe ser una dirección de email válida');
    		$this->form_validation->set_rules('name', 'Nombre', 'trim|required');
    		$this->form_validation->set_rules('lastname', 'Apellido', 'trim|required');
+   		$this->form_validation->set_rules('city', 'Ciudad', 'trim');
+   		$this->form_validation->set_rules('commercial_address', 'Dirección Comercial', 'trim');
 		if(($role == "distributor") or ($role == "supplier")){
 	   		$this->form_validation->set_rules('comercial_email', 'Email comercial', 'trim|valid_email');
 	   		$this->form_validation->set_rules('comercial_address', 'Dirección comercial', 'trim');
@@ -136,41 +138,35 @@ class Profile extends CI_Controller {
 	   		$resultado = $this->User_model->save($id, $data);
 	   		if ($resultado){
 		   		$data = array();
+		   		$data['fake_name'] = $this->input->post("fake_name");
+		   		$data['locationsure'] = $this->input->post("locationsure");
+		   		$data['razon_social'] = $this->input->post("razon_social");
+		   		$data['cuit'] = $this->input->post("cuit");
+		   		$data['service_description'] = $this->input->post("service_description");
+		   		$data['commercial_address'] = $this->input->post("commercial_address");
+		   		$data['comercial_email'] = $this->input->post("comercial_email");
+		   		$data['city'] = $this->input->post("city");
+		   		$data['fiscal_address'] = $this->input->post("fiscal_address");
+		   		$data['latLocation'] = $this->input->post("latLocation");
+			   	$data['longLocation'] = $this->input->post("longLocation");
+			   	log_message('info', "LAT: " . $data['city'] , false);
 				if($role == "supplier"){
-			   		$data['fake_name'] = $this->input->post("fake_name");
-			   		$data['razon_social'] = $this->input->post("razon_social");
-			   		$data['cuit'] = $this->input->post("cuit");
-			   		$data['service_description'] = $this->input->post("service_description");
-			   		$data['commercial_address'] = $this->input->post("comercial_address");
-			   		$data['fiscal_address'] = $this->input->post("fiscal_address");
 			   		$data['cbu'] = $this->input->post("cbu");
 			   		$data['checks'] = $this->input->post("checks");
 			   		$data['bank_account'] = $this->input->post("bank_account");
-			   		//$data['phone'] = $this->input->post("phone");
-			   		$data['comercial_email'] = $this->input->post("comercial_email");
 			   		$data['bank_name'] = $this->input->post("bank_name");
 			   		$data['bank_branch'] = $this->input->post("bank_branch");
 			   		$data['bank_account_number'] = $this->input->post("bank_account_number");
 			   		$data['bank_account_name'] = $this->input->post("bank_account_name");
 		   			$resultado = $this->Supplier_model->save($id, $data);
-
 		   		}else if($role == "distributor"){
-			   		$data['commercial_address'] = $this->input->post("commercial_address");
 			   		//$data['phone'] = $this->input->post("phone");
-			   		$data['comercial_email'] = $this->input->post("comercial_email");
-			   		$data['razon_social'] = $this->input->post("razon_social");
-			   		$data['fake_name'] = $this->input->post("fake_name");
-			   		$data['fiscal_address'] = $this->input->post("fiscal_address");
-			   		$data['service_description'] = $this->input->post("service_description");
-			   		$data['cuit'] = $this->input->post("cuit");
-			   		$data['latLocation'] = $this->input->post("latLocation");
-			   		$data['longLocation'] = $this->input->post("longLocation");
 		   			$resultado = $this->Distributor_model->save($id, $data);
 				}
 	   		}
 	  		$data = '';
 	   		$this->session->set_flashdata('success', "Sus datos de perfil se guardaron correctamente.");
-	   		$this->account();
+	   		redirect('profile/account');
 		}
 	}
 
@@ -367,6 +363,29 @@ class Profile extends CI_Controller {
 			$resultado = $this->Supplier_model->get_logo($userid);
    		}
  		return $resultado;		
+	}
+
+	public function getCity($cityName){
+		$result = $this->Locations_model->getCity($cityName); 
+        header('Content-type: application/json'); 
+        echo json_encode($result);
+	}
+
+	public function sendEmailTest(){
+		$this->load->library('email');
+		$this->email->from('gustavo.franco@integrapp.com.ar', 'Gustavo Franco');
+		$this->email->to('gusfran17@gmail.com');
+		//$this->email->cc('another@another-example.com');
+		//$this->email->bcc('them@their-example.com');
+
+		$this->email->subject('Email Test');
+		$this->email->message('Testing the email class.');
+
+		if ($this->email->send(FALSE)){
+			echo true;
+		} else {
+			return false;
+		}
 	}
 
 }

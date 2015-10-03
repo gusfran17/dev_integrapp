@@ -111,7 +111,7 @@ define('ALLOWED_PRODUCT_IMAGE_MAXSIZE', 5000);
 define('ALLOWED_PRODUCT_IMAGE_MAXWIDTH', 7000);
 define('ALLOWED_PRODUCT_IMAGE_MAXHEIGHT', 7000);
 //VOUCHER PICTURE
-define('ALLOWED_VOUCHER_IMAGE_TYPE', 'jpg');
+define('ALLOWED_VOUCHER_IMAGE_TYPE', 'png|jpg|gif');
 define('ALLOWED_VOUCHER_IMAGE_MAXSIZE', 5000);
 define('ALLOWED_VOUCHER_IMAGE_MAXWIDTH', 7000);
 define('ALLOWED_VOUCHER_IMAGE_MAXHEIGHT', 7000);
@@ -158,4 +158,9 @@ define('TIMEOUT_REDIRECT', 'Login/Logout');
 define('ASSOCIATED_MESSAGE', '<span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Se encuentra asociado a este proovedor');
 define('NOT_ASSOCIATED_MESSAGE', '<span class="glyphicon glyphicon-time" aria-hidden="true"></span> Solicitud pendiente de aprobación');
 define('PRICE_NOT_ALLOWED_MESSAGE', 'Precio no disponible');
+
+/*
+* EMAILS
+*/
+define('NOREPLY_ACCOUNT', 'noreply@integrapp.com.ar');
 

@@ -107,6 +107,12 @@ html, body{font-family: OpenSans}
 }
 
 
+/**POPULATE CITY**/
+.tt-dropdown-menu {
+  max-height: 150px;
+  overflow-y: auto;
+  background-color: #FFC;
+}
 
 /*!!!!!!!!HOME!!!!!!!!*/
 /*Esto POR AHORA funciona re bien y me da el estilo del carrousel de fondo*/
@@ -120,7 +126,7 @@ html, body{font-family: OpenSans}
 	padding-right: 40px;
 	padding-bottom: 50px; 
 	min-height: 600px;
-	background-color: #EFF;
+	background-color: #FFC;
 }
 /*end*/
 

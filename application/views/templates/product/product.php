@@ -1,4 +1,6 @@
 <div id="page-wrapper">
+	<?php $this->load->view('templates/scripts/google_maps_scripts');?>
+	<?php $this->load->view('templates/scripts/locate_points_scripts');?>
 	<div class="container-fluid">
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<?php
@@ -21,6 +23,18 @@
 						<h2><b><?php echo $product->name; ?></b><small> <b><?php if(($product->supplier->associationStatus == 'approved') or ($product->mine)) echo $product->price . '$' . ' (' . 'I.V.A. ' . $product->tax . ')';?></b></small></h2>
 						<h4><strong>Código Interno (<?php echo $product->supplier->fake_name;?>):</strong> <?php echo $product->code; ?><br></h4>
 						<h4><strong>Código IntegrApp: </strong><?php echo $product->integrapp_code; ?></h4>
+						<script type="text/javascript">
+							var locations = <?php echo json_encode($distributorLocations) ?>;
+							console.log(locations);
+							console.log('locations');
+							$(document).ready(function() {
+
+							    getGeolocalization(function(){
+
+									bindGoogleMaps(locations,13);
+								});
+							});
+						</script>
 						<?php if ($product->mine){ ?>
 							<script type="text/javascript">
 								function publishProduct(selectedProductId) {
@@ -112,7 +126,7 @@
 									 		<?php if (count($product->images) > 0){?>
 												<img src="<?php echo $path . $product->images[0]; ?>" style="height: 360px; margin: 0 auto;">
 											<?php } else { ?>
-												<img src="<?php echo base_url() . 'Resources/imgs/NoFoto.jpg'; ?>" style="height: 360px; margin: 0 auto;">
+												<img src="<?php echo base_url() . IMAGES_PATH . 'NoFoto.jpg'; ?>" style="height: 360px; margin: 0 auto;">
 											<?php } ?> 
 										</div>
 									<?php for ($i=1; $i < count($product->images); $i++) { ?>
@@ -180,7 +194,8 @@
 						<div class="panel panel-default" style="margin-top: 70px;">
 							<div class="panel-body">
 								<h2><b><?php if ($role == 'supplier') echo "Ortopedias"; else echo "Proveedores" ?></b></h2>
-								<img src="<?php echo base_url() . 'Resources/imgs/map_example.png'; ?>" style="max-height: 400px">		
+								<div id="googleMap" style="width:100%;height:450px;"></div>
+								<!-- <img src="<?php echo base_url() . 'Resources/imgs/map_example.png'; ?>" style="max-height: 400px">		 -->
 							</div>
 						</div>
 					</div>

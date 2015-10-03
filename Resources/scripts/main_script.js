@@ -5,7 +5,7 @@ $(document).ready(function(){
 		var option= $('#role option:selected').val();
 		$.ajax({
 			type:"POST",
-			url:"../../Resources/data/userOptions.php",
+			url:"Resources/data/userOptions.php",
 			data:{option:option},
 			success: function(data){
 				$('#description-user').hide().append("<div>"+data+"<div>").delay(800).fadeIn('slow');
@@ -14,23 +14,7 @@ $(document).ready(function(){
 
 	});
 
-	// $(window).scroll(function(){
-	// 	if ($(window).scrollTop()>50) {
-	// 		$('.navbar').css("height", "65px");
-	// 		$('.navbar-nav > li > a').css("padding", "5px");
-	// 		$('.navbar-brand figure img').css("width", "75%");
 
-	// 	}else{
-	// 		$('.navbar').css("height", "80px");
-	// 		$('.navbar-nav > li > a').css("padding", "15px");
-	// 		$('.navbar-brand figure img').css("width", "100%");
-
-	// 	}
-	// });
-
-
-
-	/*!!! Codigo para dropdown menu !!!*/
 	var idCategory;
 	var finalCategory;
 	var finalCategoryID;
@@ -41,7 +25,7 @@ $(document).ready(function(){
 		idCategory=$(this).attr('id');
 		finalCategory=$(this).find(':selected').text();
 		finalCategoryID = $(this).find(':selected').attr('id');
-		console.log("idCat: " + idCategory + " fCat: " + finalCategory + " fCatID: " + finalCategoryID);
+		//console.log("idCat: " + idCategory + " fCat: " + finalCategory + " fCatID: " + finalCategoryID);
 		divID = "productsCategorySelect";
 		setNextCategory(divID);
 	});
@@ -73,7 +57,7 @@ $(document).ready(function(){
 
 	function setNextCategory(divID){
 		if (divID != null) {	
-			console.log(divID);
+			//console.log(divID);
 			var categoryLevel= idCategory.substr(8,1);
 			//Deletes all spare dropdowns when root categories are changed
 			for ( i = parseInt(categoryLevel)+1; i <= 5; i++) {
@@ -88,43 +72,45 @@ $(document).ready(function(){
 		      //console.log(str);
 		    });
 		    //console.log(str);
-			$.ajax({
-		  		url: $("#basePath").val() + 'product/getCategories/'+str,
-		  		type:'POST',
-		  		dataType:'json',
-		  		data:{id:str},
-				statusCode: {
-				    500: function() {
-				      
+		    if (str!=0){
+		    	$.ajax({
+			  		url: $("#basePath").val() + 'product/getCategories/'+str,
+			  		type:'POST',
+			  		dataType:'json',
+			  		data:{id:str},
+					statusCode: {
+					    500: function() {
+					      
 
-				    }
-				  },
-		  		success:function(data){
-		  			if (data['NextCategory'] != null){
-		  				categoryLevel++;
-		  				$('#' + divID).append("<select id='category"+categoryLevel+"' class='categories'></select>");
-		  				$('#category'+categoryLevel).append("<option id='"+0+"'>Seleccione una sub-categoria</option>");
-		  				for(var i in data){
-				     		var obj=data[i];
-				     		if (obj != null){
-				     			//console.log(data);
-					     		for(var j in obj){
-					     			var id=obj[j].id;
-					     			var name=obj[j].name;
-					     			$('#category'+categoryLevel).append("<option id='"+id+"'>"+name+"</option>");
-					     		}
-						    } 	
-				     	}
-		  			} else {
-		  				if (divID == "productsCategorySelect") {
-			  				$("#categoryID").val(finalCategoryID);
-					  		$('#' + divID).append("<div id='confirmation' style='margin: 5px 5px 5px 5px; padding: 5px 5px 5px 5px;'><p>Ha seleccionado la categoria "+finalCategory+"</p><button class='btn btn-default' type='submit' id='submit1' data-toggle='popover' title='La categoria será agregada más abajo' style='margin: 5px 5px 5px 5px; padding: 5px 5px 5px 5px;'>Confirmar</button></div>");
-				  		} else {
-				  			$('#' + divID).append("<div id='confirmation' style='margin: 5px 5px 5px 5px; padding: 5px 5px 5px 5px;'><p>"+finalCategory+" es la categoria final</p></div>");	
+					    }
+					  },
+			  		success:function(data){
+			  			if (data['NextCategory'] != null){
+			  				categoryLevel++;
+			  				$('#' + divID).append("<select id='category"+categoryLevel+"' class='categories col-xs-12 col-sm-12 col-md-12 col-lg-12'></select>");
+			  				$('#category'+categoryLevel).append("<option id='"+0+"'>Seleccione una sub-categoria</option>");
+			  				for(var i in data){
+					     		var obj=data[i];
+					     		if (obj != null){
+					     			//console.log(data);
+						     		for(var j in obj){
+						     			var id=obj[j].id;
+						     			var name=obj[j].name;
+						     			$('#category'+categoryLevel).append("<option id='"+id+"'>"+name+"</option>");
+						     		}
+							    } 	
+					     	}
+			  			} else {
+			  				if (divID == "productsCategorySelect") {
+				  				$("#categoryID").val(finalCategoryID);
+						  		$('#' + divID).append("<div id='confirmation' style='margin: 5px 5px 5px 5px; padding: 5px 5px 5px 5px;'><p>Ha seleccionado la categoria "+finalCategory+"</p><button class='btn btn-default' type='submit' id='submit1' data-toggle='popover' title='La categoria será agregada más abajo' style='margin: 5px 5px 5px 5px; padding: 5px 5px 5px 5px;'>Confirmar</button></div>");
+					  		} else {
+					  			$('#' + divID).append("<div id='confirmation' style='margin: 5px 5px 5px 5px; padding: 5px 5px 5px 5px;'><p>"+finalCategory+" es la categoria final</p></div>");	
+					  		}
 				  		}
 			  		}
-		  		}
-		  	});
+			  	});
+		    }
 		}
 	}
 	/*End code*/
@@ -229,7 +215,7 @@ $(document).ready(function(){
 					$("#productEdition").val("true");
 					$('#selected_colors').empty();
 					$.each(json.editProduct.colors, function(index, value) {
-						console.log("Color: "+ value.color)
+						//console.log("Color: "+ value.color)
 						$('.selected_colors_div').show();
 						var newColor = $("<div/>");
         				newColor.addClass('color').attr('style', "border-style: solid; border-width: 1px; background-color: "+ value.color + "; height: 20px; width: 20px;");
@@ -238,8 +224,8 @@ $(document).ready(function(){
         				inputColor.attr("type", "hidden");
         				inputColor.attr("id", "selectedColorsArray[]");
         				newColor.append(inputColor);
-        				console.log(newColor);
-        				console.log(inputColor);
+        				//console.log(newColor);
+        				//console.log(inputColor);
         				newColor.on('click', function(){
         					$(this).remove();
         				});
@@ -247,7 +233,7 @@ $(document).ready(function(){
 					});
 					$('.form-group_specifications').remove();
 					$.each(json.editProduct.attributes, function(index, value) {
-						console.log("name: "+ value.attribute_name + " value: "+ value.attribute_value)
+						//console.log("name: "+ value.attribute_name + " value: "+ value.attribute_value)
 						$(".input_fields_wrap").append('<div class="form-group_specifications" ><textarea type="text" class="inputProperty" id="' + index + '" name="attribute' + index + '" placeholder="Tipo de Variante...">' + value.attribute_name + '</textarea><textarea type="text" class="inputProperty" id="' + index + '" name="value' + index + '" placeholder="Valor de Variante...">' + value.attribute_value + '</textarea><a href="#" class="remove_field">X</a></div>');
 					});
 					if (isEdit){
@@ -289,18 +275,18 @@ $(document).ready(function(){
     $(add_button).click(function(e){ //on add input button click
         e.preventDefault();
         var x = 0; //starts in -1 to take off the existing example box
-        console.log(x);
+        //console.log(x);
         var existingDivs = $('.form-group_specifications');
         console.log(existingDivs);
         $.each(existingDivs, function(index, value) {
-        	console.log("X a secas: "+x);
+        	//console.log("X a secas: "+x);
         	//console.log("Index: "+index);
         	//console.log($(this).find('input').attr('id'));
         	var auxId = $(this).find('textarea').attr('id');
         	if (x <= auxId){
         		x = (parseInt(auxId) + 1);
         	}
-        	console.log(x);
+        	//console.log(x);
         });
         if(x < max_fields){ //max input box allowed
             $(wrapper).append('<div class="form-group_specifications"><textarea type="text" class="inputProperty" id="' + x + '" name="attribute' + x + '" placeholder="Atributo..."/><textarea type="text" class="inputProperty" id="' + x + '" name="value' + x + '" placeholder="Valor..."/><a href="#" class="remove_field">X</a></div>'); //add input box
@@ -315,3 +301,5 @@ $(document).ready(function(){
 
 
 });
+
+

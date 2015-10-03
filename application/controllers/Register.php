@@ -8,7 +8,17 @@ class Register extends CI_Controller {
 		parent::__construct();
    	}
 
+   	public function index(){
+   		$this->routedHome('register');
+   	}
 
+   	public function routedHome($section){
+		$this->load->view('templates/template_header');
+		$this->load->view('templates/template_nav', $section);
+		$this->load->view('navs/nav_home', $section);
+		$this->load->view('home/'.$section.'');
+		$this->load->view('templates/template_footer');
+	}
 
 	public function register(){
 		$role = $this->input->post("role");
@@ -30,6 +40,8 @@ class Register extends CI_Controller {
 		$this->form_validation->set_message('usernamecheck', 'Ops, el nombre de usuario ya esta en uso');
 		$this->form_validation->set_message('fakenamecheck', 'Ops, el nombre de la empresa ya esta en uso');
 		$this->form_validation->set_message('emailcheck', 'Ops, el mail ya esta en uso');
+		$this->form_validation->set_message('alpha', 'El campo %s debe contener solo letras');
+		$this->form_validation->set_message('selectCheck', 'El campo %s es obligatorio');
 
 		if ($this->form_validation->run()){
 			$insert = array();
@@ -42,20 +54,20 @@ class Register extends CI_Controller {
 			$insert['role'] = $role;
 			$insert['lastname'] = $this->input->post("lastname");
 			$insert['newsletter'] = $this->input->post("newsletter");
-			if ($role != 'supplier') {
-				$insert['status'] = 'active';
-			} else {
-				$insert['status'] = 'pending';
-			}
 			$insert['register_date'] = date("Y-m-d H:i:s");
-			$id = $this->User_model->register_user($insert, $role, $fake_name);
+			$id = $this->User_model->registerUser($insert, $role, $fake_name);
 			if ($role=='supplier'){
 				$this->Supplier_model->createSupplierDistributorAssolciation($id);
 			} else if ($role == 'distributor'){
 				$this->Distributor_model->createSupplierDistributorAssolciation($id);
 			}
-			$this->session->set_flashdata('success', 'Su cuenta ha sido creada y le hemos enviado un e-mail de confirmación.');
-			redirect('home/routedHome/login');
+			if ($this->Settings_model->getSetting('EMAIL_REGISTER_VERIFICATION')) {
+				$this->session->set_flashdata('success', "Su cuenta ha sido creada exitosamente.\nLe hemos enviado un e-mail de confirmación. Por favor, acceda al mismo para poder activar su cuenta.");	
+			} else {
+				$this->session->set_flashdata('success', "Su cuenta ha sido creada exitosamente.\nYa puede loguearse a su cuenta.");
+			}
+			
+			redirect('login');
 		}else{
 			$this->load->view('templates/template_header');
 			$this->load->view('templates/template_nav');
@@ -100,4 +112,12 @@ class Register extends CI_Controller {
 		}
 	}
 
+	public function verifyAccount($userid,$token){
+		if ($this->User_model->verifyAccount($userid,$token)){
+			redirect('login');
+		} else {
+			redirect('login');
+		}
+
+	}
  }

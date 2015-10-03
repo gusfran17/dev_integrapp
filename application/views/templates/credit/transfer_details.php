@@ -31,20 +31,17 @@
 							<label class="control-label" for="nota">Mensaje</label>
 							<?php echo $transfer->message; ?>
 						</div>
-						<?php if (($transfer->voucher_image != "") and (file_exists(base_url() . VOUCHER_IMAGES_PATH . $transfer->userid . "/" . $transfer->voucher_image))) :?>
+						<?php if ($transfer->voucher_image != "") { ?>
 							<div class="form-group">
 								<label class="control-label" for="nota">Comprobante</label>
 								<br>
-									<a href='<?php echo base_url() . VOUCHER_IMAGES_PATH . $transfer->userid . "/" . $transfer->voucher_image;?>'>
-										<img src='<?php echo base_url() . VOUCHER_IMAGES_PATH . $transfer->userid . "/" . $transfer->voucher_image;?>' style="width: 100px; height: 100px;"/>
-									</a>
-									<a href='<?php echo base_url() . IMAGES_PATH . 'noFotoGeneric.jpg';?>'>
-										<img src='<?php echo base_url() . IMAGES_PATH . 'noFotoGeneric.jpg';?>' style="width: 100px; height: 100px;"/>
-									</a>
+								<a href='<?php echo base_url() . VOUCHER_IMAGES_PATH . $transfer->userid . "/" . $transfer->voucher_image;?>'>
+									<img src='<?php echo base_url() . VOUCHER_IMAGES_PATH . $transfer->userid . "/" . $transfer->voucher_image;?>' style="max-width: 100%; max-height: 200px;"/>
+								</a>
 							</div>
-						<?php endif;?>
+						<?php }?>
 						<?php if($transfer->confirmed == false):?>
-							<a href="<?php echo base_url(); ?>/credit/deletePendingTransfer/<?php echo $transfer->id; ?>"><button type="button" class="btn btn-danger  btn-xs">Cancelar solicitud</button></a>
+							<a href="<?php echo base_url(); ?>credit/deletePendingTransfer/<?php echo $transfer->id; ?>"><button type="button" class="btn btn-danger  btn-xs">Cancelar solicitud</button></a>
 						<?php endif;?>
 						
 					</div>

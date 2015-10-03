@@ -305,6 +305,19 @@ class Product_model extends CI_Model {
         }
     }
 
+    public function getProductDistributors($productId){
+        $this->db->select('distributor.*');
+        $this->db->from('distributor');
+        $this->db->join('distributor_catalog', 'distributor_catalog.distributor_id = distributor.id');
+        $this->db->where('distributor_catalog.product_id', $productId);
+        $query = $this->db->get();
+        $distributors = $query->result();
+        foreach ($distributors as $key => $distributor) {
+            $distributors[$key]->logo = $this->Distributor_model->get_logo($distributor->userid);
+        }
+        return $distributors;
+    }
+
     public function addCategoryPathToProducts(&$catalog){
         $this->db->select('id, ascending_path from category where id not in (select distinct parent_id from category where parent_id is not null)', FALSE); 
         $query = $this->db->get();

@@ -178,6 +178,11 @@ class Distributor_model extends CI_Model {
         $this->db->from('product');
         $this->db->join('supplier', 'product.supplier_id = supplier.id','inner');
         $this->db->join('user', 'supplier.userid = user.id','inner');
+        $this->db->join('distributor_catalog', 'distributor_catalog.product_id = product.id', 'inner');
+        $this->db->join('supplier_distributor_association', 'supplier_distributor_association.supplier_id = product.supplier_id', 'inner');
+        $this->db->where('supplier_distributor_association.distributor_id', $distributorId);
+        $this->db->where('supplier_distributor_association.status', 'approved');
+        $this->db->where('distributor_catalog.distributor_id', $distributorId);
         $this->db->where('user.status', 'active');
         //Category ID needs to be fetched first to avoid where clauses errors
         if (isset($parentCategoryId) and ($parentCategoryId != 0)){
@@ -189,8 +194,6 @@ class Distributor_model extends CI_Model {
         if (isset($orderBy)){
                 $this->db->order_by("product.".$orderBy);     
         }
-        $this->db->join('distributor_catalog', 'distributor_catalog.product_id = product.id');
-        $this->db->where('distributor_catalog.distributor_id', $distributorId);
         log_message('info', "Distributor_model get_catalog Page: " .  $page . " Range: " . $rangePerPage . " ParentId: " . $parentCategoryId, FALSE);
         $from =  ($page-1) * $rangePerPage;
         $query = $this->db->get();

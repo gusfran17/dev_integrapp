@@ -61,7 +61,7 @@
 														<?php if (count($Catalog[$i]->images)>0) {?>
 													      	<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><img src="<?php echo base_url() . PRODUCT_IMAGES_PATH . $Catalog[$i]->id . "/" . $Catalog[$i]->images[0]; ?>" style="max-width: 100%;display: block;margin: 0 auto;max-height: 40px;"></a>
 													    <?php } else { ?>
-												      		<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><img src="<?php echo base_url() . 'Resources/imgs/NoFoto.jpg'; ?>" style="max-width: 100%;display: block;margin: 0 auto;max-height: 40px;"></a>
+												      		<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><img src="<?php echo base_url() . IMAGES_PATH . 'NoFoto.jpg'; ?>" style="max-width: 100%;display: block;margin: 0 auto;max-height: 40px;"></a>
 													    <?php } ?>
 													</td>
 													<td>
@@ -102,7 +102,7 @@
 																<button type="button" class="btn btn-primary btn-xs col-md-12 col-sm-12 col-xs-12"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Activar</button>
 															</a>
 														<?php } else if ($Catalog[$i]->status == 'published') {?>
-															<form action="<?php echo base_url() . 'product/activateProduct/' . $Catalog[$i]->id; ?>" id="<?php echo 'deactivate_' . $Catalog[$i]->id; ?>">
+															<form action="<?php echo base_url() . 'product/activateProduct/' . $Catalog[$i]->id; ?>" id="<?php echo 'deactivate_' . $Catalog[$i]->id; ?>" style="padding-bottom: 0px;">
 																<button type="button" onclick="deactivateProduct(<?php echo $Catalog[$i]->id; ?>,<?php echo $Catalog[$i]->publishing_cost; ?>)" class="btn btn-warning btn-xs col-md-12 col-sm-12 col-xs-12"><span class="glyphicon glyphicon-save-file" aria-hidden="true"></span> Despublicar</button>
 															</form>
 														<?php } ?>

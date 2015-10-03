@@ -549,7 +549,45 @@ class Product extends CI_Controller {
 		$data['product']->branch = $branch;
 		$data['product']->colors = $colors;
 		$data['product']->attributes = $attributes;
+		$data['distributorLocations'] = $this->getDistributorLocations($productId);
 		$this->routedHome($data, 'templates/product/product', true);
+	}
+
+	public function getDistributorLocations($productId){
+		$distributors = $this->Product_model->getProductDistributors($productId);
+		$locations = array();
+		foreach ($distributors as $key => $distributor) {
+			if ((isset($distributor->latLocation)) and (isset($distributor->longLocation))) {
+				$location = array();
+				$location['lat'] = $distributor->latLocation;
+				$location['lng'] = $distributor->longLocation;
+				$location['title'] = $distributor->fake_name;
+				$location['description'] = $distributor->service_description;
+				$location['email'] = $distributor->comercial_email;
+				$location['phone'] = $distributor->contact_phone;
+				$location['img'] = base_url() . ((isset($distributor->logo))? $distributor->logo: IMAGES_PATH . 'noProfilePic.jpg');
+				$location['link'] = base_url() . "distributors/viewDistributor/" . $distributor->id;
+				$location['bg-color'] = "#ffff88";
+				$location['icon-point'] = base_url() . IMAGES_PATH . "location.png";
+				$locations[] = $location;		
+			}
+		}
+		if (count($locations)==0){
+			$location = array();
+			$location['lat'] = -34.60697760000000;
+			$location['lng'] = -58.39412620000002;
+			$location['title'] = "Ortopedi Fernandez";
+			$location['description'] = "Ninguno de los Ortopedistas inscriptos en esta página distribuyen este producto, disculpe los inconvenientes.";
+			$location['email'] = "";
+			$location['phone'] = "";
+			$location['img'] = base_url() . IMAGES_PATH . "example.png";
+			$location['link'] = "#";
+			$location['bg-color'] = "#ff5555";
+			$location['icon-point'] = base_url() . "Resources/imgs/red-point.png";
+			$locations[] = $location;		
+		}
+		return $locations;
+		
 	}
 
 	public function setResultMessage($editionSuccess, $status){

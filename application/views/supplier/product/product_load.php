@@ -22,7 +22,7 @@
 									<div class="panel-body">
 
 										<div class="col-md-3 productsCategorySelect" id="productsCategorySelect">
-											<select name="category1" id="category1" class= "categories">
+											<select name="category1" id="category1" class= "categories col-xs-12 col-sm-12 col-md-12 col-lg-12">
 												<option id="0">Seleccione una categoria...</option>
 												<?php foreach ($loadCategory as $option) {
 													echo "<option id='".$option->id."'>".$option->name."</option>";

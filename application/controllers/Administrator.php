@@ -98,7 +98,7 @@ class Administrator extends CI_Controller {
     }
 
     public function impersonateUser(){
-    	if ((!$this->session->has_userdata('role')) and ($this->session->userdata('role') == "administrator")){
+    	if ((!$this->session->has_userdata('role')) and ($this->session->userdata('role') != "administrator")){
     		redirect(TIMEOUT_REDIRECT);
 		} else {
 	    	$username = $this->input->post("imperUsername");
@@ -114,6 +114,29 @@ class Administrator extends CI_Controller {
 	    	}
 	    	redirect('home');
 	    }
+    }
+
+    public function settings(){
+    	$data['settings'] = $this->Settings_model->getSettings();
+    	$this->routedHome("settings", $data);
+    }
+
+    public function activateEmailVerification(){
+    	if ((!$this->session->has_userdata('role')) and ($this->session->userdata('role') != "administrator")){
+    		redirect(TIMEOUT_REDIRECT);
+		} else {
+    		$this->Settings_model->setSettings("EMAIL_REGISTER_VERIFICATION", true);
+    		redirect("administrator/settings");
+    	}
+    }
+
+    public function deactivateEmailVerification(){
+    	if ((!$this->session->has_userdata('role')) and ($this->session->userdata('role') != "administrator")){
+    		redirect(TIMEOUT_REDIRECT);
+		} else {
+    		$this->Settings_model->setSettings("EMAIL_REGISTER_VERIFICATION", false);	
+    		redirect("administrator/settings");
+    	}
     }
 
 }
