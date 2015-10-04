@@ -66,17 +66,24 @@ class User_model extends CI_Model {
         }
      }
 
+    private function getUserByEmailOrUsernamePassword($str){
+        $this->db->where("email",$str);
+        $this->db->or_where("username",$str);
+        $query =$this->db->get('user');
+        if ($query->num_rows() == 1){
+            return $query->row(0);
+        } else {
+            return false;
+        }
+     }
 
     public function username_not_exist($username){
-
         $query = $this->db->get_where("user", array("username"=>$username));
-
         if ($query->num_rows()==0) {
         	return TRUE;
         }else{
         	return FALSE;
         }
-
     }
 
 
@@ -108,7 +115,6 @@ class User_model extends CI_Model {
         $email = $insert['email'];
         $this->createEmailToken($id, $email);
         if ($isEmailVerificationEnabled == true){
-            log_message('info', "EMAILLLLLL", false);
             $email = $insert['email'];
             $this->sendVerificationEmail($id);
         }
@@ -273,8 +279,8 @@ class User_model extends CI_Model {
         }
     }
 
-    public function usernameCheck($password, $username){        
-        $user_result = $this->getUserByUsernamePassword($username);
+    public function emailOrUsernameCheck($password, $username){        
+        $user_result = $this->getUserByEmailOrUsernamePassword($username);
         if($user_result != false){
             $isEmailVerificationEnabled = $this->Settings_model->getSetting('EMAIL_REGISTER_VERIFICATION');
             if ($isEmailVerificationEnabled){
@@ -314,52 +320,8 @@ class User_model extends CI_Model {
         
     }
 
-
-    public function emailCheck($password, $email){
-        $user_result = $this->getUserByEmailPassword($email);
-        if($user_result != false){
-            $isEmailVerificationEnabled = $this->Settings_model->getSetting('EMAIL_REGISTER_VERIFICATION');
-            if ($isEmailVerificationEnabled){
-                $tokenConfirmed = $this->isEmailTokenConfirmed($user_result->id);
-            } else {
-                $tokenConfirmed = true;
-            }
-            if ($tokenConfirmed){
-                $passwordDB = $user_result->password;
-                $passwordDB_decoded = $this->encrypt->decode($passwordDB, $this->config->item('encryption_key'));
-                if ($password==$passwordDB_decoded) {
-                    if ($user_result->status == 'pending'){
-                        $this->session->set_flashdata("error","El usuario aun no fue aprobado por el administrador de la aplicación");
-                        return FALSE;
-                    } else {
-
-                        $role = $user_result->role;
-                        if ($role == 'supplier') {
-                            $role_information = $this->Supplier_model->getSupplierByUserId($user_result->id);
-                        } else if ($role == 'distributor'){
-                            $role_information = $this->Distributor_model->getDistributorByUserId($user_result->id);
-                        }
-                        $this->setLoadInfo($user_result->id);
-                        $this->session->set_userdata(array('id'=>$user_result->id, 'role_id'=>((isset($role_information))?$role_information->id:0), 'user'=>$user_result->username, 'role'=>$user_result->role, 'email'=>$user_result->email,  'logged_in'=>true));
-                        
-                        return TRUE;
-                    }
-                }else{
-                        return FALSE;
-                }
-            } else {
-                $this->session->set_flashdata("error","El usuario aun no há confirmado su cuenta de email. Por favor, verifiquela.");
-                return FALSE;
-            }
-        }else{
-            return FALSE;
-        }
-    }
-
-
    public function passwordAuthenticate($password, $data){
-        return $this->usernameCheck($password, $data) or 
-               $this->emailCheck($password, $data);
+        return $this->emailOrUsernameCheck($password, $data);
     }
 
     public function setLoadInfo($userId){

@@ -7,10 +7,10 @@
 					<form action="<?php echo base_url(); ?>register/register" method="POST">
 						<fieldset>
 							<div class="form-group" style="padding-bottom:40px;">
-								<label class="col-lg-2 col-md-2 col-sm-2 col-xs-12" for="username">Nombre de Usuario</label>
+								<label class="col-lg-2 col-md-2 col-sm-2 col-xs-12" for="username">Usuario</label>
 								<div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
 									<?php echo form_error('username', '<span class="label label-danger">', '</span>'); ?>
-									<input type="text" id="username" class="form-control" name="username" value="<?php echo set_value('username'); ?>" placeholder="Ingrese su usuario">
+									<input type="text" id="username" class="form-control" name="username" value="<?php echo set_value('username'); ?>" placeholder="Ingrese su nombre de usuario">
 								</div>
 							</div>
 							<div class="form-group" style="padding-bottom:40px;">
@@ -49,7 +49,7 @@
 								</div>
 							</div>
 							<div class="form-group" style="padding-bottom:40px;">
-								<label class="col-lg-2 col-md-2 col-sm-2 col-xs-12" for="password">Seleccione un Rol</label>
+								<label class="col-lg-2 col-md-2 col-sm-2 col-xs-12" for="password">Rol</label>
 								<div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
 									<?php echo form_error('role', '<span class="label label-danger">', '</span>'); ?>
 									<select name="role" class="form-control" id="role">
