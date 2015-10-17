@@ -95,7 +95,7 @@
 									</p>
 			                    <?php } ?>
 								<p style="margin-top:20;text-align: left;">
-									<a href="<?php echo base_url(); ?>suppliers/viewSuppliers"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span><b> Proveedores</b></a>
+									<a href="<?php echo base_url(); ?>suppliers"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span><b> Proveedores</b></a>
 								</p>
 							</div>
 							<div class="col-md-8 col-sm-8 col-xs-8">
@@ -129,12 +129,12 @@
                         <th>Código de Producto</th>
 						<th>Código IntegrApp</th>
                         <th data-hide="phone">Producto</th>
-                        <?php if (($supplier->associationStatus == 'approved')or(isset($itIsMe))) {?>
+                        <?php if (($supplier->associationStatus == 'approved')or(isset($itIsMe)or($supplier->associationStatus == true))) {?>
 	                        <th class="centered-cell" data-hide="phone,tablet">Precio</th>
 	                        <th class="centered-cell" data-hide="phone,tablet">IVA</th>
                         <?php } ?>
                         <th class="centered-cell" data-hide="phone,tablet">Descripción</th>
-                        <?php if ($supplier->associationStatus == 'approved') {?>
+                        <?php if (($supplier->associationStatus == 'approved') or ($supplier->associationStatus == true)) {?>
 	                        <th class="centered-cell" data-hide="phone,tablet">Acciones</th>
 	                    <?php } ?>
                     </tr>
@@ -160,7 +160,7 @@
 							<td>
 								<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><strong><?php echo $Catalog[$i]->name; ?></strong></a>
 							</td>
-							<?php if (($supplier->associationStatus == 'approved')or(isset($itIsMe))) { ?>
+							<?php if (($supplier->associationStatus == 'approved')or(isset($itIsMe)) or ($supplier->associationStatus == true)) { ?>
 								<td>
 									<?php echo ($Catalog[$i]->price - (($Catalog[$i]->price*$supplier->associationDiscount)/100)) . '$'; ?>
 								</td>
@@ -170,17 +170,61 @@
 							<?php } ?>
 							<td>
 								<?php echo $Catalog[$i]->description; ?>
+								<br>
+								<br>
+								<b>Categoria: </b><?php echo $Catalog[$i]->categoryPath; ?>
 							</td>
-							<?php if ($supplier->associationStatus == 'approved') {?>
+							<?php if (($supplier->associationStatus == 'approved') or ($supplier->associationStatus == true)) {?>
 								<td>
 								<?php if ($Catalog[$i]->isCatalogItem == false){ ?>
-									<a href="<?php echo base_url() . 'Product/addProductToCatalog/'. $Catalog[$i]->id;?>">
-										<button type="button" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Agregar a mi Catálogo</button>
-									</a>
+									<?php if ($watchingRole == 'distributor') {?>
+										<a href="<?php echo base_url() . 'Product/addProductToDistributorCatalog/'. $Catalog[$i]->id;?>">
+											<button type="button" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Agregar a mi Catálogo</button>
+										</a>
+									<?php } else if ($watchingRole == 'supplier') {?>
+										<?php if ($watchingRoleId != $Catalog[$i]->supplier_id) {?>
+											<form action="<?php echo base_url() . 'product/addProductToSupplierCatalog/' . $Catalog[$i]->id; ?>" method="post" id="<?php echo 'addToSecSuppCat_' . $Catalog[$i]->id; ?>" style="padding-bottom: 0px;">
+												<div class="dropdown" style="margin-bottom: 10px; max-width:300px;">
+													<button class="btn btn-info btn-xs dropdown-toggle" type="button" id="addToCatalogDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 170px;">
+														<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 
+														Agregar a mi Catálogo
+														<span class="caret"></span>
+													</button>
+													<ul class="dropdown-menu" aria-labelledby="suppliersDropDown" style="max-width:300px;">
+														<li><a style="max-width:300px;">
+																El proveedor le ofrece un <b><?php echo $supplier->associationDiscount;?>%</b> <br>
+																de descuento sobre sus productos<br>
+														</a></li>
+														<li><a><b>Precio final: $<?php echo (($Catalog[$i]->price)-((($supplier->associationDiscount)*($Catalog[$i]->price))/100));?></b><br><br></a></li>
+														<li><a>
+															Ingrese el precio que quiere que se<br>
+															muestre en su catálogo (es el que <br>
+															verán sus ortopedias clientes): 
+														</a></li>
+														<li><a><input type="text" class="form-control" onclick="event.stopPropagation();" name="productPrice<?php echo $Catalog[$i]->id; ?>" id="productPrice<?php echo $Catalog[$i]->id; ?>" placeholder="Ingrese un precio..."></a></li>
+														<li>
+															<a><button type="submit" onclick="" class="btn btn-success btn-sm col-md-12 col-sm-12 col-xs-12" form="<?php echo 'addToSecSuppCat_' . $Catalog[$i]->id; ?>">
+																<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 
+																Agregar
+															</button></a>
+														</li>
+													</ul>
+												</div>
+											</form>
+										<?php } else { ?>
+											Usted es proveedor principal de este producto
+										<?php } ?>
+									<?php } ?>
 								<?php } else {?>
-									<a href="<?php echo base_url() . 'Product/removeProductFromCatalog/'. $Catalog[$i]->id;?>">
-										<button type="button" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Remover de mi Catálogo</button>
-									</a>
+									<?php if ($watchingRole == 'distributor') {?>
+										<a href="<?php echo base_url() . 'Product/removeProductFromDistributorCatalog/'. $Catalog[$i]->id;?>">
+											<button type="button" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Remover de mi Catálogo</button>
+										</a>
+									<?php } else if ($watchingRole == 'supplier') {?>
+										<form action="<?php echo base_url() . 'product/removeProductFromSupplierCatalog/' . $Catalog[$i]->id; ?>" id="<?php echo 'removeFromSecSuppCat_' . $Catalog[$i]->id; ?>" style="padding-bottom: 0px;">
+											<button type="submit" onclick="" class="btn btn-danger btn-xs" style="min-width: 170px;" form="<?php echo 'removeFromSecSuppCat_' . $Catalog[$i]->id; ?>"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Remover de mi Catálogo</button>
+										</form>
+									<?php } ?>
 								<?php } ?>
 								</td>
 							<?php } ?>

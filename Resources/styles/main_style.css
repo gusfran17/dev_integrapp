@@ -84,7 +84,7 @@ html, body{font-family: OpenSans}
 	}
 
 	body {
-		background-color: #FFF !important;
+		background-color: #FFC !important;
 	}
 
 	footer {
@@ -296,11 +296,39 @@ Change label colors for titles
 	text-decoration: underline;
 }
 
+
+@media (max-width: 1024px) { 
+	.catalogProdName {
+		height: 80px !important;
+	}
+
+	.catalogProdCode {
+		height: 40px !important;
+	}
+
+	.catalogProdLabelGroup{
+		height: 240px !important;
+	}
+
+	.catalogProdButtonGroup{
+		height: 100px !important;
+	}
+}
+
 .catalogProdName {
 	height: 40px;
 }
+
 .catalogProdCode {
 	height: 20px;
+}
+
+.catalogProdLabelGroup{
+	height: 140px;
+}
+
+.catalogProdButtonGroup{
+	height: 50px;
 }
 
 #categoria-select select{

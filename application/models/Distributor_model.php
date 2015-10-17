@@ -9,7 +9,9 @@ class Distributor_model extends CI_Model {
     {
         $query = $this->db->get_where('distributor', array("userid"=>$userid));
         if ($query->num_rows() == 1){
-            return $query->row(0);
+            $result = $query->result();
+            $result[0]->logo = $this->get_logo($result[0]->userid);      
+            return $result[0];
         } else {
             return false;
         }
@@ -77,6 +79,12 @@ class Distributor_model extends CI_Model {
         return $this->db->update('distributor', $data);
     }
 
+    public function isDistributorCatalogItemForCatalog($distributorId, &$catalog){
+        for ($i=0; $i < count($catalog); $i++) { 
+            $catalog[$i]->isCatalogItem = $this->isCatalogItem($distributorId, $catalog[$i]->id);
+        }
+    }
+
     public function isCatalogItem($distributorId, $productId){
         $this->db->where('product_id', $productId);
         $this->db->where('distributor_id', $distributorId);
@@ -90,16 +98,20 @@ class Distributor_model extends CI_Model {
     }
 
     public function addProductToCatalog($distributorId, $productId){
-        $this->db->set('distributor_id', $distributorId);
-        $this->db->set('product_id', $productId);
-        $this->db->insert('distributor_catalog');
-        
+        $product = $this->Product_model->getProductById($productId);
+        if ($this->Supplier_model->isDistributorAssociationActive($distributorId, $product->supplier_id)){
+            $this->db->set('distributor_id', $distributorId);
+            $this->db->set('product_id', $productId);
+            $this->db->insert('distributor_catalog'); 
+            return true;   
+        } else {
+            return false;
+        }
     }
 
     public function removeProductFromCatalog($distributorId, $productId){
         $this->db->where('distributor_id', $distributorId);
         $this->db->where('product_id', $productId);
-        log_message('info', "Product ID: " . $productId . " Distributor ID: " . $distributorId, false);
         $this->db->delete('distributor_catalog');   
     }
 
@@ -158,7 +170,7 @@ class Distributor_model extends CI_Model {
         if(file_exists($filename)){
             return $url_path . md5($userid) . ".png";
         }else{
-            return null;
+            return IMAGES_PATH . 'noProfilePic.jpg';
         }
         
     }
@@ -174,6 +186,12 @@ class Distributor_model extends CI_Model {
     }
 
     public function get_catalog($distributorId, $parentCategoryId = null, $orderBy = null, $page = 1, $rangePerPage = 1000, &$totalRows){
+        //Category ID needs to be fetched first to avoid where clauses errors
+        if (isset($parentCategoryId) and ($parentCategoryId != 0)){
+            $leafCategories = array();
+            $this->Product_model->getLeafCategories($leafCategories, $parentCategoryId);
+            $this->db->where_in("product.category_id", $leafCategories);
+        }
         $this->db->select('product.*');
         $this->db->from('product');
         $this->db->join('supplier', 'product.supplier_id = supplier.id','inner');
@@ -184,12 +202,6 @@ class Distributor_model extends CI_Model {
         $this->db->where('supplier_distributor_association.status', 'approved');
         $this->db->where('distributor_catalog.distributor_id', $distributorId);
         $this->db->where('user.status', 'active');
-        //Category ID needs to be fetched first to avoid where clauses errors
-        if (isset($parentCategoryId) and ($parentCategoryId != 0)){
-            $leafCategories = array();
-            $this->Product_model->getLeafCategories($leafCategories, $parentCategoryId);
-            $this->db->where_in("product.category_id", $leafCategories);
-        }
         $this->db->where("product.status", 'published');
         if (isset($orderBy)){
                 $this->db->order_by("product.".$orderBy);     

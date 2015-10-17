@@ -9,13 +9,13 @@ class Register extends CI_Controller {
    	}
 
    	public function index(){
-   		$this->routedHome('register');
+   		$this->routedHome(null,'register');
    	}
 
-   	public function routedHome($section){
+   	public function routedHome($data=null, $section){
 		$this->load->view('templates/template_header');
-		$this->load->view('templates/template_nav', $section);
-		$this->load->view('navs/nav_home', $section);
+		$this->load->view('templates/template_nav', $data);
+		$this->load->view('navs/nav_home', $data);
 		$this->load->view('home/'.$section.'');
 		$this->load->view('templates/template_footer');
 	}
@@ -56,24 +56,20 @@ class Register extends CI_Controller {
 			$insert['newsletter'] = $this->input->post("newsletter");
 			$insert['register_date'] = date("Y-m-d H:i:s");
 			$id = $this->User_model->registerUser($insert, $role, $fake_name);
-			if ($role=='supplier'){
-				$this->Supplier_model->createSupplierDistributorAssolciation($id);
-			} else if ($role == 'distributor'){
-				$this->Distributor_model->createSupplierDistributorAssolciation($id);
-			}
-			if ($this->Settings_model->getSetting('EMAIL_REGISTER_VERIFICATION')) {
-				$this->session->set_flashdata('success', "Su cuenta ha sido creada exitosamente.\nLe hemos enviado un e-mail de confirmación. Por favor, acceda al mismo para poder activar su cuenta.");	
+			if ($id!=0){
+				if ($this->Settings_model->getSetting('EMAIL_REGISTER_VERIFICATION')) {
+					$this->session->set_flashdata('success', "Su cuenta ha sido creada exitosamente.\nLe hemos enviado un e-mail de confirmación. Por favor, acceda al mismo para poder activar su cuenta.");	
+				} else {
+					$this->session->set_flashdata('success', "Su cuenta ha sido creada exitosamente.\nYa puede loguearse a su cuenta.");
+				}
+				redirect('login');
 			} else {
-				$this->session->set_flashdata('success', "Su cuenta ha sido creada exitosamente.\nYa puede loguearse a su cuenta.");
+				$this->session->set_flashdata('error', "No se ha podido realizar la registración por favor verifique que su cuenta de mail sea correcta y si el problema persiste contacte al administrador.");
+				$this->routedHome(null,'register');
 			}
 			
-			redirect('login');
 		}else{
-			$this->load->view('templates/template_header');
-			$this->load->view('templates/template_nav');
-			$this->load->view('navs/nav_home');
-			$this->load->view('home/register');
-			$this->load->view('templates/template_footer');
+			$this->routedHome(null,'register');
 		}
 	}
 

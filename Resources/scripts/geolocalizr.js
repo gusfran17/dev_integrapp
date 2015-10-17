@@ -35,15 +35,23 @@ function initializeNewMap(locations,zoom){
 
 		google.maps.event.addListener(marker, 'click', (function(marker, i) {
 		return function() {
+			var imgTag = '<div class="img" style="text-align: center; padding-top:5px; padding-bottom:5px; background-color: ' + locations[i]["bg-color"] +';"><img style=" max-height:50px; max-width:140px;" src="' + locations[i]["img"]  + '"></img></div>';
+			var titleTag = '<div class="title" style="text-align: center;"><h3>' + locations[i]["title"] + '</h3></div>';
+			var descriptionTag = '<div class="description" style="text-align: center;">' + 
+								 '<p>' + locations[i]["description"] + '</p>' +
+								 '</div>';
+			var phoneTag = (((locations[i]["phone"] != "") && (locations[i]["phone"] != null)) ? '<div class="phone" style="text-align: center;"><strong>Tel: </strong>' + locations[i]["phone"] + '</div>' : "Telefono no disponible <br>");
+			var emailTag = (((locations[i]["email"] != "") && (locations[i]["email"] != null)) ? '<div class="email" style="text-align: center;"><strong>Email: </strong>' + locations[i]["email"] + '</div>' : "Email no disponible <br>");
+			var addressTag = (((locations[i]["address"] != "") && (locations[i]["address"] != null)) ? '<div class="address" style="text-align: center;"><strong>Direeción: </strong>' + locations[i]["address"] + '</div>' : "Dirección no disponible <br>");
 
-			var contentString = '<div id="containerInfoMap" style="width: 300px; height: 200px;">' +
-				'<div class="img" style="text-align: center; padding-top:5px; padding-bottom:5px; background-color: ' + locations[i]["bg-color"] +';"><img style=" max-height:50px; max-width:140px;" src="' + locations[i]["img"]  + '"></img></div>' +
-				'<div class="title" style="text-align: center;"><h3>' + locations[i]["title"] + '</h3></div>' +
-				'<div class="description" style="text-align: center;">' +
-				'<p>' + locations[i]["description"] + '</p>' +
-				'</div>' +
-				'<div class="phone" style="text-align: center;"><strong>Tel: </strong>' + locations[i]["phone"] + '</div>' +
-				'<div class="email" style="text-align: center;"><strong>Email: </strong>' + locations[i]["email"] + '</div>' +
+
+			var contentString = '<div id="containerInfoMap" style="width: 300px; height: 250px;">' +
+				imgTag +
+				titleTag +
+				descriptionTag +
+				phoneTag +
+				emailTag +
+				addressTag
 				'</div>';			            	
 
 			infowindow.setContent(contentString);
@@ -60,24 +68,43 @@ function getGeolocalization(callback){
 
 	if(navigator.geolocation){
 
-		navigator.geolocation.getCurrentPosition(function(objPosicion){
+		navigator.geolocation.getCurrentPosition(function(objPosition){
 
-			var latInit = objPosicion.coords.latitude;
-			var lngInit = objPosicion.coords.longitude;
-			
+			var latInit = objPosition.coords.latitude;
+			var lngInit = objPosition.coords.longitude;
+			//Obtengo mis datos de perfil
+			$.ajax({
+		  		url: '../../Profile/getMyDetailsForMap',
+		  		success:function(data){
+		  			if (data != null){
+		  				var json = JSON.parse(data);
+		  				console.log(json);
+		  				locations[0]["title"] = json["title"];
+						locations[0]["description"] = "Esta es su ubicación actual según el navegador";
+						locations[0]["address"] = json["address"] + " (ubicación que usted declaró en su perfil)";
+						locations[0]["email"] = json["email"];
+						locations[0]["phone"] = json["phone"];
+						locations[0]["img"] = json["img"];
+						locations[0]["link"] = json["link"];
+						locations[0]["bg-color"] = json["bg-color"];
+						locations[0]["icon-point"] = json["icon-point"];
+						console.log(locations);
+		  			}
+		  		}
+		  	});
 			//Inserto coordenadas del usuario al array de locations en primer lugar
 			locations.splice(0, 0,
 				    {
 						"lat" 			: latInit,
 						"lng"			: lngInit,
-						"title"			: "Es mi punto",
-						"description"	: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod ",
+						"title"			: "Mi Ubicación",
+						"description"	: "Puede ver que distribuidores se encuentran en las zonas más cercanas a sus alrededores.",
 						"email"			: "",
 						"phone"			: "",
-						"img"			: path_images + "noProfilePic.jpg" ,
-						"link"			: "",
-						"bg-color"		: "cornflowerblue",
-						"icon-point"	: path_images + "my_location_96x96.png" 
+						"img"			: path_images + "noProfilePic.png",
+						"link"			: "#",
+						"bg-color"		: "#0F0",
+						"icon-point"	: path_images + "my_location_96x96.png"
 					});
 
 			return callback();

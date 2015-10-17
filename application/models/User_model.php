@@ -97,6 +97,7 @@ class User_model extends CI_Model {
         }
     }
     
+    //returns 0 if the trnsaction cannot be commited due to an email error
     public function registerUser($insert, $role, $fake_name){
         $isEmailVerificationEnabled = $this->Settings_model->getSetting('EMAIL_REGISTER_VERIFICATION');
         if ($role != 'supplier') {
@@ -104,6 +105,7 @@ class User_model extends CI_Model {
         } else {
             $insert['status'] = 'pending';
         }
+        $this->db->trans_begin();
         $this->db->insert("user", $insert);
         $id = $this->db->insert_id();
 
@@ -111,14 +113,26 @@ class User_model extends CI_Model {
             $this->db->set('fake_name', $fake_name);
             $this->db->where('userid', $id);
             $this->db->update($role);
+            if ($role=='supplier'){
+                $this->Supplier_model->createSupplierDistributorAssolciation($id);
+            } else if ($role == 'distributor'){
+                $this->Distributor_model->createSupplierDistributorAssolciation($id);
+            }
         }
+
         $email = $insert['email'];
         $this->createEmailToken($id, $email);
         if ($isEmailVerificationEnabled == true){
             $email = $insert['email'];
-            $this->sendVerificationEmail($id);
+            if ($this->sendVerificationEmail($id)){
+                $this->db->trans_commit();
+            } else {
+                $this->db->trans_rollback();
+                $id = 0;
+            }
+        } else {
+            $this->db->trans_commit();
         }
-
         return $id;
     }
 

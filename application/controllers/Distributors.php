@@ -50,8 +50,8 @@ class Distributors extends CI_Controller {
 		}
 		$distributor = $this->Distributor_model->getDistributorById($distributorId);
 		if($role=='supplier'){
-			$distributor->associationStatus = $this->Supplier_model->associationStatus('distributor',$distributorId,$roleId);
-			$distributor->associationDiscount = $this->Supplier_model->associationDiscount($role, $roleId, $distributorId);		
+			$distributor->associationStatus = $this->Supplier_model->getDistributorAssociationStatus($distributorId,$roleId);
+			$distributor->associationDiscount = $this->Supplier_model->getAssociationDiscountForDistributor($distributorId, $roleId);		
 		} else {
 			$distributor->associationStatus = false;
 			$distributor->associationDiscount = false;
@@ -95,6 +95,7 @@ class Distributors extends CI_Controller {
 		$totalRows = 0;
 		$page = $this->getPage($this->catalog_pagination_uri_segment);
 		$catalog = $this->Distributor_model->get_catalog($selectedDistributorId, $selectedCategoryId, $orderBy, $page, $this->productsPerPage, $totalRows);
+		$this->Product_model->addCategoryPathToProducts($catalog);
 		$data['Catalog'] = $catalog;
 		$url = base_url() . "Distributors/viewDistributorCatalog/$orderBy";
 		$this->setPagination($url, $totalRows, $this->catalog_pagination_uri_segment, $this->productsPerPage);

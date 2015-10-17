@@ -8,7 +8,6 @@ class  Locations_model extends CI_Model {
         $data = trim($data);
         $data = strtoupper($data);
         $sql = "SELECT * FROM (`city`) JOIN `province` ON `province`.`id` = `city`.`province_id` WHERE `city_name` LIKE '%$data%' ORDER BY CHAR_LENGTH(city_name) ASC";
-
         $query = $this->db->query($sql);
         //log_message('info', $sql, false);
 

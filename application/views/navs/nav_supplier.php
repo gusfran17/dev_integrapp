@@ -1,5 +1,6 @@
-		        <li><a title="<?php if ($loadInfo->activeProducts>0) echo 'Tiene ' . $loadInfo->activeProducts . ' productos sin publicar'; ?>" href="<?php echo base_url(); ?>Product/myProducts">PRODUCTOS <?php if ($loadInfo->activeProducts>0) echo '<span class="badge">' . $loadInfo->activeProducts . '</span>'; ?></a></li>
+		        <li><a title="<?php if ($loadInfo->activeProducts>0) echo 'Tiene ' . $loadInfo->activeProducts . ' productos sin publicar'; ?>" href="<?php echo base_url(); ?>Product">PRODUCTOS <?php if ($loadInfo->activeProducts>0) echo '<span class="badge">' . $loadInfo->activeProducts . '</span>'; ?></a></li>
 		        <li><a title="<?php if ($loadInfo->activeProducts>0) echo 'Tiene ' . $loadInfo->pendingDistributors . ' solicitudes pendientes'; ?>" href="<?php echo base_url(); ?>Distributors/viewDistributors">ORTOPEDIAS <?php if ($loadInfo->pendingDistributors>0) echo '<span class="badge">' . $loadInfo->pendingDistributors . '</span>'; ?></a></li>
+		        <li><a href="<?php echo base_url(); ?>suppliers">PROVEEDORES</a></li>
 		        <li><a href="<?php echo base_url(); ?>profile/auction">SUBASTA</a></li>
 		        <li><a href="<?php echo base_url(); ?>credit">CREDITO</a></li>
 				<li class="dropdown">

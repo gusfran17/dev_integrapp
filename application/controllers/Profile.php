@@ -43,7 +43,6 @@ class Profile extends CI_Controller {
 		$this->load->view('templates/template_footer');
 	}
 
-
 	public function account(){
 
 		$userid = $this->session->userdata("id");
@@ -86,26 +85,6 @@ class Profile extends CI_Controller {
 		}
 
 
-	}
-
-	public function request(){
-		$data['user'] = $this->session->userdata("user");
-		$this->routedHome($this->section, $data);
-	}
-
-	public function auction(){
-		$data['user'] = $this->session->userdata("user");
-		$this->routedHome($this->section, $data);
-	}
-
-	public function credit(){
-		$data['user'] = $this->session->userdata("user");
-		$this->routedHome('credit', $data);
-	}
-
-	public function suppliers(){
-		$data['user'] = $this->session->userdata("user");
-		$this->routedHome($this->section, $data);
 	}
 
 	public function save(){
@@ -371,21 +350,45 @@ class Profile extends CI_Controller {
         echo json_encode($result);
 	}
 
-	public function sendEmailTest(){
-		$this->load->library('email');
-		$this->email->from('gustavo.franco@integrapp.com.ar', 'Gustavo Franco');
-		$this->email->to('gusfran17@gmail.com');
-		//$this->email->cc('another@another-example.com');
-		//$this->email->bcc('them@their-example.com');
 
-		$this->email->subject('Email Test');
-		$this->email->message('Testing the email class.');
-
-		if ($this->email->send(FALSE)){
-			echo true;
+	public function getMyDetailsForMap(){
+		if($this->session->has_userdata('role')){
+			$userid=$this->session->userdata("id");
+			$role=$this->session->userdata("role");
 		} else {
-			return false;
+			redirect(TIMEOUT_REDIRECT);
+			die;
 		}
+		if ($role == 'supplier'){
+			$userDetails = $this->Supplier_model->getSupplierByUserId($userid);
+			$userLink = base_url() . "suppliers/viewSupplier/" . $userDetails->id;
+		} else if ($role == 'distributor') {
+			$userDetails = $this->Distributor_model->getDistributorByUserId($userid);
+			$userLink = base_url() . "distributors/viewDistributor/" . $userDetails->id;
+		}
+		$location = array();
+		if (!(isset($userDetails))){
+			$location['title'] = "Mi Ubicación";
+			$location['description'] = "Este es el punto donde usted esta ubicado actualmente, a su alrededor puede encontrar los centros de distribución más cercanos";
+			$location['email'] = "";
+			$location['address'] = "";
+			$location['phone'] = "";
+			$location['img'] = base_url() . IMAGES_PATH . "noProfilePic.jpg";
+			$location['link'] = "#";
+			$location['bg-color'] = "#00ff00";
+			$location['icon-point'] = base_url() . "Resources/imgs/my_location_96x96.png";
+		} else {
+			$location['title'] = $userDetails->fake_name;
+			$location['description'] = $userDetails->service_description;
+			$location['email'] = $userDetails->comercial_email;
+			$location['address'] = $userDetails->commercial_address;
+			$location['phone'] = $userDetails->contact_phone;
+			$location['img'] = base_url() . ((isset($userDetails->logo))? $userDetails->logo: IMAGES_PATH . 'noProfilePic.jpg');
+			$location['link'] = base_url() . ((isset($userLink))? $userLink: '#');
+			$location['bg-color'] = "#00ff00";
+			$location['icon-point'] = base_url() . "Resources/imgs/my_location_96x96.png";
+		}
+        echo json_encode($location);
 	}
 
 }

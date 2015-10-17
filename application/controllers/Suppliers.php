@@ -31,21 +31,35 @@ class Suppliers extends CI_Controller {
 	} 
 
 
-	public function viewSuppliers(){
+public function index(){
 		if($this->session->has_userdata('role')){
 			$role = $this->session->userdata("role");
 			$roleId = $this->session->userdata("role_id");
 		} else {
 			redirect(TIMEOUT_REDIRECT);
 		}
-		$url = base_url() . "Suppliers/viewSuppliers";
+		if ($role == 'distributor'){
+			$this->viewSuppliersForDistributor($roleId);
+		} else if ($role=='supplier') {
+			$this->viewSuppliersForSupplier($roleId);
+		}
+	}
+
+	private function viewSuppliersForSupplier($roleId){
+		$data['suppliers'] = $this->Supplier_model->getSuppliersForSupplier($roleId);
+		$this->routedHome($data, 'suppliers');
+	}
+
+	private function viewSuppliersForDistributor($roleId){
+		$role = 'distributor';
+		$url = base_url() . "suppliers/index";
 		$totalRows = $this->Supplier_model->suppliersCount();
 		$this->setPagination($url, $totalRows, $this->suppliers_pagination_uri_segment, $this->suppliersPerPage);
 		$page = $this->getPage($this->suppliers_pagination_uri_segment);
 		$suppliers =  $this->Supplier_model->getSuppliers($page, $this->suppliersPerPage);
 		for ($i=0; $i < count($suppliers); $i++) {
-			$suppliers[$i]->associationStatus = $this->Supplier_model->associationStatus($role, $roleId, $suppliers[$i]->id);
-			$suppliers[$i]->associationDiscount = $this->Supplier_model->associationDiscount($role, $roleId, $suppliers[$i]->id);
+			$suppliers[$i]->associationStatus = $this->Supplier_model->getDistributorAssociationStatus($roleId, $suppliers[$i]->id);
+			$suppliers[$i]->associationDiscount = $this->Supplier_model->getAssociationDiscountForDistributor($roleId, $suppliers[$i]->id);
 		}
 		$data["suppliers"] = $suppliers;
 		$str_links = $this->pagination->create_links();
@@ -64,8 +78,14 @@ class Suppliers extends CI_Controller {
 			redirect(TIMEOUT_REDIRECT);
 		}
 		$supplier = $this->Supplier_model->getSupplierById($supplierId);
-		$supplier->associationStatus = $this->Supplier_model->associationStatus($role, $roleId, $supplierId);
-		$supplier->associationDiscount = $this->Supplier_model->associationDiscount($role, $roleId, $supplierId);		
+		if ($role=='distributor'){
+			$supplier->associationStatus = $this->Supplier_model->getDistributorAssociationStatus($roleId, $supplierId);
+			$supplier->associationDiscount = $this->Supplier_model->getAssociationDiscountForDistributor($roleId, $supplierId);		
+		} else if ($role == 'supplier'){
+			$supplier->associationStatus = "";
+			$supplier->associationDiscount = "";		
+		}
+		
 		$data['supplier'] = $supplier;
 		$data['watchingRole'] = $role;
 		$this->routedHome($data, 'templates/supplier/supplier', true);
@@ -109,10 +129,6 @@ class Suppliers extends CI_Controller {
 		} else {
 			redirect(TIMEOUT_REDIRECT);
 		}
-		$supplier = $this->Supplier_model->getSupplierById($selectedSupplierId);
-		$supplier->associationStatus = $this->Supplier_model->associationStatus($role, $roleId, $supplier->id);
-		$supplier->associationDiscount = $this->Supplier_model->associationDiscount($role, $roleId, $supplier->id);		
-		$data['supplier'] = $supplier;
 		//set sidebar
 		$selectedCategoryId = $this->getCategoryFilter();
 		$branch = $this->getCategoryBranch($selectedCategoryId);
@@ -126,13 +142,25 @@ class Suppliers extends CI_Controller {
 		}
 		$totalRows = 0;
 		$page = $this->getPage($this->catalog_pagination_uri_segment);
-		$catalog = $this->Product_model->get_catalog($selectedSupplierId, $selectedCategoryId, 'published', $orderBy, $page, $this->productsPerPage, $totalRows);
-		$this->Supplier_model->addAssociationDetailsToProduct($role, $roleId,$catalog);
+		$catalog = $this->Supplier_model->getGeneralCatalog($selectedSupplierId, $selectedCategoryId, 'published', $orderBy, $page, $this->productsPerPage, $totalRows);
+		$this->Product_model->addCategoryPathToProducts($catalog);
+		$supplier = $this->Supplier_model->getSupplierById($selectedSupplierId);
+		if ($role=='distributor'){
+			$supplier->associationStatus = $this->Supplier_model->getDistributorAssociationStatus($roleId, $supplier->id);
+			$supplier->associationDiscount = $this->Supplier_model->getAssociationDiscountForDistributor($roleId, $supplier->id);
+			$this->Distributor_model->isDistributorCatalogItemForCatalog($roleId,$catalog);
+		} else if ($role == 'supplier'){
+			$supplier->associationStatus = $this->Supplier_model->isSupplierSupplierAssociation($supplier->id, $roleId);
+			$supplier->associationDiscount = $this->Supplier_model->getToSupplierDiscount($supplier->id, $roleId);
+			$this->Supplier_model->isSupplierCatalogItemForCatalog($roleId,$catalog);
+		}
+		$data['supplier'] = $supplier;
 		$data['Catalog'] = $catalog;
 		$url = base_url() . "Suppliers/viewSupplierCatalog/$orderBy";
 		$this->setPagination($url, $totalRows, $this->catalog_pagination_uri_segment, $this->productsPerPage);
 		$data['orderBy']=$orderBy;
 		$data['watchingRole'] = $role;
+		$data['watchingRoleId'] = $roleId;
 		$str_links = $this->pagination->create_links();
 		$data["pageLinks"] = explode('&nbsp;',$str_links );
 		$data['hasSidebar'] = true;
@@ -184,9 +212,50 @@ class Suppliers extends CI_Controller {
 				$this->Distributor_model->setSupplierDistributorStatus($supplierId, $distributorId, 'pending');
 			}
 		}
-		redirect('Suppliers/viewSuppliers');
+		redirect('Suppliers');
 	}
 
+	public function sendSupplierSupplierRequest($supplierId){
+		if($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+			$roleId = $this->session->userdata("role_id");
+		} else {
+			redirect(TIMEOUT_REDIRECT);
+		}
+		$this->Supplier_model->sendSupplierSupplierRequest($roleId, $supplierId);
+		$this->session->set_flashdata('success', "La solicitud se há enviado exitosamente");
+		redirect('suppliers');
+	}
+
+	public function cancelSupplierSupplierRequest($supplierId){
+		if($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+			$roleId = $this->session->userdata("role_id");
+		} else {
+			redirect(TIMEOUT_REDIRECT);
+		}
+		if ($this->Supplier_model->cancelSupplierSupplierRequest($roleId, $supplierId)!=0){
+			$this->session->set_flashdata('success', "Se há cancelado la asociación exitosamente");
+			redirect('suppliers');
+		}
+	}
+
+	public function setToSupplierDiscount($supplierId){
+		if($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+			$roleId = $this->session->userdata("role_id");
+		} else {
+			redirect(TIMEOUT_REDIRECT);
+		}
+		$setToSupplierDiscount = $this->input->post("discount");
+		if ($this->Supplier_model->setToSupplierDiscount($roleId, $supplierId, $setToSupplierDiscount)>0){
+			$this->session->set_flashdata('success', "Se há modificado el monto a descontar exitosamente");
+			redirect('suppliers');
+		} else {
+			$this->session->set_flashdata('error', "Hubo un error por favor intentelo más tarde. Si el problema persiste comuniquese con el administrador");
+			redirect('suppliers');
+		}
+	}
 
 }
 

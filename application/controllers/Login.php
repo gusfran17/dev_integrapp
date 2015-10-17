@@ -30,7 +30,7 @@ class Login extends CI_Controller {
 		if ($this->form_validation->run()){
 			redirect('home');
 		}else{
-			redirect('login');
+			$this->routedHome('login/login');
 		}
 
 

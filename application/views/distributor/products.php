@@ -64,10 +64,10 @@
 						<li class="<?php if ($orderBy == 'price asc') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMyDistributorCatalogBy/price asc'; ?>">Ordenado por precios (de menor a mayor)</a> </li>
 					<?php } else { ?>
 						<li class="<?php if ($orderBy == 'category_id') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderDistributorCatalogBy/category_id'; ?>">Ordenado por Relevancia</a></li>
-														<li class="<?php if ($orderBy == 'supplier_id') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderDistributorCatalogBy/supplier_id'; ?>">Ordenado por Proveedor</a></li>
-														<li class="<?php if ($orderBy == 'name') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderDistributorCatalogBy/name'; ?>">Ordenado Alfabeticamente</a></li>
-														<li class="<?php if ($orderBy == 'price desc') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderDistributorCatalogBy/price desc'; ?>">Ordenado por precios (de mayor a menor)</a> </li>
-														<li class="<?php if ($orderBy == 'price asc') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderDistributorCatalogBy/price asc'; ?>">Ordenado por precios (de menor a mayor)</a> </li>
+						<li class="<?php if ($orderBy == 'supplier_id') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderDistributorCatalogBy/supplier_id'; ?>">Ordenado por Proveedor</a></li>
+						<li class="<?php if ($orderBy == 'name') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderDistributorCatalogBy/name'; ?>">Ordenado Alfabeticamente</a></li>
+						<li class="<?php if ($orderBy == 'price desc') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderDistributorCatalogBy/price desc'; ?>">Ordenado por precios (de mayor a menor)</a> </li>
+						<li class="<?php if ($orderBy == 'price asc') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderDistributorCatalogBy/price asc'; ?>">Ordenado por precios (de menor a mayor)</a> </li>
 					<?php } ?>
 				</ul>
             </li>
@@ -126,7 +126,7 @@
 				                        <th data-hide="phone">Producto</th>
 				                        <th class="centered-cell" data-hide="phone,tablet">Precio</th>
 				                        <th class="centered-cell" data-hide="phone,tablet">IVA</th>
-				                        <th class="centered-cell visible-md-* visible-lg-*" data-hide="phone,tablet">Proveedor</th>
+				                        <th class="centered-cell visible-md-* visible-lg-*" data-hide="phone,tablet">Proveedores</th>
 				                        <th class="centered-cell" data-hide="phone,tablet">Acciones</th>
 				                    </tr>
 				                </thead>
@@ -149,7 +149,12 @@
 												<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><?php echo $Catalog[$i]->integrapp_code; ?></a>
 											</td>
 											<td>
-												<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><strong><?php echo $Catalog[$i]->name; ?></strong></a>
+												<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>">
+													<strong><?php echo $Catalog[$i]->name; ?></strong>
+												</a>
+												<br>
+												<b>Categoria: </b><?php echo $Catalog[$i]->categoryPath; ?>
+
 											</td>
 											<td>
 												<?php if ($Catalog[$i]->associationStatus == 'approved') echo ($Catalog[$i]->price - (($Catalog[$i]->price*$Catalog[$i]->associationDiscount)/100)) . '$'; else echo PRICE_NOT_ALLOWED_MESSAGE; ?>
@@ -158,21 +163,55 @@
 												<?php echo $Catalog[$i]->tax; ?>
 											</td>
 											<td>
-												<a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $Catalog[$i]->supplier_id;?>"><?php echo $Catalog[$i]->supplier_fakename; ?></a>
+												<div class="dropdown" style="margin-bottom: 10px;">
+													<button class="btn btn-info btn-xs dropdown-toggle" type="button" id="suppliersDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+														<?php echo $Catalog[$i]->primarySupplier->fake_name; ?>
+														<span class="caret"></span>
+													</button>
+													<ul class="dropdown-menu" aria-labelledby="suppliersDropDown">
+														<li class="dropdown-header">Proveedor Principal</li>
+														<li><a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $Catalog[$i]->primarySupplier->id;?>">
+														<?php if(isset($Catalog[$i]->primarySupplier->logo)){ ?>
+						     								<img src="<?php echo base_url() . $Catalog[$i]->primarySupplier->logo; ?>" style="height: 20px">
+						     							<?php } else { ?>
+						     								<img src="<?php echo base_url() . IMAGES_PATH . 'noProfilePic.jpg'; ?>" style="height: 20px">
+														<?php } ?>
+															<?php echo $Catalog[$i]->primarySupplier->fake_name; ?></a>
+														</li>
+														<li role="separator" class="divider"></li>
+														<li class="dropdown-header">Proveedores secundarios que lo redistribuyen</li>
+														<?php foreach ($Catalog[$i]->secondarySuppliers as $secSupplier) { ?>
+															<li><a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $secSupplier->id;?>">
+															<?php if(isset($secSupplier->logo)){ ?>
+							     								<img src="<?php echo base_url() . $secSupplier->logo; ?>" style="height: 20px">
+							     							<?php } else { ?>
+							     								<img src="<?php echo base_url() . IMAGES_PATH . 'noProfilePic.jpg'; ?>" style="height: 20px">
+															<?php } ?>
+																<?php echo $secSupplier->fake_name; ?> 
+																<?php if (isset($secSupplier->price)) { 
+																	echo "(lo vende a $".$secSupplier->price.")";
+																} else {
+																	echo "(no esta asociado)";	
+																}?></a>
+
+															</li>
+														<?php }?>
+													</ul>
+												</div>
 											</td>
-											<td>
+											<td style="text-align:center;">
 												<?php if($Catalog[$i]->associationStatus == 'approved'){ ?>
 													<?php if ($Catalog[$i]->isCatalogItem == false){ ?>
-														<a href="<?php echo base_url() . 'Product/addProductToCatalog/'. $Catalog[$i]->id;?>">
-															<button type="button" class="btn btn-success btn-xs col-md-12 col-sm-12 col-xs-12"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Agregar a mi Catálogo</button>
+														<a href="<?php echo base_url() . 'Product/addProductToDistributorCatalog/'. $Catalog[$i]->id;?>">
+															<button type="button" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Agregar a mi Catálogo</button>
 														</a>
 													<?php } else {?>
-														<a href="<?php echo base_url() . 'Product/removeProductFromCatalog/'. $Catalog[$i]->id;?>">
-															<button type="button" class="btn btn-danger btn-xs col-md-12 col-sm-12 col-xs-12"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Remover de mi Catálogo</button>
+														<a href="<?php echo base_url() . 'Product/removeProductFromDistributorCatalog/'. $Catalog[$i]->id;?>">
+															<button type="button" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Remover de mi Catálogo</button>
 														</a>
 													<?php } ?>
 												<?php } else {?>
-													<p><span class="label label-warning" style="color:#ffffff;"><b><?php echo NOT_ASSOCIATED_MESSAGE; ?></b><span></p>
+													<?php echo NOT_ASSOCIATED_MESSAGE; ?>
 												<?php }?>
 											</td>
 										</tr>

@@ -57,7 +57,7 @@
 										<?php }?>
 									<?php } else {?>
 									<?php }?>
-									<li><a href="<?php echo base_url(); ?>suppliers/viewSuppliers"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span><b> Proveedores</b></a></li>
+									<li><a href="<?php echo base_url(); ?>suppliers"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span><b> Proveedores</b></a></li>
 								</ul>
 							</div>
 						</div>

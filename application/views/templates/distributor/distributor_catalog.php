@@ -126,7 +126,6 @@
                         <th>Código de Producto</th>
 						<th>Código IntegrApp</th>
                         <th data-hide="phone">Producto</th>
-                        <th class="centered-cell" data-hide="phone,tablet">IVA</th>
                         <th class="centered-cell" data-hide="phone,tablet">Descripción</th>
                     </tr>
                 </thead>
@@ -152,10 +151,10 @@
 								<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><strong><?php echo $Catalog[$i]->name; ?></strong></a>
 							</td>
 							<td>
-								<?php echo $Catalog[$i]->tax; ?>
-							</td>
-							<td>
 								<?php echo $Catalog[$i]->description; ?>
+								<br>
+								<br>
+								<b>Categoria: </b><?php echo $Catalog[$i]->categoryPath; ?>
 							</td>
 						</tr>
 					<?php } ?>

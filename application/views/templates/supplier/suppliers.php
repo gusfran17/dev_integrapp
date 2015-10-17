@@ -10,7 +10,7 @@
 								<?php if(isset($suppliers[$i]->logo)){ ?>
 									<img src="<?php echo base_url() . $suppliers[$i]->logo; ?>" style="max-width: 100%; margin: 5px 5px 5px 5px; height:80px;">
 								<?php } else { ?>
-									<img src="<?php echo base_url() . 'Resources/imgs/noProfilePic.jpg'; ?>" style="max-width: 100%; margin: 5px 5px 5px 5px; height:80px;">
+									<img src="<?php echo base_url() . IMAGES_PATH . 'noProfilePic.jpg'; ?>" style="max-width: 100%; margin: 5px 5px 5px 5px; height:80px;">
 								<?php } ?>
 							</a>
 							<h4 style="height: 2em;"><a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $suppliers[$i]->id;?>"><?php echo $suppliers[$i]->fake_name; ?></a></h4>

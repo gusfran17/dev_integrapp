@@ -1,56 +1,63 @@
 <div id="page-wrapper">
 	<article class="registro">
 		<div class="container-fluid">
-			<div class="row" id="registration">
+			<div class="container" id="registration">
+				<?php if($this->session->flashdata('error') != null):?>
+					<div class="alert alert-dismissable alert-danger col-md-12 col-sm-12 col-xs-12">
+						<button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+						<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong>
+					 	<strong>Atención!</strong> <?php echo $this->session->flashdata('error'); ?></a>
+					</div>
+				<?php endif;?>
 				<div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
 					<leyend><h1 style="padding-bottom:30px">Registrarse</h1></leyend>
 					<form action="<?php echo base_url(); ?>register/register" method="POST">
 						<fieldset>
 							<div class="form-group" style="padding-bottom:40px;">
-								<label class="col-lg-2 col-md-2 col-sm-2 col-xs-12" for="username">Usuario</label>
-								<div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+								<label class="col-lg-3 col-md-3 col-sm-3 col-xs-12" for="username">Usuario</label>
+								<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
 									<?php echo form_error('username', '<span class="label label-danger">', '</span>'); ?>
 									<input type="text" id="username" class="form-control" name="username" value="<?php echo set_value('username'); ?>" placeholder="Ingrese su nombre de usuario">
 								</div>
 							</div>
 							<div class="form-group" style="padding-bottom:40px;">
-								<label class="col-lg-2 col-md-2 col-sm-2 col-xs-12" for="password">Nombre</label>
-								<div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+								<label class="col-lg-3 col-md-3 col-sm-3 col-xs-12" for="password">Nombre</label>
+								<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
 									<?php echo form_error('name', '<span class="label label-danger">', '</span>'); ?>
 									<input type="text" id="name" class="form-control" name="name" value="<?php echo set_value('name'); ?>" placeholder="Ingrese su Nombre">
 								</div>
 							</div>
 							<div class="form-group" style="padding-bottom:40px;">
-								<label class="col-lg-2 col-md-2 col-sm-2 col-xs-12" for="password">Apellido</label>
-								<div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+								<label class="col-lg-3 col-md-3 col-sm-3 col-xs-12" for="password">Apellido</label>
+								<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
 									<?php echo form_error('lastname', '<span class="label label-danger">', '</span>'); ?>
 								<input type="text" id="lastname" class="form-control" name="lastname" value="<?php echo set_value('lastname'); ?>" placeholder="Ingrese su Apellido">
 								</div>
 							</div>
 							<div class="form-group" style="padding-bottom:40px;">
-								<label class="col-lg-2 col-md-2 col-sm-2 col-xs-12" for="password">Email</label>
-								<div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+								<label class="col-lg-3 col-md-3 col-sm-3 col-xs-12" for="password">Email</label>
+								<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
 									<?php echo form_error('email', '<span class="label label-danger">', '</span>'); ?>
 									<input type="mail" id="email" class="form-control" name="email" value="<?php echo set_value('email'); ?>" placeholder="Ingrese su E-Mail">
 								</div>
 							</div>
 							<div class="form-group" style="padding-bottom:40px;">
-								<label class="col-lg-2 col-md-2 col-sm-2 col-xs-12" for="password">Contraseña</label>
-								<div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+								<label class="col-lg-3 col-md-3 col-sm-3 col-xs-12" for="password">Contraseña</label>
+								<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
 									<?php echo form_error('password', '<span class="label label-danger">', '</span>'); ?>
 									<input type="password" id="pswd" class="form-control" name="password" placeholder="Ingrese su Contraseña">
 								</div>
 							</div>
 							<div class="form-group" style="padding-bottom:40px;">
-								<label class="col-lg-2 col-md-2 col-sm-2 col-xs-12" for="password">Confirmar Contraseña</label>
-								<div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+								<label class="col-lg-3 col-md-3 col-sm-3 col-xs-12" for="password">Confirmar Contraseña</label>
+								<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
 									<?php echo form_error('repassword', '<span class="label label-danger">', '</span>'); ?>
 									<input type="password" id="repassword" class="form-control" name="repassword" placeholder="Repita su Contraseña">
 								</div>
 							</div>
 							<div class="form-group" style="padding-bottom:40px;">
-								<label class="col-lg-2 col-md-2 col-sm-2 col-xs-12" for="password">Rol</label>
-								<div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+								<label class="col-lg-3 col-md-3 col-sm-3 col-xs-12" for="password">Rol</label>
+								<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
 									<?php echo form_error('role', '<span class="label label-danger">', '</span>'); ?>
 									<select name="role" class="form-control" id="role">
 										<option value="noselect">Seleccione rol...</option>
@@ -61,8 +68,8 @@
 								</div>
 							</div>
 							<div class="form-group" style="padding-bottom:40px;">
-								<label class="col-lg-2 col-md-2 col-sm-2 col-xs-12" for="password">Nombre de la Empresa (nombre de fantasia)</label>
-								<div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+								<label class="col-lg-3 col-md-3 col-sm-3 col-xs-12" for="password">Nombre de la Empresa (nombre de fantasia)</label>
+								<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
 									<?php echo form_error('fake_name', '<span class="label label-danger">', '</span>'); ?>
 									<input type="text" id="fake_name" class="form-control" name="fake_name" value="<?php echo set_value('fake_name'); ?>" placeholder="Ingrese el nombre de fantasia de su empresa">
 								</div>

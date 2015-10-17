@@ -223,17 +223,17 @@ class Product_model extends CI_Model {
 
     
     public function get_catalog($supplierId=null, $parentCategoryId = null, $status = null, $orderBy = null, $page = 1, $rangePerPage = 1000, &$totalRows){
-        $this->db->select('product.*');
-        $this->db->from('product');
-        $this->db->join('supplier', 'product.supplier_id = supplier.id', 'inner');
-        $this->db->join('user', 'supplier.userid = user.id', 'inner');
-        $this->db->where("user.status", 'active');
         //Category ID needs to be fetched first to avoid where clauses errors
         if (isset($parentCategoryId) and ($parentCategoryId != 0)){
             $leafCategories = array();
             $this->getLeafCategories($leafCategories, $parentCategoryId);
             $this->db->where_in("category_id", $leafCategories);
         }
+        $this->db->select('product.*');
+        $this->db->from('product');
+        $this->db->join('supplier', 'product.supplier_id = supplier.id', 'inner');
+        $this->db->join('user', 'supplier.userid = user.id', 'inner');
+        $this->db->where("user.status", 'active');
         if (isset($supplierId)){
             $this->db->where("product.supplier_id", $supplierId);
         }
