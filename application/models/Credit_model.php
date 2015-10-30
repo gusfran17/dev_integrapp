@@ -58,7 +58,7 @@ class  Credit_model extends CI_Model {
                 "description"=> $description,
                 "debit"=>-$amount,
                 "credit"=> 0,
-                "balance"=> $this->getLatestBalance($userId) + $amount,
+                "balance"=> ($this->getLatestBalance($userId) + $amount),
                 "userid"=> $userId);
         }else if($amount> 0){
             $insert_data = array(
@@ -66,7 +66,7 @@ class  Credit_model extends CI_Model {
                 "description"=> $description,
                 "debit"=>0,
                 "credit"=> $amount,
-                "balance"=> $this->getLatestBalance($userId) + $amount,
+                "balance"=> ($this->getLatestBalance($userId) + $amount),
                 "userid"=> $userId);
         }else if($amount == 0){
             $insert_data = array(

@@ -100,7 +100,7 @@
 														</div>
 													</td>
 													<td>
-														<?php echo $Catalog[$i]->price . '$'; ?>
+														<?php echo '$'.$Catalog[$i]->price; ?>
 													</td>
 													<td>
 														<?php echo $Catalog[$i]->tax; ?>
@@ -244,7 +244,8 @@
 						                        <th>Código de Producto</th>
 												<th>Código IntegrApp</th>
 						                        <th data-hide="phone">Producto</th>
-						                        <th class="centered-cell" data-hide="phone,tablet">Precio</th>
+						                        <th class="centered-cell" data-hide="phone,tablet">Precio Orig.</th>
+						                        <th class="centered-cell" data-hide="phone,tablet">Mi Precio</th>
 						                        <th class="centered-cell" data-hide="phone,tablet">IVA</th>
 						                        <th class="centered-cell visible-md-* visible-lg-*" data-hide="phone,tablet">Descripción</th>
 						                        <th class="centered-cell" data-hide="phone,tablet">Acciones</th>
@@ -308,7 +309,10 @@
 														</div>
 													</td>
 													<td>
-														<?php echo $Catalog[$i]->price . '$'; ?>
+														<?php echo '$'.$Catalog[$i]->price; ?>
+													</td>
+													<td>
+														<?php echo '$'.$Catalog[$i]->secondary_price; ?>
 													</td>
 													<td>
 														<?php echo $Catalog[$i]->tax; ?>

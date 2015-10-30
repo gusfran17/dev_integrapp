@@ -22,7 +22,7 @@
         <meta name="ICBM" content="-34.597725, -58.423321" />
 
         <title>Integrapp | HOME </title>
-        
+
         <link rel="icon" href="<?php echo base_url(); ?>Resources/imgs/favicon.png" type="image/x-icon">
 
 
@@ -39,12 +39,14 @@
         <script type="text/javascript" src="<?php echo base_url(); ?>Resources/scripts/dropzone.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>Resources/scripts/typeahead.bundle.js"></script>
         <script type="text/javascript" src="<?php echo base_url(); ?>Resources/bootstrap/js/bootstrap.js"></script>
-        <script type="text/javascript" src="<?php echo base_url(); ?>Resources/scripts/main_script.js"></script>        
+        <script type="text/javascript" src="<?php echo base_url(); ?>Resources/scripts/main_script.js"></script>     
+
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
             <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
             <!--[if lt IE 9]>
             <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
             <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
             <![endif]-->
+        <?php if (isset($auctionScripts)) $this->load->view('templates/scripts/auction_scripts');?>
     </head>
     

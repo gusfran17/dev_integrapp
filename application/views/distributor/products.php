@@ -124,7 +124,6 @@
 				                        <th>Código de Producto</th>
 										<th>Código IntegrApp</th>
 				                        <th data-hide="phone">Producto</th>
-				                        <th class="centered-cell" data-hide="phone,tablet">Precio</th>
 				                        <th class="centered-cell" data-hide="phone,tablet">IVA</th>
 				                        <th class="centered-cell visible-md-* visible-lg-*" data-hide="phone,tablet">Proveedores</th>
 				                        <th class="centered-cell" data-hide="phone,tablet">Acciones</th>
@@ -157,15 +156,15 @@
 
 											</td>
 											<td>
-												<?php if ($Catalog[$i]->associationStatus == 'approved') echo ($Catalog[$i]->price - (($Catalog[$i]->price*$Catalog[$i]->associationDiscount)/100)) . '$'; else echo PRICE_NOT_ALLOWED_MESSAGE; ?>
-											</td>
-											<td>
 												<?php echo $Catalog[$i]->tax; ?>
 											</td>
 											<td>
 												<div class="dropdown" style="margin-bottom: 10px;">
 													<button class="btn btn-info btn-xs dropdown-toggle" type="button" id="suppliersDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 														<?php echo $Catalog[$i]->primarySupplier->fake_name; ?>
+														<?php if (isset($Catalog[$i]->primarySupplier->price)){ 
+																echo " $".$Catalog[$i]->primarySupplier->price;
+														}?>
 														<span class="caret"></span>
 													</button>
 													<ul class="dropdown-menu" aria-labelledby="suppliersDropDown">
@@ -176,7 +175,12 @@
 						     							<?php } else { ?>
 						     								<img src="<?php echo base_url() . IMAGES_PATH . 'noProfilePic.jpg'; ?>" style="height: 20px">
 														<?php } ?>
-															<?php echo $Catalog[$i]->primarySupplier->fake_name; ?></a>
+															<?php echo $Catalog[$i]->primarySupplier->fake_name; ?>
+															<?php if (isset($Catalog[$i]->primarySupplier->price)){ 
+																echo "(lo vende a $".$Catalog[$i]->primarySupplier->price.")";
+															} else {
+																echo "(no esta asociado)";	
+															}?></a>
 														</li>
 														<li role="separator" class="divider"></li>
 														<li class="dropdown-header">Proveedores secundarios que lo redistribuyen</li>

@@ -14,8 +14,7 @@
 								<?php } ?>
 							</a>
 							<h4 style="height: 2em;"><a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $suppliers[$i]->id;?>"><?php echo $suppliers[$i]->fake_name; ?></a></h4>
-							
-								<?php if (($suppliers[$i]->associationStatus != 'approved') and ($watchingRole=='distributor')){ ?>
+								<?php if (($suppliers[$i]->associationStatus != true) and ($watchingRole=='distributor')){ ?>
 									<p><span class="label label-warning" style="color:#ffffff;"><b><?php echo NOT_ASSOCIATED_MESSAGE; ?></b></span></p>
 									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 item-catalogo">
 										<a href="<?php echo base_url() . 'suppliers/setAssociationPending/' . $suppliers[$i]->id;?>"><button type="button" class="btn btn-success btn-xs">Recordar solicitud</button></a>

@@ -145,5 +145,4 @@ $autoload['model'] =  array(
 	"Credit_model",
 	"Locations_model",
 	"Settings_model"
-	
 	);

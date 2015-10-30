@@ -24,11 +24,14 @@ class Product_model extends CI_Model {
         return $result;
     }
     
-    public function getCategories($parent=null, $tab){
+    public function getCategories($parent=null, $tab=""){
         $this->db->where("parent_id", $parent);
         $query = $this->db->get('category');
         $result = $query->result();
+
         $tab = $tab."\t";
+        $categories = "";
+
         foreach($result as $record){
                 $categories = $categories . $tab . $record->name . "\n" . $this->getCategories($record->id,$tab);
         }
@@ -45,13 +48,12 @@ class Product_model extends CI_Model {
             } 
     }
 
-    public function getTree($id){
+    public function getTree($categoryId){
         $this->db->select('ascending_path');
         $this->db->from('category');
-        $this->db->where('id', $id);
+        $this->db->where('id', $categoryId);
         $result = $this->db->get();
-
-        return $result->row_array();;
+        return $result->row_array();
     }
 
     public function productNameCheck($productName){
@@ -258,7 +260,7 @@ class Product_model extends CI_Model {
     }
 
     public function getLeafCategories(&$leafCategories, $parentCategoryId){
-        log_message('info', "Product_model getLeafCategories ParentID: ".$parentCategoryId, FALSE);
+        //log_message('info', "Product_model getLeafCategories ParentID: ".$parentCategoryId, FALSE);
         $childCategories = $this->getCategory($parentCategoryId);
         if (count($childCategories)>0){
             foreach ($childCategories as $childCategory) {

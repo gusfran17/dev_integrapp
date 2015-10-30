@@ -6,7 +6,7 @@
 				<div class="panel-body">
 					<div class="well well-small pnlSupplier" style="padding-top: 0px; text-align: center;">
 						<h2><span class="label label-default lblSupplier" style="color:#ffffff;"><b><?php echo $supplier->fake_name ?></b></span></h2>
-						<?php if($supplier->associationStatus != 'approved'){ ?>
+						<?php if(!$supplier->associationStatus){ ?>
 							<p><span class="label label-warning" style="color:#ffffff;"><b><?php echo NOT_ASSOCIATED_MESSAGE; ?></b></span></p>
 						<?php } else {?>
 							<p><span class="label label-info" style="color:#ffffff;"><b><?php echo ASSOCIATED_MESSAGE; ?></b><span></p>
@@ -28,7 +28,7 @@
 							<div class="panel-body">
 								<?php if ($supplier->commercial_address != "") echo "<h4>Dirección del Comercial</h4>" . $supplier->commercial_address . "<br>";?>
 								<?php if ($supplier->service_description != "") echo "<h4>Descripción del Servicio</h4>" . $supplier->service_description . "<br>";?>
-								<?php if ($supplier->associationStatus == 'approved') {?>
+								<?php if ($supplier->associationStatus) {?>
 									<button type="button" class="btn btn-info" style="margin-top:30px;" title='Información bancaria del proveedor' data-toggle="collapse" data-target="#prescriptionCollapse">Informacion Bancaria <span class="caret"></span></button>
 									<div id="prescriptionCollapse" class="collapse" style="margin-top: 10px;">
 										<div class="panel panel-default">
@@ -50,7 +50,7 @@
 								<ul class="nav nav-pills nav-stacked">
 									<li><a href="<?php echo base_url() . 'Suppliers/viewCatalog/'. $supplier->id;?>"><b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Ver catálogo</b></a></li>
 									<?php if ($watchingRole == 'distributor') {?>
-										<?php if ($supplier->associationStatus == 'approved') {?>
+										<?php if ($supplier->associationStatus) {?>
 											<li><a href="<?php echo base_url() . 'Suppliers/setAssociationRejected/'. $supplier->id . '/rejected';?>"><b><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Dejar de distribuir sus productos</b></a></li>
 										<?php } else {?>
 											<li><a href="<?php echo base_url() . 'Suppliers/setAssociationPending/' . $supplier->id;?>"><b><span class="glyphicon glyphicon-share" aria-hidden="true"></span> Reenviar solicitud de adhesión</b></a></li>

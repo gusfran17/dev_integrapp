@@ -160,7 +160,7 @@
 							<td>
 								<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><strong><?php echo $Catalog[$i]->name; ?></strong></a>
 							</td>
-							<?php if (($supplier->associationStatus == 'approved')or(isset($itIsMe)) or ($supplier->associationStatus == true)) { ?>
+							<?php if ((isset($itIsMe)) or ($supplier->associationStatus == true)) { ?>
 								<td>
 									<?php echo ($Catalog[$i]->price - (($Catalog[$i]->price*$supplier->associationDiscount)/100)) . '$'; ?>
 								</td>
@@ -183,34 +183,38 @@
 										</a>
 									<?php } else if ($watchingRole == 'supplier') {?>
 										<?php if ($watchingRoleId != $Catalog[$i]->supplier_id) {?>
-											<form action="<?php echo base_url() . 'product/addProductToSupplierCatalog/' . $Catalog[$i]->id; ?>" method="post" id="<?php echo 'addToSecSuppCat_' . $Catalog[$i]->id; ?>" style="padding-bottom: 0px;">
-												<div class="dropdown" style="margin-bottom: 10px; max-width:300px;">
-													<button class="btn btn-info btn-xs dropdown-toggle" type="button" id="addToCatalogDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 170px;">
-														<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 
-														Agregar a mi Catálogo
-														<span class="caret"></span>
-													</button>
-													<ul class="dropdown-menu" aria-labelledby="suppliersDropDown" style="max-width:300px;">
-														<li><a style="max-width:300px;">
-																El proveedor le ofrece un <b><?php echo $supplier->associationDiscount;?>%</b> <br>
-																de descuento sobre sus productos<br>
-														</a></li>
-														<li><a><b>Precio final: $<?php echo (($Catalog[$i]->price)-((($supplier->associationDiscount)*($Catalog[$i]->price))/100));?></b><br><br></a></li>
-														<li><a>
-															Ingrese el precio que quiere que se<br>
-															muestre en su catálogo (es el que <br>
-															verán sus ortopedias clientes): 
-														</a></li>
-														<li><a><input type="text" class="form-control" onclick="event.stopPropagation();" name="productPrice<?php echo $Catalog[$i]->id; ?>" id="productPrice<?php echo $Catalog[$i]->id; ?>" placeholder="Ingrese un precio..."></a></li>
-														<li>
-															<a><button type="submit" onclick="" class="btn btn-success btn-sm col-md-12 col-sm-12 col-xs-12" form="<?php echo 'addToSecSuppCat_' . $Catalog[$i]->id; ?>">
-																<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 
-																Agregar
-															</button></a>
-														</li>
-													</ul>
-												</div>
-											</form>
+											<?php if ($supplier->associationStatus) {?>
+												<form action="<?php echo base_url() . 'product/addProductToSupplierCatalog/' . $Catalog[$i]->id; ?>" method="post" id="<?php echo 'addToSecSuppCat_' . $Catalog[$i]->id; ?>" style="padding-bottom: 0px;">
+													<div class="dropdown" style="margin-bottom: 10px; max-width:300px;">
+														<button class="btn btn-info btn-xs dropdown-toggle" type="button" id="addToCatalogDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 170px;">
+															<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 
+															Agregar a mi Catálogo
+															<span class="caret"></span>
+														</button>
+														<ul class="dropdown-menu" aria-labelledby="suppliersDropDown" style="max-width:300px;">
+															<li><a style="max-width:300px;">
+																	El proveedor le ofrece un <b><?php echo $supplier->associationDiscount;?>%</b> <br>
+																	de descuento sobre sus productos<br>
+															</a></li>
+															<li><a><b>Precio final: $<?php echo (($Catalog[$i]->price)-((($supplier->associationDiscount)*($Catalog[$i]->price))/100));?></b><br><br></a></li>
+															<li><a>
+																Ingrese el precio que quiere que se<br>
+																muestre en su catálogo (es el que <br>
+																verán sus ortopedias clientes): 
+															</a></li>
+															<li><a><input type="text" class="form-control" onclick="event.stopPropagation();" name="productPrice<?php echo $Catalog[$i]->id; ?>" id="productPrice<?php echo $Catalog[$i]->id; ?>" placeholder="Ingrese un precio..."></a></li>
+															<li>
+																<a><button type="submit" onclick="" class="btn btn-success btn-sm col-md-12 col-sm-12 col-xs-12" form="<?php echo 'addToSecSuppCat_' . $Catalog[$i]->id; ?>">
+																	<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 
+																	Agregar
+																</button></a>
+															</li>
+														</ul>
+													</div>
+												</form>
+											<?php } else { ?>
+												No esta asociado a este proveedor.
+											<?php } ?>	
 										<?php } else { ?>
 											Usted es proveedor principal de este producto
 										<?php } ?>

@@ -592,7 +592,7 @@ class Product extends CI_Controller {
 
 	public function viewProduct($productId){
 		$product = $this->Product_model->getProductById($productId);
-		$supplier = $this->Supplier_model->getSupplierById($product->supplier_id);
+		//$supplier = $this->Supplier_model->getSupplierById($product->supplier_id);
 		if($this->session->has_userdata('role')){
 			$role = $this->session->userdata("role");
 			$roleId = $this->session->userdata("role_id");
@@ -610,18 +610,22 @@ class Product extends CI_Controller {
 			$product->mine = false;
 		}
 		if ($role == 'supplier') {
-			$supplier->associationStatus = $this->Supplier_model->isSupplierSupplierAssociation($product->supplier_id, $roleId);
-			$supplier->associationDiscount = $this->Supplier_model->getToSupplierDiscount($product->supplier_id, $roleId);
-			$product->isCatalogItem = $this->Supplier_model->isSecondarySupplierForProduct($productId, $roleId);
+			$product->primarySupplier = $this->Supplier_model->getPrimarySuppliersForProduct($productId);
 			$product->secondarySuppliers = $this->Supplier_model->getSecondarySuppliersForProduct($productId);
+			$product->primarySupplier->associationStatus = $this->Supplier_model->isSupplierSupplierAssociation($product->supplier_id, $roleId);
+			$product->primarySupplier->associationDiscount = $this->Supplier_model->getToSupplierDiscount($product->supplier_id, $roleId);
+			$product->isCatalogItem = $this->Supplier_model->isSecondarySupplierForProduct($productId, $roleId);
 		} else if ($role == 'distributor') {
-			$supplier->associationStatus = $this->Supplier_model->getDistributorAssociationStatus($roleId, $supplier->id);
-			$supplier->associationDiscount = $this->Supplier_model->getAssociationDiscountForDistributor($roleId, $supplier->id);
-			$product->isCatalogItem = $this->Distributor_model->isCatalogItem($roleId, $productId);
+			$product->primarySupplier = $this->Supplier_model->getPrimarySuppliersForProduct($productId,$roleId);
 			$product->secondarySuppliers = $this->Supplier_model->getSecondarySuppliersForProduct($productId, $roleId);
+			$product->primarySupplier->associationStatus = $this->Supplier_model->isDistributorAssociationActive($roleId, $product->supplier_id);
+			$product->primarySupplier->associationDiscount = $this->Supplier_model->getAssociationDiscountForDistributor($roleId, $product->supplier_id);
+			$product->isCatalogItem = $this->Distributor_model->isCatalogItem($roleId, $productId);
+			
+			
 		}
 		$data['product'] = $product;
-		$data['product']->supplier = $supplier;
+		//$data['product']->supplier = $supplier;
 		$data['watchingRole'] = $role;
 		$data['product']->images = $productImages;
 		$data['product']->branch = $branch;
@@ -689,10 +693,11 @@ class Product extends CI_Controller {
 			$credit = $this->Credit_model->getLatestBalance($userId);
 			$cost = $this->Product_model->getPublishingCost($productId);
 			$restCredit = $credit - $cost;
+			log_message('info',"COST: " . -$cost,false);
 			$product = $this->Product_model->getProductById($productId);
 			if (($restCredit) > LEAST_CREDIT_AMOUNT) {
 				$description = 'PRODUCTO PÚBLICADO: ' . $product->name . ' (id: ' . $product->id . ')';
-				$this->Credit_model->addTransaction($userId, $cost, $description);
+				$this->Credit_model->addTransaction($userId, -$cost, $description);
 				$this->setProductStatus($productId, 'published');	
 				$this->session->set_flashdata('success', "Se há publicado el producto con éxito. Su crédito restante es de $" . $restCredit );
 			} else{
@@ -732,6 +737,7 @@ class Product extends CI_Controller {
 			if ($role == 'supplier'){
 				$update = array();
 				$update['status'] = $status;
+				if ($status=='published') $update['published_date'] = date("Y-m-d H:i:s");
 				$result = $this->Product_model->updateProduct($update, $productId);
 				$this->User_model->setLoadInfo($userId);
 			}

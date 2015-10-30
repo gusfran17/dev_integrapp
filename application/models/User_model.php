@@ -77,6 +77,18 @@ class User_model extends CI_Model {
         }
      }
 
+     public function getUseridByRoleId($role, $roleId){
+        $this->db->from($role);
+        $this->db->where('id',$roleId);
+        $query = $this->db->get();
+        $result = $query->result();
+        if (count($result) == 1){
+            return $result[0]->userid;
+        } else {
+            return false;
+        }
+     }
+
     public function username_not_exist($username){
         $query = $this->db->get_where("user", array("username"=>$username));
         if ($query->num_rows()==0) {

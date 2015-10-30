@@ -58,7 +58,7 @@ public function index(){
 		$page = $this->getPage($this->suppliers_pagination_uri_segment);
 		$suppliers =  $this->Supplier_model->getSuppliers($page, $this->suppliersPerPage);
 		for ($i=0; $i < count($suppliers); $i++) {
-			$suppliers[$i]->associationStatus = $this->Supplier_model->getDistributorAssociationStatus($roleId, $suppliers[$i]->id);
+			$suppliers[$i]->associationStatus = $this->Supplier_model->isDistributorAssociationActive($roleId, $suppliers[$i]->id);
 			$suppliers[$i]->associationDiscount = $this->Supplier_model->getAssociationDiscountForDistributor($roleId, $suppliers[$i]->id);
 		}
 		$data["suppliers"] = $suppliers;
@@ -79,7 +79,7 @@ public function index(){
 		}
 		$supplier = $this->Supplier_model->getSupplierById($supplierId);
 		if ($role=='distributor'){
-			$supplier->associationStatus = $this->Supplier_model->getDistributorAssociationStatus($roleId, $supplierId);
+			$supplier->associationStatus = $this->Supplier_model->isDistributorAssociationActive($roleId, $supplierId);
 			$supplier->associationDiscount = $this->Supplier_model->getAssociationDiscountForDistributor($roleId, $supplierId);		
 		} else if ($role == 'supplier'){
 			$supplier->associationStatus = "";
@@ -123,7 +123,7 @@ public function index(){
 			$role = $this->session->userdata("role");
 			$roleId = $this->session->userdata("role_id");
 			$selectedSupplierId = $this->session->userdata('selectedSupplierId');		
-			if ($selectedSupplierId == $roleId){
+			if (($selectedSupplierId == $roleId) && ($role=='supplier')){
 				$data['itIsMe'] = true;
 			}	
 		} else {
@@ -142,11 +142,11 @@ public function index(){
 		}
 		$totalRows = 0;
 		$page = $this->getPage($this->catalog_pagination_uri_segment);
-		$catalog = $this->Supplier_model->getGeneralCatalog($selectedSupplierId, $selectedCategoryId, 'published', $orderBy, $page, $this->productsPerPage, $totalRows);
+		$catalog = $this->Supplier_model->getGeneralCatalog($selectedSupplierId, $selectedCategoryId, $orderBy, $page, $this->productsPerPage, $totalRows);
 		$this->Product_model->addCategoryPathToProducts($catalog);
 		$supplier = $this->Supplier_model->getSupplierById($selectedSupplierId);
 		if ($role=='distributor'){
-			$supplier->associationStatus = $this->Supplier_model->getDistributorAssociationStatus($roleId, $supplier->id);
+			$supplier->associationStatus = $this->Supplier_model->isDistributorAssociationActive($roleId, $supplier->id);
 			$supplier->associationDiscount = $this->Supplier_model->getAssociationDiscountForDistributor($roleId, $supplier->id);
 			$this->Distributor_model->isDistributorCatalogItemForCatalog($roleId,$catalog);
 		} else if ($role == 'supplier'){
@@ -210,6 +210,17 @@ public function index(){
 			if ($role == 'distributor'){
 				$distributorId = $this->session->userdata("role_id");
 				$this->Distributor_model->setSupplierDistributorStatus($supplierId, $distributorId, 'pending');
+			}
+		}
+		redirect('Suppliers');
+	}
+
+	public function setAssociationRejected($supplierId){
+		if ($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+			if ($role == 'distributor'){
+				$distributorId = $this->session->userdata("role_id");
+				$this->Distributor_model->setSupplierDistributorStatus($supplierId, $distributorId, 'rejected');
 			}
 		}
 		redirect('Suppliers');

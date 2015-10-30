@@ -132,7 +132,7 @@ define('MAX_ATTRIBUTE_AMOUNT', 20);
 define('PROD_DESCRIPTION_MIN_LENGTH', 0);
 define('PROD_DESCRIPTION_MAX_LENGTH', 400);
 /*Catalog*/
-define('DEFAULT_CATALOG_ORDER', 'category_id');
+define('DEFAULT_CATALOG_ORDER', 'published_date desc');
 /*Prices*/
 define('PRICE_DECIMAL_AMOUNT', 2);
 define('DECIMAL_SEPARATOR', ',');

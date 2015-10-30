@@ -30,7 +30,7 @@
 					}
 				} 
 			?>
-			<form method="post" id="catalogCategoriesFilter" action="<?php echo base_url() . 'product/' . (isset($viewMyCatalog)? 'orderMySupplierCatalogBy/': 'orderSupplierCatalogBy/') . "$orderBy";?>" style= "padding-bottom: 0px;">
+			<form method="post" id="catalogCategoriesFilter" action="<?php echo base_url() . 'product/' . (isset($viewMyCatalog)? 'orderMySupplierCatalogBy/': (isset($viewMySecSuppCatalog)? 'orderMySecondarySupplierCatalogBy/': 'orderSupplierCatalogBy/')) . "$orderBy";?>" style= "padding-bottom: 0px;">
 				<input type="hidden" id="hasSidebar" value="true">
 				<input type="text" id="selectedCategoryId" name="selectedCategoryId">
 			</form>

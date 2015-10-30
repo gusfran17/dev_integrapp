@@ -50,7 +50,7 @@ class Distributors extends CI_Controller {
 		}
 		$distributor = $this->Distributor_model->getDistributorById($distributorId);
 		if($role=='supplier'){
-			$distributor->associationStatus = $this->Supplier_model->getDistributorAssociationStatus($distributorId,$roleId);
+			$distributor->associationStatus = $this->Supplier_model->isDistributorAssociationActive($distributorId,$roleId);
 			$distributor->associationDiscount = $this->Supplier_model->getAssociationDiscountForDistributor($distributorId, $roleId);		
 		} else {
 			$distributor->associationStatus = false;

@@ -20,8 +20,8 @@
 			<div class="panel panel-default">
 				<div class="panel-body">
 					<div class="col-md-6 col-sm-12 col-xs-12">
-						<h2><b><?php echo $product->name; ?></b><small> <b><?php if(($product->supplier->associationStatus == 'approved') or ($product->mine)) echo $product->price . '$' . ' (' . 'I.V.A. ' . $product->tax . ')';?></b></small></h2>
-						<h4><strong>Código Interno (<?php echo $product->supplier->fake_name;?>):</strong> <?php echo $product->code; ?><br></h4>
+						<h2><b><?php echo $product->name; ?></b><small> <b><?php if(($product->mine)) echo $product->price . '$' . ' (' . 'I.V.A. ' . $product->tax . ')';?></b></small></h2>
+						<h4><strong>Código Interno (<?php echo $product->primarySupplier->fake_name;?>):</strong> <?php echo $product->code; ?><br></h4>
 						<h4><strong>Código IntegrApp: </strong><?php echo $product->integrapp_code; ?></h4>
 						<script type="text/javascript">
 							var locations = <?php echo json_encode($distributorLocations) ?>;
@@ -79,7 +79,7 @@
 								</ul>
 							</div>
 						<?php } else { ?>
-							<?php if (($product->supplier->associationStatus == 'approved') or($product->supplier->associationStatus == true)){ ?>
+							<?php if (($product->primarySupplier->associationStatus == true)){ ?>
 								<?php if ($product->isCatalogItem == false){ ?>
 									<?php if ($watchingRole == 'supplier'){ ?>
 										<form action="<?php echo base_url() . 'product/addProductToSupplierCatalog/' . $product->id; ?>" method="post" id="<?php echo 'addToSecSuppCat_' . $product->id; ?>" style="padding-bottom: 0px;">
@@ -135,14 +135,22 @@
 							</button>
 							<ul class="dropdown-menu" aria-labelledby="suppliersDropDown">
 								<li class="dropdown-header">Proveedor Principal</li>
-								<li><a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $product->supplier->id;?>">
-									
-								<?php if(isset($product->supplier->logo)){ ?>
-     								<img src="<?php echo base_url() . $product->supplier->logo; ?>" style="height: 20px">
-     							<?php } else { ?>
-     								<img src="<?php echo base_url() . IMAGES_PATH . 'noProfilePic.jpg'; ?>" style="height: 20px">
-								<?php } ?>
-									<?php echo $product->supplier->fake_name; ?></a>
+								<li>
+									<a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $product->primarySupplier->id;?>">
+										<?php if(isset($product->primarySupplier->logo)){ ?>
+		     								<img src="<?php echo base_url() . $product->primarySupplier->logo; ?>" style="height: 20px">
+		     							<?php } else { ?>
+		     								<img src="<?php echo base_url() . IMAGES_PATH . 'noProfilePic.jpg'; ?>" style="height: 20px">
+										<?php } ?>
+										<?php echo $product->primarySupplier->fake_name; ?> 
+										<?php if ($watchingRole == "distributor"){
+											if (isset($product->primarySupplier->price)) {
+												echo "(lo vende a $".$product->primarySupplier->price.")";
+											} else {
+												echo "(no esta asociado)";	
+											}
+										}?>
+									</a>
 								</li>
 								<li role="separator" class="divider"></li>
 								<li class="dropdown-header">
@@ -153,13 +161,22 @@
 									<?php } ?>
 								</li>
 								<?php foreach ($product->secondarySuppliers as $secSupplier) { ?>
-									<li><a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $secSupplier->id;?>">
-									<?php if(isset($secSupplier->logo)){ ?>
-	     								<img src="<?php echo base_url() . $secSupplier->logo; ?>" style="height: 20px">
-	     							<?php } else { ?>
-	     								<img src="<?php echo base_url() . IMAGES_PATH . 'noProfilePic.jpg'; ?>" style="height: 20px">
-									<?php } ?>
-										<?php echo $secSupplier->fake_name; ?></a>
+									<li>
+										<a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $secSupplier->id;?>">
+											<?php if(isset($secSupplier->logo)){ ?>
+			     								<img src="<?php echo base_url() . $secSupplier->logo; ?>" style="height: 20px">
+			     							<?php } else { ?>
+			     								<img src="<?php echo base_url() . IMAGES_PATH . 'noProfilePic.jpg'; ?>" style="height: 20px">
+											<?php } ?>
+											<?php echo $secSupplier->fake_name; ?>
+											<?php if ($watchingRole == "distributor"){
+												if (isset($secSupplier->price)){ 
+													echo "(lo vende a $".$secSupplier->price.")";
+												} else {
+													echo "(no esta asociado)";	
+												}
+											}?>
+										</a>
 									</li>
 								<?php }?>
 							</ul>

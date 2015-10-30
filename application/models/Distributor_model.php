@@ -186,29 +186,58 @@ class Distributor_model extends CI_Model {
     }
 
     public function get_catalog($distributorId, $parentCategoryId = null, $orderBy = null, $page = 1, $rangePerPage = 1000, &$totalRows){
+        $whereCategoryIn = "";
         //Category ID needs to be fetched first to avoid where clauses errors
         if (isset($parentCategoryId) and ($parentCategoryId != 0)){
             $leafCategories = array();
             $this->Product_model->getLeafCategories($leafCategories, $parentCategoryId);
-            $this->db->where_in("product.category_id", $leafCategories);
+            if (count($leafCategories)>0){
+                $whereCategoryIn = "AND category_id IN ( ";
+                for ($i=0; $i < count($leafCategories); $i++) {
+                    $whereCategoryIn = $whereCategoryIn . $leafCategories[$i];
+                    if ($i <count($leafCategories)-1){
+                        $whereCategoryIn = $whereCategoryIn . ",";
+                    }
+                }
+                $whereCategoryIn = $whereCategoryIn . ")";
+            }
+            
         }
-        $this->db->select('product.*');
-        $this->db->from('product');
-        $this->db->join('supplier', 'product.supplier_id = supplier.id','inner');
-        $this->db->join('user', 'supplier.userid = user.id','inner');
-        $this->db->join('distributor_catalog', 'distributor_catalog.product_id = product.id', 'inner');
-        $this->db->join('supplier_distributor_association', 'supplier_distributor_association.supplier_id = product.supplier_id', 'inner');
-        $this->db->where('supplier_distributor_association.distributor_id', $distributorId);
-        $this->db->where('supplier_distributor_association.status', 'approved');
-        $this->db->where('distributor_catalog.distributor_id', $distributorId);
-        $this->db->where('user.status', 'active');
-        $this->db->where("product.status", 'published');
-        if (isset($orderBy)){
-                $this->db->order_by("product.".$orderBy);     
-        }
-        log_message('info', "Distributor_model get_catalog Page: " .  $page . " Range: " . $rangePerPage . " ParentId: " . $parentCategoryId, FALSE);
+        //El primer select es para elegir los productos de los mayoristas asociados al minorista
+        //El segundo select es para elegir los productos de los mayoristas asociados a otro mayorista que a la vez esta asociado con el minorista
+        $queryScript = 
+        "SELECT DISTINCT result.* FROM (
+            SELECT product.*
+            FROM product
+            INNER JOIN supplier ON product.supplier_id = supplier.id
+            INNER JOIN user ON supplier.userid = user.id
+            INNER JOIN distributor_catalog ON distributor_catalog.product_id = product.id
+            INNER JOIN supplier_distributor_association ON supplier_distributor_association.supplier_id = product.supplier_id
+            WHERE supplier_distributor_association.distributor_id = $distributorId
+            AND supplier_distributor_association.status = 'approved'
+            AND distributor_catalog.distributor_id = $distributorId
+            AND user.status = 'active'
+            AND product.status = 'published'
+            $whereCategoryIn
+            UNION
+            SELECT  product.*
+            FROM product
+            INNER JOIN distributor_catalog ON distributor_catalog.product_id = product.id
+            INNER JOIN secondary_supplier_catalog on secondary_supplier_catalog.product_id = product.id 
+            INNER JOIN supplier ON secondary_supplier_catalog.supplier_id = supplier.id
+            INNER JOIN user ON supplier.userid = user.id
+            INNER JOIN supplier_distributor_association ON supplier_distributor_association.supplier_id = secondary_supplier_catalog.supplier_id
+            WHERE supplier_distributor_association.distributor_id = $distributorId
+            AND supplier_distributor_association.status = 'approved'
+            AND distributor_catalog.distributor_id = $distributorId
+            AND user.status = 'active'
+            AND product.status = 'published'
+            $whereCategoryIn
+        ) result
+        ORDER BY $orderBy"; 
+
         $from =  ($page-1) * $rangePerPage;
-        $query = $this->db->get();
+        $query = $this->db->query($queryScript);
         $result = $query->result();
         $totalRows = count($result);
         $j = 0;

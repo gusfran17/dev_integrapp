@@ -127,7 +127,19 @@ class Supplier_model extends CI_Model {
         $this->db->where('supplier_supplier_association.from_supplier_id', $fromSupplierId);
         $this->db->where('supplier_supplier_association.to_supplier_id', $toSupplierId);
         $this->db->delete('supplier_supplier_association');
-        return $this->db->affected_rows();
+        if ($this->db->affected_rows()!=0){
+            $this->db->where('secondary_supplier_catalog.supplier_id', $fromSupplierId);
+            $this->db->delete('secondary_supplier_catalog');
+            $this->db->where('secondary_supplier_catalog.supplier_id', $toSupplierId);
+            $this->db->delete('secondary_supplier_catalog');
+            if ($this->db->affected_rows()!=0){
+                return $this->db->affected_rows();
+            } else {
+                return 1;
+            }
+        } else {
+            return 0;
+        }
     }
 
     public function setToSupplierDiscount($fromSupplierId, $toSupplierId, $toSupplierDiscount){
@@ -152,11 +164,14 @@ class Supplier_model extends CI_Model {
 
     public function isSupplierSupplierAssociation($supplierOne, $supplierTwo){
         $OneAssociatedSuppsIds = $this->getAssociatedSupplierIdsForSupplier($supplierOne);
-        $OneAssociatedSuppsIds[] = $OneAssociatedSuppsIds[0];
-        unset($OneAssociatedSuppsIds[0]);
-        $key = array_search($supplierTwo, $OneAssociatedSuppsIds);
-        if ($key =! false) {
-            return true;
+        if (count($OneAssociatedSuppsIds>0)){
+            $found = false;
+            foreach ($OneAssociatedSuppsIds as $key => $id) {
+                if ($id==$supplierTwo) {
+                    $found = true;
+                }
+            }
+            return $found;
         } else {
             return false;
         }
@@ -333,8 +348,8 @@ class Supplier_model extends CI_Model {
     public function addAssociationDetailsToProductForDistributor($distributorId, &$catalog){
         for ($i=0; $i < count($catalog); $i++) { 
             $catalog[$i]->associationStatus = $this->isDistributorAssociationActiveForProduct($distributorId, $catalog[$i]);
-            $catalog[$i]->associationDiscount = $this->getAssociationDiscountForDistributor($distributorId, $catalog[$i]->supplier_id);
-            $catalog[$i]->supplier_fakename = $this->getSupplierFakeName($catalog[$i]->supplier_id);
+            //$catalog[$i]->associationDiscount = $this->getAssociationDiscountForDistributor($distributorId, $catalog[$i]->supplier_id);
+            //$catalog[$i]->supplier_fakename = $this->getSupplierFakeName($catalog[$i]->supplier_id);
             $catalog[$i]->isCatalogItem = $this->Distributor_model->isCatalogItem($distributorId, $catalog[$i]->id);
         }
     }
@@ -349,6 +364,7 @@ class Supplier_model extends CI_Model {
         $this->db->where('userid', $userId);
         $query = $this->db->get('supplier');
         $result = $query->result();
+        log_message('info',"USER ID en Supplier_model: ".count($result),false);
         return $result[0]->id;
     }
 
@@ -421,6 +437,14 @@ class Supplier_model extends CI_Model {
             foreach ($catalog as $key => $product) {
                 $catalog[$key]->secondarySuppliers = $this->getSecondarySuppliersForProduct($product->id, $distributorId);
                 $catalog[$key]->primarySupplier = $this->getSupplierById($product->supplier_id);
+                if (isset($distributorId)){
+                     if (!$this->isDistributorAssociationActive($distributorId,$product->supplier_id)){
+                        unset($catalog[$key]->price);
+                    } else {
+                        $discount = $this->getAssociationDiscountForDistributor($distributorId, $product->supplier_id);
+                        $catalog[$key]->primarySupplier->price = ($catalog[$key]->price - (($catalog[$key]->price*$discount)/100));
+                    }   
+                }
             }
         }
     }
@@ -447,6 +471,24 @@ class Supplier_model extends CI_Model {
             }
         }
         return $secondarySuppliers;
+    }
+
+    public function getPrimarySuppliersForProduct($productId, $distributorId=null){
+        $this->db->select('supplier.*, product.price');
+        $this->db->from('supplier');
+        $this->db->join('product', 'product.supplier_id = supplier.id');
+        $this->db->where('product.id', $productId);
+        $query = $this->db->get();
+        $supplier = $query->result()[0];
+        if (isset($distributorId)){
+             if ($this->isDistributorAssociationActive($distributorId,$supplier->id)){
+                $discount = $this->getAssociationDiscountForDistributor($distributorId, $supplier->id);
+                $supplier->price = ($supplier->price - (($supplier->price*$discount)/100));
+            } else {
+                unset($supplier->price);
+            }
+        }
+        return $supplier;
     }
 
     public function isSecondarySupplierForProduct($productId, $supplierId){
@@ -520,33 +562,49 @@ class Supplier_model extends CI_Model {
         return $finalResult;
     }
 
-    public function getGeneralCatalog($supplierId=null, $parentCategoryId = null, $status = null, $orderBy = null, $page = 1, $rangePerPage = 1000, &$totalRows){
-        if (isset($supplierId)){
-            $secProductIds = $this->Supplier_model->getSecondaryProductIds($supplierId);
-        }
+    public function getGeneralCatalog($supplierId, $parentCategoryId = null, $orderBy, $page = 1, $rangePerPage = 1000, &$totalRows){
+        $whereCategoryIn = "";
         //Category ID needs to be fetched first to avoid where clauses errors
         if (isset($parentCategoryId) and ($parentCategoryId != 0)){
             $leafCategories = array();
-            $this->getLeafCategories($leafCategories, $parentCategoryId);
-            $this->db->where_in("category_id", $leafCategories);
+            $this->Product_model->getLeafCategories($leafCategories, $parentCategoryId);
+            if (count($leafCategories)>0){
+                $whereCategoryIn = "AND category_id IN ( ";
+                for ($i=0; $i < count($leafCategories); $i++) {
+                    $whereCategoryIn = $whereCategoryIn . $leafCategories[$i];
+                    if ($i <count($leafCategories)-1){
+                        $whereCategoryIn = $whereCategoryIn . ",";
+                    }
+                }
+                $whereCategoryIn = $whereCategoryIn . ")";
+            }
+            
         }
-        $this->db->select('product.*');
-        $this->db->from('product');
-        $this->db->join('supplier', 'product.supplier_id = supplier.id', 'inner');
-        $this->db->join('user', 'supplier.userid = user.id', 'inner');
-        $this->db->where("user.status", 'active');
-        if (isset($status)) {
-            $this->db->where("product.status", $status);
-        }
-        if (isset($orderBy)){
-                $this->db->order_by($orderBy);     
-        }
-        if (isset($supplierId)){
-            $this->db->where("product.supplier_id", $supplierId);
-            $this->db->or_where_in("product.id", $secProductIds);
-        }
+        $queryScript = 
+        "SELECT DISTINCT * 
+        FROM (
+            SELECT `product`.*
+            FROM `secondary_supplier_catalog`
+            INNER JOIN `product` ON `product`.`id` = `secondary_supplier_catalog`.`product_id`
+            INNER JOIN `supplier` ON `product`.`supplier_id` = `supplier`.`id`
+            INNER JOIN `user` ON `supplier`.`userid` = `user`.`id`
+            WHERE `secondary_supplier_catalog`.`supplier_id` = $supplierId
+            AND `product`.`status` = 'published'
+            AND `user`.`status` = 'active'
+            $whereCategoryIn
+            UNION
+            SELECT `product`.*
+            FROM `product`
+            INNER JOIN `supplier` ON `product`.`supplier_id` = `supplier`.`id`
+            INNER JOIN `user` ON `supplier`.`userid` = `user`.`id`
+            WHERE `user`.`status` = 'active'
+            AND `product`.`status` = 'published'
+            AND `product`.`supplier_id` = $supplierId
+            $whereCategoryIn
+        ) result
+        ORDER BY $orderBy";
         $from =  ($page-1) * $rangePerPage;
-        $query = $this->db->get();
+        $query = $this->db->query($queryScript);
         $result = $query->result();
         $totalRows = count($result);
         $j = 0;
@@ -557,21 +615,6 @@ class Supplier_model extends CI_Model {
             $j++;
         }
         return $finalResult;
-    }
-
-    public function getSecondaryProductIds($supplierId){
-        $this->db->select('product_id');
-        $this->db->from('secondary_supplier_catalog');
-        $this->db->where('secondary_supplier_catalog.supplier_id', $supplierId);
-        $this->db->join('product', 'product.id = secondary_supplier_catalog.product_id');
-        $this->db->where('product.status', 'published');
-        $query = $this->db->get();
-        $products = $query->result();
-        $ids = array();
-        foreach ($products as $key => $product) {
-            $ids[] = $product->product_id;
-        }
-        return $ids;
     }
 
 }
