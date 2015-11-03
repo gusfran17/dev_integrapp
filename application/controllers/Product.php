@@ -37,8 +37,7 @@ class Product extends CI_Controller {
 			$data["username"]=$this->session->userdata("user");
 			$data["loadInfo"]=$this->session->userdata("loadInfo");
 		} else {
-			redirect(TIMEOUT_REDIRECT);
-			die;
+			$role = 'home';
 		}
 		$this->load->view('templates/template_header');
 		$this->load->view('templates/template_nav', $data);
@@ -311,8 +310,8 @@ class Product extends CI_Controller {
 		
 		$data['orderBy'] = $orderBy;
 		$data['hasSidebar'] = true;
-		$section = 'products';
-		$this->routedHome($data,$section);
+		$tab = 'product_catalog';
+		$this->tabbedRoutedHome($data,$tab);
 	}
 
 	public function orderMyDistributorCatalogBy ($orderBy){
@@ -349,8 +348,34 @@ class Product extends CI_Controller {
 		$data['viewMyCatalog'] = true;
 		$data['orderBy'] = $orderBy;
 		$data['hasSidebar'] = true;
-		$section = 'products';
-		$this->routedHome($data,$section);
+		$tab = 'product_catalog';
+		$this->tabbedRoutedHome($data,$tab);
+	}
+
+	public function search(){
+		if($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+			$roleId = $this->session->userdata("role_id");
+		} else {
+			//redirect(TIMEOUT_REDIRECT);
+		}
+		$searchString = $this->input->post("searchCatalog");
+		if (isset($role)){
+			if ($role = 'distributor'){
+				$catalog = $this->Product_model->productSearch($searchString, null, $roleId);
+			} else if ($role = 'supplier') {
+				$catalog = $this->Product_model->productSearch($searchString, $roleId, null);
+			}
+		} else {
+			$catalog = $this->Product_model->productSearch($searchString);
+		}
+		$this->Product_model->addCategoryPathToProducts($catalog);
+		$data['searchString'] = $searchString;
+		$data['Catalog'] = $catalog;
+		$data['orderBy'] = DEFAULT_CATALOG_ORDER;
+		$tab = 'templates/product/search_results';
+		$this->routedHome($data,$tab,true);
+		
 	}
 
 	public function getCategoryBranch($selectedCategoryId){
@@ -597,36 +622,39 @@ class Product extends CI_Controller {
 			$role = $this->session->userdata("role");
 			$roleId = $this->session->userdata("role_id");
 		} else {
-			redirect(TIMEOUT_REDIRECT);
+			//redirect(TIMEOUT_REDIRECT);
 		}
 		$productImages = $this->Product_model->getProductImages($productId);
 		$colors = $this->Product_model->getProductColors($productId);
 		$attributes = $this->Product_model->getProductAttributes($productId);
 		$branch = $this->getCategoryBranch($product->category_id);
-		if (($product->supplier_id == $roleId) and ($role=='supplier')) {
-			$product->mine = true;
-			$this->Product_model->addProductPublishingCost($product);
+		if (isset($role)){
+			if (($product->supplier_id == $roleId) and ($role=='supplier')) {
+				$product->mine = true;
+				$this->Product_model->addProductPublishingCost($product);
+			} else {
+				$product->mine = false;
+			}
+			if ($role == 'supplier') {
+				$product->primarySupplier = $this->Supplier_model->getPrimarySuppliersForProduct($productId);
+				$product->secondarySuppliers = $this->Supplier_model->getSecondarySuppliersForProduct($productId);
+				$product->primarySupplier->associationStatus = $this->Supplier_model->isSupplierSupplierAssociation($product->supplier_id, $roleId);
+				$product->primarySupplier->associationDiscount = $this->Supplier_model->getToSupplierDiscount($product->supplier_id, $roleId);
+				$product->isCatalogItem = $this->Supplier_model->isSecondarySupplierForProduct($productId, $roleId);
+			} else if ($role == 'distributor') {
+				$product->primarySupplier = $this->Supplier_model->getPrimarySuppliersForProduct($productId,$roleId);
+				$product->secondarySuppliers = $this->Supplier_model->getSecondarySuppliersForProduct($productId, $roleId);
+				$product->primarySupplier->associationStatus = $this->Supplier_model->isDistributorAssociationActive($roleId, $product->supplier_id);
+				$product->primarySupplier->associationDiscount = $this->Supplier_model->getAssociationDiscountForDistributor($roleId, $product->supplier_id);
+				$product->isCatalogItem = $this->Distributor_model->isCatalogItem($roleId, $productId);	
+			}
+			$data['watchingRole'] = $role;
 		} else {
-			$product->mine = false;
-		}
-		if ($role == 'supplier') {
-			$product->primarySupplier = $this->Supplier_model->getPrimarySuppliersForProduct($productId);
-			$product->secondarySuppliers = $this->Supplier_model->getSecondarySuppliersForProduct($productId);
-			$product->primarySupplier->associationStatus = $this->Supplier_model->isSupplierSupplierAssociation($product->supplier_id, $roleId);
-			$product->primarySupplier->associationDiscount = $this->Supplier_model->getToSupplierDiscount($product->supplier_id, $roleId);
-			$product->isCatalogItem = $this->Supplier_model->isSecondarySupplierForProduct($productId, $roleId);
-		} else if ($role == 'distributor') {
-			$product->primarySupplier = $this->Supplier_model->getPrimarySuppliersForProduct($productId,$roleId);
-			$product->secondarySuppliers = $this->Supplier_model->getSecondarySuppliersForProduct($productId, $roleId);
-			$product->primarySupplier->associationStatus = $this->Supplier_model->isDistributorAssociationActive($roleId, $product->supplier_id);
-			$product->primarySupplier->associationDiscount = $this->Supplier_model->getAssociationDiscountForDistributor($roleId, $product->supplier_id);
-			$product->isCatalogItem = $this->Distributor_model->isCatalogItem($roleId, $productId);
-			
-			
+			$product->mine = false;	
+			$data['watchingRole'] = 'pacient';
 		}
 		$data['product'] = $product;
 		//$data['product']->supplier = $supplier;
-		$data['watchingRole'] = $role;
 		$data['product']->images = $productImages;
 		$data['product']->branch = $branch;
 		$data['product']->colors = $colors;

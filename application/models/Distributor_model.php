@@ -135,7 +135,8 @@ class Distributor_model extends CI_Model {
         //$steps['bank_name'] = ($distributor->bank_name != "");
         //$steps['bank_branch'] = ($distributor->bank_branch != "");
         //$steps['bank_account_name'] = ($distributor->bank_account_name != "");
-        $steps['logo'] = ($this->get_logo($userid) != null);
+        
+        $steps['logo'] = ($this->get_logo($userid) != IMAGES_PATH."noProfilePic.jpg");
         foreach($steps as $key=>$step){
             if($step != false){
                 $amountCompleted++;
@@ -185,6 +186,19 @@ class Distributor_model extends CI_Model {
         }
     }
 
+    public function isDistributorFivesRule($distributorId){
+        $this->db->from('supplier_distributor_association');
+        $this->db->where('distributor_id',$distributorId);
+        $this->db->where('status','approved');
+        $query = $this->db->get();
+        $result = $query->result();
+        if (count($result)>4){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function get_catalog($distributorId, $parentCategoryId = null, $orderBy = null, $page = 1, $rangePerPage = 1000, &$totalRows){
         $whereCategoryIn = "";
         //Category ID needs to be fetched first to avoid where clauses errors
@@ -226,11 +240,14 @@ class Distributor_model extends CI_Model {
             INNER JOIN secondary_supplier_catalog on secondary_supplier_catalog.product_id = product.id 
             INNER JOIN supplier ON secondary_supplier_catalog.supplier_id = supplier.id
             INNER JOIN user ON supplier.userid = user.id
+            INNER JOIN supplier s2 ON product.supplier_id = s2.id
+            INNER JOIN user u2 ON s2.userid = u2.id
             INNER JOIN supplier_distributor_association ON supplier_distributor_association.supplier_id = secondary_supplier_catalog.supplier_id
             WHERE supplier_distributor_association.distributor_id = $distributorId
             AND supplier_distributor_association.status = 'approved'
             AND distributor_catalog.distributor_id = $distributorId
             AND user.status = 'active'
+            AND u2.status = 'active'
             AND product.status = 'published'
             $whereCategoryIn
         ) result

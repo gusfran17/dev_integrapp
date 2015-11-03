@@ -202,7 +202,7 @@ class Supplier_model extends CI_Model {
         $steps['bank_name'] = ($supplier->bank_name != "");
         $steps['bank_branch'] = ($supplier->bank_branch != "");
         $steps['bank_account_name'] = ($supplier->bank_account_name != "");
-        $steps['logo'] = ($this->get_logo($userid) != null);
+        $steps['logo'] = ($this->get_logo($userid) != IMAGES_PATH."noProfilePic.jpg");
         foreach($steps as $key=>$step){
             if($step != false){
                 $amountCompleted++;
@@ -583,23 +583,26 @@ class Supplier_model extends CI_Model {
         $queryScript = 
         "SELECT DISTINCT * 
         FROM (
-            SELECT `product`.*
-            FROM `secondary_supplier_catalog`
-            INNER JOIN `product` ON `product`.`id` = `secondary_supplier_catalog`.`product_id`
-            INNER JOIN `supplier` ON `product`.`supplier_id` = `supplier`.`id`
-            INNER JOIN `user` ON `supplier`.`userid` = `user`.`id`
-            WHERE `secondary_supplier_catalog`.`supplier_id` = $supplierId
-            AND `product`.`status` = 'published'
-            AND `user`.`status` = 'active'
+            SELECT product.*
+            FROM secondary_supplier_catalog
+            INNER JOIN product ON product.id = secondary_supplier_catalog.product_id
+            INNER JOIN supplier ON product.supplier_id = supplier.id
+            INNER JOIN user ON supplier.userid = user.id
+            INNER JOIN supplier s2 ON secondary_supplier_catalog.supplier_id = s2.id
+            INNER JOIN user u2 ON s2.userid = u2.id
+            WHERE secondary_supplier_catalog.supplier_id = $supplierId
+            AND product.status = 'published'
+            AND user.status = 'active'
+            AND u2.status = 'active'
             $whereCategoryIn
             UNION
-            SELECT `product`.*
-            FROM `product`
-            INNER JOIN `supplier` ON `product`.`supplier_id` = `supplier`.`id`
-            INNER JOIN `user` ON `supplier`.`userid` = `user`.`id`
-            WHERE `user`.`status` = 'active'
-            AND `product`.`status` = 'published'
-            AND `product`.`supplier_id` = $supplierId
+            SELECT product.*
+            FROM product
+            INNER JOIN supplier ON product.supplier_id = supplier.id
+            INNER JOIN user ON supplier.userid = user.id
+            WHERE user.status = 'active'
+            AND product.status = 'published'
+            AND product.supplier_id = $supplierId
             $whereCategoryIn
         ) result
         ORDER BY $orderBy";

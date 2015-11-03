@@ -259,6 +259,172 @@ class Product_model extends CI_Model {
         return $finalResult;
     }
 
+    public function productSearch($searchString, $supplierId = null, $distributorId = null){
+        $statusClause = "";
+        if (isset($supplierId)){
+            $statusClause = "AND product.status IN ('published','active','inactive')";
+        } else if (isset($distributorId)) {
+            $statusClause = "AND product.status = 'published'";
+        } else {
+            $statusClause = "AND product.status = 'published'";
+        }
+        $orderBy = "published_date DESC";
+        if ((isset($distributorId))or(isset($supplierId))){
+            $queryScript = 
+            "SELECT DISTINCT id, name, description, short_desc, price, code, supplier_id, category_id, status, prescription, tax, expire_date, last_update, published_date, integrapp_code 
+            FROM (
+                SELECT product.*, 10 AS weight
+                FROM product
+                INNER JOIN supplier ON product.supplier_id = supplier.id
+                INNER JOIN user ON supplier.userid = user.id
+                WHERE user.status = 'active'
+                AND product.code like '%$searchString%'
+                $statusClause
+                UNION
+                SELECT product.*, 20 AS weight
+                FROM product
+                INNER JOIN supplier ON product.supplier_id = supplier.id
+                INNER JOIN user ON supplier.userid = user.id
+                WHERE user.status = 'active'
+                AND product.integrapp_code like '%$searchString%'
+                $statusClause
+                UNION
+                SELECT product.*, 30 AS weight
+                FROM product
+                INNER JOIN supplier ON product.supplier_id = supplier.id
+                INNER JOIN user ON supplier.userid = user.id
+                WHERE user.status = 'active'
+                AND product.name like '%$searchString%'
+                $statusClause
+                UNION
+                SELECT product.*, 40 AS weight
+                FROM product
+                INNER JOIN supplier ON product.supplier_id = supplier.id
+                INNER JOIN user ON supplier.userid = user.id
+                WHERE user.status = 'active'
+                AND product.description like '%$searchString%'
+                $statusClause
+                UNION
+                SELECT product.*, 50 AS weight
+                FROM product
+                INNER JOIN supplier ON product.supplier_id = supplier.id
+                INNER JOIN user ON supplier.userid = user.id
+                WHERE user.status = 'active'
+                AND product.prescription like '%$searchString%'
+                $statusClause
+            ) result
+            ORDER BY weight, $orderBy";
+        } else {
+            //si la busqueda la hace un paciente solo se muestran los productos publicados por minoristas que esten activos
+            $queryScript = 
+            "SELECT DISTINCT id, name, description, short_desc, price, code, supplier_id, category_id, status, prescription, tax, expire_date, last_update, published_date, integrapp_code 
+            FROM (
+                SELECT product.*, 10 AS weight
+                FROM product
+                INNER JOIN supplier ON product.supplier_id = supplier.id
+                INNER JOIN user ON supplier.userid = user.id
+                INNER JOIN distributor_catalog ON distributor_catalog.product_id = product.id
+                INNER JOIN distributor ON distributor.id = distributor_catalog.distributor_id
+                INNER JOIN user u2 ON distributor.userid = u2.id
+                WHERE user.status = 'active'
+                AND u2.status = 'active'
+                AND product.code like '%$searchString%'
+                $statusClause
+                UNION
+                SELECT product.*, 20 AS weight
+                FROM product
+                INNER JOIN supplier ON product.supplier_id = supplier.id
+                INNER JOIN user ON supplier.userid = user.id
+                INNER JOIN distributor_catalog ON distributor_catalog.product_id = product.id
+                INNER JOIN distributor ON distributor.id = distributor_catalog.distributor_id
+                INNER JOIN user u2 ON distributor.userid = u2.id
+                WHERE user.status = 'active'
+                AND u2.status = 'active'
+                AND product.integrapp_code like '%$searchString%'
+                $statusClause
+                UNION
+                SELECT product.*, 30 AS weight
+                FROM product
+                INNER JOIN supplier ON product.supplier_id = supplier.id
+                INNER JOIN user ON supplier.userid = user.id
+                INNER JOIN distributor_catalog ON distributor_catalog.product_id = product.id
+                INNER JOIN distributor ON distributor.id = distributor_catalog.distributor_id
+                INNER JOIN user u2 ON distributor.userid = u2.id
+                WHERE user.status = 'active'
+                AND u2.status = 'active'
+                AND product.name like '%$searchString%'
+                $statusClause
+                UNION
+                SELECT product.*, 40 AS weight
+                FROM product
+                INNER JOIN supplier ON product.supplier_id = supplier.id
+                INNER JOIN user ON supplier.userid = user.id
+                INNER JOIN distributor_catalog ON distributor_catalog.product_id = product.id
+                INNER JOIN distributor ON distributor.id = distributor_catalog.distributor_id
+                INNER JOIN user u2 ON distributor.userid = u2.id
+                WHERE user.status = 'active'
+                AND u2.status = 'active'
+                AND product.description like '%$searchString%'
+                $statusClause
+                UNION
+                SELECT product.*, 50 AS weight
+                FROM product
+                INNER JOIN supplier ON product.supplier_id = supplier.id
+                INNER JOIN user ON supplier.userid = user.id
+                INNER JOIN distributor_catalog ON distributor_catalog.product_id = product.id
+                INNER JOIN distributor ON distributor.id = distributor_catalog.distributor_id
+                INNER JOIN user u2 ON distributor.userid = u2.id
+                WHERE user.status = 'active'
+                AND u2.status = 'active'
+                AND product.prescription like '%$searchString%'
+                $statusClause
+            ) result
+            ORDER BY weight, $orderBy";
+        }
+        
+        $query = $this->db->query($queryScript);
+        $result = $query->result();
+        $totalRows = count($result);
+        $j = 0;
+        $finalResult = array();
+        for ($i= 0; $i< $totalRows; $i++){
+            $result[$i]->images = $this->Product_model->getProductImages($result[$i]->id);
+            $finalResult[$j] = $result[$i];
+            $j++;
+        }
+        return $finalResult;
+    }
+
+    public function getPacientCatalog(){
+        $orderBy = "published_date DESC";
+        //si la busqueda la hace un paciente solo se muestran los productos publicados por minoristas que esten activos
+        $queryScript = 
+        "SELECT DISTINCT id, name, description, short_desc, price, code, supplier_id, category_id, status, prescription, tax, expire_date, last_update, published_date, integrapp_code 
+        FROM (
+            SELECT product.*
+            FROM product
+            INNER JOIN supplier ON product.supplier_id = supplier.id
+            INNER JOIN user ON supplier.userid = user.id
+            INNER JOIN distributor_catalog ON distributor_catalog.product_id = product.id
+            INNER JOIN distributor ON distributor.id = distributor_catalog.distributor_id
+            INNER JOIN user u2 ON distributor.userid = u2.id
+            WHERE user.status = 'active'
+            AND u2.status = 'active'
+        ) result
+        ORDER BY $orderBy";
+        $query = $this->db->query($queryScript);
+        $result = $query->result();
+        $totalRows = count($result);
+        $j = 0;
+        $finalResult = array();
+        for ($i= 0; $i< $totalRows; $i++){
+            $result[$i]->images = $this->Product_model->getProductImages($result[$i]->id);
+            $finalResult[$j] = $result[$i];
+            $j++;
+        }
+        return $finalResult;
+    }
+
     public function getLeafCategories(&$leafCategories, $parentCategoryId){
         //log_message('info', "Product_model getLeafCategories ParentID: ".$parentCategoryId, FALSE);
         $childCategories = $this->getCategory($parentCategoryId);
@@ -347,21 +513,29 @@ class Product_model extends CI_Model {
 
     public function getProductImages($productId){
         $targetPath = ".".PRODUCT_IMAGES_PATH . $productId . "/";
+        $noFoto = false;
         if (file_exists($targetPath)) {
             $files = scandir($targetPath,1);    
             $array = array_diff($files, array('.', '..', 'thumbs'));
             $max_key = max(array_keys($array)); 
         }   else {
+            $noFoto = true;
             $array = array();
-            $max_key = 0;
+            $array[] = 'NoFoto.jpg'; 
+            $max_key = 1;
         }
         $images = array();
         //Rearrange array keys order
         $j = 0;
         for ($i=0; $i<$max_key+1; $i++){
             if (isset($array[$i])){
-                $images[$j] = $array[$i];
-                $j++;
+                if (!$noFoto){
+                    $images[$j] = $productId."/".$array[$i];
+                    $j++;
+                } else {
+                    $images[$j] = $array[$i];
+                    $j++;
+                }
             }
         }
         return $images;

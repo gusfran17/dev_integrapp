@@ -1,16 +1,6 @@
 <?php if (!(isset($productLoadView))) { ?>
 	<div class="collapse navbar-collapse navbar-inverse navbar-ex1-collapse">
 		<ul class="nav navbar-nav side-nav" style="padding-top:0px;">
-			
-			<form class="navbar-form navbar-left" role="search" action="/buscar" method="get">
-				<div class="input-group" style="padding-top:20px;" class="searchOverSlideshow">
-			    	<input type="text" name="searchSupplierCatalog" class="form-control" placeholder="Buscar">
-			    	<span class="input-group-btn">
-			        	<button class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-			    	</span>
-			  	</div>
-	    	</form>
-
     		<b>								
 		    	<?php	
 		    		echo '<h4 style="margin-left: 15px;"><span class="label label-default" style="color:#ffffff; background-color:#D17749"><a href="#" onclick="selectCategory(id);" id="-1" style="color:#ffffff;"><b>'.(isset($viewMyCatalog)? "MIS PRODUCTOS": "PRODUCTOS").'</b></a></span></h4>';
@@ -82,16 +72,20 @@
             <li>
                 <a href="javascript:;" data-toggle="collapse" data-target="#orderBy" style="padding-top:20px;"><i class="fa fa-fw fa-arrows-v"></i><b> Ordenar </b><i class="fa fa-fw fa-caret-down"></i></a>
 				<ul class="collapse nav nav-pills nav-stacked" type="circle" id="orderBy">
-					<?php if (isset($viewMyCatalog)) {?>
+					
+					<?php if (isset($viewCatalog)) { ?>
+						<li class="<?php if ($orderBy == 'category_id') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderSupplierCatalogBy/category_id'; ?>">Ordenado por Relevancia</a></li>
+						<li class="<?php if ($orderBy == 'name') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderSupplierCatalogBy/name'; ?>">Ordenado Alfabeticamente</a></li>
+					<?php } else if (isset($viewMyCatalog)) {?>
 						<li class="<?php if ($orderBy == 'category_id') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMySupplierCatalogBy/category_id'; ?>">Ordenado por Relevancia</a></li>
 						<li class="<?php if ($orderBy == 'name') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMySupplierCatalogBy/name'; ?>">Ordenado Alfabeticamente</a></li>
 						<li class="<?php if ($orderBy == 'price desc') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMySupplierCatalogBy/price desc'; ?>">Ordenado por precios (de mayor a menor)</a> </li>
 						<li class="<?php if ($orderBy == 'price asc') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMySupplierCatalogBy/price asc'; ?>">Ordenado por precios (de menor a mayor)</a> </li>
-					<?php } else { ?>
-						<li class="<?php if ($orderBy == 'category_id') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderSupplierCatalogBy/category_id'; ?>">Ordenado por Relevancia</a></li>
-						<li class="<?php if ($orderBy == 'name') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderSupplierCatalogBy/name'; ?>">Ordenado Alfabeticamente</a></li>
-						<li class="<?php if ($orderBy == 'price desc') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderSupplierCatalogBy/price desc'; ?>">Ordenado por precios (de mayor a menor)</a> </li>
-						<li class="<?php if ($orderBy == 'price asc') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderSupplierCatalogBy/price asc'; ?>">Ordenado por precios (de menor a mayor)</a> </li>
+					<?php } else if (isset($viewMySecSuppCatalog)) {?>
+						<li class="<?php if ($orderBy == 'category_id') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMySecondarySupplierCatalogBy/category_id'; ?>">Ordenado por Relevancia</a></li>
+						<li class="<?php if ($orderBy == 'name') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMySecondarySupplierCatalogBy/name'; ?>">Ordenado Alfabeticamente</a></li>
+						<li class="<?php if ($orderBy == 'price desc') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMySecondarySupplierCatalogBy/price desc'; ?>">Ordenado por precios (de mayor a menor)</a> </li>
+						<li class="<?php if ($orderBy == 'price asc') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMySecondarySupplierCatalogBy/price asc'; ?>">Ordenado por precios (de menor a mayor)</a> </li>
 					<?php } ?>
 				</ul>
             </li>

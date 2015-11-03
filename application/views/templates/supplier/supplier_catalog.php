@@ -1,15 +1,6 @@
 <?php if (isset($hasSidebar)) { ?>
 	<div class="collapse navbar-collapse navbar-inverse navbar-ex1-collapse">
 		<ul class="nav navbar-nav side-nav" style="padding-top:0px;">
-			<form class="navbar-form navbar-left" role="search" action="/buscar" method="get">
-				<div class="input-group" style="padding-top:20px;" class="searchOverSlideshow">
-			    	<input type="text" name="searchSupplierCatalog" class="form-control" placeholder="Buscar">
-			    	<span class="input-group-btn">
-			        	<button class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-			    	</span>
-			  	</div>
-	    	</form>
-
     		<b>								
 		    	<?php	
 		    		echo '<h4 style="margin-left: 15px;"><span class="label label-default" style="color:#ffffff; background-color:#D17749"><a href="#" onclick="selectCategory(id);" id="-1" style="color:#ffffff;"><b>'.(isset($viewMyCatalog)? "MIS PRODUCTOS": "PRODUCTOS").'</b></a></span></h4>';
@@ -146,7 +137,7 @@
 						<tr>
 							<td>
 								<?php if (count($Catalog[$i]->images)>0) {?>
-							      	<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><img src="<?php echo base_url() . PRODUCT_IMAGES_PATH . $Catalog[$i]->id . "/" . $Catalog[$i]->images[0]; ?>" style="max-width: 100%;display: block;margin: 0 auto;max-height: 40px;"></a>
+							      	<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><img src="<?php echo base_url() . PRODUCT_IMAGES_PATH . $Catalog[$i]->images[0]; ?>" style="max-width: 100%;display: block;margin: 0 auto;max-height: 40px;"></a>
 							    <?php } else { ?>
 						      		<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><img src="<?php echo base_url() . 'Resources/imgs/NoFoto.jpg'; ?>" style="max-width: 100%;display: block;margin: 0 auto;max-height: 40px;"></a>
 							    <?php } ?>
