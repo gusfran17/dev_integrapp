@@ -4,13 +4,13 @@
 	</div>
 	<?php if($this->session->flashdata('success')!= null):?>
 	    <div class="alert alert-dismissable alert-success">
-	      <button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+	      <button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
 	      <strong>Bien!</strong> <?php echo $this->session->flashdata('success'); ?></a>
 	    </div>
 	<?php endif;?>
 	<?php if($this->session->flashdata('error')!= null):?>
 	    <div class="alert alert-dismissable alert-success">
-	      <button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+	      <button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
 	      <strong>Bien!</strong> <?php echo $this->session->flashdata('error'); ?></a>
 	    </div>
 	<?php endif;?>
@@ -86,5 +86,3 @@ jQuery(document).ready(function() {
     } );
 } );
 </script>
-
-<?php $this->load->view('templates/scripts/table_scripts');

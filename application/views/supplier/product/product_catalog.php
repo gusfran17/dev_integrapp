@@ -1,20 +1,11 @@
 					
-							<?php if (isset($viewMyCatalog)) {?>
-								<?php if ($statusFilter == 'published') { ?>
-									<h3 style="text-align:center;margin-top: 0px;"><span class="label label-default" style="color:#ffffff;"><b><span class="glyphicon glyphicon-list-alt" aria-hidden="true"> Publicados</span></b></span></h3>
-								<?php } else if ($statusFilter == 'active') { ?>
-									<h3 style="text-align:center;margin-top: 0px;"><span class="label label-default" style="color:#ffffff;"><b>Activos </b></span><br><small>(No Publicados)</small></h3>
-								<?php } else { ?>
-									<h3 style="text-align:center;margin-top: 0px;"><span class="label label-default" style="color:#ffffff;"><b><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminados</b></span></h3>
-								<?php } ?>
-							<?php } ?>
 							<?php if (isset($statusFilter)):?>
 								<?php if (($loadInfo->activeProducts>0) and ($statusFilter != 'active') and (isset($viewMyCatalog))):?>
 									<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 										<div class="col-lg-3 col-md-2 col-sm-1 col-xs-0">
 										</div>
 										<div class="alert alert-info alert-dismissible col-lg-6 col-md-8 col-sm-10 col-xs-12" style="text-align: center" role="alert">
-										  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+										  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
 										  <strong>Recuerde...</strong> Tiene <?php echo $loadInfo->activeProducts;?> productos activos sin publicar <br>
 										  <a href="<?php echo base_url() . 'Product/showActiveProducts'; ?>"><b>Ver productos activos</b></a>
 										</div>
@@ -23,21 +14,37 @@
 									</div>
 								<?php endif;?>		
 							<?php endif;?>
+							<?php if (isset($viewMyCatalog)) {?>
+								<?php if ($statusFilter == 'published') { ?>
+									<h1 style="text-align:center;margin-top: 0px;"><span class="label label-default" style="color:#ffffff;"><b><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Publicados</b></span></h1>
+								<?php } else if ($statusFilter == 'active') { ?>
+									<h1 style="text-align:center;margin-top: 0px;"><span class="label label-default" style="color:#ffffff;"><b>Activos </b></span><br><small>(No Publicados)</small></h1>
+								<?php } else { ?>
+									<h1 style="text-align:center;margin-top: 0px;"><span class="label label-default" style="color:#ffffff;"><b><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminados</b></span></h1>
+								<?php } ?>
+							<?php } ?>
 				    		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 								<?php if($this->session->flashdata('success') != null):?>
 									<div class="alert alert-dismissable alert-success col-md-12 col-sm-12 col-xs-12">
-										<button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+										<button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
 										<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong>
 									 	<strong>Bien!</strong> <?php echo $this->session->flashdata('success'); ?></a>
 									</div>
 								<?php endif;?>
 								<?php if($this->session->flashdata('error') != null):?>
 									<div class="alert alert-dismissable alert-danger col-md-12 col-sm-12 col-xs-12">
-										<button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+										<button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
 										<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong>
 									 	<strong>Atención!</strong> <?php echo $this->session->flashdata('error'); ?></a>
 									</div>
 								<?php endif;?>
+								<div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center"> 			
+										
+									<?php if(isset($pageLinks)) foreach ($pageLinks as $link) {
+										echo $link;
+									}  ?>
+								
+				    			</div>
 								<?php if (isset($viewMyCatalog)) {?>
 									<table id="resultset" class="table table-bordered table-striped">
 						                <thead>
@@ -46,7 +53,7 @@
 						                        <th>Código de Producto</th>
 												<th>Código IntegrApp</th>
 						                        <th data-hide="phone">Producto</th>
-						                        <th class="centered-cell" data-hide="phone,tablet">Precio</th>
+						                        <th class="centered-cell" data-hide="phone,tablet">Precio (sin IVA)</th>
 						                        <th class="centered-cell" data-hide="phone,tablet">IVA</th>
 						                        <th class="centered-cell visible-md-* visible-lg-*" data-hide="phone,tablet">Descripción</th>
 						                        <th class="centered-cell" data-hide="phone,tablet">Acciones</th>
@@ -72,35 +79,32 @@
 													</td>
 													<td>
 														<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><strong><?php echo $Catalog[$i]->name; ?></strong></a>
-														
-														<div class="dropdown" style="margin-bottom: 10px;">
-															<button class="btn btn-info btn-xs dropdown-toggle" type="button" id="suppliersDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-																Proveedores Secundarios
-																<span class="caret"></span>
-															</button>
-															<ul class="dropdown-menu" aria-labelledby="suppliersDropDown">
-																<li class="dropdown-header">
-																	<?php  if (count($Catalog[$i]->secondarySuppliers) == 0) { ?>
-																		No hay proveedores que redistribuyan este producto
-																	<?php } else { ?>
+														<?php  if (count($Catalog[$i]->secondarySuppliers) != 0) { ?>
+															<div class="dropdown" style="margin-bottom: 10px;">
+																<button class="btn btn-info btn-xs dropdown-toggle" type="button" id="suppliersDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+																	Proveedores Secundarios
+																	<span class="caret"></span>
+																</button>
+																<ul class="dropdown-menu" aria-labelledby="suppliersDropDown">
+																	<li class="dropdown-header">
 																		Proveedores secundarios que lo redistribuyen
-																	<?php } ?>
-																</li>
-																<?php foreach ($Catalog[$i]->secondarySuppliers as $secSupplier) { ?>
-																	<li><a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $secSupplier->id;?>">
-																	<?php if(isset($secSupplier->logo)){ ?>
-									     								<img src="<?php echo base_url() . $secSupplier->logo; ?>" style="height: 20px">
-									     							<?php } else { ?>
-									     								<img src="<?php echo base_url() . IMAGES_PATH . 'noProfilePic.jpg'; ?>" style="height: 20px">
-																	<?php } ?>
-																		<?php echo $secSupplier->fake_name; ?></a>
 																	</li>
-																<?php }?>
-															</ul>
-														</div>
+																	<?php foreach ($Catalog[$i]->secondarySuppliers as $secSupplier) { ?>
+																		<li><a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $secSupplier->id;?>">
+																		<?php if(isset($secSupplier->logo)){ ?>
+										     								<img src="<?php echo base_url() . $secSupplier->logo; ?>" style="height: 20px">
+										     							<?php } else { ?>
+										     								<img src="<?php echo base_url() . IMAGES_PATH . 'noProfilePic.jpg'; ?>" style="height: 20px">
+																		<?php } ?>
+																			<?php echo $secSupplier->fake_name; ?></a>
+																		</li>
+																	<?php }?>
+																</ul>
+															</div>
+														<?php } ?>
 													</td>
 													<td>
-														<?php echo '$'.$Catalog[$i]->price; ?>
+														<?php echo '$'.number_format($Catalog[$i]->price, PRICE_DECIMAL_AMOUNT, DECIMAL_SEPARATOR, THOUSANDS_SEPARATOR); ?>
 													</td>
 													<td>
 														<?php echo $Catalog[$i]->tax; ?>
@@ -158,7 +162,7 @@
 															<div class="col-xs-12 catalogProdName" style="text-align:center;"><b>Categoria: </b><?php echo $Catalog[$i]->categoryPath; ?></div>
 															<div class="col-xs-12 catalogProdCode" style="text-align:center;"><strong>Código IntegrApp: </strong><a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><?php echo $Catalog[$i]->integrapp_code; ?></a></div>
 															<?php if ($Catalog[$i]->isSupplierAssociated==true) {?>
-																<div class="col-xs-12 catalogProdCode" style="text-align:center; height:40px;"><strong>Precio: </strong> $<?php echo $Catalog[$i]->price; ?></div>
+																<div class="col-xs-12 catalogProdCode" style="text-align:center; height:40px;"><strong>Precio: </strong> $<?php echo number_format($Catalog[$i]->price, PRICE_DECIMAL_AMOUNT, DECIMAL_SEPARATOR, THOUSANDS_SEPARATOR); ?></div>
 															<?php } ?>
 														</div>
 														<div class="col-xs-12 catalogProdButtonGroup">
@@ -208,7 +212,7 @@
 																							El proveedor le ofrece un <b><?php echo $Catalog[$i]->supplierAssociationDiscount;?>%</b> <br>
 																							de descuento sobre sus productos<br>
 																					</a></li>
-																					<li><a><b>Precio final: $<?php echo (($Catalog[$i]->price)-((($Catalog[$i]->supplierAssociationDiscount)*($Catalog[$i]->price))/100));?></b><br><br></a></li>
+																					<li><a><b>Precio final: $<?php echo number_format((($Catalog[$i]->price)-((($Catalog[$i]->supplierAssociationDiscount)*($Catalog[$i]->price))/100)), PRICE_DECIMAL_AMOUNT, DECIMAL_SEPARATOR, THOUSANDS_SEPARATOR);?></b><br><br></a></li>
 																					<li><a>
 																						Ingrese el precio que quiere que se<br>
 																						muestre en su catálogo (es el que <br>
@@ -226,7 +230,7 @@
 																		</form>
 																	<?php } else { ?>
 																		<form action="<?php echo base_url() . 'product/removeProductFromSupplierCatalog/' . $Catalog[$i]->id; ?>" id="<?php echo 'removeFromSecSuppCat_' . $Catalog[$i]->id; ?>" style="padding-bottom: 0px;">
-																			<button type="submit" onclick="" class="btn btn-danger btn-xs col-md-12 col-sm-12 col-xs-12" form="<?php echo 'removeFromSecSuppCat_' . $Catalog[$i]->id; ?>"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Remover de mi Catálogo</button>
+																			<button type="submit" onclick="" class="btn btn-danger btn-xs col-md-12 col-sm-12 col-xs-12" form="<?php echo 'removeFromSecSuppCat_' . $Catalog[$i]->id; ?>"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Remover de mi Catálogo</button>
 																		</form>
 																	<?php } ?>
 																<?php } ?>
@@ -309,10 +313,10 @@
 														</div>
 													</td>
 													<td>
-														<?php echo '$'.$Catalog[$i]->price; ?>
+														<?php echo '$'.number_format($Catalog[$i]->price, PRICE_DECIMAL_AMOUNT, DECIMAL_SEPARATOR, THOUSANDS_SEPARATOR); ?>
 													</td>
 													<td>
-														<?php echo '$'.$Catalog[$i]->secondary_price; ?>
+														<?php echo '$'.number_format($Catalog[$i]->secondary_price, PRICE_DECIMAL_AMOUNT, DECIMAL_SEPARATOR, THOUSANDS_SEPARATOR); ?>
 													</td>
 													<td>
 														<?php echo $Catalog[$i]->tax; ?>
@@ -326,7 +330,7 @@
 													</td>
 													<td>
 														<form action="<?php echo base_url() . 'product/removeProductFromSupplierCatalog/' . $Catalog[$i]->id; ?>" id="<?php echo 'removeFromSecSuppCat_' . $Catalog[$i]->id; ?>" style="padding-bottom: 0px;">
-															<button type="submit" onclick="" class="btn btn-danger btn-xs col-md-12 col-sm-12 col-xs-12" form="<?php echo 'removeFromSecSuppCat_' . $Catalog[$i]->id; ?>"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Remover de mi Catálogo</button>
+															<button type="submit" onclick="" class="btn btn-danger btn-xs col-md-12 col-sm-12 col-xs-12" form="<?php echo 'removeFromSecSuppCat_' . $Catalog[$i]->id; ?>"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Remover de mi Catálogo</button>
 														</form>
 													</td>
 												</tr>

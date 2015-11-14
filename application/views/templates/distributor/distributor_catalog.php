@@ -47,7 +47,7 @@
             <li>
                 <a href="javascript:;" data-toggle="collapse" data-target="#orderBy" style="padding-top:20px;"><i class="fa fa-fw fa-arrows-v"></i><b> Ordenar </b><i class="fa fa-fw fa-caret-down"></i></a>
 				<ul class="collapse nav nav-pills nav-stacked" type="circle" id="orderBy">
-					<li class="<?php if ($orderBy == 'category_id') echo 'active' ?>" ><a href="<?php echo base_url() . 'Distributors/viewDistributorCatalog/category_id'; ?>">Ordenado Relevancia</a></li>
+					<li class="<?php if ($orderBy == 'category_id') echo 'active' ?>" ><a href="<?php echo base_url() . 'Distributors/viewDistributorCatalog/category_id'; ?>">Ordenado fecha de publicación</a></li>
 					<li class="<?php if ($orderBy == 'name') echo 'active' ?>" ><a href="<?php echo base_url() . 'Distributors/viewDistributorCatalog/name'; ?>">Ordenado Alfabeticamente</a></li>
 				</ul>
             </li>
@@ -70,7 +70,7 @@
 							    <?php } else { ?>
 							    	<img src="<?php echo base_url() . IMAGES_PATH . 'noProfilePic.jpg'; ?>" style="max-width: 100%;display: block;margin: 0 auto;max-height: 100px;">
 							    <?php } ?>
-								<h3 style="height: 1em; margin-top: 10px;"><a href="<?php echo base_url() . 'Distributors/viewDistributor/'. $distributor->id;?>"><?php echo $distributor->fake_name; ?></a></h3>
+								<h4 style="height: 2em; margin-top: 10px;"><a href="<?php echo base_url() . 'Distributors/viewDistributor/'. $distributor->id;?>"><?php echo $distributor->fake_name; ?></a></h4>
 								<p class="text-info" style="margin-left: auto; height: 15px;text-align: left;">
 									<a href="<?php echo base_url() . 'Distributors/viewDistributor/'. $distributor->id;?>"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span> Detalles de perfil </a>
 								</p>
@@ -82,6 +82,9 @@
 						    	<p><b>Razón Social: </b><?php echo $distributor->razon_social;?></p>
 						    	<p><b>CUIT: </b><?php echo $distributor->cuit;?></p>
 						    	<p><b>Email: </b><?php echo $distributor->comercial_email;?></p>
+						    	<p><b>Dirección: </b><?php echo $distributor->commercial_address;?></p>
+						    	<p><b>Telefono de Contacto: </b><?php echo $distributor->contact_phone;?></p>
+								<p><b>Fax: </b><?php echo $distributor->fax;?></p>
 							</div>
 						</div>
 					</div>

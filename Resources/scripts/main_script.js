@@ -234,7 +234,15 @@ $(document).ready(function(){
 					$('.form-group_specifications').remove();
 					$.each(json.editProduct.attributes, function(index, value) {
 						//console.log("name: "+ value.attribute_name + " value: "+ value.attribute_value)
-						$(".input_fields_wrap").append('<div class="form-group_specifications" ><textarea type="text" class="inputProperty" id="' + index + '" name="attribute' + index + '" placeholder="Tipo de Variante...">' + value.attribute_name + '</textarea><textarea type="text" class="inputProperty" id="' + index + '" name="value' + index + '" placeholder="Valor de Variante...">' + value.attribute_value + '</textarea><a href="#" class="remove_field">X</a></div>');
+						$(".input_fields_wrap").append('<div class="form-group_specifications" >'+
+															'<textarea type="text" id="' + index + '" name="attribute' + index + '" placeholder="Tipo de Variante..." class="col-xs-5 col-sm-5 col-md-5 col-lg-5" style="margin-right:10px;">' + 
+																value.attribute_name + 
+															'</textarea>'+
+															'<textarea type="text" id="' + index + '" name="value' + index + '" placeholder="Valor de Variante..." class="col-xs-6 col-sm-6 col-md-6 col-lg-6">' + 
+																value.attribute_value + 
+															'</textarea>'+
+															'<a href="#" class="remove_field"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>'+
+														'</div>');
 					});
 					if (isEdit){
 						$("#editProductID").val(json.editProduct.id);
@@ -242,18 +250,20 @@ $(document).ready(function(){
 						$.each(myDropzone.files, function(index, value) {
 							myDropzone.removeFile(value);
 						});
-						$.each(json.editProduct.images, function(index, value) {
-							var mockFile = { name: "Imagen", size: 12345, file_name: value };
-							myDropzone.options.addedfile.call(myDropzone, mockFile);
-							myDropzone.options.thumbnail.call(myDropzone, mockFile, $("#imagesPath").val() + "/" + json.editProduct.id + "/thumbs/" + value);
-							$("#imagesArray").append("<input type='hidden' name='images[]' value='"+ value +"' />");
-						});
+						if (json.editProduct.hasImages==true){
+							$.each(json.editProduct.images, function(index, value) {
+								var mockFile = { name: "Imagen", size: 12345, file_name: value };
+								myDropzone.options.addedfile.call(myDropzone, mockFile);
+								myDropzone.options.thumbnail.call(myDropzone, mockFile, $("#imagesPath").val() + "/" + value);
+								$("#imagesArray").append("<input type='hidden' name='images[]' value='"+ value +"' />");
+							});
+						}
 						//Alert that a product is being edited
 						$("#editionAlert").empty();
-						$("#editionAlert").append('<div class="alert alert-warning alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>¡Atención!</strong> Se encuentra editando del producto ' + json.editProduct.integrapp_code + ' cargado recientemente.<br>Para volver a cargar un producto desde el inicio debe presionar en <b>Cancelar</b> al final de la pantalla.</div>');
+						$("#editionAlert").append('<div class="alert alert-warning alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button><strong>¡Atención!</strong> Se encuentra editando del producto ' + json.editProduct.integrapp_code + ' cargado recientemente.<br>Para volver a cargar un producto desde el inicio debe presionar en <b>Cancelar</b> al final de la pantalla.</div>');
 					} else {
 						//Alert that a product is being copied
-						$("#editionAlert").append('<div class="alert alert-warning alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>¡Atencion!</strong> Se encuentra duplicando información del producto ' + json.editProduct.integrapp_code + ' que ha cargado recientemente, para volver a cargar un producto desde el inicio debe presionar en Cancelar al final de la pantalla.</div>');
+						$("#editionAlert").append('<div class="alert alert-warning alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button><strong>¡Atencion!</strong> Se encuentra duplicando información del producto ' + json.editProduct.integrapp_code + ' que ha cargado recientemente, para volver a cargar un producto desde el inicio debe presionar en Cancelar al final de la pantalla.</div>');
 					}
 				},
 				error: function(jqXHR,textStatus,errorThrown){
@@ -289,7 +299,11 @@ $(document).ready(function(){
         	//console.log(x);
         });
         if(x < max_fields){ //max input box allowed
-            $(wrapper).append('<div class="form-group_specifications"><textarea type="text" class="inputProperty" id="' + x + '" name="attribute' + x + '" placeholder="Atributo..."/><textarea type="text" class="inputProperty" id="' + x + '" name="value' + x + '" placeholder="Valor..."/><a href="#" class="remove_field">X</a></div>'); //add input box
+            $(wrapper).append('<div class="form-group_specifications">'+
+	            					'<textarea type="text" id="' + x + '" name="attribute' + x + '" placeholder="Atributo..." class="col-xs-5 col-sm-5 col-md-5 col-lg-5" style="margin-right:10px;"></textarea>'+
+	            					'<textarea type="text" id="' + x + '" name="value' + x + '" placeholder="Valor..." class="col-xs-6 col-sm-6 col-md-6 col-lg-6" ></textarea>'+
+	            					'<a href="#" class="remove_field"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>'+
+            				  '</div>'); //add input box
             $('.example_specifications').remove();
         }
     });

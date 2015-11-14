@@ -5,7 +5,17 @@
 class User_model extends CI_Model {
 
 
-
+    public function isUserActive($userId){
+        $this->db->where('id', $userId);
+        $this->db->where('status', 'active');
+        $query = $this->db->get('user');
+        $result = $query->result();
+        if (count($result)>0){
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     public function get_user($id)
     {
@@ -358,8 +368,10 @@ class User_model extends CI_Model {
             $loadInfo->inactiveProducts = $this->Supplier_model->getProductsAmountByStatus($userId, 'inactive');
             $loadInfo->publishedProducts = $this->Supplier_model->getProductsAmountByStatus($userId, 'published');
             $loadInfo->pendingDistributors = $this->Supplier_model->getPendingDistributorsAmount($userId);
+            $loadInfo->isDistributorFivesRule = true;
         } else if ($user_result->role == 'distributor'){
-
+            $distributor = $this->Distributor_model->getDistributorByUserId($userId);
+            $loadInfo->isDistributorFivesRule = $this->Distributor_model->isDistributorApprovedRule($distributor->id);
         }
         $this->session->set_userdata(array('loadInfo'=>$loadInfo));
     }

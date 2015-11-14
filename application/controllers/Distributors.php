@@ -83,8 +83,8 @@ class Distributors extends CI_Controller {
 		$data['distributor'] = $distributor;
 		//set sidebar
 		$selectedCategoryId = $this->getCategoryFilter();
-		$branch = $this->getCategoryBranch($selectedCategoryId);
-		$data['childCategories'] = $this->Product_model->getCategory($selectedCategoryId); 
+		$branch = $this->Category_model->getCategoryBranchIds($selectedCategoryId);
+		$data['childCategories'] = $this->Category_model->getCategory($selectedCategoryId); 
 		$data['selectedCategoryId'] = $selectedCategoryId;
 		$data['branch'] = $branch;
 
@@ -138,16 +138,7 @@ class Distributors extends CI_Controller {
 		}
 		return $page;
 	}
-
-	public function getCategoryBranch($selectedCategoryId){
-		log_message('info', "Selected Category Id: " . $selectedCategoryId,false);
-		$categoriesArray = array();
-		if (isset($selectedCategoryId)){
-			$this->Product_model->getCategoryBranch($selectedCategoryId, $categoriesArray);	
-		}
-		return $categoriesArray;
-	}
-
+	
 	public function getCategoryFilter(){
 		$selectedCategoryId = $this->input->post("selectedCategoryId");
 		if (($selectedCategoryId == -1) or ($selectedCategoryId == 0)){

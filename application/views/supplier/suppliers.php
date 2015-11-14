@@ -6,13 +6,13 @@
         <div class="span12">
         	<?php if($this->session->flashdata('success')!= null):?>
 	            <div class="alert alert-dismissable alert-success">
-	              <button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+	              <button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
 	              <strong>Bien!</strong> <?php echo $this->session->flashdata('success'); ?></a>
 	            </div>
 	        <?php endif;?>
 			<?php if($this->session->flashdata('error')!= null):?>
 	            <div class="alert alert-dismissable alert-danger">
-	              <button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+	              <button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
 	              <strong>Atención!</strong> <?php echo $this->session->flashdata('error'); ?></a>
 	            </div>
 	        <?php endif;?>
@@ -51,7 +51,7 @@
 									            </div>
 								            </div>
 								            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-								            	<button type="submit" class="btn btn-success btn-sm" form="<?php echo $supplier->id;?>"><span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Guardar descuento</button>
+								            	<button type="submit" class="btn btn-success btn-sm" form="<?php echo $supplier->id;?>"><span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Modificar descuento</button>
 								            </div>
 							            </form>
 	                            	<?php } else { ?>
@@ -72,21 +72,24 @@
 	                            <td>
 	                            	<?php if ($supplier->supplierSuplierAssociationStatus == 'none') { ?>
 	                            		<a href="<?php echo base_url() . 'Suppliers/sendSupplierSupplierRequest/' . $supplier->id; ?>">
-	                            			<button class="btn btn-success btn-sm"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> Enviar solicitud</button>
+	                            			<button class="btn btn-success btn-sm col-xs-12"><span class="glyphicon glyphicon-link" aria-hidden="true"></span> Enviar solicitud</button>
 	                            		</a>
 	                            	<?php } else if ($supplier->supplierSuplierAssociationStatus == 'sent') { ?>
 	                            		<a href="<?php echo base_url() . 'Suppliers/cancelSupplierSupplierRequest/' . $supplier->id; ?>">
-	                            			<button class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Cancelar Solicitud</button>
+	                            			<button class="btn btn-warning btn-sm col-xs-12"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Cancelar Solicitud</button>
 	                            		</a>
 	                            	<?php } else if ($supplier->supplierSuplierAssociationStatus == 'received') { ?>
 	                            		<a href="<?php echo base_url() . 'Suppliers/sendSupplierSupplierRequest/' . $supplier->id; ?>">
-	                            			<button class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Aceptar Solicitud</button>
+	                            			<button class="btn btn-primary btn-sm col-xs-12"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span> Aceptar Solicitud</button>
 	                            		</a>
 	                            	<?php } else if ($supplier->supplierSuplierAssociationStatus == 'associated') { ?>
 	                            		<a href="<?php echo base_url() . 'Suppliers/cancelSupplierSupplierRequest/' . $supplier->id; ?>">
-	                            			<button class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Desasociarme</button>
+	                            			<button class="btn btn-warning btn-sm col-xs-12"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Desasociarme</button>
 	                            		</a>
 	                            	<?php } ?>
+	                            	<a href="<?php echo base_url() . 'Suppliers/viewCatalog/'. $supplier->id;?>"><b>
+										<button class="btn btn-warning btn-sm col-xs-12"> <span class="glyphicon glyphicon-list" aria-hidden="true"></span> Ver Catálogo</button>
+	                            	</b></a>
 	                            </td>
 	                        </tr>
                         <?php endforeach; ?>
@@ -132,5 +135,3 @@ jQuery(document).ready(function() {
     } );
 } );
 </script>
-
-<?php $this->load->view('templates/scripts/table_scripts'); ?>

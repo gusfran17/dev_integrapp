@@ -13,34 +13,36 @@
 			</div>
 			<?php if(isset($success)):?>
 				<div class="alert alert-dismissable alert-success">
-			      <button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+			      <button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
 			      <strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong>
 			      <strong>Bien!</strong> <?php echo $success; ?></a>
 			    </div>
 			<?php endif;?>
 			<?php if(isset($error)):?>
 				<div class="alert alert-dismissable alert-danger">
-			      <button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+			      <button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
 			      <strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong>
 			      <strong>ERROR!</strong> <?php echo $error; ?></a>
 			    </div>
 			<?php endif;?>
 			<div class="alert alert-dismissable alert-info">
-				  <button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+				  <button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
 				  <strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong>
 				  <strong>Atencion!</strong> Debes completar la informacion con presición. Esta información sera compartida unicamente con los ortopedistas que autorices.
 			</div>
-			<div class="panel panel-success">
-				<div class="panel-heading">
-					<h3 class="panel-title">Datos del perfil</h3>
+			<?php if ($supplier->percentage != 100) {?>
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						<h3 class="panel-title">Datos del perfil</h3>
+					</div>
+					<div class="panel-body">
+						<p>El ingreso de sus datos hace la información mucho mas visible a los usuarios que consultan sus productos y sus datos de perfil (la ubcicación de su local, el logo de la empresa, los datos de contacto, la descripción del servicio, etc.)</p>
+						<div class="progress progress-striped active">
+							<div class="progress-bar" style="width: <?php echo $supplier->percentage; ?>%"></div>
+						</div> Datos completos en un <?php echo $supplier->percentage; ?>%
+					</div> 
 				</div>
-				<div class="panel-body">
-					<p>El ingreso de sus datos hace la información mucho mas visible a los usuarios que consultan sus productos y sus datos de perfil (la ubcicación de su local, el logo de la empresa, los datos de contacto, la descripción del servicio, etc.)</p>
-					<div class="progress progress-striped active">
-						<div class="progress-bar" style="width: <?php echo $supplier->percentage; ?>%"></div>
-					</div> Datos completos en un <?php echo $supplier->percentage; ?>%
-				</div> 
-			</div>
+			<?php }?>
 			<div class="panel panel-info">
 				<div class="panel-heading">
 					<div class="panel-title" style= "text-align:center;">
@@ -106,21 +108,64 @@
 				<div class="panel-body">
 					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 						<div class="form-group">
-						  <label class="control-label" for="fake_name">Nombre de fantasía (Nombre de su empresa)</label>
+						  <label title="(Nombre de su empresa)" class="control-label" for="fake_name">Nombre de fantasía</label>
 						  <input class="form-control" id="fake_name" name="fake_name" type="text" placeHolder="Escriba el nombre de fantasía." value="<?php if (isset($supplier)) echo set_value('fake_name', $supplier->fake_name); else echo set_value('fake_name');?>">
 						</div>
 
 						<div class="form-group">
-						  <label class="control-label" for="comercial_email">Email comercial</label>
+						  <label title="(coloque sus mails de contacto aqui separados por punto y coma)" class="control-label" for="comercial_email">Emails comerciales</label>
 						  <?php echo form_error('comercial_email', '<span class="label label-danger">', '</span>'); ?>
 						  <input class="form-control" id="comercial_email" name="comercial_email" type="text" placeHolder="Dirección comercial" value="<?php if (isset($supplier)) echo set_value('commercial_email', $supplier->comercial_email); else echo set_value('comercial_email');?>">
 						</div>	
-
 						<div class="form-group">
-						  <label class="control-label" for="service_description">Descripcion del servicio</label>
+						  <label title="(este sera el numero primario de contacto para sus clientes)" class="control-label" for="contact_phone">Numero de telefono comercial</label>
+						  <?php echo form_error('contact_phone', '<span class="label label-danger">', '</span>'); ?>
+						  <input class="form-control" id="contact_phone" name="contact_phone" type="text" placeHolder="Numero de telefono de contacto" value="<?php if (isset($supplier)) echo set_value('contact_phone', $supplier->contact_phone); else echo set_value('contact_phone');?>">
+						</div>
+						<div class="panel panel-success">
+							<div class="panel-heading">
+								<a data-toggle="collapse" href="#collapseAuxPhones" aria-expanded="false" class="collapsed">
+									<h3 class="panel-title" style="text-align:center">Numeros de teléfono auxiliares <i class="fa fa-caret-down"></i></h3>
+								</a>
+							</div>
+							<div id="collapseAuxPhones" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+		 						<div class="panel-body">		
+									<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+									  <label class="control-label" for="cellphone">Celular</label>
+									  <?php echo form_error('cellphone', '<span class="label label-danger">', '</span>'); ?>
+									  <input class="form-control" id="cellphone" name="cellphone" type="text" placeHolder="Celular" value="<?php if (isset($supplier)) echo set_value('cellphone', $supplier->cellphone); else echo set_value('comercial_email');?>">
+									</div>
+
+									<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+									  <label class="control-label" for="office_phone">Oficina</label> 
+									  <?php echo form_error('office_phone', '<span class="label label-danger">', '</span>'); ?>
+									  <input class="form-control" id="office_phone" name="office_phone" type="text" placeHolder="Oficina" value="<?php if (isset($supplier)) echo set_value('office_phone', $supplier->office_phone); else echo set_value('comercial_email');?>">
+									</div>
+
+									<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+									  <label class="control-label" for="personal_phone">Particular</label> 
+									  <?php echo form_error('personal_phone', '<span class="label label-danger">', '</span>'); ?>
+									  <input class="form-control" id="personal_phone" name="personal_phone" type="text" placeHolder="Particular" value="<?php if (isset($supplier)) echo set_value('personal_phone', $supplier->personal_phone); else echo set_value('comercial_email');?>">
+									</div>
+
+									<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-6">
+									  <label class="control-label" for="fax">Fax</label>
+									  <?php echo form_error('fax', '<span class="label label-danger">', '</span>'); ?>
+									  <input class="form-control" id="fax" name="fax" type="text" placeHolder="Fax" value="<?php if (isset($supplier)) echo set_value('fax', $supplier->fax); else echo set_value('comercial_email');?>">
+									</div>
+								</div>
+							</div> 
+						</div>
+						<div class="form-group">
+						  <label class="control-label" for="service_description">Descripción del servicio</label>
 						  <textarea class="form-control" id="service_description" name="service_description" placeHolder="Describa su actividad comercial."><?php if (isset($supplier)) echo set_value('service_description', $supplier->service_description); else echo set_value('service_description');?></textarea>
 						</div>
 
+						<div class="form-group">
+						  <label class="control-label" for="working_hours">Horarios de Atención</label>
+						  <input class="form-control" id="working_hours" name="working_hours" type="text" placeHolder="Escriba aquí una su razón social" value="<?php if (isset($distributor)) echo set_value('working_hours', $distributor->working_hours); else echo set_value('working_hours'); ?>">
+						</div>
+						
 						<div class="form-group">
 						  <label class="control-label" for="razon_social">Razón social</label>
 						  <input class="form-control" id="razon_social" name="razon_social" type="text" placeHolder="Escriba aquí una su razón social" value="<?php if (isset($supplier)) echo set_value('razon_social', $supplier->razon_social); else echo set_value('razon_social'); ?>">
@@ -136,11 +181,11 @@
 						  <input class="form-control" id="fiscal_address" name="fiscal_address" type="text" placeHolder="Dirección fiscal" value="<?php if (isset($supplier)) echo set_value('fiscal_address', $supplier->fiscal_address); else echo set_value('fiscal_address'); ?>">
 						</div>
 
-						<div class="panel panel-primary">
+						<div class="panel panel-success">
 							<div class="panel-heading">
-						    	<h3 class="panel-title">
+						    	<h3 title="(Estos datos solo los podrá ver las Ortopedias que usted autorice)" class="panel-title">
 						    		<a data-toggle="collapse" href="#collapseBankInfo" aria-expanded="false" class="collapsed">
-						    			<b>Información bancaria <i class="fa fa-caret-down"></i></b> <br> (Estos datos solo los podrá ver las Ortopedias que usted autorice)
+						    			<b>Información bancaria</b> <i class="fa fa-caret-down"></i>
 						    		</a>
 						    	</h3>
 						  	</div>
@@ -221,20 +266,20 @@
 										<div class="col-lg-10">
 											<div class="radio">
 												<label>
-													<input name="locationsure" id="locationsure" type="radio" value="yes">
+													<input name="locationsure" id="locationsure" type="radio" value="yes" <?php if ($supplier->locationsure == 'yes') echo 'checked';?>>
 													Si, estoy seguro
 												</label>
 											</div>
 											<div class="radio">
 												<label>
-													<input name="locationsure" id="locationsure" type="radio" value="moreorless">
+													<input name="locationsure" id="locationsure" type="radio" value="moreorless" <?php if ($supplier->locationsure == 'moreorless') echo 'checked';?>>
 													No estoy muy seguro
 												</label>
 											</div>
 											<div class="radio">
 												<label>
-													<input name="locationsure" id="locationsure" type="radio" value="no">
-													Nada que ver, el punto esta en cualquier lado
+													<input name="locationsure" id="locationsure" type="radio" value="no" <?php if ($supplier->locationsure == 'no') echo 'checked';?>>
+													No, el punto esta muy mal ubicado
 												</label>
 											</div>
 										</div>

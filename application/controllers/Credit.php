@@ -18,6 +18,7 @@ class Credit extends CI_Controller {
 			$data['balance'] = $this->Credit_model->getLatestBalance($userId);
 			$data['transactions'] = $this->Credit_model->getTransactionsByUserId($userId);
 			$data['pendingTransfers'] = $this->Credit_model->getPendingTransfersByUserId($userId);
+			$data['tableScripts'] = true;
 			$this->routedHome("templates/credit/credit", $data, true);
 		} else if ($role == 'administrator') {
 
@@ -33,7 +34,7 @@ class Credit extends CI_Controller {
 		} else {
 			redirect(TIMEOUT_REDIRECT);
 		}
-		$this->load->view('templates/template_header');
+		$this->load->view('templates/template_header',$data);
 		$this->load->view('templates/template_nav', $data);
 		$this->load->view('navs/nav_'.$role, $data);
 		if ($template) $this->load->view($section, $data);

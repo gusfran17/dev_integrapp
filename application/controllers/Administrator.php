@@ -15,7 +15,7 @@ class Administrator extends CI_Controller {
 		} else {
 			redirect(TIMEOUT_REDIRECT);
 		}
-		$this->load->view('templates/template_header');
+		$this->load->view('templates/template_header', $data);
 		$this->load->view('templates/template_nav', $data);
 		$this->load->view('navs/nav_'.$role, $data);
 		if ($template) $this->load->view($section, $data);
@@ -25,6 +25,7 @@ class Administrator extends CI_Controller {
 
     public function credit(){
     	$data['pendingTransfers'] = $this->Credit_model->getPendingTransfers();
+    	$data['tableScripts'] = true;
     	$this->routedHome("credit/transfers", $data);
     }
 
@@ -68,6 +69,7 @@ class Administrator extends CI_Controller {
     	$data['pendingSuppliers'] = $this->Supplier_model->getPendingSuppliers();
     	$data['suppliers'] = $this->Supplier_model->getApprovedSuppliers();
     	$data['distributors'] = $this->Distributor_model->getApprovedDistributors();
+    	$data['tableScripts'] = true;
     	$this->routedHome("users", $data);
     }
 

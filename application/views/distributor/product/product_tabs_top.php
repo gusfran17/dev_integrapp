@@ -48,11 +48,11 @@
                 <a href="javascript:;" data-toggle="collapse" data-target="#orderBy" style="padding-top:20px;"><i class="fa fa-fw fa-arrows-v"></i><b> Ordenar </b><i class="fa fa-fw fa-caret-down"></i></a>
 				<ul class="collapse nav nav-pills nav-stacked" type="circle" id="orderBy">
 					<?php if (isset($viewMyCatalog)) {?>
-						<li class="<?php if ($orderBy == 'category_id') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMyDistributorCatalogBy/category_id'; ?>">Ordenado por Relevancia</a></li>
+						<li class="<?php if ($orderBy == 'published_date desc') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMyDistributorCatalogBy/published_date desc'; ?>">Ordenado por fecha de publicación</a></li>
 						<li class="<?php if ($orderBy == 'supplier_id') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderMyDistributorCatalogBy/supplier_id'; ?>">Ordenado por Proveedor</a></li>
 						<li class="<?php if ($orderBy == 'name') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMyDistributorCatalogBy/name'; ?>">Ordenado Alfabeticamente</a></li>
 					<?php } else { ?>
-						<li class="<?php if ($orderBy == 'category_id') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderDistributorCatalogBy/category_id'; ?>">Ordenado por Relevancia</a></li>
+						<li class="<?php if ($orderBy == 'published_date desc') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderDistributorCatalogBy/published_date desc'; ?>">Ordenado por fecha de publicación</a></li>
 						<li class="<?php if ($orderBy == 'supplier_id') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderDistributorCatalogBy/supplier_id'; ?>">Ordenado por Proveedor</a></li>
 						<li class="<?php if ($orderBy == 'name') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderDistributorCatalogBy/name'; ?>">Ordenado Alfabeticamente</a></li>
 					<?php } ?>
@@ -87,14 +87,14 @@
 		</div>  
 		<?php if($this->session->flashdata('success') != null):?>
 			<div class="alert alert-dismissable alert-success col-md-12 col-sm-12 col-xs-12">
-				<button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+				<button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
 				<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong>
 			 	<strong>Bien!</strong> <?php echo $this->session->flashdata('success'); ?></a>
 			</div>
 		  <?php endif;?>
 		  <?php if($this->session->flashdata('error') != null):?>
 			<div class="alert alert-dismissable alert-danger col-md-12 col-sm-12 col-xs-12">
-				<button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+				<button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
 				<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong>
 			 	<strong>Atención!</strong> <?php echo $this->session->flashdata('error'); ?></a>
 			</div>

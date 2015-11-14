@@ -1,10 +1,10 @@
 <div id="page-wrapper">
-	<div class="container-fluid" id="main-products">
+	<div class="container" id="main-products">
 		<div class="page-header" style="text-align:center; margin: 0px 0 0px;">
 			<h2><span class="label label-default" style="color:#ffffff;"><b>CLIENTES</b></span></h2>
 		</div>
 	</div>
-	<div class="bs-example">
+	<div class="container">
 	  <ul class="nav nav-tabs nav-pills" style="margin-bottom: 15px;">
 	    <li class="active">
 	        <a href="#pending" data-toggle="tab"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> Pendientes <span class="badge badge-red"><?php echo count($pendingDistributors); ?></span></a>
@@ -18,14 +18,14 @@
 	  </ul>
 	  <?php if($this->session->flashdata('success') != null):?>
 		<div class="alert alert-dismissable alert-success">
-			<button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+			<button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
 			<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong>
 		 	<strong>Bien!</strong> <?php echo $this->session->flashdata('success'); ?></a>
 		</div>
 	  <?php endif;?>
 	  <?php if($this->session->flashdata('error') != null):?>
 		<div class="alert alert-dismissable alert-success">
-			<button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+			<button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
 			<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong>
 		 	<strong>Atención!</strong> <?php echo $this->session->flashdata('error'); ?></a>
 		</div>

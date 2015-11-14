@@ -22,7 +22,7 @@ class Product extends CI_Controller {
 			redirect(TIMEOUT_REDIRECT);
 			die;
 		}
-		$this->load->view('templates/template_header');
+		$this->load->view('templates/template_header', $data);
 		$this->load->view('templates/template_nav', $data);
 		$this->load->view('navs/nav_'.$role, $data);
 		$this->load->view($role.'/product/product_tabs_top', $data);
@@ -39,7 +39,7 @@ class Product extends CI_Controller {
 		} else {
 			$role = 'home';
 		}
-		$this->load->view('templates/template_header');
+		$this->load->view('templates/template_header', $data);
 		$this->load->view('templates/template_nav', $data);
 		$this->load->view('navs/nav_'.$role, $data);
 		if ($template) $this->load->view($section, $data);
@@ -136,7 +136,7 @@ class Product extends CI_Controller {
 		$role = $this->session->userdata("role");
 		$data['productLoadView'] = true;
 		$data['Catalog'] = array();
-		$data['loadCategory']= $this->Product_model->getCategory();
+		$data['loadCategory']= $this->Category_model->getCategory();
 		$this->tabbedRoutedHome($data, 'product_load');
 	}
 
@@ -185,10 +185,10 @@ class Product extends CI_Controller {
 		$data['statusFilter'] = $statusFilter; 
 		$url = base_url() . "Product/orderSupplierCatalogBy/$orderBy";
 		$selectedCategoryId = $this->getCategoryFilter();
-		$branch = $this->getCategoryBranch($selectedCategoryId);
+		$branch = $this->Category_model->getCategoryBranchIds($selectedCategoryId);
 		$data['selectedCategoryId'] = $selectedCategoryId;
 		$data['branch'] = $branch;
-		$data['childCategories'] = $this->Product_model->getCategory($selectedCategoryId); 
+		$data['childCategories'] = $this->Category_model->getCategory($selectedCategoryId); 
 		if($this->uri->segment($this->pagination_uri_segment)){
 			$page = ($this->uri->segment($this->pagination_uri_segment)) ;
 		}else{
@@ -217,10 +217,10 @@ class Product extends CI_Controller {
         $data['statusFilter'] = $statusFilter; 
 		$url = base_url() . "Product/orderMySupplierCatalogBy/$orderBy";
 		$selectedCategoryId = $this->getCategoryFilter();
-		$branch = $this->getCategoryBranch($selectedCategoryId);
+		$branch = $this->Category_model->getCategoryBranchIds($selectedCategoryId);
 		$data['selectedCategoryId'] = $selectedCategoryId;
 		$data['branch'] = $branch;
-		$data['childCategories'] = $this->Product_model->getCategory($selectedCategoryId); 
+		$data['childCategories'] = $this->Category_model->getCategory($selectedCategoryId); 
 		if($this->uri->segment($this->pagination_uri_segment)){
 			$page = ($this->uri->segment($this->pagination_uri_segment)) ;
 		}else{
@@ -250,10 +250,10 @@ class Product extends CI_Controller {
         $data['statusFilter'] =  $statusFilter;
 		$url = base_url() . "Product/orderMySecondarySupplierCatalogBy/$orderBy";
 		$selectedCategoryId = $this->getCategoryFilter();
-		$branch = $this->getCategoryBranch($selectedCategoryId);
+		$branch = $this->Category_model->getCategoryBranchIds($selectedCategoryId);
 		$data['selectedCategoryId'] = $selectedCategoryId;
 		$data['branch'] = $branch;
-		$data['childCategories'] = $this->Product_model->getCategory($selectedCategoryId); 
+		$data['childCategories'] = $this->Category_model->getCategory($selectedCategoryId); 
 		if($this->uri->segment($this->pagination_uri_segment)){
 			$page = ($this->uri->segment($this->pagination_uri_segment)) ;
 		}else{
@@ -288,10 +288,10 @@ class Product extends CI_Controller {
 		$data['statusFilter'] = $statusFilter; 
 		$url = base_url() . "Product/orderDistributorCatalogBy/$orderBy";
 		$selectedCategoryId = $this->getCategoryFilter();
-		$branch = $this->getCategoryBranch($selectedCategoryId);
+		$branch = $this->Category_model->getCategoryBranchIds($selectedCategoryId);
 		$data['selectedCategoryId'] = $selectedCategoryId;
 		$data['branch'] = $branch;
-		$data['childCategories'] = $this->Product_model->getCategory($selectedCategoryId); 
+		$data['childCategories'] = $this->Category_model->getCategory($selectedCategoryId); 
 		if($this->uri->segment($this->pagination_uri_segment)){
 			$page = ($this->uri->segment($this->pagination_uri_segment)) ;
 		}else{
@@ -323,10 +323,10 @@ class Product extends CI_Controller {
 		}
 		$url = base_url() . "Product/orderMyDistributorCatalogBy/$orderBy";
 		$selectedCategoryId = $this->getCategoryFilter();
-		$branch = $this->getCategoryBranch($selectedCategoryId);
+		$branch = $this->Category_model->getCategoryBranchIds($selectedCategoryId);
 		$data['selectedCategoryId'] = $selectedCategoryId;
 		$data['branch'] = $branch;
-		$data['childCategories'] = $this->Product_model->getCategory($selectedCategoryId); 
+		$data['childCategories'] = $this->Category_model->getCategory($selectedCategoryId); 
 
 		if($this->uri->segment($this->pagination_uri_segment)){
 			$page = ($this->uri->segment($this->pagination_uri_segment)) ;
@@ -378,27 +378,19 @@ class Product extends CI_Controller {
 		
 	}
 
-	public function getCategoryBranch($selectedCategoryId){
-		$categoriesArray = array();
-		if (isset($selectedCategoryId)){
-				$this->Product_model->getCategoryBranch($selectedCategoryId, $categoriesArray);	
-		}
-		return $categoriesArray;
-	}
-
 	public function getCategories($id=NULL){
 		if (isset($id)) {
-			$data['NextCategory'] = $this->Product_model->getCategory($id);
+			$data['NextCategory'] = $this->Category_model->getCategory($id);
 			echo json_encode($data);
 			die();
 		}else{
-			$data['category'] = $this->Product_model->getCategory();
+			$data['category'] = $this->Category_model->getCategory();
 		}
 
 	}
 
 	public function getTree($id=NULL){
-			$data['tree'] = $this->Product_model->getTree($id);
+			$data['tree'] = $this->Category_model->getTree($id);
 			echo json_encode($data) ;
 	}
 
@@ -487,7 +479,7 @@ class Product extends CI_Controller {
 
 						$attribute = $this->input->post('attribute'.$i);
 						$value = $this->input->post('value'.$i);
-						if (isset($attribute) && isset($value)) {
+						if (isset($attribute) && isset($value) && ($value!="") && ($attribute!="")) {
 							$this->Product_model->saveProductAttribute($new_id, $attribute, $value);
 						}
 					}
@@ -570,6 +562,15 @@ class Product extends CI_Controller {
 			$data['editProduct']->colors = $colors;
 			$data['editProduct']->images = $productImages;
 			$data['editProduct']->attributes = $attributes;
+			if (count($productImages)>0) {
+				if ($productImages[0]!= PRODUCT_NO_FOTO) {
+					$data['editProduct']->hasImages = true;
+				} else {
+					$data['editProduct']->hasImages = false;	
+				}
+			} else {
+				$data['editProduct']->hasImages = false;
+			}
 			echo json_encode($data);
 		}
 	}
@@ -580,11 +581,15 @@ class Product extends CI_Controller {
 			$colors = $this->Product_model->getProductColors($product->id);
 			$attributes = $this->Product_model->getProductAttributes($product->id);
 			$productImages = $this->Product_model->getProductImages($product->id);
-			$category = $this->Product_model->getCategoryRecord($product->category_id);
+			$category = $this->Category_model->getCategoryRecord($product->category_id);
 
 			$data['editProduct'] = $product;
 			$data['colors'] = $colors;
-			$data['images'] = $productImages;
+			if (count($productImages)>0){
+				if ($productImages[0] != PRODUCT_NO_FOTO){
+					$data['images'] = $productImages;
+				}
+			}
 			$data['attributes'] = $attributes;
 			$data['editProduct']->category = $category[0];
 			
@@ -627,7 +632,7 @@ class Product extends CI_Controller {
 		$productImages = $this->Product_model->getProductImages($productId);
 		$colors = $this->Product_model->getProductColors($productId);
 		$attributes = $this->Product_model->getProductAttributes($productId);
-		$branch = $this->getCategoryBranch($product->category_id);
+		$branch = $this->Category_model->getCategoryBranchIds($product->category_id);
 		if (isset($role)){
 			if (($product->supplier_id == $roleId) and ($role=='supplier')) {
 				$product->mine = true;
@@ -660,6 +665,8 @@ class Product extends CI_Controller {
 		$data['product']->colors = $colors;
 		$data['product']->attributes = $attributes;
 		$data['distributorLocations'] = $this->getDistributorLocations($productId);
+		$data['googleMapsScripts'] = true;
+		$data['locatePointsScripts'] = true;
 		$this->routedHome($data, 'templates/product/product', true);
 	}
 
@@ -676,6 +683,7 @@ class Product extends CI_Controller {
 				$location['email'] = $distributor->comercial_email;
 				$location['phone'] = $distributor->contact_phone;
 				$location['address'] = $distributor->commercial_address;
+				$location['workingHours'] = $distributor->working_hours;
 				$location['img'] = base_url() . ((isset($distributor->logo))? $distributor->logo: IMAGES_PATH . 'noProfilePic.jpg');
 				$location['link'] = base_url() . "distributors/viewDistributor/" . $distributor->id;
 				$location['bg-color'] = "#ffff88";
@@ -691,6 +699,7 @@ class Product extends CI_Controller {
 			$location['description'] = "Ninguno de los Ortopedistas inscriptos en esta página distribuyen este producto, disculpe los inconvenientes.";
 			$location['email'] = "";
 			$location['phone'] = "";
+			$location['workingHours'] = "";
 			$location['img'] = base_url() . IMAGES_PATH . "example.png";
 			$location['link'] = "#";
 			$location['bg-color'] = "#ff5555";

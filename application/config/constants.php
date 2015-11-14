@@ -101,7 +101,7 @@ define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 |
 */
 //PROFILE PICTURE
-define('ALLOWED_PROFILE_IMAGE_TYPE', 'png');
+define('ALLOWED_PROFILE_IMAGE_TYPE', 'png|jpg|gif');
 define('ALLOWED_PROFILE_IMAGE_MAXSIZE', 200);
 define('ALLOWED_PROFILE_IMAGE_MAXWIDTH', 300);
 define('ALLOWED_PROFILE_IMAGE_MAXHEIGHT', 250);
@@ -122,7 +122,7 @@ define('DISTRIBUTOR_PROFILE_IMAGE_PATH', '/Resources/imgs/profile/distributor/')
 define('SUPPLIER_PROFILE_IMAGE_PATH', '/Resources/imgs/profile/supplier/');
 define('PRODUCT_IMAGES_PATH', '/Resources/imgs/product/');
 define('VOUCHER_IMAGES_PATH', '/Resources/imgs/voucher/');
-
+define('PRODUCT_NO_FOTO', 'NoFoto.jpg');
 /*
 |Product INFORMATION
 */
@@ -130,9 +130,10 @@ define('VOUCHER_IMAGES_PATH', '/Resources/imgs/voucher/');
 define('MAX_ATTRIBUTE_AMOUNT', 20);
 /*Product description length*/
 define('PROD_DESCRIPTION_MIN_LENGTH', 0);
-define('PROD_DESCRIPTION_MAX_LENGTH', 400);
+define('PROD_DESCRIPTION_MAX_LENGTH', 1500);
 /*Catalog*/
 define('DEFAULT_CATALOG_ORDER', 'published_date desc');
+define('PRODUCT_DEFAULT_VIEW', 'tilesView');
 /*Prices*/
 define('PRICE_DECIMAL_AMOUNT', 2);
 define('DECIMAL_SEPARATOR', ',');

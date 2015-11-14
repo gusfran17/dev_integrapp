@@ -34,6 +34,9 @@ html, body{font-family: OpenSans}
 	background-color: #478499;
 } 
 
+.glyphicon-remove{
+	height:40px;
+}
 
 /*
 / SIDEBAR

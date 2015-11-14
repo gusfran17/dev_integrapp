@@ -45,44 +45,56 @@
 											<td>
 												<div class="dropdown" style="margin-bottom: 10px;">
 													<button class="btn btn-info btn-xs dropdown-toggle" type="button" id="suppliersDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-														<?php echo $Catalog[$i]->primarySupplier->fake_name; ?>
-														<?php if (isset($Catalog[$i]->primarySupplier->price)){ 
-																echo " $".$Catalog[$i]->primarySupplier->price;
-														}?>
+														<?php if ((isset($Catalog[$i]->primarySupplier->price)) or($loadInfo->isDistributorFivesRule == true)) {?>
+															<?php echo $Catalog[$i]->primarySupplier->fake_name; ?>
+															<?php if (isset($Catalog[$i]->primarySupplier->price)){ 
+																	echo " $".number_format($Catalog[$i]->primarySupplier->price, PRICE_DECIMAL_AMOUNT, DECIMAL_SEPARATOR, THOUSANDS_SEPARATOR);
+															}?>
+														<?php } else { ?>
+															No ascociado al proveedor
+														<?php } ?>
 														<span class="caret"></span>
 													</button>
 													<ul class="dropdown-menu" aria-labelledby="suppliersDropDown">
 														<li class="dropdown-header">Proveedor Principal</li>
-														<li><a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $Catalog[$i]->primarySupplier->id;?>">
-														<?php if(isset($Catalog[$i]->primarySupplier->logo)){ ?>
-						     								<img src="<?php echo base_url() . $Catalog[$i]->primarySupplier->logo; ?>" style="height: 20px">
-						     							<?php } else { ?>
-						     								<img src="<?php echo base_url() . IMAGES_PATH . 'noProfilePic.jpg'; ?>" style="height: 20px">
-														<?php } ?>
-															<?php echo $Catalog[$i]->primarySupplier->fake_name; ?>
-															<?php if (isset($Catalog[$i]->primarySupplier->price)){ 
-																echo "(lo vende a $".$Catalog[$i]->primarySupplier->price.")";
-															} else {
-																echo "(no esta asociado)";	
-															}?></a>
-														</li>
-														<li role="separator" class="divider"></li>
-														<li class="dropdown-header">Proveedores secundarios que lo redistribuyen</li>
-														<?php foreach ($Catalog[$i]->secondarySuppliers as $secSupplier) { ?>
-															<li><a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $secSupplier->id;?>">
-															<?php if(isset($secSupplier->logo)){ ?>
-							     								<img src="<?php echo base_url() . $secSupplier->logo; ?>" style="height: 20px">
+														<?php if ((isset($Catalog[$i]->primarySupplier->price)) or($loadInfo->isDistributorFivesRule == true)) {?>
+															<li><a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $Catalog[$i]->primarySupplier->id;?>">
+															<?php if(isset($Catalog[$i]->primarySupplier->logo)){ ?>
+							     								<img src="<?php echo base_url() . $Catalog[$i]->primarySupplier->logo; ?>" style="height: 20px">
 							     							<?php } else { ?>
 							     								<img src="<?php echo base_url() . IMAGES_PATH . 'noProfilePic.jpg'; ?>" style="height: 20px">
 															<?php } ?>
-																<?php echo $secSupplier->fake_name; ?> 
-																<?php if (isset($secSupplier->price)) { 
-																	echo "(lo vende a $".$secSupplier->price.")";
+																<?php echo $Catalog[$i]->primarySupplier->fake_name; ?>
+																<?php if (isset($Catalog[$i]->primarySupplier->price)){ 
+																	echo "(lo vende a $".number_format($Catalog[$i]->primarySupplier->price, PRICE_DECIMAL_AMOUNT, DECIMAL_SEPARATOR, THOUSANDS_SEPARATOR).")";
 																} else {
 																	echo "(no esta asociado)";	
 																}?></a>
-
 															</li>
+														<?php } else { ?>
+															<li><a href="">No disponible</a></li>
+														<?php } ?>
+														<li role="separator" class="divider"></li>
+														<li class="dropdown-header">Proveedores secundarios que lo redistribuyen</li>
+														<?php foreach ($Catalog[$i]->secondarySuppliers as $secSupplier) { ?>
+															<?php if ((isset($secSupplier->price)) or($loadInfo->isDistributorFivesRule == true)) {?>
+																<li><a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $secSupplier->id;?>">
+																<?php if(isset($secSupplier->logo)){ ?>
+								     								<img src="<?php echo base_url() . $secSupplier->logo; ?>" style="height: 20px">
+								     							<?php } else { ?>
+								     								<img src="<?php echo base_url() . IMAGES_PATH . 'noProfilePic.jpg'; ?>" style="height: 20px">
+																<?php } ?>
+																	<?php echo $secSupplier->fake_name; ?> 
+																	<?php if (isset($secSupplier->price)) { 
+																		echo "(lo vende a $".number_format($secSupplier->price, PRICE_DECIMAL_AMOUNT, DECIMAL_SEPARATOR, THOUSANDS_SEPARATOR).")";
+																	} else {
+																		echo "(no esta asociado)";	
+																	}?></a>
+
+																</li>
+															<?php } else {?>
+
+															<?php } ?>
 														<?php }?>
 													</ul>
 												</div>

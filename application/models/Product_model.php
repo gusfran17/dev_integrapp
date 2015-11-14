@@ -2,60 +2,6 @@
 
 class Product_model extends CI_Model {
 
-
-    public function getCategory($parent=null){
-
-        $this->db->where("parent_id", $parent);
-        $query = $this->db->get('category');
-        if($query->num_rows() == 0){
-            return null;
-        }
-        $result = $query->result();
-        return $result;
-    }
-
-    public function getCategoryRecord($categoryId){
-        $this->db->where("id", $categoryId);
-        $query = $this->db->get('category');
-        if($query->num_rows() == 0){
-            return null;            
-        }
-        $result = $query->result();
-        return $result;
-    }
-    
-    public function getCategories($parent=null, $tab=""){
-        $this->db->where("parent_id", $parent);
-        $query = $this->db->get('category');
-        $result = $query->result();
-
-        $tab = $tab."\t";
-        $categories = "";
-
-        foreach($result as $record){
-                $categories = $categories . $tab . $record->name . "\n" . $this->getCategories($record->id,$tab);
-        }
-        return  $categories;
-
-    }
-
-    public function getCategoryBranch($categoryId, &$branch, $level=0){
-            $categoryRecord = $this->getCategoryRecord($categoryId);
-            if (isset($categoryRecord)){
-                $branch[$level] = $categoryRecord[0];
-                $level ++;
-                $this->getCategoryBranch($categoryRecord[0]->parent_id, $branch, $level);
-            } 
-    }
-
-    public function getTree($categoryId){
-        $this->db->select('ascending_path');
-        $this->db->from('category');
-        $this->db->where('id', $categoryId);
-        $result = $this->db->get();
-        return $result->row_array();
-    }
-
     public function productNameCheck($productName){
         $this->db->where("name", $productName);
         $query = $this->db->get('product');
@@ -228,7 +174,7 @@ class Product_model extends CI_Model {
         //Category ID needs to be fetched first to avoid where clauses errors
         if (isset($parentCategoryId) and ($parentCategoryId != 0)){
             $leafCategories = array();
-            $this->getLeafCategories($leafCategories, $parentCategoryId);
+            $this->Category_model->getLeafCategories($leafCategories, $parentCategoryId);
             $this->db->where_in("category_id", $leafCategories);
         }
         $this->db->select('product.*');
@@ -395,8 +341,27 @@ class Product_model extends CI_Model {
         return $finalResult;
     }
 
-    public function getPacientCatalog(){
-        $orderBy = "published_date DESC";
+    public function getPacientCatalog($parentCategoryId = null, $page = 1, $rangePerPage = 1000, &$totalRows=null){
+        if (!isset($orderBy)){
+            $orderBy = "published_date DESC";    
+        }
+        $whereCategoryIn = "";
+        //Category ID needs to be fetched first to avoid where clauses errors
+        if (isset($parentCategoryId) and ($parentCategoryId != 0)){
+            $leafCategories = array();
+            $this->Category_model->Category_model->getLeafCategories($leafCategories, $parentCategoryId);
+            if (count($leafCategories)>0){
+                $whereCategoryIn = "AND category_id IN ( ";
+                for ($i=0; $i < count($leafCategories); $i++) {
+                    $whereCategoryIn = $whereCategoryIn . $leafCategories[$i];
+                    if ($i <count($leafCategories)-1){
+                        $whereCategoryIn = $whereCategoryIn . ",";
+                    }
+                }
+                $whereCategoryIn = $whereCategoryIn . ")";
+            }
+            
+        }
         //si la busqueda la hace un paciente solo se muestran los productos publicados por minoristas que esten activos
         $queryScript = 
         "SELECT DISTINCT id, name, description, short_desc, price, code, supplier_id, category_id, status, prescription, tax, expire_date, last_update, published_date, integrapp_code 
@@ -410,31 +375,22 @@ class Product_model extends CI_Model {
             INNER JOIN user u2 ON distributor.userid = u2.id
             WHERE user.status = 'active'
             AND u2.status = 'active'
+            $whereCategoryIn
         ) result
         ORDER BY $orderBy";
+
+        $from =  ($page-1) * $rangePerPage;
         $query = $this->db->query($queryScript);
         $result = $query->result();
         $totalRows = count($result);
         $j = 0;
         $finalResult = array();
-        for ($i= 0; $i< $totalRows; $i++){
-            $result[$i]->images = $this->Product_model->getProductImages($result[$i]->id);
+        for ($i= (($page-1)*$rangePerPage); $i< (((($page)*$rangePerPage) < count($result))? ($page*$rangePerPage): count($result)); $i++){
+            $result[$i]->images = $this->getProductImages($result[$i]->id);
             $finalResult[$j] = $result[$i];
             $j++;
         }
         return $finalResult;
-    }
-
-    public function getLeafCategories(&$leafCategories, $parentCategoryId){
-        //log_message('info', "Product_model getLeafCategories ParentID: ".$parentCategoryId, FALSE);
-        $childCategories = $this->getCategory($parentCategoryId);
-        if (count($childCategories)>0){
-            foreach ($childCategories as $childCategory) {
-                $this->getLeafCategories($leafCategories, $childCategory->id);
-            }  
-        } else {
-             $leafCategories[] = $parentCategoryId;
-        }
     }
 
     public function addProductPublishingCost(&$product){
@@ -517,7 +473,13 @@ class Product_model extends CI_Model {
         if (file_exists($targetPath)) {
             $files = scandir($targetPath,1);    
             $array = array_diff($files, array('.', '..', 'thumbs'));
-            $max_key = max(array_keys($array)); 
+            if (count($array)>0){
+                $max_key = max(array_keys($array)); 
+            } else {
+                $noFoto = true;
+                $array[] = PRODUCT_NO_FOTO; 
+                $max_key = 1;
+            }
         }   else {
             $noFoto = true;
             $array = array();

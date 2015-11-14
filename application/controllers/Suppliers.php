@@ -22,7 +22,7 @@ class Suppliers extends CI_Controller {
 			redirect(TIMEOUT_REDIRECT);
 			die;
 		}
-		$this->load->view('templates/template_header');
+		$this->load->view('templates/template_header', $data);
 		$this->load->view('templates/template_nav', $data);
 		$this->load->view('navs/nav_'.$role, $data);
 		if ($template) $this->load->view($section, $data);
@@ -47,6 +47,7 @@ public function index(){
 
 	private function viewSuppliersForSupplier($roleId){
 		$data['suppliers'] = $this->Supplier_model->getSuppliersForSupplier($roleId);
+		$data['tableScripts'] = true;
 		$this->routedHome($data, 'suppliers');
 	}
 
@@ -66,8 +67,8 @@ public function index(){
 		$data["pageLinks"] = explode('&nbsp;',$str_links );
 		$data['watchingRole'] = $role;
 		// View data according to array.
-		$section = 'templates/supplier/suppliers';
-		$this->routedHome($data, $section, true);
+		$section = 'suppliers';
+		$this->routedHome($data, $section, false);
 	}
 
 	public function viewSupplier($supplierId){
@@ -131,8 +132,8 @@ public function index(){
 		}
 		//set sidebar
 		$selectedCategoryId = $this->getCategoryFilter();
-		$branch = $this->getCategoryBranch($selectedCategoryId);
-		$data['childCategories'] = $this->Product_model->getCategory($selectedCategoryId); 
+		$branch = $this->Category_model->getCategoryBranchIds($selectedCategoryId);
+		$data['childCategories'] = $this->Category_model->getCategory($selectedCategoryId); 
 		$data['selectedCategoryId'] = $selectedCategoryId;
 		$data['branch'] = $branch;
 
@@ -177,15 +178,6 @@ public function index(){
 			$page = 1;
 		}
 		return $page;
-	}
-
-	public function getCategoryBranch($selectedCategoryId){
-		log_message('info', "Selected Category Id: " . $selectedCategoryId,false);
-		$categoriesArray = array();
-		if (isset($selectedCategoryId)){
-			$this->Product_model->getCategoryBranch($selectedCategoryId, $categoriesArray);	
-		}
-		return $categoriesArray;
 	}
 
 	public function getCategoryFilter(){

@@ -1,6 +1,4 @@
 <div id="page-wrapper">
-	<?php $this->load->view('templates/scripts/google_maps_scripts');?>
-	<?php $this->load->view('templates/scripts/locate_points_scripts');?>
 	<div class="container-fluid">
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<?php
@@ -21,7 +19,7 @@
 				<div class="panel-body">
 					<div class="col-md-6 col-sm-12 col-xs-12">
 						<div style="min-height:120px">
-							<h2><b><?php echo $product->name; ?></b><small> <b><?php if(($product->mine)) echo $product->price . '$' . ' (' . 'I.V.A. ' . $product->tax . ')';?></b></small></h2>
+							<h2><b><?php echo $product->name; ?></b><small> <b><?php if(($product->mine)) echo '$'.number_format($product->price, PRICE_DECIMAL_AMOUNT, DECIMAL_SEPARATOR, THOUSANDS_SEPARATOR) . ' (' . 'I.V.A. ' . $product->tax . ')';?></b></small></h2>
 							<?php if ($watchingRole != "pacient") {?>
 								<h4><strong>Código Interno <?php echo "(".$product->primarySupplier->fake_name . ")";?>:</strong> <?php echo $product->code; ?><br></h4>
 							<?php }?>
@@ -95,10 +93,10 @@
 														</button>
 														<ul class="dropdown-menu" aria-labelledby="suppliersDropDown" style="max-width:300px;">
 															<li><a style="max-width:300px;">
-																	El proveedor le ofrece un <b><?php echo $product->supplier->associationDiscount;?>%</b> <br>
+																	El proveedor le ofrece un <b><?php echo $product->primarySupplier->associationDiscount;?>%</b> <br>
 																	de descuento sobre sus productos<br>
 															</a></li>
-															<li><a><b>Precio final: $<?php echo (($product->price)-((($product->supplier->associationDiscount)*($product->price))/100));?></b><br><br></a></li>
+															<li><a><b>Precio final: $<?php echo number_format((($product->price)-((($product->primarySupplier->associationDiscount)*($product->price))/100)), PRICE_DECIMAL_AMOUNT, DECIMAL_SEPARATOR, THOUSANDS_SEPARATOR);?></b><br><br></a></li>
 															<li><a>
 																Ingrese el precio que quiere que se<br>
 																muestre en su catálogo (es el que <br>
@@ -122,7 +120,7 @@
 										<?php } else {?>
 											<?php if ($watchingRole == 'supplier'){ ?>
 												<form action="<?php echo base_url() . 'product/removeProductFromSupplierCatalog/' . $product->id; ?>" id="<?php echo 'removeFromSecSuppCat_' . $product->id; ?>" style="padding-bottom: 0px;">
-													<button type="submit" onclick="" class="btn btn-danger btn-xs" style="min-width: 170px;" form="<?php echo 'removeFromSecSuppCat_' . $product->id; ?>"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Remover de mi Catálogo</button>
+													<button type="submit" onclick="" class="btn btn-danger btn-xs" style="min-width: 170px;" form="<?php echo 'removeFromSecSuppCat_' . $product->id; ?>"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Remover de mi Catálogo</button>
 												</form>
 											<?php } else if ($watchingRole == 'distributor'){ ?>
 												<a href="<?php echo base_url() . 'Product/removeProductFromDistributorCatalog/'. $product->id;?>">
@@ -141,23 +139,27 @@
 									</button>
 									<ul class="dropdown-menu" aria-labelledby="suppliersDropDown">
 										<li class="dropdown-header">Proveedor Principal</li>
-										<li>
-											<a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $product->primarySupplier->id;?>">
-												<?php if(isset($product->primarySupplier->logo)){ ?>
-				     								<img src="<?php echo base_url() . $product->primarySupplier->logo; ?>" style="height: 20px">
-				     							<?php } else { ?>
-				     								<img src="<?php echo base_url() . IMAGES_PATH . 'noProfilePic.jpg'; ?>" style="height: 20px">
-												<?php } ?>
-												<?php echo $product->primarySupplier->fake_name; ?> 
-												<?php if ($watchingRole == "distributor"){
-													if (isset($product->primarySupplier->price)) {
-														echo "(lo vende a $".$product->primarySupplier->price.")";
-													} else {
-														echo "(no esta asociado)";	
-													}
-												}?>
-											</a>
-										</li>
+										<?php if ((isset($product->primarySupplier->price)) or($loadInfo->isDistributorFivesRule == true)) {?>
+											<li>
+												<a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $product->primarySupplier->id;?>">
+													<?php if(isset($product->primarySupplier->logo)){ ?>
+					     								<img src="<?php echo base_url() . $product->primarySupplier->logo; ?>" style="height: 20px">
+					     							<?php } else { ?>
+					     								<img src="<?php echo base_url() . IMAGES_PATH . 'noProfilePic.jpg'; ?>" style="height: 20px">
+													<?php } ?>
+													<?php echo $product->primarySupplier->fake_name; ?> 
+													<?php if ($watchingRole == "distributor"){
+														if (isset($product->primarySupplier->price)) {
+															echo "(lo vende a $".number_format($product->primarySupplier->price, PRICE_DECIMAL_AMOUNT, DECIMAL_SEPARATOR, THOUSANDS_SEPARATOR).")";
+														} else {
+															echo "(no esta asociado)";	
+														}
+													}?>
+												</a>
+											</li>
+										<?php } else { ?>
+											<li><a href="">Información no disponible</a></li>
+										<?php } ?>
 										<li role="separator" class="divider"></li>
 										<li class="dropdown-header">
 											<?php  if (count($product->secondarySuppliers) == 0) { ?>
@@ -167,23 +169,25 @@
 											<?php } ?>
 										</li>
 										<?php foreach ($product->secondarySuppliers as $secSupplier) { ?>
-											<li>
-												<a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $secSupplier->id;?>">
-													<?php if(isset($secSupplier->logo)){ ?>
-					     								<img src="<?php echo base_url() . $secSupplier->logo; ?>" style="height: 20px">
-					     							<?php } else { ?>
-					     								<img src="<?php echo base_url() . IMAGES_PATH . 'noProfilePic.jpg'; ?>" style="height: 20px">
-													<?php } ?>
-													<?php echo $secSupplier->fake_name; ?>
-													<?php if ($watchingRole == "distributor"){
-														if (isset($secSupplier->price)){ 
-															echo "(lo vende a $".$secSupplier->price.")";
-														} else {
-															echo "(no esta asociado)";	
-														}
-													}?>
-												</a>
-											</li>
+											<?php if ((isset($secSupplier->price)) or($loadInfo->isDistributorFivesRule == true)) {?>
+												<li>
+													<a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $secSupplier->id;?>">
+														<?php if(isset($secSupplier->logo)){ ?>
+						     								<img src="<?php echo base_url() . $secSupplier->logo; ?>" style="height: 20px">
+						     							<?php } else { ?>
+						     								<img src="<?php echo base_url() . IMAGES_PATH . 'noProfilePic.jpg'; ?>" style="height: 20px">
+														<?php } ?>
+														<?php echo $secSupplier->fake_name; ?>
+														<?php if ($watchingRole == "distributor"){
+															if (isset($secSupplier->price)){ 
+																echo "(lo vende a $".number_format($secSupplier->price, PRICE_DECIMAL_AMOUNT, DECIMAL_SEPARATOR, THOUSANDS_SEPARATOR).")";
+															} else {
+																echo "(no esta asociado)";	
+															}
+														}?>
+													</a>
+												</li>
+											<?php }?>
 										<?php }?>
 									</ul>
 								</div>
@@ -272,7 +276,7 @@
 					<div class="col-md-6 col-sm-12 col-xs-12" style="text-align:center;">
 						<div class="panel panel-default" style="margin-top: 70px;">
 							<div class="panel-body">
-								<h2><b><?php if (($watchingRole == 'supplier') or ($watchingRole =='pacient')) echo "Ortopedias"; else echo "Proveedores" ?></b></h2>
+								<h2><b><?php if (($watchingRole == 'supplier') or ($watchingRole =='pacient')) echo "Ortopedias que lo comercializan"; else echo "Ortopedias que lo comercializan" ?></b></h2>
 								<div id="googleMap" style="width:100%;height:450px;"></div>
 								<!-- <img src="<?php echo base_url() . 'Resources/imgs/map_example.png'; ?>" style="max-height: 400px">		 -->
 							</div>

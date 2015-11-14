@@ -4,7 +4,6 @@ class Category_model extends CI_Model {
 
 
     public function getCategory($parent=null){
-
         $this->db->where("parent_id", $parent);
         $query = $this->db->get('category');
         if($query->num_rows() == 0){
@@ -69,6 +68,13 @@ class Category_model extends CI_Model {
         }
     }
 
+    public function getCategoryBranchIds($selectedCategoryId){
+        $categoriesArray = array();
+        if (isset($selectedCategoryId)){
+                $this->getCategoryBranch($selectedCategoryId, $categoriesArray); 
+        }
+        return $categoriesArray;
+    }
 
 }
 

@@ -97,7 +97,7 @@ class Profile extends CI_Controller {
    		$this->form_validation->set_rules('city', 'Ciudad', 'trim');
    		$this->form_validation->set_rules('commercial_address', 'Dirección Comercial', 'trim');
 		if(($role == "distributor") or ($role == "supplier")){
-	   		$this->form_validation->set_rules('comercial_email', 'Email comercial', 'trim|valid_email');
+	   		$this->form_validation->set_rules('comercial_email', 'Email comercial', 'trim');
 	   		$this->form_validation->set_rules('comercial_address', 'Dirección comercial', 'trim');
 	   		$this->form_validation->set_rules('razon_social', 'Razon social', 'trim');
 	   		$this->form_validation->set_rules('fiscal_address', 'Direccion fiscal', 'trim');
@@ -128,7 +128,13 @@ class Profile extends CI_Controller {
 		   		$data['fiscal_address'] = $this->input->post("fiscal_address");
 		   		$data['latLocation'] = $this->input->post("latLocation");
 			   	$data['longLocation'] = $this->input->post("longLocation");
-			   	log_message('info', "LAT: " . $data['city'] , false);
+			   	$data['personal_phone'] = $this->input->post("personal_phone");
+			   	$data['office_phone'] = $this->input->post("office_phone");
+			   	$data['cellphone'] = $this->input->post("cellphone");
+			   	$data['fax'] = $this->input->post("fax");
+			   	$data['contact_phone'] = $this->input->post("contact_phone");
+			   	$data['working_hours'] = $this->input->post("working_hours");
+			   	$data['locationsure'] = $this->input->post("locationsure");
 				if($role == "supplier"){
 			   		$data['cbu'] = $this->input->post("cbu");
 			   		$data['checks'] = $this->input->post("checks");

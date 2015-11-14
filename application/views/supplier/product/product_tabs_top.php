@@ -74,15 +74,15 @@
 				<ul class="collapse nav nav-pills nav-stacked" type="circle" id="orderBy">
 					
 					<?php if (isset($viewCatalog)) { ?>
-						<li class="<?php if ($orderBy == 'category_id') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderSupplierCatalogBy/category_id'; ?>">Ordenado por Relevancia</a></li>
+						<li class="<?php if ($orderBy == 'published_date desc') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderSupplierCatalogBy/published_date desc'; ?>">Ordenado fecha de publicación</a></li>
 						<li class="<?php if ($orderBy == 'name') echo 'active' ?>"><a href="<?php echo base_url() . 'Product/orderSupplierCatalogBy/name'; ?>">Ordenado Alfabeticamente</a></li>
 					<?php } else if (isset($viewMyCatalog)) {?>
-						<li class="<?php if ($orderBy == 'category_id') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMySupplierCatalogBy/category_id'; ?>">Ordenado por Relevancia</a></li>
+						<li class="<?php if ($orderBy == 'published_date desc') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMySupplierCatalogBy/published_date desc'; ?>">Ordenado fecha de publicación</a></li>
 						<li class="<?php if ($orderBy == 'name') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMySupplierCatalogBy/name'; ?>">Ordenado Alfabeticamente</a></li>
 						<li class="<?php if ($orderBy == 'price desc') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMySupplierCatalogBy/price desc'; ?>">Ordenado por precios (de mayor a menor)</a> </li>
 						<li class="<?php if ($orderBy == 'price asc') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMySupplierCatalogBy/price asc'; ?>">Ordenado por precios (de menor a mayor)</a> </li>
 					<?php } else if (isset($viewMySecSuppCatalog)) {?>
-						<li class="<?php if ($orderBy == 'category_id') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMySecondarySupplierCatalogBy/category_id'; ?>">Ordenado por Relevancia</a></li>
+						<li class="<?php if ($orderBy == 'published_date desc') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMySecondarySupplierCatalogBy/published_date desc'; ?>">Ordenado fecha de publicación</a></li>
 						<li class="<?php if ($orderBy == 'name') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMySecondarySupplierCatalogBy/name'; ?>">Ordenado Alfabeticamente</a></li>
 						<li class="<?php if ($orderBy == 'price desc') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMySecondarySupplierCatalogBy/price desc'; ?>">Ordenado por precios (de mayor a menor)</a> </li>
 						<li class="<?php if ($orderBy == 'price asc') echo 'active' ?>" ><a href="<?php echo base_url() . 'Product/orderMySecondarySupplierCatalogBy/price asc'; ?>">Ordenado por precios (de menor a mayor)</a> </li>
@@ -114,7 +114,7 @@
 		<div role="tabpanel">  
 			<ul class="nav nav-pills" role="tablist" style="padding: 5px 5px 5px 5px;">
 				<li role="presentation" class="<?php if (isset($viewCatalog)) {echo "active";} ?>"><a href="<?php echo base_url() . 'Product/products'; ?>"><b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Catalogo General de IntegApp</b></a></li>
-			    <li role="presentation" class="<?php if (isset($viewMyCatalog)) {echo "active";} ?>"><a href="<?php echo base_url() . 'Product/myProducts'; ?>"><b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Catalogo como Proveedor Primario</b></a></li>
+			    <li role="presentation" class="<?php if (isset($viewMyCatalog)) {echo "active";} ?>"><a href="<?php echo base_url() . 'Product/myProducts'; ?>"><b><span class="glyphicon glyphicon-list" aria-hidden="true"></span><u> Catalogo como Proveedor Primario </u></b></a></li>
 				<li role="presentation" class="<?php if (isset($viewMySecSuppCatalog)) {echo "active";} ?>"><a href="<?php echo base_url() . 'Product/mySecondaryProducts'; ?>"><b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Catalogo como Proveedor Secundario</b></a></li>
 			    <li role="presentation" class="<?php if (isset($productLoadView)) { echo "active";} ?>"><a href="<?php echo base_url() . 'Product/productLoadView'; ?>"><b><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Cargar Productos</b></a></li>
 			    <!-- <li role="presentation"><a href="#settings" aria-controls="settings" role="settings" data-toggle="tab">Ajustes</a></li> -->

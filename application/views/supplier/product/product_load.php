@@ -1,14 +1,14 @@
 					
 			    		<?php if(isset($productLoaded)):?>
 			    			<div class="alert alert-warning alert-dismissible" role="alert">
-							  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
 							  <strong><span class="glyphicon glyphicon-check" aria-hidden="true"></span></strong>
 							  <strong>¡Felicitaciones!</strong> El producto ha sido cargado exitosamente. Puede encontrar el mismo más abajo. Desde alli puede editarlo, duplicarlo o eliminarlo.
 							</div>
 						<?php endif;?>
 						<?php if(isset($productCancelled)):?>
 			    			<div class="alert alert-warning alert-dismissible" role="alert">
-							  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
 							  <strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong>
 							  <strong>¡Atencion!</strong> La operacion ha sido cancelada.
 							</div>
@@ -56,7 +56,7 @@
 											The following is for when form validation occurs in edition-->
 											<?php if(isset($editProduct)):?>
 												<div class="alert alert-warning alert-dismissible" role="alert">
-													<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+													<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
 													<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
 													<strong>¡Atención!</strong> Se encuentra editando un producto.<br>Para volver a cargar un producto desde el inicio debe presionar en <b>Cancelar</b> al final de la pantalla.
 												</div>
@@ -106,7 +106,7 @@
 												</select>
 											</div>
 											<div class="form-group">
-												<label for="" class="control-label">Precio</label>
+												<label for="" class="control-label">Precio (sin IVA)</label>
 												<?php echo form_error('productPrice', '<span class="label label-danger">', '</span>'); ?>
 												<input type="text" class="form-control" name="productPrice" id="productPrice" placeholder="Ingrese el precio del producto..." value="<?php if (isset($editProduct)) echo set_value('productPrice', $editProduct->price); else if (!(isset($productLoaded) or isset($productCancelled))) echo set_value('productPrice');?>">
 											</div>
@@ -132,18 +132,30 @@
 													<div>
 													    <div>
 													    	<div class="input_fields_wrap panel panel-info col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin: 10px 10px 10px 10px">
-													    		<label for="" class="control-label">Variantes Exitentes (detalles, medidas, talles, etc.)</label><p>(Si agrega campos no los deje vacios porque estos no serán guardados)</p>
+													    		<label for="" class="control-label">Variantes Exitentes (medidas, talles, etc.)</label><p>(Si agrega campos no los deje vacios porque estos no serán guardados)</p>
 													    		<button class="add_field_button btn btn-success btn-sm"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Agregar mas campos</button>
-													    		<div class="example_specifications">
-																    <textarea type="text" name="attributeExample" placeholder="Tipo de Variante (Ej.:Ancho)" value="" disabled></textarea>
-																    <textarea type="text" name="valueExample" placeholder="Valor de Variantes (Ej.:30cm)" value="" disabled></textarea><a href="#" class="remove_field"> X</a>
+																<div class="form-group">
+																    <label for="" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">Atributo</label>
+																	<label for="" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">Valor</label>
 															    </div>
-																<?php if (isset($attributes)) { for ($i=0; $i<count($attributes); $i++) {?> 
+																<?php if (isset($attributes)) { 
+																	for ($i=0; $i<count($attributes); $i++) {?> 
+																		<div class="form-group_specifications">
+																			<textarea type="text" id="<?php echo $i+1; ?>" name="<?php echo 'attribute'. ($i+1);?>" placeholder="Ej.:Ancho" class="col-xs-5 col-sm-5 col-md-5 col-lg-5" style="margin-right:10px;">
+																				<?php echo  $attributes[$i]->attribute_name;?>
+																			</textarea>
+																			<textarea type="text" id="<?php echo $i+1; ?>" name="<?php echo 'value'. ($i+1);?>" placeholder="Ej.:30cm" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+																				<?php echo  $attributes[$i]->attribute_value;?>
+																			</textarea>
+																			<a href="#" class="remove_field"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+																		</div>
+																	<?php }
+																} else { ?>	
 																	<div class="form-group_specifications">
-																		<textarea type="text" class="inputProperty" id="<?php echo $i; ?>" name="<?php echo 'attribute'. $i;?>" placeholder="Ej.:Ancho"><?php echo  $attributes[$i]->attribute_name;?></textarea>
-																		<textarea type="text" class="inputProperty" id="<?php echo $i; ?>" name="<?php echo 'value'. $i;?>" placeholder="Ej.:30cm"><?php echo  $attributes[$i]->attribute_value;?></textarea><a href="#" class="remove_field"> X</a>
-																	</div>
-																<?php }}; ?>															
+																	    <textarea type="text" name="0" name="attribute0" placeholder="Ej.:Talle" value="" class="col-xs-5 col-sm-5 col-md-5 col-lg-5" style="margin-right:10px;"></textarea>
+																	    <textarea type="text" name="0" name="value0" placeholder="Ej.:XS/S/M/L/XL" value="" class="col-xs-6 col-sm-6 col-md-6 col-lg-6"></textarea><a href="#" class="remove_field"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+																    </div>
+																<?php } ?>														
 															</div>
 															<div class="panel panel-info col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin: 10px 10px 10px 10px">
 																<div class="form-group col-xs-5 col-sm-5 col-md-5 col-lg-5" style="margin: 5px 5px 5px 5px">
@@ -243,7 +255,7 @@
 														<?php foreach($images as $i): ?>
 															var mockFile = { name: "images", size: 12345, file_name: '<?php echo $i;?>' };
 															myDropzone.options.addedfile.call(myDropzone, mockFile);
-															myDropzone.options.thumbnail.call(myDropzone, mockFile, "<?php if (isset($editProduct)) echo base_url() . PRODUCT_IMAGES_PATH . $editProduct->id . '/thumbs/' . $i; else echo base_url() . PRODUCT_IMAGES_PATH . 'temp/thumbs/' . $i;?>");
+															myDropzone.options.thumbnail.call(myDropzone, mockFile, "<?php if (isset($editProduct)) echo base_url() . PRODUCT_IMAGES_PATH . $i; else echo base_url() . PRODUCT_IMAGES_PATH . 'temp/thumbs/' . $i;?>");
 														<?php endforeach; ?>
 													</script>
 												<?php else: ?>
@@ -302,7 +314,7 @@
 												<thead>
 													<tr>
 														<th>Nombre</th>
-														<th>Precio</th>
+														<th>Precio (sin IVA)</th>
 														<th>Código Integrapp</th>
 														<th>Código</th>
 														<th>Acción</th>
@@ -312,14 +324,14 @@
 													<?php if (isset($lastLoadedProductsGrid)) { for ($i=0; $i<count($lastLoadedProductsGrid); $i++) {?> 
 														<tr id="<?php echo 'tr_' . $lastLoadedProductsGrid[$i]->integrapp_code;?>">
 															<td><?php echo $lastLoadedProductsGrid[$i]->name;?></td>
-															<td><?php echo $lastLoadedProductsGrid[$i]->price . '$';?></td>
+															<td><?php echo '$'.number_format($lastLoadedProductsGrid[$i]->price, PRICE_DECIMAL_AMOUNT, DECIMAL_SEPARATOR, THOUSANDS_SEPARATOR);?></td>
 															<td><?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?></td>
 															<td><?php echo $lastLoadedProductsGrid[$i]->code;?></td>
 															<td>
 																
 																<button type='submit' class="btn btn-success btn-xs" name = "editRecentlyAdded" id="<?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?>" form="divRecentlyAddedProducts"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar</button>
 																<button type='submit' class="btn btn-success btn-xs" name = "duplicateRecentlyAdded" id="<?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?>" form="divRecentlyAddedProducts"><span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span> Duplicar</button>
-																<button type='submit' class="btn btn-warning btn-xs" name = "deleteRecentlyAdded" id="<?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?>" form="divRecentlyAddedProducts">Eliminar</button>
+																<!-- <button type='submit' class="btn btn-warning btn-xs" name = "deleteRecentlyAdded" id="<?php echo $lastLoadedProductsGrid[$i]->integrapp_code;?>" form="divRecentlyAddedProducts">Eliminar</button> -->
 															</td>
 														</tr>
 													<?php }}; ?>
@@ -342,7 +354,7 @@
 									</div>
 									<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align:center;">
 										<button type="submit" id="saveProduct" name="submitLoad" value="Guardar" class="btn btn-success btn-lg"><span class='glyphicon glyphicon-floppy-save' aria-hidden='true'></span> Guardar</button>
-										<button type="submit" id="cancelLoad" name="submitLoad" value="Cancelar" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Cancelar</button>
+										<button type="submit" id="cancelLoad" name="submitLoad" value="Cancelar" class="btn btn-warning btn-lg"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span> Cancelar</button>
 									</div>
 
 								</div>

@@ -3,7 +3,7 @@
 
 	    <?php if($this->session->flashdata('success')) :?>
 	        <div class="alert alert-dismissable alert-success">
-	          <button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+	          <button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
 	          <strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Bien!</strong> <?php echo $this->session->flashdata('success'); ?></a>
 	        </div>
 	    <?php endif;?>
@@ -117,5 +117,3 @@ jQuery(document).ready(function() {
     } );
 } );
 </script>
-
-<?php $this->load->view('templates/scripts/table_scripts');

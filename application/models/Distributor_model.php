@@ -186,7 +186,7 @@ class Distributor_model extends CI_Model {
         }
     }
 
-    public function isDistributorFivesRule($distributorId){
+    public function isDistributorApprovedRule($distributorId){
         $this->db->from('supplier_distributor_association');
         $this->db->where('distributor_id',$distributorId);
         $this->db->where('status','approved');
@@ -204,7 +204,7 @@ class Distributor_model extends CI_Model {
         //Category ID needs to be fetched first to avoid where clauses errors
         if (isset($parentCategoryId) and ($parentCategoryId != 0)){
             $leafCategories = array();
-            $this->Product_model->getLeafCategories($leafCategories, $parentCategoryId);
+            $this->Category_model->getLeafCategories($leafCategories, $parentCategoryId);
             if (count($leafCategories)>0){
                 $whereCategoryIn = "AND category_id IN ( ";
                 for ($i=0; $i < count($leafCategories); $i++) {

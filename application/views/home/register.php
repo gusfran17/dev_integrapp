@@ -4,7 +4,7 @@
 			<div class="container" id="registration">
 				<?php if($this->session->flashdata('error') != null):?>
 					<div class="alert alert-dismissable alert-danger col-md-12 col-sm-12 col-xs-12">
-						<button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+						<button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
 						<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong>
 					 	<strong>Atención!</strong> <?php echo $this->session->flashdata('error'); ?></a>
 					</div>

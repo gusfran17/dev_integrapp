@@ -144,5 +144,6 @@ $autoload['model'] =  array(
 	"Product_model",
 	"Credit_model",
 	"Locations_model",
-	"Settings_model"
+	"Settings_model",
+	"Category_model"
 	);

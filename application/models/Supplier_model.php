@@ -106,7 +106,8 @@ class Supplier_model extends CI_Model {
                 if ($supplier->id == $sentRequest->to_supplier_id){
                     if ($supplier->supplierSuplierAssociationStatus == "received"){
                         $suppliers[$supplierkey]->supplierSuplierAssociationStatus = "associated";
-                        $suppliers[$supplierkey]->toSuplierDiscount = $sentRequest->to_supplier_discount;
+                        $suppliers[$supplierkey]->toSupplierDiscount = $sentRequest->to_supplier_discount;
+                        log_message('info',"to_supplier_discount".$sentRequest->to_supplier_discount, false);
                     } else {
                         $suppliers[$supplierkey]->supplierSuplierAssociationStatus = "sent";
                     }
@@ -364,7 +365,6 @@ class Supplier_model extends CI_Model {
         $this->db->where('userid', $userId);
         $query = $this->db->get('supplier');
         $result = $query->result();
-        log_message('info',"USER ID en Supplier_model: ".count($result),false);
         return $result[0]->id;
     }
 
@@ -377,11 +377,18 @@ class Supplier_model extends CI_Model {
     }
     
     public function getPendingDistributorsAmount($userId){
-        $supplierId = $this->getSupplierId($userId);
-        $this->db->where('supplier_id', $supplierId);
-        $this->db->where('status', 'pending');
-        $this->db->from('supplier_distributor_association');
-        return $this->db->count_all_results();
+        if ($this->User_model->isUserActive($userId)){
+            $supplierId = $this->getSupplierId($userId);
+            $this->db->from('supplier_distributor_association');
+            $this->db->join('distributor', 'supplier_distributor_association.distributor_id = distributor.id', 'inner');
+            $this->db->join('user', 'distributor.userid = user.id', 'inner');
+            $this->db->where('user.status', 'active');
+            $this->db->where('supplier_id', $supplierId);
+            $this->db->where('supplier_distributor_association.status', 'pending');
+            return $this->db->count_all_results();
+        } else {
+            return false;
+        }
     }
 
     public function setSupplierStatus($userId, $status){
@@ -515,8 +522,10 @@ class Supplier_model extends CI_Model {
 
     public function addSuppliersAssociationToProduct(&$product, $supplierId){
         $associatedIds = $this->getAssociatedSupplierIdsForSupplier($supplierId);
-        $associatedIds[] = $associatedIds[0];   
-        unset($associatedIds[0]);
+        if (count($associatedIds)>0){
+            $associatedIds[] = $associatedIds[0];
+            unset($associatedIds[0]);
+        }
         if (array_search($product->supplier_id, $associatedIds) != false){
             $product->isSupplierAssociated = true;
             $product->supplierAssociationDiscount = $this->getToSupplierDiscount($product->supplier_id, $supplierId);
@@ -532,7 +541,7 @@ class Supplier_model extends CI_Model {
         //Category ID needs to be fetched first to avoid where clauses errors
         if (isset($parentCategoryId) and ($parentCategoryId != 0)){
             $leafCategories = array();
-            $this->Product_model->getLeafCategories($leafCategories, $parentCategoryId);
+            $this->Category_model->getLeafCategories($leafCategories, $parentCategoryId);
             $this->db->where_in("category_id", $leafCategories);
         }
         $this->db->select('product.*, secondary_supplier_catalog.price as secondary_price');
@@ -567,7 +576,7 @@ class Supplier_model extends CI_Model {
         //Category ID needs to be fetched first to avoid where clauses errors
         if (isset($parentCategoryId) and ($parentCategoryId != 0)){
             $leafCategories = array();
-            $this->Product_model->getLeafCategories($leafCategories, $parentCategoryId);
+            $this->Category_model->getLeafCategories($leafCategories, $parentCategoryId);
             if (count($leafCategories)>0){
                 $whereCategoryIn = "AND category_id IN ( ";
                 for ($i=0; $i < count($leafCategories); $i++) {
