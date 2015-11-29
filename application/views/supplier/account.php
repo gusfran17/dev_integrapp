@@ -163,9 +163,9 @@
 
 						<div class="form-group">
 						  <label class="control-label" for="working_hours">Horarios de Atención</label>
-						  <input class="form-control" id="working_hours" name="working_hours" type="text" placeHolder="Escriba aquí una su razón social" value="<?php if (isset($distributor)) echo set_value('working_hours', $distributor->working_hours); else echo set_value('working_hours'); ?>">
+						  <input class="form-control" id="working_hours" name="working_hours" type="text" placeHolder="Ej. Lun. a Vier (8:00 a 18:00) Sab. (8:00 a 13:00)" value="<?php if (isset($supplier)) echo set_value('working_hours', $supplier->working_hours); else echo set_value('working_hours'); ?>">
 						</div>
-						
+
 						<div class="form-group">
 						  <label class="control-label" for="razon_social">Razón social</label>
 						  <input class="form-control" id="razon_social" name="razon_social" type="text" placeHolder="Escriba aquí una su razón social" value="<?php if (isset($supplier)) echo set_value('razon_social', $supplier->razon_social); else echo set_value('razon_social'); ?>">

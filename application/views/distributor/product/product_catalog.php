@@ -1,6 +1,6 @@
 				<div class="row" style="padding: 10px 10px 10px 10px;">
 					<div class="panel panel-primary col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-top: 15px;">
-						<div class="col-lg-10 col-md-9 col-sm-9 col-xs-8">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 							<table id="resultset" class="table table-bordered table-striped">
 				                <thead>
 				                    <tr>

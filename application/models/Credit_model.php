@@ -51,6 +51,10 @@ class  Credit_model extends CI_Model {
         }
     }
 
+    public function refund($userId,$amount){
+        $this->addTransaction($userId,$amount, "Devolución de crédito");    
+    }
+
     function addTransaction($userId, $amount, $description){
         if($amount < 0){
             $insert_data = array(

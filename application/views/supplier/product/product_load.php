@@ -13,6 +13,20 @@
 							  <strong>¡Atencion!</strong> La operacion ha sido cancelada.
 							</div>
 						<?php endif;?>
+						<?php if($this->session->flashdata('success') != null):?>
+							<div class="alert alert-dismissable alert-success" role="alert">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
+								<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong>
+							 	<strong>Bien!</strong> <?php echo $this->session->flashdata('success'); ?></a>
+							</div>
+						<?php endif;?>
+						<?php if($this->session->flashdata('error') != null):?>
+							<div class="alert alert-dismissable alert-danger" role="alert">
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
+								<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span></strong>
+							 	<strong>Atención!</strong> <?php echo $this->session->flashdata('error'); ?></a>
+							</div>
+						<?php endif;?>
 					    <div class="panel panel-primary" id="">
 									<div class="panel-heading">
 										<div class="panel-title">
@@ -106,7 +120,7 @@
 												</select>
 											</div>
 											<div class="form-group">
-												<label for="" class="control-label">Precio (sin IVA)</label>
+												<label for="" class="control-label">Precio (sin IVA)*</label>
 												<?php echo form_error('productPrice', '<span class="label label-danger">', '</span>'); ?>
 												<input type="text" class="form-control" name="productPrice" id="productPrice" placeholder="Ingrese el precio del producto..." value="<?php if (isset($editProduct)) echo set_value('productPrice', $editProduct->price); else if (!(isset($productLoaded) or isset($productCancelled))) echo set_value('productPrice');?>">
 											</div>

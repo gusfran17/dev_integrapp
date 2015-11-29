@@ -35,8 +35,8 @@ function initializeNewMap(locations,zoom){
 
 		google.maps.event.addListener(marker, 'click', (function(marker, i) {
 		return function() {
-			var imgTag = '<div class="img" style="text-align: center; padding-top:5px; padding-bottom:5px; background-color: ' + locations[i]["bg-color"] +';"><img style=" max-height:50px; max-width:140px;" src="' + locations[i]["img"]  + '"></img></div>';
-			var titleTag = '<div class="title" style="text-align: center;"><h4>' + locations[i]["title"] + '</h4></div>';
+			var imgTag = '<div class="img" style="text-align: center; padding-top:5px; padding-bottom:5px; background-color: ' + locations[i]["bg-color"] +';"><a href="'+locations[i]["link"]+'"><img style=" max-height:50px; max-width:140px;" src="' + locations[i]["img"]  + '"></img></a></div>';
+			var titleTag = '<div class="title" style="text-align: center;"><h4><a href="'+locations[i]["link"]+'">' + locations[i]["title"] + '</a></h4></div>';
 			var descriptionTag = '<div class="description" style="text-align: center;">' + 
 								 '<p>' + locations[i]["description"] + '</p>' +
 								 '</div>';

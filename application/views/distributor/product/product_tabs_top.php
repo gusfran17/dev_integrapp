@@ -66,7 +66,7 @@
 
 <div id="page-wrapper" >
 	<div class="container-fluid" id="main-products">	
-  		<div class="col-md-12 col-sm-12 col-xs-12">		
+  		<div class="col-md-10 col-sm-10 col-xs-10">		
 			<?php
 				echo '<ol class="breadcrumb" style="margin-bottom: 5px; font-size:16px">';
 				echo '<li><a href="#" onclick="selectCategory(id);" id="-1"><b><i class="fa fa-fw fa-table"></i> ' . (isset($viewMyCatalog)? "MIS PRODUCTOS": "PRODUCTOS") . '</b></a></li>';
@@ -78,6 +78,15 @@
 				}  
 				echo '</ol>';
 			?>					
+		</div>
+		<div class="col-md-2 col-sm-2 col-xs-2">
+			<ol class="breadcrumb" style="margin-bottom: 5px; font-size:16px">
+				<li>
+	                <a href="<?php echo base_url() . 'home/catalog'; ?>">
+	                	<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span><b> Vista de catalogo para pacientes</b>
+	                </a>
+				</li>
+			</ol>
 		</div>
 		<div role="tabpanel">  
 			<ul class="nav nav-pills" role="tablist" style="padding: 5px 5px 5px 5px;">

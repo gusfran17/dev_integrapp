@@ -141,6 +141,23 @@ class Administrator extends CI_Controller {
     	}
     }
 
+
+    public function refund($userId){
+    	$this->form_validation->set_rules('refundAmount', 'cantidad', 'numeric');
+    	$amount = $this->input->post("refundAmount");
+		if ($this->form_validation->run() == TRUE){
+	    	if ($amount>0){
+	    		$this->Credit_model->refund($userId,$amount);
+	    		$this->session->set_flashdata("success","Se ha agregado exitosamente $" . $amount);
+	    	} else {
+	    		$this->session->set_flashdata("error","Debe ingresar un monto positivo");
+	    	}
+	    } else { 
+	    	$this->session->set_flashdata("error","Debe ingresar un valor numérico. Usted ingresó <b>" . $amount . "</b>");
+	    }
+    	redirect("administrator/users");
+    }
+
 }
 
 ?>

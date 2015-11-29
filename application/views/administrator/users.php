@@ -6,7 +6,13 @@
         <?php if($this->session->flashdata('success')!= null):?>
             <div class="alert alert-dismissable alert-success">
               <button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
-              <strong>Bien!</strong> <?php echo $this->session->flashdata('success'); ?></a>
+              <strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>Bien!</strong> <?php echo $this->session->flashdata('success'); ?></a>
+            </div>
+        <?php endif;?>
+        <?php if($this->session->flashdata('error')!= null):?>
+            <div class="alert alert-dismissable alert-danger">
+              <button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
+              <strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>Atención!</strong> <?php echo $this->session->flashdata('error'); ?></a>
             </div>
         <?php endif;?>
 
@@ -25,8 +31,8 @@
                                     <th data-class="expand">Fecha</th>
                                     <th>Estado</th>
                                     <th>Usuario</th>
-                                    <th data-hide="phone">Email</th>
-                                    <th class="centered-cell" data-hide="phone,tablet">Acciones</th>
+                                    <th>Email</th>
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -73,6 +79,35 @@
                                         <form action="<?php echo base_url(); ?>administrator/deactivateUser/<?php echo $supplier->id; ?>" method="post" style="padding-bottom:2px">
                                             <button type="submit" class="btn btn-danger btn-xs">Desactivar</button>
                                             <input type="hidden" name="deactUsername" value="<?php echo $supplier->username; ?>">
+                                        </form>
+                                        <form action="<?php echo base_url() . 'administrator/refund/'.$supplier->id; ?>" method="post" id="<?php echo 'refundUser_' . $supplier->id; ?>" style="padding-bottom: 0px;">
+                                            <div class="dropdown" style="margin-bottom: 10px; max-width:300px;">
+                                                <button class="btn btn-info btn-xs dropdown-toggle" type="button" id="addToCatalogDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 
+                                                    Retornar Crédito
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="suppliersDropDown" style="max-width:300px;">
+                                                    <li>
+                                                        <a style="max-width:300px;">
+                                                            Ingrese el monto de devolver
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a>
+                                                            <input type="text" class="form-control" name="refundAmount" id="refundAmount" onclick="event.stopPropagation();" placeholder="Ingrese una cantidad...">
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a>
+                                                            <button type="submit" onclick="" class="btn btn-success btn-sm col-md-12 col-sm-12 col-xs-12" form="<?php echo 'refundUser_' . $supplier->id; ?>">
+                                                                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 
+                                                                Retornar Crédito
+                                                            </button>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </form>
                                     </td>
                                 </tr>

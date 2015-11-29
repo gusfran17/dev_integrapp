@@ -58,7 +58,6 @@ class Product extends CI_Controller {
 		} else if ($role == 'distributor'){
 			$this->products();
 		}
-
 	}
 
 	public function products($categoryId=null){
@@ -207,6 +206,7 @@ class Product extends CI_Controller {
 		$data['viewCatalog'] = true;
 		$data['orderBy'] = $orderBy;
 		$data['hasSidebar'] = true;
+		$data['tableScripts'] = true;
 		$tab = 'product_catalog';
 		$this->tabbedRoutedHome($data,$tab);
 	}
@@ -240,6 +240,7 @@ class Product extends CI_Controller {
 		$role = $this->session->userdata("role");
 		$data['orderBy'] = $orderBy;
 		$data['hasSidebar'] = true;
+		$data['tableScripts'] = true;
 		$tab = 'product_catalog';
 		$this->tabbedRoutedHome($data, $tab);
 	}
@@ -272,6 +273,7 @@ class Product extends CI_Controller {
 		$role = $this->session->userdata("role");
 		$data['orderBy'] = $orderBy;
 		$data['hasSidebar'] = true;
+		$data['tableScripts'] = true;
 		$tab = 'product_catalog';
 		$this->tabbedRoutedHome($data, $tab);
 	}
@@ -310,6 +312,7 @@ class Product extends CI_Controller {
 		
 		$data['orderBy'] = $orderBy;
 		$data['hasSidebar'] = true;
+		$data['tableScripts'] = true;
 		$tab = 'product_catalog';
 		$this->tabbedRoutedHome($data,$tab);
 	}
@@ -348,6 +351,7 @@ class Product extends CI_Controller {
 		$data['viewMyCatalog'] = true;
 		$data['orderBy'] = $orderBy;
 		$data['hasSidebar'] = true;
+		$data['tableScripts'] = true;
 		$tab = 'product_catalog';
 		$this->tabbedRoutedHome($data,$tab);
 	}
@@ -373,6 +377,7 @@ class Product extends CI_Controller {
 		$data['searchString'] = $searchString;
 		$data['Catalog'] = $catalog;
 		$data['orderBy'] = DEFAULT_CATALOG_ORDER;
+		$data['tableScripts'] = true;
 		$tab = 'templates/product/search_results';
 		$this->routedHome($data,$tab,true);
 		
@@ -510,6 +515,7 @@ class Product extends CI_Controller {
 					$this->productLoadView($data);
 				}
 	   		}else{
+	   			$this->session->set_flashdata('error', "Hay datos mal ingresados. Más abajo se indica el error sobre cada campo.");
 				for ($i=0; $i < MAX_ATTRIBUTE_AMOUNT ; $i++) { 
 
 					$attribute_name = $this->input->post('attribute'.$i);
@@ -934,6 +940,32 @@ class Product extends CI_Controller {
 	    }
 	    // clear //
 	    $this->image_lib->clear();
+	}
+
+
+	public function massiveProductUpload($userId){
+		$csv = '.' . SUPPLIER_MASSIVE_UPLOAD_PATH. $userId . "/massUpload.csv";
+	    $target_path = '.' . SUPPLIER_MASSIVE_UPLOAD_PATH. $userId;
+	    if (!file_exists($target_path)){
+			$this->session->set_flashdata('error', "No existe carpeta de carga masiva para este usuario.");
+		}
+		echo $csv;
+		$this->processCSVFile($csv);
+	}
+
+	public function processCSVFile($csv){
+		$fila = 1;
+		if (($gestor = fopen($csv, "r")) !== FALSE) {
+		    while (($datos = fgetcsv($gestor, 1000, ",")) !== FALSE) {
+		        $numero = count($datos);
+		        echo "<p> $numero de campos en la línea $fila: <br /></p>\n";
+		        $fila++;
+		        for ($c=0; $c < $numero; $c++) {
+		            echo $datos[$c] . "<br />\n";
+		        }
+		    }
+		    fclose($gestor);
+		}
 	}
 
 }

@@ -5,13 +5,13 @@
 	<?php if($this->session->flashdata('success')!= null):?>
 	    <div class="alert alert-dismissable alert-success">
 	      <button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
-	      <strong>Bien!</strong> <?php echo $this->session->flashdata('success'); ?></a>
+	      <strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>Bien!</strong> <?php echo $this->session->flashdata('success'); ?></a>
 	    </div>
 	<?php endif;?>
 	<?php if($this->session->flashdata('error')!= null):?>
-	    <div class="alert alert-dismissable alert-success">
+	    <div class="alert alert-dismissable alert-danger">
 	      <button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
-	      <strong>Bien!</strong> <?php echo $this->session->flashdata('error'); ?></a>
+	      <strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>Atención!</strong> <?php echo $this->session->flashdata('error'); ?></a>
 	    </div>
 	<?php endif;?>
 	<div class="container">

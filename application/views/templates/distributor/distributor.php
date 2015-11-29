@@ -8,8 +8,10 @@
 				<div class="panel-body">
 					<div class="well well-small pnlDistributor" style="padding-top: 0px; text-align: center;">
 						<h2><span class="label label-default lblDistributor" style="color:#ffffff;"><b><?php echo $distributor->fake_name ?></b></span></h2>
-						<?php if ($distributor->associationStatus != 'approved'){ ?>
-							<p><span class="label label-warning" style="color:#ffffff;"><b><?php echo NOT_ASSOCIATED_MESSAGE; ?></b></span></p>
+						<?php if ($distributor->associationStatus != 'approved') { ?>
+							<?php if ($watchingRole == "supplier") { ?>
+								<p><span class="label label-warning" style="color:#ffffff;"><b><?php echo NOT_ASSOCIATED_MESSAGE; ?></b></span></p>
+							<?php }?>
 						<?php } else {?>
 							<p><span class="label label-info" style="color:#ffffff;"><b><?php echo ASSOCIATED_MESSAGE; ?></b><span></p>
 						<?php }?>

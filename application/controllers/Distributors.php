@@ -45,21 +45,21 @@ class Distributors extends CI_Controller {
 		if($this->session->has_userdata('role')){
 			$role = $this->session->userdata("role");
 			$roleId = $this->session->userdata("role_id");
+			$distributor = $this->Distributor_model->getDistributorById($distributorId);
+			if($role=='supplier'){
+				$distributor->associationStatus = $this->Supplier_model->isDistributorAssociationActive($distributorId,$roleId);
+				$distributor->associationDiscount = $this->Supplier_model->getAssociationDiscountForDistributor($distributorId, $roleId);		
+			} else {
+				$distributor->associationStatus = false;
+				$distributor->associationDiscount = false;
+			}
+				
+			$data['distributor'] = $distributor;
+			$data['watchingRole'] = $role;
+			$this->routedHome($data, 'templates/distributor/distributor', true);
 		} else {
-			redirect(TIMEOUT_REDIRECT);
+			redirect("home/viewDistributorForPacient/$distributorId");
 		}
-		$distributor = $this->Distributor_model->getDistributorById($distributorId);
-		if($role=='supplier'){
-			$distributor->associationStatus = $this->Supplier_model->isDistributorAssociationActive($distributorId,$roleId);
-			$distributor->associationDiscount = $this->Supplier_model->getAssociationDiscountForDistributor($distributorId, $roleId);		
-		} else {
-			$distributor->associationStatus = false;
-			$distributor->associationDiscount = false;
-		}
-			
-		$data['distributor'] = $distributor;
-		$data['watchingRole'] = $role;
-		$this->routedHome($data, 'templates/distributor/distributor', true);
 	}
 
 	public function viewCatalog($selectedDistributorId){
@@ -69,44 +69,46 @@ class Distributors extends CI_Controller {
 	}
 
 	public function viewDistributorCatalog($orderBy = null){
-		if($this->session->has_userdata('role')){
-			$role = $this->session->userdata("role");
-			$roleId = $this->session->userdata("role_id");
-			$selectedDistributorId = $this->session->userdata('selectedDistributorId');		
-			if (($role == 'distributor') and ($selecteDistributorId == $roleId)){
-				$data['itIsMe'] = true;
-			}	
-		} else {
-			redirect(TIMEOUT_REDIRECT);
-		}
-		$distributor = $this->Distributor_model->getDistributorById($selectedDistributorId);
-		$data['distributor'] = $distributor;
-		//set sidebar
 		$selectedCategoryId = $this->getCategoryFilter();
-		$branch = $this->Category_model->getCategoryBranchIds($selectedCategoryId);
-		$data['childCategories'] = $this->Category_model->getCategory($selectedCategoryId); 
-		$data['selectedCategoryId'] = $selectedCategoryId;
-		$data['branch'] = $branch;
-
 		//setSupplierCatalog
 		if ($orderBy == null){
 			$orderBy = DEFAULT_CATALOG_ORDER;
 		}
-		$totalRows = 0;
-		$page = $this->getPage($this->catalog_pagination_uri_segment);
-		$catalog = $this->Distributor_model->get_catalog($selectedDistributorId, $selectedCategoryId, $orderBy, $page, $this->productsPerPage, $totalRows);
-		$this->Product_model->addCategoryPathToProducts($catalog);
-		$data['Catalog'] = $catalog;
-		$url = base_url() . "Distributors/viewDistributorCatalog/$orderBy";
-		$this->setPagination($url, $totalRows, $this->catalog_pagination_uri_segment, $this->productsPerPage);
-		$data['orderBy']=$orderBy;
-		
-		$data['watchingRole'] = $role;
-		$data['hasSidebar']= true;
-		$str_links = $this->pagination->create_links();
-		$data["pageLinks"] = explode('&nbsp;',$str_links );
-		$section = 'templates/distributor/distributor_catalog';
-		$this->routedHome($data, $section, true);		
+		if($this->session->has_userdata('role')){
+			$role = $this->session->userdata("role");
+			$roleId = $this->session->userdata("role_id");
+			$selectedDistributorId = $this->session->userdata('selectedDistributorId');
+			if (($role == 'distributor') and ($selectedDistributorId == $roleId)){
+				$data['itIsMe'] = true;
+			}	
+			$distributor = $this->Distributor_model->getDistributorById($selectedDistributorId);
+			$data['distributor'] = $distributor;
+			//set sidebar
+			$selectedCategoryId = $this->getCategoryFilter();
+			$branch = $this->Category_model->getCategoryBranchIds($selectedCategoryId);
+			$data['childCategories'] = $this->Category_model->getCategory($selectedCategoryId); 
+			$data['selectedCategoryId'] = $selectedCategoryId;
+			$data['branch'] = $branch;
+
+			$totalRows = 0;
+			$page = $this->getPage($this->catalog_pagination_uri_segment);
+			$catalog = $this->Distributor_model->get_catalog($selectedDistributorId, $selectedCategoryId, $orderBy, $page, $this->productsPerPage, $totalRows);
+			$this->Product_model->addCategoryPathToProducts($catalog);
+			$data['Catalog'] = $catalog;
+			$url = base_url() . "Distributors/viewDistributorCatalog/$orderBy";
+			$this->setPagination($url, $totalRows, $this->catalog_pagination_uri_segment, $this->productsPerPage);
+			$data['orderBy']=$orderBy;
+			
+			$data['watchingRole'] = $role;
+			$data['hasSidebar']= true;
+			$str_links = $this->pagination->create_links();
+			$data["pageLinks"] = explode('&nbsp;',$str_links );
+			$section = 'templates/distributor/distributor_catalog';
+			$this->routedHome($data, $section, true);	
+		} else {
+			redirect("home/viewDistributorCatalogForPacient/$orderBy");
+		}
+			
 	}
 
 	public function setPagination($url, $totalRows, $uriSegment, $itemsPerPage){	
@@ -138,7 +140,7 @@ class Distributors extends CI_Controller {
 		}
 		return $page;
 	}
-	
+
 	public function getCategoryFilter(){
 		$selectedCategoryId = $this->input->post("selectedCategoryId");
 		if (($selectedCategoryId == -1) or ($selectedCategoryId == 0)){

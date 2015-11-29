@@ -123,6 +123,7 @@ define('SUPPLIER_PROFILE_IMAGE_PATH', '/Resources/imgs/profile/supplier/');
 define('PRODUCT_IMAGES_PATH', '/Resources/imgs/product/');
 define('VOUCHER_IMAGES_PATH', '/Resources/imgs/voucher/');
 define('PRODUCT_NO_FOTO', 'NoFoto.jpg');
+define('SUPPLIER_MASSIVE_UPLOAD_PATH', '/Resources/massive_upload/supplier');
 /*
 |Product INFORMATION
 */

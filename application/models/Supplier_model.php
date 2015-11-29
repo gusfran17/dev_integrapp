@@ -457,14 +457,14 @@ class Supplier_model extends CI_Model {
     }
 
     public function getSecondarySuppliersForProduct($productId, $distributorId=null){
-        $this->db->select('supplier.id, supplier.fake_name, secondary_supplier_catalog.price');
+        $this->db->select('supplier.userid,supplier.id, supplier.fake_name, secondary_supplier_catalog.price');
         $this->db->from('supplier');
         $this->db->join('secondary_supplier_catalog', 'secondary_supplier_catalog.supplier_id = supplier.id');
         $this->db->where('secondary_supplier_catalog.product_id', $productId);
         $query = $this->db->get();
         $secondarySuppliers = $query->result();
         foreach ($secondarySuppliers as $SSkey => $secondarySupplier) {
-            $secondarySuppliers[$SSkey]->logo = $this->Supplier_model->get_logo($secondarySupplier->id);
+            $secondarySuppliers[$SSkey]->logo = $this->Supplier_model->get_logo($secondarySupplier->userid);
             if (isset($distributorId)) {
                 if ($this->isDistributorAssociationActive($distributorId,$secondarySupplier->id)) {
                     $discount = $this->getAssociationDiscountForDistributor($distributorId, $secondarySupplier->id);
@@ -495,6 +495,7 @@ class Supplier_model extends CI_Model {
                 unset($supplier->price);
             }
         }
+        $supplier->logo = $this->Supplier_model->get_logo($supplier->userid);
         return $supplier;
     }
 

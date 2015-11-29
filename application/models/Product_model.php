@@ -208,126 +208,63 @@ class Product_model extends CI_Model {
     public function productSearch($searchString, $supplierId = null, $distributorId = null){
         $statusClause = "";
         if (isset($supplierId)){
-            $statusClause = "AND product.status IN ('published','active','inactive')";
-        } else if (isset($distributorId)) {
-            $statusClause = "AND product.status = 'published'";
-        } else {
-            $statusClause = "AND product.status = 'published'";
-        }
+            $statusClause = "OR  product.supplier_id = $supplierId";
+        } 
         $orderBy = "published_date DESC";
-        if ((isset($distributorId))or(isset($supplierId))){
-            $queryScript = 
-            "SELECT DISTINCT id, name, description, short_desc, price, code, supplier_id, category_id, status, prescription, tax, expire_date, last_update, published_date, integrapp_code 
-            FROM (
-                SELECT product.*, 10 AS weight
-                FROM product
-                INNER JOIN supplier ON product.supplier_id = supplier.id
-                INNER JOIN user ON supplier.userid = user.id
-                WHERE user.status = 'active'
-                AND product.code like '%$searchString%'
-                $statusClause
-                UNION
-                SELECT product.*, 20 AS weight
-                FROM product
-                INNER JOIN supplier ON product.supplier_id = supplier.id
-                INNER JOIN user ON supplier.userid = user.id
-                WHERE user.status = 'active'
-                AND product.integrapp_code like '%$searchString%'
-                $statusClause
-                UNION
-                SELECT product.*, 30 AS weight
-                FROM product
-                INNER JOIN supplier ON product.supplier_id = supplier.id
-                INNER JOIN user ON supplier.userid = user.id
-                WHERE user.status = 'active'
-                AND product.name like '%$searchString%'
-                $statusClause
-                UNION
-                SELECT product.*, 40 AS weight
-                FROM product
-                INNER JOIN supplier ON product.supplier_id = supplier.id
-                INNER JOIN user ON supplier.userid = user.id
-                WHERE user.status = 'active'
-                AND product.description like '%$searchString%'
-                $statusClause
-                UNION
-                SELECT product.*, 50 AS weight
-                FROM product
-                INNER JOIN supplier ON product.supplier_id = supplier.id
-                INNER JOIN user ON supplier.userid = user.id
-                WHERE user.status = 'active'
-                AND product.prescription like '%$searchString%'
-                $statusClause
-            ) result
-            ORDER BY weight, $orderBy";
-        } else {
-            //si la busqueda la hace un paciente solo se muestran los productos publicados por minoristas que esten activos
-            $queryScript = 
-            "SELECT DISTINCT id, name, description, short_desc, price, code, supplier_id, category_id, status, prescription, tax, expire_date, last_update, published_date, integrapp_code 
-            FROM (
-                SELECT product.*, 10 AS weight
-                FROM product
-                INNER JOIN supplier ON product.supplier_id = supplier.id
-                INNER JOIN user ON supplier.userid = user.id
-                INNER JOIN distributor_catalog ON distributor_catalog.product_id = product.id
-                INNER JOIN distributor ON distributor.id = distributor_catalog.distributor_id
-                INNER JOIN user u2 ON distributor.userid = u2.id
-                WHERE user.status = 'active'
-                AND u2.status = 'active'
-                AND product.code like '%$searchString%'
-                $statusClause
-                UNION
-                SELECT product.*, 20 AS weight
-                FROM product
-                INNER JOIN supplier ON product.supplier_id = supplier.id
-                INNER JOIN user ON supplier.userid = user.id
-                INNER JOIN distributor_catalog ON distributor_catalog.product_id = product.id
-                INNER JOIN distributor ON distributor.id = distributor_catalog.distributor_id
-                INNER JOIN user u2 ON distributor.userid = u2.id
-                WHERE user.status = 'active'
-                AND u2.status = 'active'
-                AND product.integrapp_code like '%$searchString%'
-                $statusClause
-                UNION
-                SELECT product.*, 30 AS weight
-                FROM product
-                INNER JOIN supplier ON product.supplier_id = supplier.id
-                INNER JOIN user ON supplier.userid = user.id
-                INNER JOIN distributor_catalog ON distributor_catalog.product_id = product.id
-                INNER JOIN distributor ON distributor.id = distributor_catalog.distributor_id
-                INNER JOIN user u2 ON distributor.userid = u2.id
-                WHERE user.status = 'active'
-                AND u2.status = 'active'
-                AND product.name like '%$searchString%'
-                $statusClause
-                UNION
-                SELECT product.*, 40 AS weight
-                FROM product
-                INNER JOIN supplier ON product.supplier_id = supplier.id
-                INNER JOIN user ON supplier.userid = user.id
-                INNER JOIN distributor_catalog ON distributor_catalog.product_id = product.id
-                INNER JOIN distributor ON distributor.id = distributor_catalog.distributor_id
-                INNER JOIN user u2 ON distributor.userid = u2.id
-                WHERE user.status = 'active'
-                AND u2.status = 'active'
-                AND product.description like '%$searchString%'
-                $statusClause
-                UNION
-                SELECT product.*, 50 AS weight
-                FROM product
-                INNER JOIN supplier ON product.supplier_id = supplier.id
-                INNER JOIN user ON supplier.userid = user.id
-                INNER JOIN distributor_catalog ON distributor_catalog.product_id = product.id
-                INNER JOIN distributor ON distributor.id = distributor_catalog.distributor_id
-                INNER JOIN user u2 ON distributor.userid = u2.id
-                WHERE user.status = 'active'
-                AND u2.status = 'active'
-                AND product.prescription like '%$searchString%'
-                $statusClause
-            ) result
-            ORDER BY weight, $orderBy";
-        }
         
+        $queryScript = 
+        "SELECT DISTINCT id, name, description, short_desc, price, code, supplier_id, category_id, status, prescription, tax, expire_date, last_update, published_date, integrapp_code 
+        FROM (
+            SELECT product.*, 5 AS weight
+            FROM product
+            INNER JOIN supplier ON product.supplier_id = supplier.id
+            INNER JOIN user ON supplier.userid = user.id
+            WHERE user.status = 'active'
+            AND supplier.fake_name like '%$searchString%'
+            AND ( product.status = 'published' $statusClause)
+            UNION
+            SELECT product.*, 10 AS weight
+            FROM product
+            INNER JOIN supplier ON product.supplier_id = supplier.id
+            INNER JOIN user ON supplier.userid = user.id
+            WHERE user.status = 'active'
+            AND product.code like '%$searchString%'
+            AND ( product.status = 'published' $statusClause)
+            UNION
+            SELECT product.*, 20 AS weight
+            FROM product
+            INNER JOIN supplier ON product.supplier_id = supplier.id
+            INNER JOIN user ON supplier.userid = user.id
+            WHERE user.status = 'active'
+            AND product.integrapp_code like '%$searchString%'
+            AND ( product.status = 'published' $statusClause)
+            UNION
+            SELECT product.*, 30 AS weight
+            FROM product
+            INNER JOIN supplier ON product.supplier_id = supplier.id
+            INNER JOIN user ON supplier.userid = user.id
+            WHERE user.status = 'active'
+            AND product.name like '%$searchString%'
+            AND ( product.status = 'published' $statusClause)
+            UNION
+            SELECT product.*, 40 AS weight
+            FROM product
+            INNER JOIN supplier ON product.supplier_id = supplier.id
+            INNER JOIN user ON supplier.userid = user.id
+            WHERE user.status = 'active'
+            AND product.description like '%$searchString%'
+            AND ( product.status = 'published' $statusClause)
+            UNION
+            SELECT product.*, 50 AS weight
+            FROM product
+            INNER JOIN supplier ON product.supplier_id = supplier.id
+            INNER JOIN user ON supplier.userid = user.id
+            WHERE user.status = 'active'
+            AND product.prescription like '%$searchString%'
+            AND ( product.status = 'published' $statusClause)
+        ) result
+        ORDER BY weight, $orderBy";
+
         $query = $this->db->query($queryScript);
         $result = $query->result();
         $totalRows = count($result);
