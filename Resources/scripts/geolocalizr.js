@@ -36,13 +36,13 @@ function initializeNewMap(locations,zoom){
 		google.maps.event.addListener(marker, 'click', (function(marker, i) {
 		return function() {
 			var imgTag = '<div class="img" style="text-align: center; padding-top:5px; padding-bottom:5px; background-color: ' + locations[i]["bg-color"] +';"><a href="'+locations[i]["link"]+'"><img style=" max-height:50px; max-width:140px;" src="' + locations[i]["img"]  + '"></img></a></div>';
-			var titleTag = '<div class="title" style="text-align: center;"><h4><a href="'+locations[i]["link"]+'">' + locations[i]["title"] + '</a></h4></div>';
+			var titleTag = (((locations[i]["title"] != "") && (locations[i]["title"] != null)) ? '<div class="title" style="text-align: center;"><h4><a href="'+locations[i]["link"]+'">' + locations[i]["title"] + '</a></h4></div>': "");
 			var descriptionTag = '<div class="description" style="text-align: center;">' + 
 								 '<p>' + locations[i]["description"] + '</p>' +
 								 '</div>';
-			var phoneTag = (((locations[i]["phone"] != "") && (locations[i]["phone"] != null)) ? '<div class="phone" style="text-align: center;"><strong>Tel: </strong>' + locations[i]["phone"] + '</div>' : "Telefono no disponible <br>");
-			var emailTag = (((locations[i]["email"] != "") && (locations[i]["email"] != null)) ? '<div class="email" style="text-align: center;"><strong>Email: </strong>' + locations[i]["email"] + '</div>' : "Email no disponible <br>");
-			var addressTag = (((locations[i]["address"] != "") && (locations[i]["address"] != null)) ? '<div class="address" style="text-align: center;"><strong>Direción: </strong>' + locations[i]["address"] + '</div>' : "Dirección no disponible <br>");
+			var phoneTag = (((locations[i]["phone"] != "") && (locations[i]["phone"] != null)) ? '<div class="phone" style="text-align: center;"><strong>Tel: </strong>' + locations[i]["phone"] + '</div>' : "");
+			var emailTag = (((locations[i]["email"] != "") && (locations[i]["email"] != null)) ? '<div class="email" style="text-align: center;"><strong>Email: </strong>' + locations[i]["email"] + '</div>' : "");
+			var addressTag = (((locations[i]["address"] != "") && (locations[i]["address"] != null)) ? '<div class="address" style="text-align: center;"><strong>Direción: </strong>' + locations[i]["address"] + '</div>' : "");
 			var workingHoursTag = (((locations[i]["workingHours"] != "") && (locations[i]["workingHours"] != null)) ? '<div class="address" style="text-align: center;"><strong>Horarios de atención: </strong>' + locations[i]["workingHours"] + '</div>' : "");
 
 			var contentString = '<div id="containerInfoMap" style="width: 300px; height: 250px;">' +

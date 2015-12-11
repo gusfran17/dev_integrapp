@@ -1,6 +1,6 @@
 <div id="page-wrapper">
 	<div class="container" style="text-align:center;">
-		<h2><span class="label label-default" style="color:#ffffff;"><b>PROVEEDORES</b></span></h2>
+		<h2><span class="label label-default" style="color:#ffffff;"><b>MAYORISTAS</b></span></h2>
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<?php if(isset($suppliers)) for ($i=0; $i < count($suppliers) ; $i++) { ?>
 				<?php if (($loadInfo->isDistributorFivesRule == true) or ($suppliers[$i]->associationStatus == true)) { ?>

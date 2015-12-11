@@ -63,7 +63,7 @@
 										<option value="noselect">Seleccione rol...</option>
 										<!-- <option value="user">Usuario</option> -->
 										<option value="distributor">Ortopedista</option>
-										<option value="supplier">Proveedor</option>
+										<option value="supplier">Mayorista</option>
 									</select>
 								</div>
 							</div>
@@ -96,7 +96,7 @@
 				</div>
 				<div class="col-lg-7 col-md-6 col-sm-12 col-xs-12" id="description-user">
 					<div>
-						<h3>COMO PROVEEDOR PUEDE:</h3>
+						<h3>COMO MAYORISTA PUEDE:</h3>
 						<ul>
 							<li>Tener los datos de tus productos y listas de precios actualizadas</li>
 							<li>Contactarte directo con los ortopedistas y puntos de venta</li>

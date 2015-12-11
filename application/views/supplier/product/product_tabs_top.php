@@ -95,7 +95,7 @@
 </nav>
 <?php }?>
 
-<div id="page-wrapper" >
+<div id="page-wrapper">
 	<div class="container-fluid" id="main-products">
 		<div class="col-md-10 col-sm-10 col-xs-10">		
 			<?php
@@ -122,8 +122,8 @@
 		<div role="tabpanel">  
 			<ul class="nav nav-pills" role="tablist" style="padding: 5px 5px 5px 5px;">
 				<li role="presentation" class="<?php if (isset($viewCatalog)) {echo "active";} ?>"><a href="<?php echo base_url() . 'Product/products'; ?>"><b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Catalogo General de IntegApp</b></a></li>
-			    <li role="presentation" class="<?php if (isset($viewMyCatalog)) {echo "active";} ?>"><a href="<?php echo base_url() . 'Product/myProducts'; ?>"><b><span class="glyphicon glyphicon-list" aria-hidden="true"></span><u> Catalogo como Proveedor Primario </u></b></a></li>
-				<li role="presentation" class="<?php if (isset($viewMySecSuppCatalog)) {echo "active";} ?>"><a href="<?php echo base_url() . 'Product/mySecondaryProducts'; ?>"><b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Catalogo como Proveedor Secundario</b></a></li>
+			    <li role="presentation" class="<?php if (isset($viewMyCatalog)) {echo "active";} ?>"><a href="<?php echo base_url() . 'Product/myProducts'; ?>"><b><span class="glyphicon glyphicon-list" aria-hidden="true"></span><u> Catalogo como Mayorista Primario </u></b></a></li>
+				<li role="presentation" class="<?php if (isset($viewMySecSuppCatalog)) {echo "active";} ?>"><a href="<?php echo base_url() . 'Product/mySecondaryProducts'; ?>"><b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Catalogo como Mayorista Secundario</b></a></li>
 			    <li role="presentation" class="<?php if (isset($productLoadView)) { echo "active";} ?>"><a href="<?php echo base_url() . 'Product/productLoadView'; ?>"><b><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Cargar Productos</b></a></li>
 			    <!-- <li role="presentation"><a href="#settings" aria-controls="settings" role="settings" data-toggle="tab">Ajustes</a></li> -->
 			</ul>

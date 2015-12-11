@@ -406,7 +406,7 @@ class Supplier_model extends CI_Model {
     public function addProductToCatalog($supplierId, $productId, $newPrice){
         $product = $this->Product_model->getProductById($productId);
         if ($product->supplier_id == $supplierId){
-            $this->session->set_flashdata('error', "Usted ya es proveedor principal de este producto.");    
+            $this->session->set_flashdata('error', "Usted ya es mayorista principal de este producto.");    
             return false;
         }
         $product = $this->Product_model->getProductById($productId);
@@ -460,6 +460,8 @@ class Supplier_model extends CI_Model {
         $this->db->select('supplier.userid,supplier.id, supplier.fake_name, secondary_supplier_catalog.price');
         $this->db->from('supplier');
         $this->db->join('secondary_supplier_catalog', 'secondary_supplier_catalog.supplier_id = supplier.id');
+        $this->db->join('user', 'supplier.userid = user.id', 'inner');
+        $this->db->where("user.status", 'active');
         $this->db->where('secondary_supplier_catalog.product_id', $productId);
         $query = $this->db->get();
         $secondarySuppliers = $query->result();
@@ -548,7 +550,7 @@ class Supplier_model extends CI_Model {
         $this->db->select('product.*, secondary_supplier_catalog.price as secondary_price');
         $this->db->from('product');
         $this->db->join('secondary_supplier_catalog', 'product.id = secondary_supplier_catalog.product_id', 'inner');
-        $this->db->join('supplier', 'supplier.id = secondary_supplier_catalog.supplier_id', 'inner');
+        $this->db->join('supplier', 'supplier.id = product.supplier_id', 'inner');
         $this->db->join('user', 'supplier.userid = user.id', 'inner');
         $this->db->where("user.status", 'active');
         $this->db->where("secondary_supplier_catalog.supplier_id", $supplierId);

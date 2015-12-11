@@ -93,7 +93,7 @@
 														</button>
 														<ul class="dropdown-menu" aria-labelledby="suppliersDropDown" style="max-width:300px;">
 															<li><a style="max-width:300px;">
-																	El proveedor le ofrece un <b><?php echo $product->primarySupplier->associationDiscount;?>%</b> <br>
+																	El mayorista le ofrece un <b><?php echo $product->primarySupplier->associationDiscount;?>%</b> <br>
 																	de descuento sobre sus productos<br>
 															</a></li>
 															<li><a><b>Precio final: $<?php echo number_format((($product->price)-((($product->primarySupplier->associationDiscount)*($product->price))/100)), PRICE_DECIMAL_AMOUNT, DECIMAL_SEPARATOR, THOUSANDS_SEPARATOR);?></b><br><br></a></li>
@@ -134,11 +134,11 @@
 							<?php if ($watchingRole != "pacient"){ ?>
 								<div class="dropdown" style="margin-bottom: 10px;">
 									<button class="btn btn-info btn-xs dropdown-toggle" type="button" id="suppliersDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="min-width: 170px;">
-										Proveedores
+										Mayoristas
 										<span class="caret"></span>
 									</button>
 									<ul class="dropdown-menu" aria-labelledby="suppliersDropDown">
-										<li class="dropdown-header">Proveedor Principal</li>
+										<li class="dropdown-header">Mayorista Principal</li>
 										<?php if ((isset($product->primarySupplier->price)) or($loadInfo->isDistributorFivesRule == true)) {?>
 											<li>
 												<a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $product->primarySupplier->id;?>">
@@ -163,9 +163,9 @@
 										<li role="separator" class="divider"></li>
 										<li class="dropdown-header">
 											<?php  if (count($product->secondarySuppliers) == 0) { ?>
-												No hay proveedores que redistribuyan este producto
+												No hay mayoristas que redistribuyan este producto
 											<?php } else { ?>
-												Proveedores secundarios que lo redistribuyen
+												Mayoristas secundarios que lo redistribuyen
 											<?php } ?>
 										</li>
 										<?php foreach ($product->secondarySuppliers as $secSupplier) { ?>

@@ -16,16 +16,14 @@
 						<h4 class="list-group-item-heading">Fecha de la transferencia</h4>
 						<p class="list-group-item-text"><?php echo date("d-M-y", strtotime($transfer->transfer_date));?></p>
 					</a>
-					<a href="#" class="list-group-item">
-						<h4 class="list-group-item-heading">Comprobante</h4>
-						<p class="list-group-item-text">
-							<?php if ((isset($transfer->voucher_image)) and (file_exists(base_url() . VOUCHER_IMAGES_PATH . $transfer->userid . "/" . $transfer->voucher_image))){ ?>
-								<img src='<?php echo base_url() . VOUCHER_IMAGES_PATH . $transfer->issuer->id . "/" . $transfer->voucher_image;?>' style="width: 300px;"/> 
-							<?php } else { ?>
-								<img src="<?php echo base_url() . IMAGES_PATH . 'NoFotoGeneric.jpg'; ?>" style="width: 300px;">
-							<?php } ?>
-						</p>
-					</a>
+					<?php if ($transfer->voucher_image != "") { ?>
+						<a href="#" class="list-group-item">
+							<h4 class="list-group-item-heading">Comprobante</h4>
+							<div class="list-group-item-text">
+								<img src='<?php echo base_url() . VOUCHER_IMAGES_PATH . $transfer->userid . "/" . $transfer->voucher_image;?>' style="max-width: 100%; max-height: 200px;"/>
+							</div>
+						</a>
+					<?php }?>
 					<a href="#" class="list-group-item">
 						<h4 class="list-group-item-heading">Mensaje</h4>
 						<p class="list-group-item-text">
@@ -34,7 +32,7 @@
 								<small>
 									<?php 
 										if ($transfer->issuer->role == 'supplier'){
-											echo 'El proveedor: ' . $transfer->issuer->username;
+											echo 'El mayorista: ' . $transfer->issuer->username;
 										} else if ($transfer->issuer->role == 'distributor') {
 											echo 'El ortopedista: ' . $transfer->issuer->username;
 										}

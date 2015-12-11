@@ -1,9 +1,9 @@
 <div id="page-wrapper">
 	<div class="container">
         <div class="page-header" style="text-align:center; margin: 0px 0 0px;">
-            <h2><span class="label label-default" style="color:#ffffff;"><b>PROVEEDORES</b></span></h2>
+            <h2><span class="label label-default" style="color:#ffffff;"><b>MAYORISTAS</b></span></h2>
         </div>
-        <div class="span12">
+        <div class="container">
         	<?php if($this->session->flashdata('success')!= null):?>
 	            <div class="alert alert-dismissable alert-success">
 	              <button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
@@ -22,7 +22,7 @@
                         <tr>
                             <th>Foto</th>
                             <th>Nombre <span class="glyphicon glyphicon-sort" aria-hidden="true"></span></th>
-                            <th>Descuento que Ofrezco al Proveedor <span class="glyphicon glyphicon-sort" aria-hidden="true"></span></th>
+                            <th>Descuento que Ofrezco al Mayorista <span class="glyphicon glyphicon-sort" aria-hidden="true"></span></th>
                             <th>Estado <span class="glyphicon glyphicon-sort" aria-hidden="true"></span></th>
                             <th>Acciones <span class="glyphicon glyphicon-sort" aria-hidden="true"></span></th>
                         </tr>

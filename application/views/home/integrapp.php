@@ -5,12 +5,12 @@
 		<div class="container-fluid">
 			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia autem earum, error animi quidem nostrum, consequatur assumenda quibusdam iusto odit pariatur suscipit at, in rerum. Ipsum, ut laborum atque maiores.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius ducimus, perspiciatis maxime facilis pariatur voluptates et! Molestiae corrupti inventore tempora provident, quidem sed voluptate nulla placeat facilis, dolor eius veritatis.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum quaerat, nam perferendis, nobis, animi sed provident blanditiis esse labore dolorem natus minima, cupiditate enim quasi minus? Consectetur enim voluptatibus, ea.</p>
 			<ul>
-				<li>Proveedor</li>
+				<li>Mayorista</li>
 				<li>Ortopedista</li>
 			</ul>
 			<div class="row">
 				<div class="col-md-5">
-					<h3>Proveedor</h3>
+					<h3>Mayorista</h3>
 					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat explicabo earum soluta at sunt, magnam asperiores molestiae esse eum corrupti, amet. Officia totam laudantium, enim eum provident qui tempora repellendus. ipsum dolor sit amet, consectetur adipisicing elit. Fugit quos odit ducimus omnis molestias, culpa qui dicta beatae consequuntur, magni non cum. Illum, aliquam consequuntur velit ipsam suscipit ad, incidunt.</p>
 				</div>
 				<div class="col-md-5">

@@ -9,10 +9,10 @@
 					</div>
 					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
 						<h5>Integrapp Copyright 2015</h5>
-						<p>Lorem Ipsum Dolor</p>
+						<p>Catálogo Online de Productos Ortopédicos</p>
 					</div>
 					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-						Developed By Horacio Gutierrez - Gustavo Franco
+						Developed By Gustavo Franco
 					</div>
 				</div>
 			</div>

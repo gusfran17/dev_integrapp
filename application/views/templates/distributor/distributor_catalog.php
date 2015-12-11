@@ -59,9 +59,9 @@
 
 <div id="page-wrapper" style="margin-top: 70px;">
 	<div class="container-fluid" id="main-products">
-		<div class="container-fluid" id="distributor-products" >
+		<div class="container" id="distributor-products" >
 			<div class="col-md-12 col-sm-12 col-xs-12">
-				<div class="col-md-6 col-sm-8 col-xs-12">
+				<div class="col-lg-6 col-md-8 col-sm-8 col-xs-12">
 					<div class="panel panel-default pnlDistributor" style="margin-top: 20px; border-radius: 20px;">    
 						<div class="panel-body">
 					    	<div class="col-md-4 col-sm-4 col-xs-4" style="text-align: center">
@@ -90,26 +90,19 @@
 					</div>
 				</div>
 			</div>
-			<div class="page-header" style="text-align:center; margin: 0px 0 0px;">
-				<h2>
-					<span class="label label-default lblDistributor">
-						<b>CATALOGO DEL ORTOPEDISTA</b>
-					</span>
-				</h2>
-			</div>
 		</div>	
 		<div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 10px;">
 			<div class="col-md-12 col-sm-12 col-xs-12">		
 				<?php
+					echo '<ol class="breadcrumb" style= "margin-bottom: 5px; font-size:16px">';
+					echo '<li><a href="#" onclick="selectCategory(id);" id="-1"><b><i class="fa fa-fw fa-table"></i> PRODUCTOS DEL ORTOPEDISTA </b></a></li>';
 					if (isset($selectedCategoryId)) {
-						echo '<ol class="breadcrumb" style= "margin-bottom: 5px; font-size:16px">';
-						echo '<li><a href="#" onclick="selectCategory(id);" id="-1"><b>PRODUCTOS</b></a></li>';
 						$treeHeight = count($branch);
 						for ($i=$treeHeight-1; $i >= 0; $i--) {
 							echo '<li><a href="#" onclick="selectCategory(id);" id="'.$branch[$i]->id.'">'.$branch[$i]->name.'</a></li>';
 						}
-						echo '</ol>';
 					}  
+					echo '</ol>';
 				?>					
 			</div>
 

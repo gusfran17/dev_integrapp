@@ -21,7 +21,9 @@ class Distributor_model extends CI_Model {
     {
         $query = $this->db->get_where('distributor', array("id"=>$id));
         if ($query->num_rows() == 1){
-            return $query->row(0);
+            $result = $query->result();
+            $result[0]->logo = $this->get_logo($result[0]->userid); 
+            return $result[0];
         } else {
             return false;
         }

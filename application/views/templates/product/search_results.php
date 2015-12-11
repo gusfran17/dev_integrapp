@@ -30,7 +30,7 @@
 				                        <th data-hide="phone">Producto</th>
 				                        <th data-hide="phone">Descripción</th>
 				                        <!-- <th class="centered-cell" data-hide="phone,tablet">IVA</th>
-				                        <th class="centered-cell visible-md-* visible-lg-*" data-hide="phone,tablet">Proveedores</th>
+				                        <th class="centered-cell visible-md-* visible-lg-*" data-hide="phone,tablet">es</th>
 				                        <th class="centered-cell" data-hide="phone,tablet">Acciones</th> -->
 				                    </tr>
 				                </thead>
@@ -78,7 +78,7 @@
 														<span class="caret"></span>
 													</button>
 													<ul class="dropdown-menu" aria-labelledby="suppliersDropDown">
-														<li class="dropdown-header">Proveedor Principal</li>
+														<li class="dropdown-header">Mayorista Principal</li>
 														<li><a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $Catalog[$i]->primarySupplier->id;?>">
 														<?php if(isset($Catalog[$i]->primarySupplier->logo)){ ?>
 						     								<img src="<?php echo base_url() . $Catalog[$i]->primarySupplier->logo; ?>" style="height: 20px">
@@ -93,7 +93,7 @@
 															}?></a>
 														</li>
 														<li role="separator" class="divider"></li>
-														<li class="dropdown-header">Proveedores secundarios que lo redistribuyen</li>
+														<li class="dropdown-header">Mayoristas secundarios que lo redistribuyen</li>
 														<?php foreach ($Catalog[$i]->secondarySuppliers as $secSupplier) { ?>
 															<li><a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $secSupplier->id;?>">
 															<?php if(isset($secSupplier->logo)){ ?>

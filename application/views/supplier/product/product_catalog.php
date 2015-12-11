@@ -81,12 +81,12 @@
 														<?php  if (count($Catalog[$i]->secondarySuppliers) != 0) { ?>
 															<div class="dropdown" style="margin-bottom: 10px;">
 																<button class="btn btn-info btn-xs dropdown-toggle" type="button" id="suppliersDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-																	Proveedores Secundarios
+																	Mayoristas Secundarios
 																	<span class="caret"></span>
 																</button>
 																<ul class="dropdown-menu" aria-labelledby="suppliersDropDown">
 																	<li class="dropdown-header">
-																		Proveedores secundarios que lo redistribuyen
+																		Mayoristas secundarios que lo redistribuyen
 																	</li>
 																	<?php foreach ($Catalog[$i]->secondarySuppliers as $secSupplier) { ?>
 																		<li><a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $secSupplier->id;?>">
@@ -156,7 +156,7 @@
 							                        <th>Producto</th>
 							                        <th class="hidden-phone">IVA</th>
 							                        <th class="hidden-phone hidden-tablet">Descripción</th>
-							                        <th>Proveedores</th>
+							                        <th>Mayoristas</th>
 							                        <th>Acciones</th>
 							                    </tr>
 							                </thead>
@@ -194,11 +194,11 @@
 														<td>
 															<div class="dropdown" style="margin-bottom: 10px;">
 																<button class="btn btn-info btn-xs dropdown-toggle" type="button" id="suppliersDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-																	Proveedores
+																	Mayoristas
 																	<span class="caret"></span>
 																</button>
 																<ul class="dropdown-menu" aria-labelledby="suppliersDropDown">
-																	<li class="dropdown-header">Proveedor Principal</li>
+																	<li class="dropdown-header">Mayorista Principal</li>
 																	<li><a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $Catalog[$i]->primarySupplier->id;?>">
 																			<?php if(isset($Catalog[$i]->primarySupplier->logo)){ ?>
 											     								<img src="<?php echo base_url() . $Catalog[$i]->primarySupplier->logo; ?>" style="height: 20px">
@@ -212,7 +212,7 @@
 																		</a>
 																	</li>
 																	<li role="separator" class="divider"></li>
-																	<li class="dropdown-header">Proveedores secundarios que lo redistribuyen</li>
+																	<li class="dropdown-header">Mayoristas secundarios que lo redistribuyen</li>
 																	<?php foreach ($Catalog[$i]->secondarySuppliers as $secSupplier) { ?>
 																		<li><a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $secSupplier->id;?>">
 																		<?php if(isset($secSupplier->logo)){ ?>
@@ -238,7 +238,7 @@
 																			</button>
 																			<ul class="dropdown-menu" aria-labelledby="suppliersDropDown" style="max-width:300px;">
 																				<li><a style="max-width:300px;">
-																						El proveedor le ofrece un <b><?php echo $Catalog[$i]->supplierAssociationDiscount;?>%</b> <br>
+																						El mayorista le ofrece un <b><?php echo $Catalog[$i]->supplierAssociationDiscount;?>%</b> <br>
 																						de descuento sobre sus productos<br>
 																				</a></li>
 																				<li><a><b>Precio final: $<?php echo number_format((($Catalog[$i]->price)-((($Catalog[$i]->supplierAssociationDiscount)*($Catalog[$i]->price))/100)), PRICE_DECIMAL_AMOUNT, DECIMAL_SEPARATOR, THOUSANDS_SEPARATOR);?></b><br><br></a></li>
@@ -307,11 +307,11 @@
 														
 														<div class="dropdown" style="margin-bottom: 10px;">
 															<button class="btn btn-info btn-xs dropdown-toggle" type="button" id="suppliersDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-																Proveedores
+																Mayoristas
 																<span class="caret"></span>
 															</button>
 															<ul class="dropdown-menu" aria-labelledby="suppliersDropDown">
-																<li class="dropdown-header">Proveedor Principal</li>
+																<li class="dropdown-header">Mayorista Principal</li>
 																<li><a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $Catalog[$i]->primarySupplier->id;?>">
 																<?php if(isset($Catalog[$i]->primarySupplier->logo)){ ?>
 								     								<img src="<?php echo base_url() . $Catalog[$i]->primarySupplier->logo; ?>" style="height: 20px">
@@ -323,9 +323,9 @@
 																<li role="separator" class="divider"></li>
 																<li class="dropdown-header">
 																	<?php  if (count($Catalog[$i]->secondarySuppliers) == 0) { ?>
-																		No hay proveedores que redistribuyan este producto
+																		No hay mayoristas que redistribuyan este producto
 																	<?php } else { ?>
-																		Proveedores secundarios que lo redistribuyen
+																		Mayoristas secundarios que lo redistribuyen
 																	<?php } ?>
 																</li>
 																<?php foreach ($Catalog[$i]->secondarySuppliers as $secSupplier) { ?>

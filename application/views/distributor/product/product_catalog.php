@@ -9,7 +9,7 @@
 										<th>Código IntegrApp</th>
 				                        <th data-hide="phone">Producto</th>
 				                        <th class="centered-cell" data-hide="phone,tablet">IVA</th>
-				                        <th class="centered-cell visible-md-* visible-lg-*" data-hide="phone,tablet">Proveedores</th>
+				                        <th class="centered-cell visible-md-* visible-lg-*" data-hide="phone,tablet">Mayoristas</th>
 				                        <th class="centered-cell" data-hide="phone,tablet">Acciones</th>
 				                    </tr>
 				                </thead>
@@ -51,12 +51,12 @@
 																	echo " $".number_format($Catalog[$i]->primarySupplier->price, PRICE_DECIMAL_AMOUNT, DECIMAL_SEPARATOR, THOUSANDS_SEPARATOR);
 															}?>
 														<?php } else { ?>
-															No ascociado al proveedor
+															No ascociado al mayorista
 														<?php } ?>
 														<span class="caret"></span>
 													</button>
 													<ul class="dropdown-menu" aria-labelledby="suppliersDropDown">
-														<li class="dropdown-header">Proveedor Principal</li>
+														<li class="dropdown-header">Mayorista Principal</li>
 														<?php if ((isset($Catalog[$i]->primarySupplier->price)) or($loadInfo->isDistributorFivesRule == true)) {?>
 															<li><a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $Catalog[$i]->primarySupplier->id;?>">
 															<?php if(isset($Catalog[$i]->primarySupplier->logo)){ ?>
@@ -75,7 +75,7 @@
 															<li><a href="">No disponible</a></li>
 														<?php } ?>
 														<li role="separator" class="divider"></li>
-														<li class="dropdown-header">Proveedores secundarios que lo redistribuyen</li>
+														<li class="dropdown-header">Mayoristas secundarios que lo redistribuyen</li>
 														<?php foreach ($Catalog[$i]->secondarySuppliers as $secSupplier) { ?>
 															<?php if ((isset($secSupplier->price)) or($loadInfo->isDistributorFivesRule == true)) {?>
 																<li><a href="<?php echo base_url() . 'Suppliers/viewSupplier/'. $secSupplier->id;?>">

@@ -66,9 +66,9 @@
 <div id="page-wrapper" style="margin-top: 70px;">
 	<?php if ((isset($itIsMe)or($supplier->associationStatus == true) or($loadInfo->isDistributorFivesRule == true))) {?>
 		<div class="container-fluid" id="main-products">
-			<div class="container-fluid" id="supplier-products" >
+			<div class="container" id="supplier-products" >
 				<div class="col-md-12 col-sm-12 col-xs-12">
-					<div class="col-md-6 col-sm-8 col-xs-12">
+					<div class="col-lg-8 col-md-10 col-sm-10 col-xs-12">
 						<div class="panel panel-default pnlSupplier" style="margin-top: 20px; border-radius: 20px;">    
 							<div class="panel-body">
 						    	<div class="col-md-4 col-sm-4 col-xs-4" style="text-align: center">
@@ -87,7 +87,7 @@
 										</p>
 				                    <?php } ?>
 									<p style="margin-top:20;text-align: left;">
-										<a href="<?php echo base_url(); ?>suppliers"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span><b> Proveedores</b></a>
+										<a href="<?php echo base_url(); ?>suppliers"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span><b> Mayoristas</b></a>
 									</p>
 								</div>
 								<div class="col-md-8 col-sm-8 col-xs-8">
@@ -105,10 +105,12 @@
 						</div>
 					</div>
 				</div>
+			</div>	
+			<div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 10px;">
 				<div class="col-md-12 col-sm-12 col-xs-12">		
 					<?php
 						echo '<ol class="breadcrumb" style= "margin-bottom: 5px; font-size:16px">';
-						echo '<li><a href="#" onclick="selectCategory(id);" id="-1"><b><i class="fa fa-fw fa-table"></i> PRODUCTOS DEL PROVEEDOR </b></a></li>';
+						echo '<li><a href="#" onclick="selectCategory(id);" id="-1"><b><i class="fa fa-fw fa-table"></i> PRODUCTOS DEL MAYORISTA </b></a></li>';
 						if (isset($selectedCategoryId)) {
 							$treeHeight = count($branch);
 							for ($i=$treeHeight-1; $i >= 0; $i--) {
@@ -118,8 +120,6 @@
 						echo '</ol>';
 					?>					
 				</div>
-			</div>	
-			<div class="col-md-12 col-sm-12 col-xs-12" style="margin-top: 10px;">
 				<table id="resultset" class="table table-bordered table-striped">
 	                <thead>
 	                    <tr>
@@ -191,7 +191,7 @@
 															</button>
 															<ul class="dropdown-menu" aria-labelledby="suppliersDropDown" style="max-width:300px;">
 																<li><a style="max-width:300px;">
-																		El proveedor le ofrece un <b><?php echo $supplier->associationDiscount;?>%</b> <br>
+																		El mayorista le ofrece un <b><?php echo $supplier->associationDiscount;?>%</b> <br>
 																		de descuento sobre sus productos<br>
 																</a></li>
 																<li><a><b>Precio final: $<?php echo number_format((($Catalog[$i]->price)-((($supplier->associationDiscount)*($Catalog[$i]->price))/100)), PRICE_DECIMAL_AMOUNT, DECIMAL_SEPARATOR, THOUSANDS_SEPARATOR);?></b><br><br></a></li>
@@ -211,10 +211,10 @@
 														</div>
 													</form>
 												<?php } else { ?>
-													No esta asociado a este proveedor.
+													No esta asociado a este mayorista.
 												<?php } ?>	
 											<?php } else { ?>
-												Usted es proveedor principal de este producto
+												Usted es mayorista principal de este producto
 											<?php } ?>
 										<?php } ?>
 									<?php } else {?>

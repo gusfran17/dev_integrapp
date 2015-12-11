@@ -63,8 +63,13 @@ html, body{font-family: OpenSans}
 @media screen and (min-width: 768px) {
 	.hasSidebar {
 	    padding-left: 250px !important;
+	    margin-right: -250px !important;
 	}
 	
+	.container-fluid {
+	    margin-right: 250px;
+	}
+
 	.side-nav {
 		width: 255px;
 	}

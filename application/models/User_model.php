@@ -329,7 +329,7 @@ class User_model extends CI_Model {
                 $passwordDB_decoded = $this->encrypt->decode($passwordDB, $this->config->item('encryption_key'));
                 if ($password==$passwordDB_decoded) {
                     if ($user_result->status == 'pending'){
-                        $this->session->set_flashdata("error","El usuario PROVEEDOR aún no fue aprobado por el administrador de la aplicación. Contactese con el mismo para solicitar la aprobación de la misma");
+                        $this->session->set_flashdata("error","El usuario mayorista aún no fue aprobado por el administrador de la aplicación. Contactese con el mismo para solicitar la aprobación de la misma");
                         return FALSE;
                     }   else {
                         $role = $user_result->role;

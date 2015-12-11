@@ -2,7 +2,7 @@
 	<?php if ((isset($itIsMe)or($supplier->associationStatus == true) or ($loadInfo->isDistributorFivesRule == true))) {?>
 		<div class="container-fluid">
 			<div class="col-md-12 col-sm-12 col-xs-12">
-				<h2 style="margin-top: 0px; margin-bottom: 20px; text-align: center;"><span class="label label-default lblSupplier" style="color:#ffffff; text-align: center;"><b>Perfil de Proveedor</b></span></h2>
+				<h2 style="margin-top: 0px; margin-bottom: 20px; text-align: center;"><span class="label label-default lblSupplier" style="color:#ffffff; text-align: center;"><b>Perfil de Mayorista</b></span></h2>
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<div class="well well-small pnlSupplier" style="padding-top: 0px; text-align: center;">
@@ -30,7 +30,7 @@
 								<div class="panel-body">
 									<?php if ($supplier->service_description != "") echo "<h4>Descripción del Servicio</h4>" . $supplier->service_description . "<br>";?>
 									<?php if ($supplier->associationStatus) {?>
-										<button type="button" class="btn btn-info" style="margin-top:30px;" title='Información bancaria del proveedor' data-toggle="collapse" data-target="#prescriptionCollapse">Informacion Bancaria <span class="caret"></span></button>
+										<button type="button" class="btn btn-info" style="margin-top:30px;" title='Información bancaria del mayorista' data-toggle="collapse" data-target="#prescriptionCollapse">Informacion Bancaria <span class="caret"></span></button>
 										<div id="prescriptionCollapse" class="collapse" style="margin-top: 10px;">
 											<div class="panel panel-default">
 												<div class="panel-body">	
@@ -58,7 +58,7 @@
 											<?php }?>
 										<?php } else {?>
 										<?php }?>
-										<li><a href="<?php echo base_url(); ?>suppliers"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span><b> Proveedores</b></a></li>
+										<li><a href="<?php echo base_url(); ?>suppliers"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span><b> Mayoristas</b></a></li>
 									</ul>
 								</div>
 							</div>

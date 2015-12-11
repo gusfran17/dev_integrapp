@@ -701,8 +701,8 @@ class Product extends CI_Controller {
 			$location = array();
 			$location['lat'] = -34.60697760000000;
 			$location['lng'] = -58.39412620000002;
-			$location['title'] = "Ortopedi Fernandez";
-			$location['description'] = "Ninguno de los Ortopedistas inscriptos en esta página distribuyen este producto, disculpe los inconvenientes.";
+			$location['title'] = "";
+			$location['description'] = "Ninguno de los Ortopedistas inscriptos en esta página distribuyen este producto. Puede solicitar a su ortopedista de confianza que obtenga dicho producto, disculpe los inconvenientes.";
 			$location['email'] = "";
 			$location['phone'] = "";
 			$location['workingHours'] = "";
@@ -755,7 +755,7 @@ class Product extends CI_Controller {
 	public function activateProduct($productId){
 		$result = $this->setProductStatus($productId, 'active');
 		if ($result){
-			$this->session->set_flashdata('success', "Se há activado el producto con éxito");
+			$this->session->set_flashdata('success', "El producto actualmente esta en la lista de activos");
 		} else {
 			$this->session->set_flashdata('error', "Hubo un error al intentar activar el producto, intente más tarde o comuniquese con el administrador");
 		}

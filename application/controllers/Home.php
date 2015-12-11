@@ -35,7 +35,8 @@ class Home extends CI_Controller {
 	}
 
 	public function homepage(){
-			$data['Catalog'] = $this->Product_model->getPacientCatalog();
+			$totalRows = 0;
+			$data['Catalog'] = $this->Product_model->get_catalog(null, null, 'published', DEFAULT_CATALOG_ORDER, 1, 4, $totalRows);
 			$this->routedHome('home',$data);
 	}
 

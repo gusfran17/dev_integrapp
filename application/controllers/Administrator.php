@@ -78,7 +78,7 @@ class Administrator extends CI_Controller {
 			redirect(TIMEOUT_REDIRECT);
 		} else {
 			if ($this->Supplier_model->setSupplierStatus($userId, 'active')) {
-				$this->session->set_flashdata("success","Se há aprobado al proveedor con éxito");	
+				$this->session->set_flashdata("success","Se há aprobado al mayorista con éxito");	
 			} else {
 				$this->session->set_flashdata("error","Se há producido un error que no ha permitido aprobar el usuario. Pruebe más tarde");
 			}
@@ -91,7 +91,7 @@ class Administrator extends CI_Controller {
 			redirect(TIMEOUT_REDIRECT);
 		} else {
 			if ($this->Supplier_model->setSupplierStatus($userId, 'pending')) {
-				$this->session->set_flashdata("success","Se há desactivado al proveedor con éxito");	
+				$this->session->set_flashdata("success","Se há desactivado al mayorista con éxito");	
 			} else {
 				$this->session->set_flashdata("error","Se há producido un error que no ha permitido desactivar el usuario. Pruebe más tarde");
 			}

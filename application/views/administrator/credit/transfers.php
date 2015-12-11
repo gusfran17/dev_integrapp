@@ -34,7 +34,7 @@
 	                    <tr>
 	                        <td><?php echo date("d-M-y", strtotime($pendingTransfer->transfer_date));?></td>
 	                        <td><?php echo $pendingTransfer->username; ?></td>
-	                        <td><?php if ($pendingTransfer->role == "supplier") echo "Proveedor"; else if ($pendingTransfer->role=="distributor") echo "Ortopedista"; ?></td>
+	                        <td><?php if ($pendingTransfer->role == "supplier") echo "Mayorista"; else if ($pendingTransfer->role=="distributor") echo "Ortopedista"; ?></td>
 	                        <td>pendiente</td>
 	                        <td>$<?php echo number_format($pendingTransfer->amount, PRICE_DECIMAL_AMOUNT, DECIMAL_SEPARATOR, THOUSANDS_SEPARATOR); ?></td>
 	                        <td>
