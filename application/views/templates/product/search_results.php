@@ -7,7 +7,6 @@
 				</div>
 				<h3>Resultados de busqueda para <strong>"<?php echo $searchString;?>"</strong></h3>
 				<form method="post" id="catalogCategoriesFilter" action="<?php echo base_url() . 'product';?>" style= "padding-bottom: 0px;">
-					<input type="hidden" id="hasSidebar" value="true">
 					<input type="text" id="selectedCategoryId" name="selectedCategoryId">
 				</form>
 				<script type="text/javascript">

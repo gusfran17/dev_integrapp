@@ -61,10 +61,6 @@ html, body{font-family: OpenSans}
 }
 
 @media screen and (min-width: 768px) {
-	.hasSidebar {
-	    padding-left: 250px !important;
-	    margin-right: -250px !important;
-	}
 	
 	.container-fluid {
 	    margin-right: 250px;
@@ -84,10 +80,15 @@ html, body{font-family: OpenSans}
 
 }
 
+
 @media screen and (max-width: 768px) {
+
+	.navbar-fixed-top {
+	    position: static !important;
+	 }
+
 	
 	#page-wrapper{
-		padding-top:170px !important;
 		margin-top:0px !important;
 	}
 

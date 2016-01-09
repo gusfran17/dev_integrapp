@@ -28,6 +28,9 @@ class Distributors extends CI_Controller {
 		$this->load->view('templates/template_footer');
 	} 
 
+	public function index(){
+		$this->viewDistributors();
+	}
 
 	public function viewDistributors(){
 		$roleId = $this->session->userdata("role_id");
@@ -38,6 +41,7 @@ class Distributors extends CI_Controller {
 		$approvedDistributors = $this->Supplier_model->getAssociatedDistributors($roleId, 'approved');
 		$data['approvedDistributors'] = $approvedDistributors;
 		$section = 'distributors';
+		$data['tableScripts'] = true;
 		$this->routedHome($data, $section);
 	}
 
@@ -100,7 +104,6 @@ class Distributors extends CI_Controller {
 			$data['orderBy']=$orderBy;
 			
 			$data['watchingRole'] = $role;
-			$data['hasSidebar']= true;
 			$str_links = $this->pagination->create_links();
 			$data["pageLinks"] = explode('&nbsp;',$str_links );
 			$section = 'templates/distributor/distributor_catalog';

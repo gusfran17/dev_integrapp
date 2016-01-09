@@ -82,7 +82,6 @@ class Home extends CI_Controller {
 		$str_links = $this->pagination->create_links();
 		$data["pageLinks"] = explode('&nbsp;',$str_links );
 		$data['orderBy'] = $orderBy;
-		$data['hasSidebar'] = true;
 		$data['tableScripts'] = true;
 		$data['watchingRole'] = $role;
 		$data['viewType'] = $this->session->userdata('viewType');
@@ -170,7 +169,6 @@ class Home extends CI_Controller {
 		$this->setPagination($url, $totalRows, $this->pagination_uri_segment, $this->productsAmountPerPage);
 		$data['orderBy']=$orderBy;
 		$data['watchingRole'] = 'pacient';
-		$data['hasSidebar']= true;
 		$str_links = $this->pagination->create_links();
 		$data["pageLinks"] = explode('&nbsp;',$str_links );
 		$section = 'templates/distributor/distributor_catalog';

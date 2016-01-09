@@ -205,7 +205,6 @@ class Product extends CI_Controller {
 		$role = $this->session->userdata("role");
 		$data['viewCatalog'] = true;
 		$data['orderBy'] = $orderBy;
-		$data['hasSidebar'] = true;
 		$data['tableScripts'] = true;
 		$tab = 'product_catalog';
 		$this->tabbedRoutedHome($data,$tab);
@@ -239,7 +238,6 @@ class Product extends CI_Controller {
 		$data['viewMyCatalog'] = true;
 		$role = $this->session->userdata("role");
 		$data['orderBy'] = $orderBy;
-		$data['hasSidebar'] = true;
 		$data['tableScripts'] = true;
 		$tab = 'product_catalog';
 		$this->tabbedRoutedHome($data, $tab);
@@ -272,7 +270,6 @@ class Product extends CI_Controller {
 		$data['viewMySecSuppCatalog'] = true;
 		$role = $this->session->userdata("role");
 		$data['orderBy'] = $orderBy;
-		$data['hasSidebar'] = true;
 		$data['tableScripts'] = true;
 		$tab = 'product_catalog';
 		$this->tabbedRoutedHome($data, $tab);
@@ -311,7 +308,6 @@ class Product extends CI_Controller {
 		log_message('info',"Pagination: ".$str_links . "total rows: " . $totalRows,false);
 		
 		$data['orderBy'] = $orderBy;
-		$data['hasSidebar'] = true;
 		$data['tableScripts'] = true;
 		$tab = 'product_catalog';
 		$this->tabbedRoutedHome($data,$tab);
@@ -350,7 +346,6 @@ class Product extends CI_Controller {
 		
 		$data['viewMyCatalog'] = true;
 		$data['orderBy'] = $orderBy;
-		$data['hasSidebar'] = true;
 		$data['tableScripts'] = true;
 		$tab = 'product_catalog';
 		$this->tabbedRoutedHome($data,$tab);

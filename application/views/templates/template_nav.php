@@ -1,5 +1,5 @@
 	<body>
-		<div id="wrapper" <?php if (isset($hasSidebar)) echo 'class="hasSidebar"';?>>
+		<div id="wrapper">
 			<nav class="navbar navbar-inverse navbar-fixed-top">
 			    <div class="navbar-header" style="width:300px">
 		            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
@@ -17,6 +17,7 @@
 					        	<button class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
 					    	</span>
 					  	</div>
-					</form>	    	
+					</form>	   
+				<div class="collapse navbar-collapse navbar-inverse navbar-ex1-collapse">
 			    <ul class="nav navbar-right top-nav" id="bs-example-navbar-collapse-1">
 		        

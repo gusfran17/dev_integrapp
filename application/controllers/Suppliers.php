@@ -165,7 +165,6 @@ public function index(){
 		$data['watchingRoleId'] = $roleId;
 		$str_links = $this->pagination->create_links();
 		$data["pageLinks"] = explode('&nbsp;',$str_links );
-		$data['hasSidebar'] = true;
 		$section = 'templates/supplier/supplier_catalog';
 		$this->routedHome($data, $section, true);		
 	}

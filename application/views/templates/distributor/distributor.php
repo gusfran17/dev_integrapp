@@ -1,5 +1,5 @@
 <div id="page-wrapper">
-	<div class="container-fluid">
+	<div class="container">
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<div style="text-align: center;">
 				<h2 style="margin-top: 0px; margin-bottom:20px;"><span class="label label-default lblDistributor" style="color:#ffffff; "><b>Perfil de Oropedia</b></span></h2>
