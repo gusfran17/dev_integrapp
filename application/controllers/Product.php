@@ -802,7 +802,11 @@ class Product extends CI_Controller {
 				}
 				
 			}	
-			redirect('Product/products');
+			if ($this->session->userdata('catalogView') == 'viewSupplierCatalog') {
+				redirect('Suppliers/viewSupplierCatalog/'.DEFAULT_CATALOG_ORDER);
+			} else {
+				redirect('Product/products');
+			}
 		} else {
 			redirect(TIMEOUT_REDIRECT);
 		}
@@ -819,7 +823,11 @@ class Product extends CI_Controller {
 			if (($this->session->has_userdata('catalogView')) and ($this->session->userdata('catalogView') == 'viewMyCatalog')) {
 				redirect('Product/myProducts');
 			} else {
-				redirect('Product/products');
+				if ($this->session->userdata('catalogView') == 'viewSupplierCatalog') {
+					redirect('Suppliers/viewSupplierCatalog/'.DEFAULT_CATALOG_ORDER);
+				} else {
+					redirect('Product/products');
+				}
 			}
 		} else {
 			redirect(TIMEOUT_REDIRECT);
@@ -833,7 +841,11 @@ class Product extends CI_Controller {
 			$roleId = $this->session->userdata("role_id");
 			if ($role == 'supplier') {
 				$this->Supplier_model->addProductToCatalog($roleId, $productId, $newPrice);
-				redirect('Product/products');
+				if ($this->session->userdata('catalogView') == 'viewSupplierCatalog') {
+					redirect('Suppliers/viewSupplierCatalog/'.DEFAULT_CATALOG_ORDER);
+				} else {
+					redirect('Product/products');
+				}
 			}
 		} else {
 			redirect(TIMEOUT_REDIRECT);
@@ -856,6 +868,10 @@ class Product extends CI_Controller {
 					redirect('Product/products');
 				} else if (($this->session->has_userdata('catalogView')) and ($this->session->userdata('catalogView') == 'viewMySecSuppCatalog')) {
 					redirect('Product/mySecondaryProducts');
+				} else if ($this->session->userdata('catalogView') == 'viewSupplierCatalog') {
+					redirect('Suppliers/viewSupplierCatalog/'.DEFAULT_CATALOG_ORDER);
+				} else {
+					redirect('Product/products');
 				}
 			}
 			

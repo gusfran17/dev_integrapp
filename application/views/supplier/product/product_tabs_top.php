@@ -37,9 +37,9 @@
 						$('#publish_' + productId).submit();	
 					}
 				}
-				function deactivateProduct(selectedProductId, publishingCost) {
+				function deactivateProduct(selectedProductId) {
 					var productId = selectedProductId;
-					if (window.confirm("¡Atención! Si despublica este producto, deberá pagar nuevamente el costo de publicación cuando desee publicarlo. (costo: " + publishingCost + ")")){
+					if (window.confirm("¡Atención! Esta seguro que desea eliminar este producto?")){
 						$('#deactivate_' + productId).submit();	
 					}
 				}

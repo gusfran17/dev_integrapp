@@ -121,6 +121,7 @@ public function index(){
 
 	public function viewSupplierCatalog($orderBy = null){
 		if($this->session->has_userdata('role')){
+			$this->session->set_userdata('catalogView', 'viewSupplierCatalog');
 			$role = $this->session->userdata("role");
 			$roleId = $this->session->userdata("role_id");
 			$selectedSupplierId = $this->session->userdata('selectedSupplierId');		

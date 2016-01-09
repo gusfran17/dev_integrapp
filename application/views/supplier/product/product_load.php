@@ -27,7 +27,8 @@
 							 	<strong>Atención!</strong> <?php echo $this->session->flashdata('error'); ?></a>
 							</div>
 						<?php endif;?>
-					    <div class="panel panel-primary" id="">
+
+					    <div class="panel panel-primary" id="categorySelection">
 									<div class="panel-heading">
 										<div class="panel-title">
 											<h4>Seleccione una categoria:</h4>
@@ -83,6 +84,7 @@
 												<input type="text" class="form-control" id="categoryTree" name="categoryTree" value="<?php if (isset($editProduct)) echo set_value('categoryTree', $editProduct->category->ascending_path); else if (!(isset($productLoaded) or isset($productCancelled))) echo set_value('categoryTree');?>" >
 												<input type="text" name="categoryID" value="<?php if (isset($editProduct)) echo set_value('categoryID', $editProduct->category_id); else if (!(isset($productLoaded) or isset($productCancelled))) echo set_value('categoryID');?>" id="categoryID">
 												<input type="text" name="editProductID" value="<?php if (isset($editProduct)) echo set_value('editProductID',$editProduct->id); else if (!(isset($productLoaded) or isset($productCancelled))) echo set_value('editProductID');?>" id="editProductID">
+												<input type="text" name="editProductStatus" value="<?php if (isset($editProduct)) echo set_value('editProductStatus',$editProduct->status); else if (!(isset($productLoaded) or isset($productCancelled))) echo set_value('editProductStatus');?>" id="editProductStatus">
 												<input type="text" name="imagesPath" value="<?php echo base_url() . PRODUCT_IMAGES_PATH;?>" id="imagesPath">
 												<input type="text" name="basePath" value="<?php echo base_url();?>" id="basePath">
 												<!-- The following fields are for testing javascript hide operations
@@ -94,9 +96,13 @@
 												<script type="text/javascript">
 													$("#categoryID").hide();
 													$("#editProductID").hide();
+													$("#editProductStatus").hide();
 													$("#imagesPath").hide();
 													$("#basePath").hide();
 													$("#categoryTree").attr('disabled','disabled');
+													if ($("#editProductStatus").val() == "published"){
+														$("#categorySelection").hide();
+													}
 												</script>
 
 											</div>
@@ -269,7 +275,7 @@
 														<?php foreach($images as $i): ?>
 															var mockFile = { name: "images", size: 12345, file_name: '<?php echo $i;?>' };
 															myDropzone.options.addedfile.call(myDropzone, mockFile);
-															myDropzone.options.thumbnail.call(myDropzone, mockFile, "<?php if (isset($editProduct)) echo base_url() . PRODUCT_IMAGES_PATH . $i; else echo base_url() . PRODUCT_IMAGES_PATH . 'temp/thumbs/' . $i;?>");
+															myDropzone.options.thumbnail.call(myDropzone, mockFile, "<?php if (isset($editProduct)) echo base_url() . PRODUCT_IMAGES_PATH . $i; else echo base_url() . PRODUCT_IMAGES_PATH . $i;?>");
 														<?php endforeach; ?>
 													</script>
 												<?php else: ?>

@@ -214,6 +214,7 @@ $(document).ready(function(){
 					$("#prodImagesArray").remove();
 					$("#productEdition").val("true");
 					$('#selected_colors').empty();
+					$("#editProductStatus").val("");
 					$.each(json.editProduct.colors, function(index, value) {
 						//console.log("Color: "+ value.color)
 						$('.selected_colors_div').show();
@@ -245,6 +246,10 @@ $(document).ready(function(){
 														'</div>');
 					});
 					if (isEdit){
+						$("#editProductStatus").val(json.editProduct.status);
+						if ($("#editProductStatus").val() == "published"){
+							$("#categorySelection").hide();
+						}
 						$("#editProductID").val(json.editProduct.id);
 						var myDropzone = Dropzone.forElement('#freewalk-dropzone');
 						$.each(myDropzone.files, function(index, value) {

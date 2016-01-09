@@ -2,7 +2,7 @@
 	<article>
 		<div class="container-fluid">
 			<div class="row" id="login-form">
-				<div class="col-lg-5 col-md-6 col-sm-12 col-xs-12">
+				<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 					<?php if($this->session->flashdata('success')!= null):?>
 					    <div class="alert alert-dismissable alert-success">
 					      <button type="button" class="close" data-dismiss="alert"><span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span></button>
