@@ -38,8 +38,7 @@
 	                        <td>pendiente</td>
 	                        <td>$<?php echo number_format($pendingTransfer->amount, PRICE_DECIMAL_AMOUNT, DECIMAL_SEPARATOR, THOUSANDS_SEPARATOR); ?></td>
 	                        <td>
-	                            <a href="<?php echo base_url(); ?>administrator/viewTransferDetails/<?php echo $pendingTransfer->id; ?>/<?php echo $pendingTransfer->userid; ?>"><button type="button" class="btn btn-default  btn-xs">Ver detalles</button></a>
-	                            <a href="<?php echo base_url(); ?>administrator/setApproveTransfer/<?php echo $pendingTransfer->id; ?>"><button type="button" class="btn btn-success btn-xs">Aprobar</button></a>
+	                            <a href="<?php echo base_url(); ?>administrator/viewTransferDetails/<?php echo $pendingTransfer->id; ?>/<?php echo $pendingTransfer->userid; ?>"><button type="button" class="btn btn-success  btn-xs">Ver detalles y aprobar</button></a>
 	                        </td>
 	                    </tr>
 	                <?php endforeach; ?>

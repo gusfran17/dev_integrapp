@@ -80,6 +80,10 @@
                                             <button type="submit" class="btn btn-danger btn-xs">Desactivar</button>
                                             <input type="hidden" name="deactUsername" value="<?php echo $supplier->username; ?>">
                                         </form>
+                                        <form action="<?php echo base_url() . 'administrator/viewTransactionHistory/' . $supplier->id; ?>" method="post" style="padding-bottom:2px">
+                                            <input type="hidden" name="imperUsername" value="<?php echo $supplier->username; ?>">
+                                            <button type="submit" class="btn btn-default btn-xs">Historial de Transacciones</button>
+                                        </form>
                                         <form action="<?php echo base_url() . 'administrator/refund/'.$supplier->id; ?>" method="post" id="<?php echo 'refundUser_' . $supplier->id; ?>" style="padding-bottom: 0px;">
                                             <div class="dropdown" style="margin-bottom: 10px; max-width:300px;">
                                                 <button class="btn btn-info btn-xs dropdown-toggle" type="button" id="addToCatalogDropDown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">

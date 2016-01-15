@@ -28,9 +28,15 @@
 						</div>
 
 						<div class="form-group">
-							<label class="control-label" for="nota">Mensaje</label>
+							<label class="control-label" for="nota">Mi mensaje: </label>
 							<?php echo $transfer->message; ?>
 						</div>
+						<?php if($transfer->confirmed == 1){?>
+							<div class="form-group">
+								<label class="control-label" for="nota">Mensaje del Administrador: </label>
+								<?php echo $transfer->administrator_message; ?>
+							</div>
+						<?php }?>
 						<?php if ($transfer->voucher_image != "") { ?>
 							<div class="form-group">
 								<label class="control-label" for="nota">Comprobante</label>

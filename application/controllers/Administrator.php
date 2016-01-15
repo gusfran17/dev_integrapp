@@ -62,6 +62,13 @@ class Administrator extends CI_Controller {
     	$data['transfer'] = $this->Credit_model->getTransferById($transferId, $userId);
     	$user = $this->User_model->get_user($userId);
     	$data['transfer']->issuer = $user;
+    	$data['showApprovalForm'] = true;
+    	$this->routedHome("credit/transfer_details", $data);
+    }
+
+    public function viewTransactionHistory($userId){
+    	$data['transactions'] = $this->Credit_model->getTransactionsByUserId($userId);
+    	$user = $this->User_model->get_user($userId);
     	$this->routedHome("credit/transfer_details", $data);
     }
 
