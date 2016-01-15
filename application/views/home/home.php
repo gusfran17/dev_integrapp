@@ -29,7 +29,7 @@
 			<div class="container">
 				<h3>Últimos productos publicados</h3>
 				<?php if (count($Catalog)>0) {?>
-					<?php for ($i=0; $i < 4; $i++) {?>
+					<?php for ($i=0; $i < ((count($Catalog)>3)? 4:count($Catalog)) ; $i++) {?>
 						<a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>">
 							<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 item-catalogo" >
 								<div class="panel panel-info" style="background-color: #FFF;">
