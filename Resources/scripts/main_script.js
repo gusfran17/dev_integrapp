@@ -10,10 +10,20 @@ $(document).ready(function(){
 			success: function(data){
 				$('#description-user').hide().append("<div>"+data+"<div>").delay(800).fadeIn('slow');
 			}
-		})
+		});
 
 	});
 
+	$(function(){
+		$('body').on('focusout', '.landing-search', function(){
+			var el = $(this);
+			if(el.val() !== ""){
+				el.addClass('-active');
+			} else {
+				el.removeClass('-active');
+			}
+		});
+	});
 
 	var idCategory;
 	var finalCategory;

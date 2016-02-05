@@ -8,7 +8,7 @@
  *
  */	
 
-var path_app = 'dev_integrapp/Resources/imgs/';
+var path_app = 'dev_integrapp/Resources/img/';
 var path_images = 'http://' + window.location.host + '/' + path_app;
 
 //Metodo que inicializa el mapa 

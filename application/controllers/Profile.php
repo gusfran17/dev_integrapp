@@ -382,7 +382,7 @@ class Profile extends CI_Controller {
 			$location['img'] = base_url() . IMAGES_PATH . "noProfilePic.jpg";
 			$location['link'] = "#";
 			$location['bg-color'] = "#00ff00";
-			$location['icon-point'] = base_url() . "Resources/imgs/my_location_96x96.png";
+			$location['icon-point'] = base_url() . "Resources/img/my_location_96x96.png";
 		} else {
 			$location['title'] = $userDetails->fake_name;
 			$location['description'] = $userDetails->service_description;
@@ -392,7 +392,7 @@ class Profile extends CI_Controller {
 			$location['img'] = base_url() . ((isset($userDetails->logo))? $userDetails->logo: IMAGES_PATH . 'noProfilePic.jpg');
 			$location['link'] = base_url() . ((isset($userLink))? $userLink: '#');
 			$location['bg-color'] = "#00ff00";
-			$location['icon-point'] = base_url() . "Resources/imgs/my_location_96x96.png";
+			$location['icon-point'] = base_url() . "Resources/img/my_location_96x96.png";
 		}
         echo json_encode($location);
 	}

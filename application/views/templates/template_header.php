@@ -23,7 +23,7 @@
 
         <title>Integrapp | HOME </title>
 
-        <link rel="icon" href="<?php echo base_url(); ?>Resources/imgs/favicon.png" type="image/x-icon">
+        <link rel="icon" href="<?php echo base_url(); ?>Resources/img/favicon.png" type="image/x-icon">
 
 
         <link href="<?php echo base_url(); ?>Resources/styles/animate.css" rel="stylesheet">

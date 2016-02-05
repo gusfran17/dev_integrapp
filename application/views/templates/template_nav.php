@@ -8,7 +8,7 @@
 		                <span class="icon-bar"></span>
 		                <span class="icon-bar"></span>
 		            </button>
-			      	<a class="navbar-brand" href="<?php echo base_url(); ?>"><figure><img src="<?php echo base_url(); ?>/Resources/imgs/logo_small.png" alt="Logo"></figure></a>
+			      	<a class="navbar-brand" href="<?php echo base_url(); ?>"><figure><img src="<?php echo base_url(); ?>/Resources/img/logo_small.png" alt="Logo"></figure></a>
 			    </div>
 				    <form class="navbar-form navbar-left" role="search" action="<?php echo base_url() . 'Product/search'; ?>" method="post">
 						<div class="input-group" style="padding-top:20px;" class="searchOver">

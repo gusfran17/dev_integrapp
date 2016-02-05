@@ -278,7 +278,7 @@
 							<div class="panel-body">
 								<h2><b><?php if (($watchingRole == 'supplier') or ($watchingRole =='pacient')) echo "Ortopedias que lo comercializan"; else echo "Ortopedias que lo comercializan" ?></b></h2>
 								<div id="googleMap" style="width:100%;height:450px;"></div>
-								<!-- <img src="<?php echo base_url() . 'Resources/imgs/map_example.png'; ?>" style="max-height: 400px">		 -->
+								<!-- <img src="<?php echo base_url() . 'Resources/img/map_example.png'; ?>" style="max-height: 400px">		 -->
 							</div>
 						</div>
 					</div>
