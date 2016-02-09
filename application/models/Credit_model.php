@@ -52,10 +52,10 @@ class  Credit_model extends CI_Model {
     }
 
     public function refund($userId,$amount){
-        $this->addTransaction($userId,$amount, "Devolución de crédito");    
+        $this->addTransaction($userId,$amount, "Otorgación de crédito", true);    
     }
 
-    function addTransaction($userId, $amount, $description){
+    function addTransaction($userId, $amount, $description, $isRefund = false){
         if($amount < 0){
             $insert_data = array(
                 "date_added"=> date("Y-m-d h:i:s"),
@@ -63,7 +63,8 @@ class  Credit_model extends CI_Model {
                 "debit"=>-$amount,
                 "credit"=> 0,
                 "balance"=> ($this->getLatestBalance($userId) + $amount),
-                "userid"=> $userId);
+                "userid"=> $userId,
+                "is_refund"=> $isRefund);
         }else if($amount> 0){
             $insert_data = array(
                 "date_added"=> date("Y-m-d h:i:s"),
@@ -71,7 +72,8 @@ class  Credit_model extends CI_Model {
                 "debit"=>0,
                 "credit"=> $amount,
                 "balance"=> ($this->getLatestBalance($userId) + $amount),
-                "userid"=> $userId);
+                "userid"=> $userId,
+                "is_refund"=> $isRefund);
         }else if($amount == 0){
             $insert_data = array(
                 "date_added"=> date("Y-m-d h:i:s"),
@@ -79,7 +81,8 @@ class  Credit_model extends CI_Model {
                 "debit"=>0,
                 "credit"=> 0,
                 "balance"=> $this->getLatestBalance($userId),
-                "userid"=> $userId);
+                "userid"=> $userId,
+                "is_refund"=> $isRefund);
         }
         $this->db->insert("transaction", $insert_data);
     }
