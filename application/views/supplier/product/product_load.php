@@ -137,6 +137,12 @@
 												
 											</div>
 											<div class="form-group">
+												<label for="productIndic" class="control-label">Indicaciones (aplicaciones del producto)</label>
+												<?php echo form_error('productIndic', '<span class="label label-danger">', '</span>'); ?>
+												<textarea class="form-control" name="productIndic" id="productIndic"><?php if (isset($editProduct)) echo set_value('productIndic', $editProduct->indications); else if (!(isset($productLoaded) or isset($productCancelled))) echo set_value('productIndic');?></textarea> 
+												
+											</div>
+											<div class="form-group">
 												<label for="productPresc" class="control-label">Como Prescribirlo*</label>
 												<?php echo form_error('productPresc', '<span class="label label-danger">', '</span>'); ?>
 												<textarea class="form-control" name="productPresc" id="productPresc"><?php if (isset($editProduct)) echo set_value('productPresc', $editProduct->prescription); else if (!(isset($productLoaded) or isset($productCancelled))) echo set_value('productPresc');?></textarea> 

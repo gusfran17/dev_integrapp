@@ -220,6 +220,7 @@ $(document).ready(function(){
 					$("#productVAT").val(json.editProduct.tax);
 					$("#productPrice").val(json.editProduct.price);
 					$("#productDesc").val(json.editProduct.description);
+					$("#productIndic").val(json.editProduct.indications);
 					$("#productPresc").val(json.editProduct.prescription);
 					$("#prodImagesArray").remove();
 					$("#productEdition").val("true");

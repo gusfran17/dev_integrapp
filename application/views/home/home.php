@@ -41,7 +41,7 @@
       </div>
       <section class="products">
         <div class="section-title">
-          <h3>Nuestros Productos</h3>
+          <h3>Productos</h3>
         </div>
         <div class="container">
           <div class="row">

@@ -418,6 +418,7 @@ class Product extends CI_Controller {
    		$this->form_validation->set_rules('productVAT', 'IVA', 'trim');
    		$this->form_validation->set_rules('productPrice', 'Precio', 'required|trim|numeric');
    		$this->form_validation->set_rules('productDesc', 'Descripción', 'required|min_length[' . PROD_DESCRIPTION_MIN_LENGTH . ']|max_length[' . PROD_DESCRIPTION_MAX_LENGTH . ']');
+   		$this->form_validation->set_rules('productIndic', 'Descripción', 'required|min_length[' . PROD_DESCRIPTION_MIN_LENGTH . ']|max_length[' . PROD_DESCRIPTION_MAX_LENGTH . ']');
    		$this->form_validation->set_rules('productPresc', 'Como Prescribirlo', 'required|min_length[' . PROD_DESCRIPTION_MIN_LENGTH . ']|max_length[' . PROD_DESCRIPTION_MAX_LENGTH . ']');
 
    		$this->form_validation->set_message('required', 'El campo %s es obligatorio');
@@ -444,6 +445,7 @@ class Product extends CI_Controller {
 	   			$insert = array();
 	   			$insert['name'] = $this->input->post("productName");
 				$insert['description'] = $this->input->post("productDesc");
+				$insert['indications'] = $this->input->post("productIndic");
 				$insert['prescription'] = $this->input->post("productPresc");
 				$insert['code'] = $this->input->post("productCode");
 				$insert['category_id'] = $this->input->post("categoryID");

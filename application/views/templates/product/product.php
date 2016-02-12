@@ -233,6 +233,9 @@
 						</div>
 						<div class="col-md-12 col-sm-12 col-xs-12">
 							<h4><strong>Descripción: </strong> <?php echo $product->description; ?><br></h4>
+							<br>
+							<h4><strong>Indicaciones: </strong> <?php echo $product->indications; ?><br></h4>
+							<br>
 							<button type="button" class="btn btn-info" title='Como debe prescribir correctamente este producto (copie el texto a continuación)' data-toggle="collapse" data-target="#prescriptionCollapse">Como Prescribirlo <span class="caret"></span></button>
 							<div id="prescriptionCollapse" class="collapse" style="margin-top: 10px;">
 								<div class="panel panel-default">
@@ -243,7 +246,7 @@
 							</div>
 						</div>
 						<table class="table table-striped">
-							<caption><h2><b>Especificaciones Técnicas</b></h2></caption>
+							<caption><h2><b>Especificaciones</b></h2></caption>
 							<thead>
 								<tr>
 									<th>Tipo</th>
