@@ -1,3 +1,4 @@
+
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Product_model extends CI_Model {
@@ -420,7 +421,7 @@ class Product_model extends CI_Model {
         }   else {
             $noFoto = true;
             $array = array();
-            $array[] = 'NoFoto.jpg'; 
+            $array[] = PRODUCT_NO_FOTO; 
             $max_key = 1;
         }
         $images = array();

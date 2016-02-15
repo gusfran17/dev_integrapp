@@ -134,13 +134,11 @@
 												<label for="productDesc" class="control-label">Descripción*</label>
 												<?php echo form_error('productDesc', '<span class="label label-danger">', '</span>'); ?>
 												<textarea class="form-control" name="productDesc" id="productDesc"><?php if (isset($editProduct)) echo set_value('productDesc', $editProduct->description); else if (!(isset($productLoaded) or isset($productCancelled))) echo set_value('productDesc');?></textarea> 
-												
 											</div>
 											<div class="form-group">
 												<label for="productIndic" class="control-label">Indicaciones (aplicaciones del producto)</label>
 												<?php echo form_error('productIndic', '<span class="label label-danger">', '</span>'); ?>
 												<textarea class="form-control" name="productIndic" id="productIndic"><?php if (isset($editProduct)) echo set_value('productIndic', $editProduct->indications); else if (!(isset($productLoaded) or isset($productCancelled))) echo set_value('productIndic');?></textarea> 
-												
 											</div>
 											<div class="form-group">
 												<label for="productPresc" class="control-label">Como Prescribirlo*</label>
@@ -178,8 +176,8 @@
 																	<?php }
 																} else { ?>	
 																	<div class="form-group_specifications">
-																	    <textarea type="text" name="0" name="attribute0" placeholder="Ej.:Talle" value="" class="col-xs-5 col-sm-5 col-md-5 col-lg-5" style="margin-right:10px;"></textarea>
-																	    <textarea type="text" name="0" name="value0" placeholder="Ej.:XS/S/M/L/XL" value="" class="col-xs-6 col-sm-6 col-md-6 col-lg-6"></textarea><a href="#" class="remove_field"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+																	    <textarea type="text" id="0" name="attribute0" placeholder="Ej.:Talle" value="" class="col-xs-5 col-sm-5 col-md-5 col-lg-5" style="margin-right:10px;"></textarea>
+																	    <textarea type="text" id="0" name="value0" placeholder="Ej.:XS/S/M/L/XL" value="" class="col-xs-6 col-sm-6 col-md-6 col-lg-6"></textarea><a href="#" class="remove_field"> <span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
 																    </div>
 																<?php } ?>														
 															</div>
@@ -281,7 +279,7 @@
 														<?php foreach($images as $i): ?>
 															var mockFile = { name: "images", size: 12345, file_name: '<?php echo $i;?>' };
 															myDropzone.options.addedfile.call(myDropzone, mockFile);
-															myDropzone.options.thumbnail.call(myDropzone, mockFile, "<?php if (isset($editProduct)) echo base_url() . PRODUCT_IMAGES_PATH . $i; else echo base_url() . PRODUCT_IMAGES_PATH . $i;?>");
+															myDropzone.options.thumbnail.call(myDropzone, mockFile, "<?php if (isset($editProduct)) echo base_url() . PRODUCT_IMAGES_PATH . $i; else echo base_url() . PRODUCT_IMAGES_PATH . 'temp/' . $i;?>");
 														<?php endforeach; ?>
 													</script>
 												<?php else: ?>

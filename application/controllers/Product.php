@@ -395,6 +395,10 @@ class Product extends CI_Controller {
 	}
 
 
+	public function deleteProductIdFromImage($imagePath){
+		return preg_replace('/^[0-9]*\//', "", $imagePath);
+	}
+
 	public function saveProduct(){
 		if($this->session->has_userdata('role')){
 			$userId = $this->session->userdata("id");
@@ -418,7 +422,7 @@ class Product extends CI_Controller {
    		$this->form_validation->set_rules('productVAT', 'IVA', 'trim');
    		$this->form_validation->set_rules('productPrice', 'Precio', 'required|trim|numeric');
    		$this->form_validation->set_rules('productDesc', 'Descripción', 'required|min_length[' . PROD_DESCRIPTION_MIN_LENGTH . ']|max_length[' . PROD_DESCRIPTION_MAX_LENGTH . ']');
-   		$this->form_validation->set_rules('productIndic', 'Descripción', 'required|min_length[' . PROD_DESCRIPTION_MIN_LENGTH . ']|max_length[' . PROD_DESCRIPTION_MAX_LENGTH . ']');
+   		$this->form_validation->set_rules('productIndic', 'Indicaciones', 'min_length[' . PROD_DESCRIPTION_MIN_LENGTH . ']|max_length[' . PROD_DESCRIPTION_MAX_LENGTH . ']');
    		$this->form_validation->set_rules('productPresc', 'Como Prescribirlo', 'required|min_length[' . PROD_DESCRIPTION_MIN_LENGTH . ']|max_length[' . PROD_DESCRIPTION_MAX_LENGTH . ']');
 
    		$this->form_validation->set_message('required', 'El campo %s es obligatorio');
@@ -527,8 +531,11 @@ class Product extends CI_Controller {
 				}		
 				if (isset($attributes)){
 					$data['attributes'] = $attributes;
-				}   			
-	   			$data['images'] = $this->input->post('images');
+				}   	
+				$postImages =  $this->input->post('images');
+				$postImages =  $this->deleteProductIdFromImage($postImages);
+	   			$data['images'] = $postImages;
+	   			
 				$productColors = $this->input->post('selectedColorsArray');
 	   			if (isset($productColors)){
 	   				$colors = array();
