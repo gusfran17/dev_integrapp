@@ -514,3 +514,47 @@ h3{
 	color: #3c763d
 }
 
+
+.comunidad .section-title h3 {
+  color: #333; padding:45px 0 35px
+}
+comunidad .comunidad-container {
+   padding-bottom: 80px;
+   width: 240px;
+  margin: 0 auto 20px;
+  overflow: hidden;
+}
+.comunidad .comunidad figure {
+  width: 240px;
+  margin: 0 auto;
+  height: 100%;
+  overflow: hidden;
+}
+.comunidad .comunidad figure img {
+  -moz-transition: -moz-transform 0.3s ease-out;
+  -o-transition: -o-transform 0.3s ease-out;
+  -webkit-transition: -webkit-transform 0.3s ease-out;
+  transition: transform 0.3s ease-out;
+  width: 100%;
+}
+.comunidad .comunidad-txt {
+  padding: 10px 20px;
+  font-weight: 300;
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
+  color: #333;
+}
+.comunidad .comunidad-txt .comunidad-title {
+  font-weight: 600;
+  font-size: 18px;
+  display: block;
+  line-height: 1.7;
+  text-align:center !important
+}
+
+
+
+header {
+  height: 80px;
+  margin-bottom: -80px; background-color:#222222 !important;
+}

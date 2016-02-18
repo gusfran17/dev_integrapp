@@ -52,6 +52,10 @@ class Home extends CI_Controller {
 			$this->routedHome('contact',null);
 	}
 
+	public function community(){
+			$this->routedHome('community',null);
+	}
+
 	public function catalog($viewType=null){
 		if (isset($viewType)){
 			$this->session->set_userdata('viewType', $viewType);

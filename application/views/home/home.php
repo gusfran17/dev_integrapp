@@ -20,6 +20,7 @@
             <li><a href="<?php echo base_url(); ?>home/catalog">CATALOGO</a></li>
             <li><a href="<?php echo base_url(); ?>home/faq">FAQ</a></li>
             <li><a href="<?php echo base_url(); ?>home/contact">CONTACTO</a></li>
+            <li><a href="<?php echo base_url(); ?>home/community">COMMUNITY</a></li>
             <li><a href="<?php echo base_url(); ?>login">LOGIN</a></li>
             <li><i class="icon-search"></i>
               <form class="navbar-form navbar-left" role="search" action="<?php echo base_url() . 'Product/search'; ?>" method="post">
@@ -95,7 +96,7 @@
             <div class="col-sm-4">
               <div class="service-container">
                 <div class="service"><i class="icon-graphic"></i></div>
-                <div class="service-txt"><span class="service-title">Compra Segura</span><span>Con transferencias bancarias desde tu propia cuenta.</span></div>
+                <div class="service-txt"><span class="service-title">Información Actualizada</span><span> Mantené actualizado tu catálogo y lista de precios para tus distribuidores.</span></div>
               </div>
             </div>
           </div>
