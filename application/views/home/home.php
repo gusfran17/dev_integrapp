@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,600,700,300,200" rel="stylesheet" type="text/css">
     <link href="<?php echo base_url(); ?>Resources/styles/reset.css" type="text/css" rel="stylesheet" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">    
-    <link href="<?php echo base_url(); ?>Resources/styles/main.css" type="text/css" rel="stylesheet" />
+    <link href="<?php echo base_url(); ?>Resources/styles/main_style.css" type="text/css" rel="stylesheet" />
     <title>Integrapp</title>
   </head>
   <body class="landingIntegrapp">
@@ -20,7 +20,7 @@
             <li><a href="<?php echo base_url(); ?>home/catalog">CATALOGO</a></li>
             <li><a href="<?php echo base_url(); ?>home/faq">FAQ</a></li>
             <li><a href="<?php echo base_url(); ?>home/contact">CONTACTO</a></li>
-            <li><a href="<?php echo base_url(); ?>home/community">COMMUNITY</a></li>
+            <li><a href="<?php echo base_url(); ?>home/community">COMUNIDAD</a></li>
             <li><a href="<?php echo base_url(); ?>login">LOGIN</a></li>
             <li><i class="icon-search"></i>
               <form class="navbar-form navbar-left" role="search" action="<?php echo base_url() . 'Product/search'; ?>" method="post">
