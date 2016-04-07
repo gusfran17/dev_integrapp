@@ -1,11 +1,9 @@
 		<div id="page-wrapper" >
 			<div class="container" id="main-products">	
-				<div class="col-md-12 col-sm-12 col-xs-12">		
-					<ol class="breadcrumb" style="margin-bottom: 5px; font-size:16px">
-						<li><a href="#" onclick="selectCategory(id);" id="-1"><b><i class="fa fa-fw fa-table"></i> PRODUCTOS</b></a></li>					
-					</ol>
+				<div class="products-titulo">
+						<a style="color:#333 !important" href="#" onclick="selectCategory(id);" id="-1"> PRODUCTOS </a>
 				</div>
-				<h3>Resultados de busqueda para <strong>"<?php echo $searchString;?>"</strong></h3>
+				<p>Resultados de búsqueda para <strong>"<?php echo $searchString;?>"</strong></p>
 				<form method="post" id="catalogCategoriesFilter" action="<?php echo base_url() . 'product';?>" style= "padding-bottom: 0px;">
 					<input type="text" id="selectedCategoryId" name="selectedCategoryId">
 				</form>

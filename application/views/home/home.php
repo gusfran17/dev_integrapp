@@ -48,27 +48,35 @@
           <div class="row">
             <?php if (count($Catalog)>0) {?>
               <?php for ($i=0; $i < ((count($Catalog)>2)? 3:count($Catalog)) ; $i++) {?>
-                <a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>">
                   <div class="col-sm-4">
                     <div class="product-container">
                       <div class="product">
-                        <figure><img src="<?php echo base_url() . PRODUCT_IMAGES_PATH . $Catalog[$i]->images[0]; ?>"></figure>
+                        <a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>">
+                          <figure><img src="<?php echo base_url() . PRODUCT_IMAGES_PATH . $Catalog[$i]->images[0]; ?>"></figure>
+                        </a>
                       </div>
-                      <div class="product-share-container">
-                        <ul>
-                          <li><i class="icon-twitter"></i></li>
-                          <li><i class="icon-facebook"></i></li>
-                          <li><i class="icon-link"></i></li>
-                          <li><?php echo $Catalog[$i]->integrapp_code; ?></li>
-                        </ul>
-                      </div>
+                      <a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>">
+                        <div class="product-share-container">
+                          <ul>
+                            <li><i class="icon-twitter"></i></li>
+                            <li><i class="icon-facebook"></i></li>
+                            <li><i class="icon-link"></i></li>
+                            <li><?php echo $Catalog[$i]->integrapp_code; ?></li>
+                          </ul>
+                        </div>
+                      </a>
                       <div class="product-txt">
-                        <span class="product-title"><?php echo $Catalog[$i]->name; ?></span>
-                        <span><?php echo $Catalog[$i]->description; ?></span>
+                        <span class="product-title"><a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><?php echo $Catalog[$i]->name; ?></a></span>
+                        <span id="shortProdDescription<?php echo $i;?>" ><?php echo substr ( $Catalog[$i]->description, 0, LANDING_PROD_DESC_MAX ); ?> 
+                          <?php if (strlen($Catalog[$i]->description)>LANDING_PROD_DESC_MAX) { 
+                            echo "...";
+                          }?>
+                          <br>
+                          <b><a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>" class=""> <span>Ver más...</span></a></b>
+                        </span>
                       </div>
                     </div>
                   </div>
-                </a>
               <?php }?> 
             <?php }?>
           </div>

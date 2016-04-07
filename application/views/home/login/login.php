@@ -24,26 +24,26 @@
 					      <strong>Atención!</strong> <?php echo $this->session->flashdata('register_user'); ?></a>
 					    </div>
 					<?php endif;?>
-					<div class="well bs-component">
+					<div style="margin-top:0% !important" class="well bs-component">
 						<form action="<?php echo base_url(); ?>login/authenticate" method="POST">
 							<fieldset>
 								<legend><h2>Ingresar a mi cuenta</h2></legend>							
 								<div class="form-group" style="padding-bottom:40px;">
-									<label class="col-lg-2 col-md-2 col-sm-2 col-xs-12" for="username">Usuario</label>
+									<label class="col-lg-3 col-md-4 col-sm-6 col-xs-12" for="username">Usuario</label>
 									<?php echo form_error('username', '<span class="label label-danger">', '</span>'); ?>
 									<?php echo form_error('password', '<span class="label label-danger">', '</span>'); ?>
-									<div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+									<div class="col-lg-9 col-md-8 col-sm-6 col-xs-12">
 										<input type="text" class="form-control" name="username" placeholder="Ingrese usuario o email" style="position:relative">
 									</div>
 								</div>
 								<div class="form-group" style="padding-bottom:40px;">
-									<label class="col-lg-2 col-md-2 col-sm-2 col-xs-12" for="password">Contraseña</label>
-									<div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+									<label class="col-lg-3 col-md-4 col-sm-6 col-xs-12" for="password">Contraseña</label>
+									<div class="col-lg-9 col-md-8 col-sm-6 col-xs-12">
 										<input type="password" class="form-control" name="password" placeholder="Ingrese su contraseña" style="position:relative">
 									</div>
 								</div>
 								<div class="form-group">
-									<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2">
+									<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-3 col-md-offset-4 col-sm-offset-6 col-xs-offset-0">
 										<button type="submit" class="btn btn-default" >Ingresar</button>
 										<a href="<?php echo base_url(); ?>login/forgotPassword"><br><br>
 										<b>Olvide mi contraseña</b></a>

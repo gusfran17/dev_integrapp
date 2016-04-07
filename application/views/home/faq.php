@@ -1,8 +1,5 @@
 <div id="page-wrapper">
 	<section class="FAQs benefits">
-        <div class="FAQ-titulo">
-          <h3>Preguntas Frecuentes</h3>
-        </div>
         <div class="container">
           <div class="row">
             <div class="FAQ-container">

@@ -1,5 +1,4 @@
 <div id="page-wrapper">
-	<h1>Contactenos</h1>
 	<article>
 		<div class="container-fluid">
 			<div class="row" id="login-form">
@@ -18,12 +17,12 @@
 					      <strong>Atenci贸n!</strong> <?php echo $this->session->flashdata('error'); ?></a>
 					    </div>
 					<?php endif;?>
-					<div class="well bs-component">
+					<div style="margin-top:0% !important" class="well bs-component">
 						<form action="<?php echo base_url(); ?>home/sendMessage" method="POST">
 							<fieldset>
 								<legend>
 									<h2 class="login-titulo">Contacto</h2>
-									<p>Si lo desea, puede escribirnos un mail, le responderemos a la brevedad.</p>
+									<p style="font-size:14px !important">Si lo desea, puede escribirnos un mail, le responderemos a la brevedad.</p>
 								</legend>							
 								<div class="form-group" style="padding-bottom:40px;">
 									<label class="col-lg-2 col-md-2 col-sm-2 col-xs-12" for="Nombre y Apellido">Nombre</label>
@@ -46,7 +45,7 @@
 								<div class="form-group" style="padding-bottom:40px;">
 									<label class="col-lg-2 col-md-2 col-sm-2 col-xs-12" for="message">Mensaje</label>
 								  <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
-										<textarea type="consulta" class="form-control" name="message" placeholder="Escriba aqu铆 su consulta" style="position:relative"></textarea>
+										<textarea type="consulta" class="form-control" name="message" placeholder="Escriba aquí su consulta" style="position:relative"></textarea>
 									</div>
 								</div>
 								<div class="form-group">

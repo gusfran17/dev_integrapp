@@ -127,6 +127,8 @@ define('SUPPLIER_MASSIVE_UPLOAD_PATH', '/Resources/massive_upload/supplier');
 /*
 |Product INFORMATION
 */
+/*Landing*/
+define('LANDING_PROD_DESC_MAX', 20);
 /*Product attributes amount*/
 define('MAX_ATTRIBUTE_AMOUNT', 20);
 /*Product description length*/
