@@ -1,4 +1,3 @@
-
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Product_model extends CI_Model {
@@ -56,7 +55,6 @@ class Product_model extends CI_Model {
         }
         return false;
     }
-
 
     public function saveProduct($data){
         $this->db->insert("product", $data);
@@ -170,7 +168,6 @@ class Product_model extends CI_Model {
         }
     }
 
-    
     public function get_catalog($supplierId=null, $parentCategoryId = null, $status = null, $orderBy = null, $page = 1, $rangePerPage = 1000, &$totalRows){
         //Category ID needs to be fetched first to avoid where clauses errors
         if (isset($parentCategoryId) and ($parentCategoryId != 0)){
@@ -441,7 +438,6 @@ class Product_model extends CI_Model {
         return $images;
     }
 
-
     public function setImagesFolder($isEditProduct, $images, $productId){
         if($images!=null){
             //if it is edition, moves existing images to temp in order to upload them again (deletes existing ones)
@@ -480,4 +476,3 @@ class Product_model extends CI_Model {
     }
 
 }
-

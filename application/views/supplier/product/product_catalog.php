@@ -16,11 +16,11 @@
 							<?php endif;?>
 							<?php if (isset($viewMyCatalog)) {?>
 								<?php if ($statusFilter == 'published') { ?>
-									<h1 style="text-align:center;margin-top: 0px;"><span class="label label-default" style="color:#ffffff;"><b><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Publicados</b></span></h1>
+									<h1 class="products-titulo"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Publicados</h1>
 								<?php } else if ($statusFilter == 'active') { ?>
-									<h1 style="text-align:center;margin-top: 0px;"><span class="label label-default" style="color:#ffffff;"><b>Activos </b></span><br><small>(No Publicados)</small></h1>
+									<h1 class="products-titulo">Activos <br><small>(No Publicados)</small></h1>
 								<?php } else { ?>
-									<h1 style="text-align:center;margin-top: 0px;"><span class="label label-default" style="color:#ffffff;"><b><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminados</b></span></h1>
+									<h1 class="products-titulo"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminados</h1>
 								<?php } ?>
 							<?php } ?>
 				    		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">

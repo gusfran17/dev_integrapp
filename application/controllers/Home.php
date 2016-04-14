@@ -179,6 +179,20 @@ class Home extends CI_Controller {
 		$this->routedHome($section, $data, true);	
 	}
 
+	public function sendMessage(){
+		$name = $this->input->post("name");
+		$subject = $name . ": " . $this->input->post("subject");
+		$email = $this->input->post("email");
+		$message = $this->input->post("message") . "\n Mensaje enviado por: " . $email;
+		$from = NOREPLY_ACCOUNT;
+		$to = "info@integrapp.com.ar";
+		$cc = "";
+		$bcc = "";
+		$this->User_model->sendEmail($subject, $message, $from, $to, $cc, $bcc);
+		redirect("home/contact");
+
+	}
+
 }
 
 ?>

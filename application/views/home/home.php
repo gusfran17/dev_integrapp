@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,600,700,300,200" rel="stylesheet" type="text/css">
     <link href="<?php echo base_url(); ?>Resources/styles/reset.css" type="text/css" rel="stylesheet" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">    
-    <link href="<?php echo base_url(); ?>Resources/styles/main.css" type="text/css" rel="stylesheet" />
+    <link href="<?php echo base_url(); ?>Resources/styles/main_style.css" type="text/css" rel="stylesheet" />
     <title>Integrapp</title>
   </head>
   <body class="landingIntegrapp">
@@ -20,7 +20,7 @@
             <li><a href="<?php echo base_url(); ?>home/catalog">CATALOGO</a></li>
             <li><a href="<?php echo base_url(); ?>home/faq">FAQ</a></li>
             <li><a href="<?php echo base_url(); ?>home/contact">CONTACTO</a></li>
-            <li><a href="<?php echo base_url(); ?>home/community">COMMUNITY</a></li>
+            <li><a href="<?php echo base_url(); ?>home/community">COMUNIDAD</a></li>
             <li><a href="<?php echo base_url(); ?>login">LOGIN</a></li>
             <li><i class="icon-search"></i>
               <form class="navbar-form navbar-left" role="search" action="<?php echo base_url() . 'Product/search'; ?>" method="post">
@@ -48,27 +48,35 @@
           <div class="row">
             <?php if (count($Catalog)>0) {?>
               <?php for ($i=0; $i < ((count($Catalog)>2)? 3:count($Catalog)) ; $i++) {?>
-                <a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>">
                   <div class="col-sm-4">
                     <div class="product-container">
                       <div class="product">
-                        <figure><img src="<?php echo base_url() . PRODUCT_IMAGES_PATH . $Catalog[$i]->images[0]; ?>"></figure>
+                        <a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>">
+                          <figure><img src="<?php echo base_url() . PRODUCT_IMAGES_PATH . $Catalog[$i]->images[0]; ?>"></figure>
+                        </a>
                       </div>
-                      <div class="product-share-container">
-                        <ul>
-                          <li><i class="icon-twitter"></i></li>
-                          <li><i class="icon-facebook"></i></li>
-                          <li><i class="icon-link"></i></li>
-                          <li><?php echo $Catalog[$i]->integrapp_code; ?></li>
-                        </ul>
-                      </div>
+                      <a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>">
+                        <div class="product-share-container">
+                          <ul>
+                            <li><i class="icon-twitter"></i></li>
+                            <li><i class="icon-facebook"></i></li>
+                            <li><i class="icon-link"></i></li>
+                            <li><?php echo $Catalog[$i]->integrapp_code; ?></li>
+                          </ul>
+                        </div>
+                      </a>
                       <div class="product-txt">
-                        <span class="product-title"><?php echo $Catalog[$i]->name; ?></span>
-                        <span><?php echo $Catalog[$i]->description; ?></span>
+                        <span class="product-title"><a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>"><?php echo $Catalog[$i]->name; ?></a></span>
+                        <span id="shortProdDescription<?php echo $i;?>" ><?php echo substr ( $Catalog[$i]->description, 0, LANDING_PROD_DESC_MAX ); ?> 
+                          <?php if (strlen($Catalog[$i]->description)>LANDING_PROD_DESC_MAX) { 
+                            echo "...";
+                          }?>
+                          <br>
+                          <b><a href="<?php echo base_url() . 'product/viewProduct/' . $Catalog[$i]->id; ?>" class=""> <span>Ver más...</span></a></b>
+                        </span>
                       </div>
                     </div>
                   </div>
-                </a>
               <?php }?> 
             <?php }?>
           </div>

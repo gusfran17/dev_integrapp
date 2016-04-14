@@ -24,7 +24,7 @@
 					      <strong>Atención!</strong> <?php echo $this->session->flashdata('register_user'); ?></a>
 					    </div>
 					<?php endif;?>
-					<div class="well bs-component">
+					<div style="margin-top:0% !important" class="well bs-component">
 						<form action="<?php echo base_url(); ?>login/authenticate" method="POST">
 							<fieldset>
 								<legend><h2>Ingresar a mi cuenta</h2></legend>							

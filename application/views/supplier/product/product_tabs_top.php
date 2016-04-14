@@ -1,32 +1,35 @@
 <div id="page-wrapper">
 	<div class="container" id="main-products">
-		<div class="col-md-10 col-sm-10 col-xs-12">		
-			<?php
-				echo '<ol class="breadcrumb" style="margin-bottom: 5px; font-size:16px">';
-				echo '<li><a href="#" onclick="selectCategory(id);" id="-1"><b><i class="fa fa-fw fa-table"></i> ' . (isset($viewMyCatalog)? "MIS PRODUCTOS": "PRODUCTOS") . '</b></a></li>';
+		<div class="col-md-12 col-sm-12 col-xs-12 products-titulo">		
+			<a class="products-titulo" href="#" onclick="selectCategory(id);" id="-1"> <?php echo (isset($viewMyCatalog)? "Mis Productos": "Productos"); ?></a>					
+		</div>
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<?php			
 				if (isset($selectedCategoryId)) {
+					echo '<ol class="breadcrumb" style="margin-bottom: 5px; background-color:transparent !important;">';
+					echo '<li><a href="#" onclick="selectCategory(id);" id="-1"><b><i class="fa fa-fw fa-table"></i> ' . (isset($viewMyCatalog)? "MIS PRODUCTOS": "PRODUCTOS") . '</b></a></li>';
 					$treeHeight = count($branch);
 					for ($i=$treeHeight-1; $i >= 0; $i--) {
 						echo '<li><a href="#" onclick="selectCategory(id);" id="'.$branch[$i]->id.'">'.$branch[$i]->name.'</a></li>';
 					}
+					echo '</ol>';
 				}  
-				echo '</ol>';
 			?>					
 		</div>
 		<div class="col-md-2 col-sm-2 col-xs-12">
 			<ol class="breadcrumb" style="margin-bottom: 5px; font-size:16px">
 				<li>
 	                <a href="<?php echo base_url() . 'home/catalog'; ?>">
-	                	<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span><b> Vista de catalogo para pacientes</b>
+	                	<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span><b> Vista de catálogo para pacientes</b>
 	                </a>
 				</li>
 			</ol>
 		</div>
 		<div role="tabpanel">  
 			<ul class="nav nav-pills" role="tablist" style="padding: 5px 5px 5px 5px;">
-				<li role="presentation" class="<?php if (isset($viewCatalog)) {echo "active";} ?>"><a href="<?php echo base_url() . 'Product/products'; ?>"><b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Catalogo General de IntegApp</b></a></li>
-			    <li role="presentation" class="<?php if (isset($viewMyCatalog)) {echo "active";} ?>"><a href="<?php echo base_url() . 'Product/myProducts'; ?>"><b><span class="glyphicon glyphicon-list" aria-hidden="true"></span><u> Catalogo como Mayorista Primario </u></b></a></li>
-				<li role="presentation" class="<?php if (isset($viewMySecSuppCatalog)) {echo "active";} ?>"><a href="<?php echo base_url() . 'Product/mySecondaryProducts'; ?>"><b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Catalogo como Mayorista Secundario</b></a></li>
+				<li role="presentation" class="<?php if (isset($viewCatalog)) {echo "active";} ?>"><a href="<?php echo base_url() . 'Product/products'; ?>"><b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Catálogo General de IntegrApp</b></a></li>
+			    <li role="presentation" class="<?php if (isset($viewMyCatalog)) {echo "active";} ?>"><a href="<?php echo base_url() . 'Product/myProducts'; ?>"><b><span class="glyphicon glyphicon-list" aria-hidden="true"></span><u> Catálogo como Mayorista Primario </u></b></a></li>
+				<li role="presentation" class="<?php if (isset($viewMySecSuppCatalog)) {echo "active";} ?>"><a href="<?php echo base_url() . 'Product/mySecondaryProducts'; ?>"><b><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Catálogo como Mayorista Secundario</b></a></li>
 			    <li role="presentation" class="<?php if (isset($productLoadView)) { echo "active";} ?>"><a href="<?php echo base_url() . 'Product/productLoadView'; ?>"><b><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Cargar Productos</b></a></li>
 			    <!-- <li role="presentation"><a href="#settings" aria-controls="settings" role="settings" data-toggle="tab">Ajustes</a></li> -->
 			</ul>
@@ -49,7 +52,7 @@
 			      </div>
 			      <div class="modal-body">
 			        <ul style="padding-top:0px;">
-			    		<b>Filtro de categorias:</b>
+			    		<b>Filtro de categorías:</b>
 			    		<b>								
 					    	<?php	
 					    		echo '<h4 style="margin-left: 15px;"><span class="label label-default" style="color:#ffffff; background-color:#D17749"><a href="#" onclick="selectCategory(id);" id="-1" style="color:#ffffff;"><b>'.(isset($viewMyCatalog)? "MIS PRODUCTOS": "PRODUCTOS").'</b></a></span></h4>';

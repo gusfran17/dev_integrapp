@@ -42,7 +42,7 @@ $(document).ready(function(){
 
 	$('#productsCategorySelect').on('click', 'button', function(){
 		getTree();
-		$('#categoryLoaded').remove();
+                $('#categoryLoaded').remove();
 		$('#productsCategorySelect').append('<div id="categoryLoaded"> <p style="margin-top: 10px" >Se ha cargado la categoria del producto más abajo...</p></div>');
 	});
 
@@ -332,5 +332,4 @@ $(document).ready(function(){
 
 
 });
-
 
