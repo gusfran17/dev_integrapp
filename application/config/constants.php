@@ -132,6 +132,7 @@ define('MAX_ATTRIBUTE_AMOUNT', 20);
 /*Product description length*/
 define('PROD_DESCRIPTION_MIN_LENGTH', 0);
 define('PROD_DESCRIPTION_MAX_LENGTH', 1500);
+define('LANDING_PROD_DESC_MAX', 200);
 /*Catalog*/
 define('DEFAULT_CATALOG_ORDER', 'published_date desc');
 define('PRODUCT_DEFAULT_VIEW', 'tilesView');
