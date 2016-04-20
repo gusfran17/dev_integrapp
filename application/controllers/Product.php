@@ -491,6 +491,9 @@ class Product extends CI_Controller {
 					}
 				
 					//Guarda las imagenes en la carpeta del producto (si es una edicion borra las actuales para que no se sumen)
+					if (count($this->input->post('images'))>0) {
+						log_message('error', "Images Amount: " . $this->input->post('images')[0], false);
+					}
 					$this->Product_model->setImagesFolder($editProduct, $this->input->post('images'), $new_id);
 					
 					//Guarda los colores del producto
@@ -567,6 +570,9 @@ class Product extends CI_Controller {
 			$colors = $this->Product_model->getProductColors($product[0]->id);
 			$attributes = $this->Product_model->getProductAttributes($product[0]->id);
 			$productImages = $this->Product_model->getProductImages($product[0]->id);
+			for ($i= 0; $i< count($productImages); $i++){
+            	$productImages[$i] = str_replace($product[0]->id."/", "", $productImages[$i]);
+        	}
 
 			$data['editProduct'] = $product[0];
 			$data['editProduct']->colors = $colors;

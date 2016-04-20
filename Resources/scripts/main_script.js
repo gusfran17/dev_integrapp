@@ -271,7 +271,9 @@ $(document).ready(function(){
 							$.each(json.editProduct.images, function(index, value) {
 								var mockFile = { name: "Imagen", size: 12345, file_name: value };
 								myDropzone.options.addedfile.call(myDropzone, mockFile);
-								myDropzone.options.thumbnail.call(myDropzone, mockFile, $("#imagesPath").val() + "/" + value);
+								console.log($("#imagesPath").val());
+								console.log(value);
+								myDropzone.options.thumbnail.call(myDropzone, mockFile, $("#imagesPath").val() + "/" + json.editProduct.id +"/"+ value);
 								$("#imagesArray").append("<input type='hidden' name='images[]' value='"+ value +"' />");
 							});
 						}
