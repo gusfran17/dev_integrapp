@@ -409,12 +409,12 @@ class Product extends CI_Controller {
 		$editProduct = ($editID != "");
 		if (!$editProduct){ 
 			$this->form_validation->set_rules('productName', 'Nombre del Producto', 'required|callback_productNameCheck');
-	   		$this->form_validation->set_rules('productCode', 'Codigo', 'required|callback_productCodeCheck');	
+	   		//$this->form_validation->set_rules('productCode', 'Codigo', 'required|callback_productCodeCheck');	
 	   		$this->form_validation->set_message('productNameCheck', 'Usted ya tiene un producto con este nombre en su catalogo');
    			$this->form_validation->set_message('productCodeCheck', 'Usted ya tiene un producto con este código en su catalogo');
 		} else {
 			$this->form_validation->set_rules('productName', 'Nombre del Producto', 'required|callback_productNameCheckForEdition');
-   			$this->form_validation->set_rules('productCode', 'Codigo', 'required|callback_productCodeCheckForEdition');
+   			//$this->form_validation->set_rules('productCode', 'Codigo', 'required|callback_productCodeCheckForEdition');
 	   		$this->form_validation->set_message('productNameCheckForEdition', 'Usted ya tiene un producto con este nombre en su catalogo');
    			$this->form_validation->set_message('productCodeCheckForEdition', 'Usted ya tiene un producto con este código en su catalogo');
 		}
@@ -603,6 +603,9 @@ class Product extends CI_Controller {
 			$data['colors'] = $colors;
 			if (count($productImages)>0){
 				if ($productImages[0] != PRODUCT_NO_FOTO){
+					for ($i= 0; $i< count($productImages); $i++){
+		            	$productImages[$i] = str_replace($productId."/", "", $productImages[$i]);
+		        	}
 					$data['images'] = $productImages;
 				}
 			}

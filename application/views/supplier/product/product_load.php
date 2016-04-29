@@ -279,7 +279,7 @@
 														<?php foreach($images as $i): ?>
 															var mockFile = { name: "images", size: 12345, file_name: '<?php echo $i;?>' };
 															myDropzone.options.addedfile.call(myDropzone, mockFile);
-															myDropzone.options.thumbnail.call(myDropzone, mockFile, "<?php if (isset($editProduct)) echo base_url() . PRODUCT_IMAGES_PATH . $i; else echo base_url() . PRODUCT_IMAGES_PATH . 'temp/' . $i;?>");
+															myDropzone.options.thumbnail.call(myDropzone, mockFile, "<?php if (isset($editProduct)) echo base_url() . PRODUCT_IMAGES_PATH . $editProduct->id . '/' . $i; else echo base_url() . PRODUCT_IMAGES_PATH . 'temp/' . $i;?>");
 														<?php endforeach; ?>
 													</script>
 												<?php else: ?>
