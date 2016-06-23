@@ -1,20 +1,11 @@
+
 <div id="wrapper">
       
       <div id="page-wrapper">
         <section class="comunidad">
-              <div class="comunidad-titulo">
-               Comunidad
-              </div>
-              <div class="container">
-                <div class="row">
-                  <div >
-                    <div class="comunidad-container">
-                      <div class="comunidad">
-                        <figure><img src="<?php echo base_url(); ?>/Resources/img/under_construction.png"></figure>
-                      </div>
+                                 <iframe title="Titulo" width="1190" height="590" src="https://integrappcommunity.wordpress.com/" frameborder="0" scrolling="auto"></iframe>
+
                       
-                      <div class="comunidad-txt">
-                        <span class="comunidad-title">Sitio en Construcción</span>
                        
                       </div>
                     </div>

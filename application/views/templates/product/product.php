@@ -16,9 +16,10 @@
 		</div>
 		<div class="col-md-12 col-sm-12 col-xs-12">
 			<div class="panel panel-default">
-				<div class="panel-body">
+				<div id="muestra"
+				<div class="panel-body" >
 					<div class="col-md-6 col-sm-12 col-xs-12">
-						<div style="min-height:120px">
+						<div style="min-height:120px" media="prints" id="parte5" >
 							<h2><b><?php echo $product->name; ?></b><small> <b><?php if(($product->mine)) echo '$'.number_format($product->price, PRICE_DECIMAL_AMOUNT, DECIMAL_SEPARATOR, THOUSANDS_SEPARATOR) . ' (' . 'I.V.A. ' . $product->tax . ')';?></b></small></h2>
 							<?php if ($watchingRole != "pacient") {?>
 								<h4><strong>Código Interno <?php echo "(".$product->primarySupplier->fake_name . ")";?>:</strong> <?php echo $product->code; ?><br></h4>
@@ -34,6 +35,21 @@
 									});
 								});
 							</script>
+							<style type="text/css" media="print">
+@media print {
+#parte1 {display:none;}
+#parte2 {display:none;}
+#parte3 {display:none;}
+#parte4 {display:none;}
+#parte5 {display:none;}
+#parte6 {display:none;}
+#parte7 {display:none;}
+}	
+</style>
+							<script type="text/javascript">
+function imprSelec(muestra)
+{var ficha=document.getElementById(muestra);var ventimp=window.open(' ','popimpr');ventimp.document.write(ficha.innerHTML);ventimp.document.close();ventimp.print();ventimp.close();}
+</script>
 							<?php if ($product->mine){ ?>
 								<script type="text/javascript">
 									function publishProduct(selectedProductId) {
@@ -203,7 +219,7 @@
 									}?>								
 								</ol>
 								<!-- Wrapper for slides -->
-								<div class="carousel-inner" role="listbox">
+								<div id="parte2" class="carousel-inner" role="listbox">
 									<?php $path = base_url() . PRODUCT_IMAGES_PATH; ?>
 										<div class="item active">
 									 		<?php if (count($product->images) > 0){?>
@@ -242,10 +258,11 @@
 									<div class="panel-body">	
 										<?php echo $product->prescription;?>									
 									</div>
-								</div>
+									</div>
+<input  id="parte7" type="button" value="Imprimir" onclick="javascript:imprSelec('muestra')" />
 							</div>
 						</div>
-						<table class="table table-striped">
+						<table class="table table-striped" id="parte6">
 							<caption><h2><b>Especificaciones</b></h2></caption>
 							<thead>
 								<tr>
@@ -278,10 +295,11 @@
 					</div>
 					<div class="col-md-6 col-sm-12 col-xs-12" style="text-align:center;">
 						<div class="panel panel-default" style="margin-top: 70px;">
-							<div class="panel-body">
+							<div class="panel-body" id="parte2" >
 								<h2><b><?php if (($watchingRole == 'supplier') or ($watchingRole =='pacient')) echo "Ortopedias que lo comercializan"; else echo "Ortopedias que lo comercializan" ?></b></h2>
 								<div id="googleMap" style="width:100%;height:450px;"></div>
 								<!-- <img src="<?php echo base_url() . 'Resources/img/map_example.png'; ?>" style="max-height: 400px">		 -->
+							</div>
 							</div>
 						</div>
 					</div>
