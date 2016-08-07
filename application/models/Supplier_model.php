@@ -234,12 +234,13 @@ class Supplier_model extends CI_Model {
         $path = '.' . SUPPLIER_PROFILE_IMAGE_PATH;
         $url_path = SUPPLIER_PROFILE_IMAGE_PATH;
         
-        $filename = $path . md5($userid) . ".png";
-        if(file_exists($filename)){
-            return $url_path . md5($userid) . ".png";
-        }else{
-            return IMAGES_PATH . 'noProfilePic.jpg';
-        }
+        $allowedExtensions = explode("|", ALLOWED_PROFILE_IMAGE_TYPE);
+	foreach ($allowedExtensions as $key => $allowedExt) {
+		$filename = $path . md5($userid) . "." . $allowedExt;
+		if(file_exists($filename)){
+			return $url_path . md5($userid) . "." . $allowedExt;
+		}
+	}
         
     }
 

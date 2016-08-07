@@ -48,7 +48,7 @@ html, body{font-family: OpenSans}
 }
 
 .subcategories {
-    color: #999 !important;
+    color: #000 !important;
 }
 
 .navbar-nav li a:hover, .navbar-nav li a:focus{
@@ -89,7 +89,7 @@ html, body{font-family: OpenSans}
 	}
 
 	body {
-		background-color: #FFC !important;
+		background-color: #FFF !important;
 	}
 
 	footer {
@@ -130,6 +130,7 @@ html, body{font-family: OpenSans}
 	padding-left: 40px;
 	padding-right: 40px;
 	padding-bottom: 50px; 
+	padding-top: 50px;
 	min-height: 600px;
 }
 /*end*/
@@ -178,7 +179,7 @@ Esto es para que los nav-pils (usados en tabs y selecciones) en general sean ver
 */
 
 .nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus{
-  background-color:#337ab7;
+  background-color:#4784FF;
   color:#ffffff;
 }
 
@@ -193,7 +194,7 @@ Esto es para que los nav-pils (usados en tabs y selecciones) en general sean ver
 /*change breadcrumb background color*/
 .breadcrumb {
 	 margin-bottom: 10px;
-     background-color: #aaddaa;
+     background-color: rgba(255, 255, 255, .15);
      border-radius: 5px;
      -moz-border-radius: 5px;
      -webkit-border-radius: 5px;
@@ -203,7 +204,7 @@ Esto es para que los nav-pils (usados en tabs y selecciones) en general sean ver
 /*change breadcrumb separator to raquo symbol*/
 .breadcrumb > li + li:before {
      content: "\00BB";
-     color: #ffffff;
+     color: #4784FF;
 }
 
 
@@ -236,7 +237,7 @@ TABLES borders
 change color for pagination bootstrapp
 */
 .pagination>li.active>a, .pagination>li.active>a:hover, .pagination>li.active>a:focus{
-  background-color:#337ab7;
+  background-color:#4784FF;
   color:#ffffff;
 }
 
@@ -288,7 +289,7 @@ change color for pagination bootstrapp
 Change label colors for titles
 */
 .label-default{
-  background-color:#337ab7;
+  background-color:#4784FF;
 }
 
 /*!!!!!!!CATALOGO!!!!!!!*/
@@ -560,7 +561,7 @@ h3{
 
 header {
   height: 80px;
-  margin-bottom: -80px; background-color:#222222 !important;
+  margin-bottom: -80px; background-color:#888 !important;
 }
 
 
@@ -1394,4 +1395,116 @@ a, a:focus, a:visited, a:hover {
 }
 
 .publicidad {float:right !important; width:160px !important;margin-top:-75% !important }
+
+
+/* Filtro Nuevo */
+#cssmenu {
+  width: 250px;
+  font-family: Roboto, Helvetica, sans-serif;
+  float: left;
+    position: relative;
+}
+#cssmenu i {
+  margin-right: 5px;
+}
+#cssmenu ul {
+  display: block;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  line-height: 1.4em;
+
+}
+#cssmenu ul li {
+  position: relative;
+  display: block;
+}
+#cssmenu ul li a {
+  display: block;
+  text-decoration: none;
+  position: relative;
+}
+#cssmenu > ul {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+#cssmenu > ul > li:first-child > a {
+  border-radius: 3px 3px 0 0;
+}
+#cssmenu > ul > li:last-child > a {
+  border-radius: 0 0 3px 3px;
+}
+#cssmenu > ul > li:not(:last-child) {
+  border-bottom: 1px solid #ccc;
+}
+#cssmenu > ul > li.active > a {
+  color: #777;
+  background-color: #e6e6e6;
+}
+#cssmenu > ul > li.has-sub > a::after {
+  content: '';
+  position: absolute;
+  display: block;
+  border: 5px solid transparent;
+  border-top-color: #888;
+  right: 15px;
+  top: 17px;
+  transition: all .25s ease;
+  transform-origin: 0 25%;
+}
+#cssmenu > ul > li.has-sub.active > a::after {
+  transform: rotateX(180deg);
+  border-top-color: #777;
+}
+#cssmenu > ul > li:hover > a::after {
+  border-top-color: #777;
+}
+#cssmenu > ul > li > a {
+  padding: 12px 15px;
+  color: #888;
+  transition: all 0.3s ease-out;
+  font-size: 14px;
+}
+#cssmenu > ul > li > a:hover {
+  color: #777;
+  background-color: #e6e6e6;
+}
+#cssmenu ul ul li.active > a {
+  background-color: #f2f2f2;
+  color: #777;
+}
+#cssmenu ul ul li.has-sub > a::after {
+  content: '';
+  position: absolute;
+  display: block;
+  border: 5px solid transparent;
+  border-top-color: #888;
+  right: 15px;
+  top: 15px;
+  transition: all .25s ease;
+  transform-origin: 0 25%;
+}
+#cssmenu ul ul li.has-sub.active > a::after {
+  transform: rotateX(180deg);
+  border-top-color: #777;
+}
+#cssmenu ul ul li:hover > a::after {
+  border-top-color: #777;
+}
+#cssmenu ul ul li a {
+  padding: 10px 15px;
+  font-size: 14px;
+  color: #888;
+  transition: all 0.3s ease-out;
+}
+#cssmenu ul ul li a:hover {
+  background-color: #f2f2f2;
+  color: #777;
+}
+#cssmenu ul ul ul li a {
+  padding-left: 25px;
+}
+/* End Filtro Nuevo */
 
